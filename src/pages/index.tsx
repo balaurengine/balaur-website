@@ -34,7 +34,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title} — ${siteConfig.tagline}`}
-      description="Balaur is a 2D game engine for Rust. Nodes and scenes, an integrated editor, and scripting in Rune.">
+      description="Balaur is a 2D game engine. Nodes and scenes, an integrated editor, and scripting in Rune.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
