@@ -1,0 +1,55 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+Balaur is a 2D game engine for Rust.
+
+:::warning
+There is no release. Balaur is in early development and there is nothing to
+download yet. See the [roadmap](./roadmap.mdx).
+:::
+
+## Model
+
+A game is a tree of nodes. A node has a name, a script, properties and
+children. The engine walks the tree once per frame and calls each node's
+`update`.
+
+A scene is a file describing that tree. Scenes can be nested and reused.
+
+Node classes store their properties in dense arrays rather than per-node heap
+objects. One pass per class updates every node of that class, including
+subclasses.
+
+## Scripting
+
+Gameplay is written in [Rune](https://rune-rs.github.io/). Rune has 0-based
+indexing, native `async`, and reference counting rather than a garbage
+collector.
+
+Scripts are compiled per file. Saving a script reloads only the nodes running
+it; node state is kept, so the running game continues.
+
+The script host is a trait. Other languages can be added without changing the
+engine.
+
+## Dependencies
+
+| Purpose | Crate |
+|---|---|
+| Physics | rapier2d |
+| Rendering | wgpu, via kiss3d |
+| Math | glamx |
+| Shaders | wesl |
+| Editor UI | egui |
+| Scripting | rune |
+
+## Scope
+
+2D only. Not an ECS. No release yet.
+
+## Licence
+
+MIT or Apache-2.0.
