@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+---
+
+# Scenes and nodes
+
+## Nodes are entities
+
+A node is nothing but an ECS entity with `Name`, `Parent`, `Children`,
+`Transform`, and `GlobalTransform` components. Node paths (`"A/B/C"`),
+transform propagation, and recursive free are core systems. Plugins hang
+their own components off the same entities, so "node" is an API surface, not
+a data structure with a cost.
+
+Scripts reach the tree through the node API — 28 operations declared once in
+the core and available in every language: `get_node`, `parent`, `children`,
+`add_child`, `queue_free`, `position` / `set_position`, `rotation_euler`,
+`scale`, `translate`, `attach_script`, the component operations, and the
+rest. The full list is in the
+[script API reference](../reference/script-api.md).
+
+Structural changes requested by scripts (`queue_free`) are deferred to the
+end of the frame, so iteration is never invalidated mid-frame.
+
+## Scene files
+
+A scene is declarative TOML: a flat list of `[[nodes]]` entries with `name`,
+optional `parent` (by id), `position`, `script`, and any component keys the
+registered plugins contribute.
+
+```toml
+[[nodes]]
+id = "n_ball"
+name = "Ball"
+parent = "n_world"
+position = [0, 6, 0]
+script = "scripts/ball.luau"
+body = "dynamic"
+collider = { kind = "ball", radius = 0.5 }
+shape = { kind = "ball", radius = 0.5 }
+```
+
+Scene keys are applied in plugin registration order, which is deterministic.
+Scripts can instantiate scenes at run time with `scene.instantiate` and spawn
+nodes with `scene.spawn`.
+
+## Components
+
+Plugins declare named, schema-described components. A schema gives each
+property a `type` from a closed set — `float`, `bool`, `string`, `enum`,
+`vec2`, `vec3`, `color` — plus defaults, enum options, an optional scalar
+shorthand (`body = "dynamic"`), and `readonly` markers the inspector honours.
+A malformed schema fails at boot, naming the component and property, rather
+than at the first inspector row.
+
+One registration buys three things at once:
+
+- **The scene-file key.** `collider = { kind = "ball", radius = 0.5 }` works
+  because the physics plugin registered `collider`.
+- **The runtime API.** `node:set_component`, `get_component`,
+  `has_component`, `remove_component`, `component_names`, plus
+  `scene.component_types()` and `scene.component_schema(name)` for
+  discovery.
+- **Editor support.** The editor's "Add component" palette and property
+  inspectors are generated from the registry, so third-party plugin
+  components are addable and editable with zero editor changes.
+
+The components registered by the standard plugins:
+
+| Component | Plugin | Purpose |
+| --- | --- | --- |
+| `body`, `collider` | physics | 3D rigid body and collider (rapier3d) |
+| `body2d`, `collider2d` | physics | 2D rigid body and collider (rapier2d) |
+| `shape`, `shape2d` | render | Renderable 3D / 2D shape |
+| `color` | render | Node color, as channel floats or `#rrggbb` / `#rrggbbaa` |
+| `widget` | ui | HUD element (label / button / panel) anchored to the screen |
+
+A tagged-union property is always called `kind` (`kind = "ball"`), so `type`
+always means the datatype.

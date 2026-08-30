@@ -1,0 +1,67 @@
+---
+sidebar_position: 7
+---
+
+# Shipping a game
+
+## Packs
+
+`balaur export` compiles every script to bytecode — with the same compiler
+configuration dev mode uses, so shipped bytecode is what was tested — and
+bundles scripts, scenes, and the manifest into a single `.bpak`:
+
+```bash
+balaur export my-game        # writes my-game.bpak
+balaur play my-game.bpak     # run from bytecode only
+```
+
+Packed runs construct no compiler and no file watcher, and no script sources
+exist in the shipped build. A pack is written in sorted key order, so
+exporting the same sources twice gives the same bytes, on any machine —
+which makes reproducible builds and content-change checks possible.
+
+Because packed execution is pure interpretation of precompiled bytecode, it
+ships on platforms with JIT/codegen restrictions; CI cross-compiles the
+headless engine to iOS on every run to keep that true.
+
+## Fused executables
+
+A pack is data — it still needs an engine to run it. To ship something a
+player can just open, fuse it onto a *runtime template*, the engine binary
+published for each platform:
+
+```bash
+balaur export my-game --target linux-x64     # or macos-arm64, windows-x64
+```
+
+The result is one executable. Fusing appends the pack to the template binary
+and writes a trailer; ELF, Mach-O, and PE all ignore trailing bytes, so the
+file still runs. On startup the engine reads its own executable: finding a
+pack means it is a shipped game, so it boots that; finding nothing means it
+is the CLI. One binary is therefore the editor, the CLI, and every game's
+runtime.
+
+Templates for your own platform ship with the editor download in
+`templates/`. To export for another platform, drop that platform's
+`balaur-runtime-*` binary into `templates/`, point `BALAUR_TEMPLATES` at a
+directory of them, or pass `--template <file>`.
+
+Two practical notes:
+
+- Appending invalidates a macOS code signature, so sign after exporting, not
+  before.
+- The exporter sets the execute bits on its output, because templates that
+  came through a zip or CI artifact store usually lost theirs.
+
+## Embedding
+
+For a custom binary, embed the pack directly:
+
+```rust
+fn main() -> anyhow::Result<()> {
+    balaur::boot_pack(include_bytes!("game.bpak"))
+}
+```
+
+This route requires a Rust toolchain on the machine doing the shipping;
+fused export exists so that editor users do not need one.

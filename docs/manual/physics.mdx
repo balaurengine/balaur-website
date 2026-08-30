@@ -1,0 +1,57 @@
+---
+sidebar_position: 3
+---
+
+# Physics
+
+Physics is a plugin wrapping [Rapier](https://rapier.rs): rapier3d for the
+`body` / `collider` components, rapier2d for `body2d` / `collider2d`. The two
+worlds live side by side over the same scene tree, and both are built with
+Rapier's `enhanced-determinism` feature and stepped on a fixed 60 Hz
+accumulator.
+
+## Declaring bodies
+
+In a scene file:
+
+```toml
+[[nodes]]
+name = "Crate"
+position = [0, 3, 0]
+body = "dynamic"                 # dynamic | kinematic | static
+collider = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
+```
+
+Colliders take `kind` (`ball` / `cuboid` in 3D, `circle` / `rect` in 2D) with
+the matching dimensions, plus `restitution`, `friction`, and `density`.
+
+Or from a script, with the same vocabulary:
+
+```lua
+physics.add_body(self.node, physics.BODY_DYNAMIC)
+physics.add_ball_collider(self.node, 0.5)
+
+physics2d.add_body(self.node, physics2d.BODY_DYNAMIC)
+physics2d.add_collider(self.node, { kind = physics2d.SHAPE_RECT, half_extents = { 0.5, 0.5 } })
+```
+
+## Driving the simulation
+
+The `physics` module covers gravity, impulses, and velocities in 3D; the
+`physics2d` module does the same in 2D and adds
+`physics2d.max_contact_impulse(node)` — the strongest impact a body took this
+frame, for impact-driven gameplay such as destruction or damage.
+
+`physics.set_paused`, `is_paused`, `clear`, `set_sleeping_allowed`, and
+`sleeping_allowed` span both worlds, so tools treat "physics" as one
+simulation — the editor pauses it until play.
+
+The full function lists are in the
+[script API reference](../reference/script-api.md).
+
+## Determinism
+
+Physics steps on a fixed 60 Hz accumulator, never on the variable frame
+delta, and iterates order-sensitive collections deterministically. Two runs
+with identical inputs match bit for bit, and a test in the repository asserts
+it. See [Determinism](./determinism.mdx).

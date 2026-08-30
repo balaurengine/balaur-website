@@ -1,0 +1,70 @@
+---
+sidebar_position: 3
+---
+
+# Using Rune
+
+Luau is the default scripting language. A project switches to
+[Rune](https://rune-rs.github.io/) with one line in `project.toml`:
+
+```toml
+name = "my-game"
+main_scene = "scenes/main.toml"
+language = "rune"
+```
+
+One project, one language. Both backends can run in a process, but scripts
+within a project do not mix languages.
+
+## The script model
+
+A Rune script is a set of free functions taking the instance first. The host
+makes one instance per attached node and hands it back on every call; an
+object handed into a Rune function is mutated in place, so what a script
+writes to `this` is what the host reads next frame.
+
+```rust
+// scripts/spinner.rn
+const SPEED = 2.0;
+
+pub fn init(this) {
+    this.angle = 0.0;
+    this.direction = 1.0;
+}
+
+pub fn update(this, dt) {
+    if input::just_pressed(input::KEY_SPACE) {
+        this.direction = -this.direction;
+    }
+    this.angle += dt * SPEED * this.direction;
+    this.node.set_rotation_euler(0.0, this.angle, 0.0);
+}
+```
+
+## The same bindings
+
+Both languages call the same engine bindings: subsystems declare them once
+against the language-neutral seam, and each backend adds only its own call
+sugar. The [script API](../reference/script-api.md) is identical in both.
+
+| Luau | Rune |
+| --- | --- |
+| `self.node:position()` | `this.node.position()` |
+| `input.just_pressed(input.KEY_SPACE)` | `input::just_pressed(input::KEY_SPACE)` |
+| `physics.add_body(self.node, physics.BODY_DYNAMIC)` | `physics::add_body(this.node, physics::BODY_DYNAMIC)` |
+
+## Hot reload
+
+Rune compiles to an immutable unit, so hot reload replaces the unit rather
+than swapping a class table: instances keep their state objects, and the next
+call resolves against the new code. A compile error keeps the previous unit
+running, the same as Luau.
+
+## Export
+
+Rune resolves module items while compiling, so `balaur export` validates
+scripts against the modules the project's plugins actually register — a
+script that calls a binding that does not exist fails at export, not at run
+time.
+
+The complete example is `examples/hello_rune` in the repository.

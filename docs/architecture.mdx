@@ -1,0 +1,98 @@
+---
+sidebar_position: 5
+---
+
+# Architecture
+
+The full, hand-written architecture document lives in the engine repository:
+[ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md).
+This page is the condensed version.
+
+## The layers
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│  scripts (game code, and the editor itself)                │
+│  .luau or .rn — one language per project                   │
+├──────────────────────────────┬─────────────────────────────┤
+│  balaur_script_luau (mlua)   │  balaur_script_rune         │
+│  host, hot reload, require   │  host, hot reload           │
+├──────────────────────────────┴─────────────────────────────┤
+│  balaur_script: the seam — Bindings, ScriptHost, Value.    │
+│  Traits only. No language, no dependencies.                │
+├────────────────────────────────────────────────────────────┤
+│  modules declared once, reaching every language:           │
+│  engine, scene, log, node, rng, input, physics, render, .. │
+├──────────┬──────────┬──────────┬─────────┬─────────────────┤
+│ physics  │ render   │ audio    │ input   │  your plugin    │
+│ (rapier) │ (kiss3d) │ (rodio)  │ (winit) │                 │
+├──────────┴──────────┴──────────┴─────────┴─────────────────┤
+│  balaur_core: hecs ECS + scene tree + scheduler + packs.   │
+│  Names no scripting language.                              │
+└────────────────────────────────────────────────────────────┘
+```
+
+Backends depend on core; core never depends on a backend. That direction is
+what keeps core language-free, and the compiler enforces it. The
+[crate graph](./reference/crate-graph.md) shows every workspace edge.
+
+## Key decisions
+
+**ECS: hecs.** The data plane is `hecs`: minimal, archetype-based, and out of
+the way. Balaur adds its own scheduling, hierarchy, and resources on top
+rather than adopting a framework's opinions.
+
+**One math crate.** All crates share `glamx` (glam plus pose/rotation types),
+the same math used by rapier and kiss3d — zero conversion layers between
+core, physics, and rendering.
+
+**The `Engine` handle.** `Engine` is a cheaply clonable handle over the
+world, resources, command queue, and script host, with interior mutability
+and short borrows. Rust systems receive it every frame; script binding
+closures capture it. Both sides of the FFI see the same state with no
+marshalling. The engine is single-threaded by design for now; parallelism can
+later live inside systems without changing this facade.
+
+**Scene tree over ECS.** A node is an entity with `Name`, `Parent`,
+`Children`, `Transform`, `GlobalTransform`. Node paths, transform
+propagation, and recursive free are core systems; plugins hang their
+components off the same entities.
+
+**Fixed frame schedule.** `First → PreUpdate (reload pump) → Update (scripts)
+→ PostUpdate (physics, audio) → SceneSync (transform propagation) → Render →
+Last (deferred destruction)`. Structural changes requested by scripts are
+deferred to `Last`, so iteration is never invalidated mid-frame.
+
+**The scripting seam.** `balaur_script` is traits and a neutral `Value` type,
+with no language in it. A subsystem declares its bindings once against the
+seam and never names a language; a backend implements the host trait and
+consumes those declarations. Adding the second language cost one crate and
+changed nothing in physics, input, render, audio, or ui. The node and engine
+operations are declared once in the core; each backend adds only its own
+call sugar.
+
+**Plugins.** Wrapping a Rust crate for scripting is one call per entry point
+— argument and return conversions are inferred. A plugin can also register
+schema-described components and scene-file keys, which buys the scene
+vocabulary, the runtime component API, and full editor support in one
+registration. `balaur_physics` is the reference implementation.
+
+## The workspace
+
+| Crate | Role |
+| --- | --- |
+| `balaur_script` | The scripting seam: traits and a neutral value type, no language and no dependencies |
+| `balaur_core` | ECS world (hecs), scene tree, scheduler, plugin API, pack export |
+| `balaur_script_luau` | Luau backend (mlua): host, hot reload, `require`, bytecode packs |
+| `balaur_script_rune` | Rune backend |
+| `balaur_physics` | Rapier plugin; the reference example for wrapping a Rust crate for scripting |
+| `balaur_render` | Renderable components + `render` module; kiss3d/wgpu backend behind a feature flag |
+| `balaur_audio` | rodio-backed `audio` module |
+| `balaur_input` | Backend-agnostic input snapshot + `input` module |
+| `balaur_ui` | Immediate-mode egui API (`ui` module): panels, widgets, script-defined themes |
+| `balaur` | Batteries-included facade: `standard_app`, `boot_project`, `boot_pack` |
+| `balaur_cli` | The `balaur` binary: `new`, `run`, `export`, `play`, `edit` |
+| `balaur_bench` | Headless benchmarks: where a frame's time goes, and what each language costs |
+
+The per-crate detail — dependencies and public surface — is generated from
+the workspace on every change: see [Crates](./reference/crates.md).

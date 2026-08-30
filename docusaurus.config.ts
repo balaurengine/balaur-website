@@ -6,8 +6,15 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Balaur',
-  tagline: 'A 2D game engine',
+  tagline: 'A scriptable, node-based game engine with a Rust data plane',
   favicon: 'img/favicon.ico',
+
+  markdown: {
+    // .md files (the synced reference docs) render as CommonMark; .mdx as MDX.
+    format: 'detect',
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -105,6 +112,14 @@ const config: Config = {
               label: 'Introduction',
               to: '/docs/intro',
             },
+            {
+              label: 'Getting started',
+              to: '/docs/getting-started',
+            },
+            {
+              label: 'Script API',
+              to: '/docs/reference/script-api',
+            },
           ],
         },
         {
@@ -138,7 +153,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Balaur is free and open source, MIT / Apache-2.0. Copyright © ${new Date().getFullYear()} balaurengine. Built with Docusaurus.`,
+      copyright: `Balaur is free and open source, Apache-2.0. Copyright © ${new Date().getFullYear()} balaurengine. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

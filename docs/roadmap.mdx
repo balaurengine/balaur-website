@@ -1,20 +1,31 @@
 ---
-sidebar_position: 2
+sidebar_position: 7
 ---
 
 # Roadmap
 
-## Milestones
+## Where the engine stands
 
-| | Goal | State |
-|---|---|---|
-| M0 | A sprite whose script can be edited and reloaded without losing play state | In progress |
-| M1 | A 2D game buildable from the command line: tilemaps, physics, audio, animation, HUD | Not started |
-| M2 | Editor: scene tree, inspector, viewport, play-in-editor | Not started |
-| M3 | UI toolkit, tilemap editor, particles, input remapping, save games, export | Not started |
-| M4 | A shipped game | Not started |
-| M5 | 1.0 and a stability contract | Not started |
+The core loop is in place: scene tree over an ECS, scripting in Luau and Rune
+with hot reload, 3D and 2D physics, rendering (windowed and headless), audio,
+input, UI, a working editor with play-in-editor, deterministic simulation,
+reproducible pack export, and fused single-file executables. There is no
+binary release yet; the engine builds from source.
+
+## Next
+
+1. `--!strict` type checking surfaced in editor diagnostics; palette-driven
+   node search.
+2. Editor: scene saving UX (autosave/undo), multi-scene tabs.
+3. Prefabs/sub-scenes: a scene key instantiating another scene file.
+4. Assets in packs (audio, textures) with content hashing.
+5. `fixed_update` script callback and a fixed-tick mode where `update` sees a
+   constant dt.
+6. Parallel system execution inside the data plane, once profiling demands
+   it.
 
 ## Links
 
 - [Engine repository](https://github.com/balaurengine/balaur)
+- [Issues](https://github.com/balaurengine/balaur/issues) ·
+  [Discussions](https://github.com/balaurengine/balaur/discussions)

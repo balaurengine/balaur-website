@@ -5,50 +5,75 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
     title: 'Nodes and scenes',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        A scene is a tree of nodes. A node has a name, a script, properties and
-        children. Scenes are files, and can be nested and reused.
+        A game is a scene tree of named nodes with scripts attached, the way
+        Godot works. Under the hood every node is an ECS entity, and every
+        subsystem is a plugin over the same data plane.
       </>
     ),
   },
   {
-    title: 'Scripting in Rune',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Instant hot reload',
     description: (
       <>
-        Gameplay is written in Rune. Scripts are compiled per file. The script
-        host is a trait, so other languages can be added.
+        Saving a script swaps its code into the running game in milliseconds,
+        preserving all live state. It is automatic, always on in dev mode, and
+        provided by the core.
       </>
     ),
   },
   {
-    title: 'Hot reloading',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Cross-platform determinism',
     description: (
       <>
-        Saving a script reloads only the nodes running it. Node state is kept,
-        so the running game continues.
+        Identical inputs produce bit-for-bit identical simulations on every
+        platform. Every subsystem decision is vetted against this guarantee.
+      </>
+    ),
+  },
+  {
+    title: 'Two scripting languages',
+    description: (
+      <>
+        Luau and Rune ship out of the box. Subsystems declare their bindings
+        once against a language-neutral seam, so neither language is
+        privileged and a third costs one crate.
+      </>
+    ),
+  },
+  {
+    title: '3D and 2D',
+    description: (
+      <>
+        2D is a second set of components over the same scene tree: rapier2d
+        physics with the same determinism guarantees, an orthographic pan/zoom
+        camera, and an editor that adapts automatically.
+      </>
+    ),
+  },
+  {
+    title: 'One executable to ship',
+    description: (
+      <>
+        Export compiles scripts to bytecode, bundles them into a pack, and
+        fuses the pack onto a runtime template. The result is a single binary
+        with no compiler and no script sources in it.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
+      <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h3">{title}</Heading>
         <p>{description}</p>
       </div>

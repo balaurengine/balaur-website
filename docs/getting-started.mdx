@@ -1,0 +1,85 @@
+---
+sidebar_position: 2
+---
+
+# Getting started
+
+Balaur builds from source. You need a
+[Rust toolchain](https://rustup.rs) (stable) and, for the desktop window, a
+platform that wgpu supports.
+
+```bash
+git clone https://github.com/balaurengine/balaur
+cd balaur
+```
+
+## The CLI
+
+The `balaur` binary is built from the `balaur_cli` crate:
+
+```bash
+cargo run -p balaur_cli -- new my-game
+cargo run -p balaur_cli -- run my-game          # dev mode, hot reload on
+cargo run -p balaur_cli -- export my-game       # precompile scripts into my-game.bpak
+cargo run -p balaur_cli -- play my-game.bpak    # run from bytecode only
+cargo run -p balaur_cli --features window -- edit my-game   # open in the editor
+```
+
+Build with `--features window` for the kiss3d/wgpu window; without it,
+everything runs headless — tests, servers, CI, and `run --headless`.
+
+| Command | Effect |
+| --- | --- |
+| `new <path>` | Scaffold a project: `project.toml`, a main scene, one script |
+| `run <path>` | Run in dev mode with hot reload |
+| `export <path>` | Compile scripts to bytecode and bundle a `.bpak` pack; `--target <platform>` produces a fused executable |
+| `play <pack>` | Run a pack, with no compiler and no watcher |
+| `edit <path>` | Open the project in the editor (requires `--features window`) |
+
+Useful dev flags: `--frames N` stops after N frames, `--screenshot out.png`
+saves the window's framebuffer to a PNG, `--headless` runs without a window.
+
+## Project layout
+
+`balaur new my-game` creates:
+
+```text
+my-game/
+├── project.toml        # name, main_scene, optional language = "luau" | "rune"
+├── scenes/main.toml    # the scene tree, declarative TOML
+└── scripts/hello.luau  # a script attached to a node in the scene
+```
+
+## The examples
+
+Three example projects ship in the repository:
+
+```bash
+# 3D: a spinning cube, a bouncing ball, physics and a HUD label
+cargo run -p balaur_cli -- run examples/hello --headless
+cargo run -p balaur_cli --features window -- run examples/hello
+
+# The same project scripted in Rune
+cargo run -p balaur_cli --features window -- run examples/hello_rune
+
+# 2D: a small slingshot game — 2D shapes, 2D physics, widgets
+cargo run -p balaur_cli --features window -- run examples/angrynerds
+cargo run -p balaur_cli --features window -- edit examples/angrynerds
+```
+
+To see hot reload, edit `examples/hello/scripts/spinner.luau` while `run` is
+going: the change applies the moment you save, without losing state.
+
+## Benchmarks
+
+The benchmark suite is headless — no window, no GPU — so a measurement shows
+the engine:
+
+```bash
+python3 scripts/bench.py --quick      # ~1 min, noisier
+python3 scripts/bench.py              # full run
+python3 scripts/bench.py --no-run     # re-report the last run
+```
+
+Results are reported as a share of one 60 fps frame, and scripting benchmarks
+run the same scenario on both languages.

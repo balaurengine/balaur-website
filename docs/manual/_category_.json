@@ -1,0 +1,8 @@
+{
+  "label": "Manual",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "How each part of the engine works: scenes, scripting, physics, UI, the editor, determinism, and shipping."
+  }
+}

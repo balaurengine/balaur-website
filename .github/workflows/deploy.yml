@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Weekly rebuild so the synced reference docs track the engine's main
+    # branch without needing a commit here.
+    - cron: '0 6 * * 1'
 
 permissions:
   contents: read
@@ -21,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - name: Sync reference docs from the engine repo
+        run: ./scripts/sync-docs.sh
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc

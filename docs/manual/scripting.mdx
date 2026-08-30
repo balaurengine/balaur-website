@@ -1,0 +1,65 @@
+---
+sidebar_position: 2
+---
+
+# Scripting
+
+## The model
+
+A script declares lifecycle functions — `init`, `update(dt)`, `draw_ui`,
+`on_free`, `hot_reload` — and gets one instance per attached node, with the
+owning node available on the instance.
+
+In Luau, a `.luau` file returns a class table; each instance is a table whose
+metatable indexes it, and the node is `self.node`. In Rune, a `.rn` file
+declares free functions taking the instance first (`pub fn update(this, dt)`),
+and the node is `this.node`.
+
+A project picks its language with `language` in `project.toml`; absent means
+Luau. One project, one language.
+
+## Modules
+
+Scripts see the same modules in both languages, because subsystems declare
+their bindings once against a language-neutral seam: `node`, `engine`,
+`scene`, `log`, `input`, `rng`, `physics`, `physics2d`, `render`, `audio`,
+`ui`, `fs`, and `toml`. The complete surface — every function and constant —
+is in the [script API reference](../reference/script-api.md), which is
+generated from a booted engine so it cannot drift.
+
+Values a binding accepts are named rather than spelled: `input.KEY_SPACE`,
+`input.MOUSE_LEFT`, `physics.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`.
+
+Some calls return several values — `local text, changed = ui.text_field(...)`
+— while a vector is one value and arrives as a table, indexed or unpacked:
+`local x, y, z = table.unpack(node:position())`.
+
+`require` works in both languages, with in-place module hot reload.
+
+## Hot reload
+
+The host watches the project directory. On save, in Luau:
+
+1. The file is recompiled with the Luau compiler. A compile error keeps the
+   old class running and is reported once.
+2. The new chunk is evaluated into a fresh class table.
+3. The contents of the existing class table are swapped in place.
+
+Because instances reference the class only through their metatable, every
+live instance sees the new code immediately while `self` state survives
+untouched. The swap is O(class size) — microseconds in practice; measured
+save-to-live latency is file-watcher latency, a few milliseconds. The
+optional `hot_reload` hook lets scripts migrate state shapes.
+
+Rune compiles to an immutable unit, so the new unit replaces the old one;
+instances keep their state objects, and the next call resolves against the
+new code.
+
+## Determinism in scripts
+
+The scripting environment is set up so that straightforward simulation code
+is deterministic by construction: `math.sin`, `math.cos`, and the rest are
+rebound to bit-identical pure-Rust implementations, and `math.random` is
+backed by an engine-owned seeded PCG32 stream (also exposed as the `rng`
+module). See [Determinism](./determinism.mdx) for the full picture and the
+rules simulation code should follow.

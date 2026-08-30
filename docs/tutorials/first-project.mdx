@@ -1,0 +1,143 @@
+---
+sidebar_position: 1
+---
+
+# Your first project
+
+This tutorial creates a project, builds a small 3D scene with physics, and
+demonstrates hot reload. It follows the `examples/hello` project from the
+repository.
+
+## Create and run
+
+```bash
+cargo run -p balaur_cli -- new my-game
+cargo run -p balaur_cli --features window -- run my-game
+```
+
+`new` scaffolds a `project.toml`, a main scene with one node, and a script:
+
+```lua
+-- scripts/hello.luau
+local Hello = {}
+
+function Hello:init()
+    print("hello from", self.node:name())
+    self.elapsed = 0
+end
+
+function Hello:update(dt)
+    self.elapsed += dt
+end
+
+return Hello
+```
+
+A script returns a class table. The engine makes one instance per node the
+script is attached to, calls `init` once and `update(dt)` every frame, and
+puts the owning node on `self.node`.
+
+## Build a scene
+
+Replace `scenes/main.toml` with a ground plane, a ball, and a spinner. Scene
+keys such as `body`, `collider`, and `shape` are components contributed by the
+physics and rendering plugins:
+
+```toml
+[[nodes]]
+name = "Ground"
+position = [0, -1, 0]
+color = [0.3, 0.55, 0.3]
+body = "static"
+collider = { kind = "cuboid", half_extents = [10, 0.5, 10] }
+shape = { kind = "cuboid", half_extents = [10, 0.5, 10] }
+
+[[nodes]]
+name = "Ball"
+position = [0, 6, 0]
+script = "scripts/ball.luau"
+shape = { kind = "ball", radius = 0.5 }
+
+[[nodes]]
+name = "Spinner"
+position = [2.5, 0.5, 0]
+color = [0.2, 0.4, 0.9]
+script = "scripts/spinner.luau"
+shape = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
+```
+
+## Add physics from a script
+
+Components can come from the scene file or from code. The ball sets up its own
+physics in `init`:
+
+```lua
+-- scripts/ball.luau
+local Ball = {}
+
+function Ball:init()
+    physics.add_body(self.node, physics.BODY_DYNAMIC)
+    physics.add_ball_collider(self.node, 0.5)
+    self.reported = false
+end
+
+function Ball:update(dt)
+    local y = self.node:position()[2]
+    if y < 0.2 and not self.reported then
+        self.reported = true
+        print("ball touched down at t =", string.format("%.2f", engine.time()))
+    end
+end
+
+return Ball
+```
+
+Because the simulation is deterministic, the touchdown time is the same on
+every run, headless or windowed, on every platform.
+
+## Read input
+
+The spinner rotates continuously and reverses direction on Space:
+
+```lua
+-- scripts/spinner.luau
+local Spinner = {}
+
+local SPEED = 2.0
+
+function Spinner:init()
+    self.angle = 0
+    self.direction = 1
+end
+
+function Spinner:update(dt)
+    if input.just_pressed(input.KEY_SPACE) then
+        self.direction = -self.direction
+    end
+    self.angle += dt * SPEED * self.direction
+    self.node:set_rotation_euler(0, self.angle, 0)
+end
+
+return Spinner
+```
+
+Values a binding accepts are named constants rather than spelled strings:
+`input.KEY_SPACE`, `physics.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`. The full list
+is in the [script API reference](../reference/script-api.md).
+
+## Hot reload
+
+While `run` is going, change `SPEED` in `spinner.luau` and save. The new code
+is live within milliseconds and the current angle survives: the engine
+recompiles the file, evaluates it into a fresh class table, and swaps the
+contents of the existing class in place, so every live instance sees the new
+code while its `self` state stays untouched.
+
+If the save does not compile, the old code keeps running and the error is
+reported once.
+
+## Next
+
+- [A 2D game](./2d-game.mdx) — 2D components, 2D physics, and widgets.
+- [Scenes and nodes](../manual/scenes.mdx) — the scene format and component
+  system in full.

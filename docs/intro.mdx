@@ -4,54 +4,100 @@ sidebar_position: 1
 
 # Introduction
 
-Balaur is a 2D game engine.
+Balaur is a scriptable, node-based game engine with a Rust data plane.
+
+From a game developer's perspective, Balaur looks like Godot: a scene tree of
+named nodes, with scripts attached to them. Under the hood, every node is an
+ECS entity, every subsystem (physics, rendering, audio, input, UI) is a plugin
+over the same data plane, and the editor is itself a Balaur project.
 
 :::warning
 
-There is no release. Balaur is in early development and there is nothing to
-download yet. See the [roadmap](./roadmap.mdx).
+There is no binary release yet. Balaur builds from source with a Rust
+toolchain; see [Getting started](./getting-started.mdx).
 
 :::
 
-## Model
+Two features are load-bearing and non-negotiable:
 
-A game is a tree of nodes. A node has a name, a script, properties and
-children. The engine walks the tree once per frame and calls each node's
-`update`.
+- **Instant hot reload.** Saving a script swaps its code into the running game
+  in milliseconds, preserving all live state. It is automatic, always on in
+  dev mode, and provided by the core, not by frameworks or per-game glue.
+- **Cross-platform determinism.** Identical inputs produce bit-for-bit
+  identical simulations across platforms. Every subsystem decision is vetted
+  against this; see [Determinism](./manual/determinism.mdx).
 
-A scene is a file describing that tree. Scenes can be nested and reused.
+## A script
 
-Node classes store their properties in dense arrays rather than per-node heap
-objects. One pass per class updates every node of that class, including
-subclasses.
+A script declares lifecycle methods and is attached to a node. Two languages
+ship — Luau (the default) and Rune — and both call the same engine bindings:
 
-## Scripting
+```lua
+-- scripts/spinner.luau
+local Spinner = {}
 
-Gameplay is written in [Rune](https://rune-rs.github.io/). Rune has 0-based
-indexing, native `async`, and reference counting rather than a garbage
-collector.
+function Spinner:init()
+    self.angle = 0
+end
 
-Scripts are compiled per file. Saving a script reloads only the nodes running
-it; node state is kept, so the running game continues.
+function Spinner:update(dt)
+    self.angle += dt
+    self.node:set_rotation_euler(0, self.angle, 0)
+end
 
-The script host is a trait. Other languages can be added without changing the
-engine.
+return Spinner
+```
 
-## Dependencies
+## A scene
 
-| Purpose | Crate |
-|---|---|
-| Physics | rapier2d |
-| Rendering | wgpu, via kiss3d |
-| Math | glamx |
-| Shaders | wesl |
-| Editor UI | egui |
-| Scripting | rune |
+Scenes are declarative TOML. Plugins extend the vocabulary: `body` and
+`collider` come from the physics plugin, `shape` from the rendering plugin.
 
-## Scope
+```toml
+[[nodes]]
+name = "Ball"
+position = [0.0, 6.0, 0.0]
+script = "scripts/ball.luau"
+body = "dynamic"
+collider = { kind = "ball", radius = 0.5 }
+shape = { kind = "ball", radius = 0.5 }
+```
 
-2D only. Not an ECS. No release yet.
+## What is in the engine today
 
-## Licence
+- A scene tree over an ECS (`hecs`): node paths, transform propagation, a
+  fixed frame schedule, and a plugin API.
+- Scripting in Luau or Rune with hot reload, `require` with in-place module
+  reload, and a language-neutral binding seam.
+- 3D and 2D physics (rapier, with its `enhanced-determinism` feature), stepped
+  on a fixed 60 Hz accumulator.
+- Rendering through kiss3d/wgpu behind a feature flag; everything also runs
+  headless for tests, servers, and CI.
+- Immediate-mode UI for scripts (egui) plus widget components for in-game HUDs.
+- Audio (rodio), backend-agnostic input snapshots, and a seeded deterministic
+  `rng` module.
+- An editor that is a regular Balaur project: scene tree, inspector, viewport
+  with gizmos, script editing with hot reload, play-in-editor, and a keyframe
+  timeline.
+- Export to precompiled, reproducible packs, and fused single-file executables
+  per platform.
+- A headless benchmark suite that reports results as a share of one 60 fps
+  frame and compares both script languages on the same scenarios.
 
-MIT or Apache-2.0.
+## Where to go next
+
+- [Getting started](./getting-started.mdx) — build the engine and run the
+  examples.
+- [Tutorials](./tutorials/first-project.mdx) — a first project, a 2D game,
+  and scripting in Rune.
+- [Manual](./manual/scenes.mdx) — scenes, scripting, physics, UI, the editor,
+  determinism, and shipping.
+- [Architecture](./architecture.mdx) — the layer model and the decisions
+  behind it.
+- [Reference](./reference/script-api.md) — generated from the engine on every
+  change: the full script API, crate list, and behaviour catalogue.
+
+## License
+
+Apache-2.0. Sources are at
+[github.com/balaurengine/balaur](https://github.com/balaurengine/balaur).

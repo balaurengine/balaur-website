@@ -1,0 +1,57 @@
+---
+sidebar_position: 5
+---
+
+# The editor
+
+The editor is a regular Balaur project: its scripts draw the whole interface
+through the `ui` module, and editing any editor script hot reloads the editor
+itself. Nothing in it is privileged — every binding it uses is available to
+any project.
+
+```bash
+cargo run -p balaur_cli --features window -- edit my-game
+```
+
+## How it works
+
+`balaur edit <project>` runs the editor with the game's path in its
+arguments. The editor parses the game's scene TOML into a document model and
+mirrors it as a real node subtree, so the viewport shows the actual scene and
+physics builds the actual bodies (paused until play). Edits are written back
+to the scene file as TOML.
+
+**Play-in-editor** attaches the game's scripts to the mirrored nodes and
+unpauses: the actual game code runs against the actual scene inside the
+editor. Stop rebuilds the mirror from the document.
+
+## What it has today
+
+- **Scene tree** with connector rails, collapse arrows, colored type icons,
+  and a right-click context menu per row (add child, attach script,
+  duplicate, delete).
+- **Inspector** generated from the component registry: every registered
+  component — including third-party plugin components — is addable and
+  editable with no editor changes.
+- **Viewport gizmos.** A bounding-box gizmo: dragging a face translates in
+  that face's plane (with snap), face-center handles scale along the normal,
+  corner brackets scale uniformly, and a three-ring rotation ball rotates.
+- **2D mode.** The editor detects a 2D scene from its components and switches
+  automatically: 2D grid, pan/zoom camera, a 2D selection gizmo, world-space
+  click-picking, and collider overlays.
+- **Script editing.** Buffers persist per file; save writes to the game
+  project and hot reloads the code — live, while playing. The buffer is
+  Luau-syntax-highlighted.
+- **Animation.** A keyframe system implemented in editor scripts: clips live
+  on scene nodes and are saved with the scene, a timeline dock scrubs and
+  inserts keys from the node's current transform, and play samples every
+  animated node.
+- **Command palette** as the single overlay, dark and light themes, and an
+  output dock over the engine's log ring buffer.
+
+## Why it is built this way
+
+The editor dogfoods the scripting surface: everything it needs — filesystem
+access, TOML parsing, scene instantiation, script reload, camera control,
+debug drawing — exists as ordinary script bindings, all reusable by any
+tool or game.

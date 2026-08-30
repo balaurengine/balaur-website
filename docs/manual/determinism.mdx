@@ -1,0 +1,48 @@
+---
+sidebar_position: 6
+---
+
+# Determinism
+
+Cross-platform determinism is a core feature: identical inputs must produce
+bit-for-bit identical simulation on every platform. This is what makes
+replays, lockstep networking, and "did the content change?" checks possible.
+
+## Engine measures
+
+- Rapier's `enhanced-determinism` feature is enabled workspace-wide, for both
+  the 3D and 2D worlds.
+- Physics steps on a fixed 60 Hz accumulator, never the variable frame delta.
+- Order-sensitive Rust iteration uses an insertion-ordered map type, never
+  bare `HashMap` iteration.
+- Scene instantiation order and scene-key application order are
+  deterministic.
+- Rendering and audio are pure observers of simulation state: a headless run
+  computes exactly what a windowed run computes.
+- Input is captured once per frame into a snapshot, so recording it per tick
+  is all a replay system needs.
+- Dev-mode and shipped bytecode come from one compiler configuration.
+- A repository test asserts two runs match bit for bit.
+
+## Scripting and determinism
+
+Luau numbers are IEEE-754 doubles; `+ - * / sqrt floor` are exactly specified
+and reproducible everywhere, and the VM as configured (interpreted, no JIT)
+has fixed evaluation order. The known hazards are addressed directly:
+
+| Hazard | Status |
+| --- | --- |
+| `math.sin/cos/exp/...` call the platform libm, which differs across OSes | Rebound to pure-Rust implementations that are bit-identical everywhere; the compiler's `math.*` fastcalls are disabled so O2-compiled code routes through the rebound table |
+| `math.random` seeded from entropy | Rebound to an engine-owned seeded PCG32 stream, also exposed as the `rng` module (`rng.seed/random/range/int`) |
+| The `^` operator calls the C `pow` inside the VM | Simulation code must call `math.pow` instead |
+| `pairs()` order on tables with table/userdata keys depends on pointer values | Rule: simulation-affecting iteration uses arrays or string/number keys |
+| Wall-clock time leaking into simulation | Physics is fixed-step; a `fixed_update` callback with a constant dt is planned |
+| Luau native codegen (JIT) may change float behavior | Not enabled in deterministic builds |
+
+## Verified, not asserted
+
+The demo project's ball touches down at the same simulation time in headless
+and windowed runs, and from the exported pack. Pack export writes in sorted
+key order, so exporting the same sources twice gives the same bytes on any
+machine — CI exports every example twice per platform and compares digests
+across the matrix.
