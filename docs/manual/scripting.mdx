@@ -16,7 +16,9 @@ declares free functions taking the instance first (`pub fn update(this, dt)`),
 and the node is `this.node`.
 
 A project picks its language with `language` in `project.toml`; absent means
-Luau. One project, one language.
+Luau. `language = "mixed"` runs both hosts side by side, routing each file by
+extension — `.luau` on the Luau host, `.rn` on Rune — with a fixed fan-out
+order, so a mixed project stays as deterministic as a single-language one.
 
 ## Modules
 
@@ -51,6 +53,11 @@ Asynchronous operations can also be awaited sequentially —
 `task::wait(http::request(url)).await` in Rune — with the script suspending
 until the result enters the simulation at the start of a later tick. See
 [Networking](./networking.mdx) for the delivery model.
+
+Scripts invoke each other the same way the engine does:
+`node:call("method", ...)` calls a method on another node's script instance
+by name — including across languages in a mixed project, because the seam
+moves names and neutral values, never live code.
 
 ## Hot reload
 

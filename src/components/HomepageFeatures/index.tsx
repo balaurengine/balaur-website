@@ -42,9 +42,10 @@ const FeatureList: FeatureItem[] = [
     title: 'Two scripting languages',
     description: (
       <>
-        Luau and Rune ship out of the box. Subsystems declare their bindings
-        once against a language-neutral seam, so neither language is
-        privileged and a third costs one crate.
+        Luau and Rune ship out of the box, and a project can run both at
+        once. Subsystems declare their bindings once against a
+        language-neutral seam, so neither language is privileged and a third
+        costs one crate.
       </>
     ),
   },

@@ -25,8 +25,17 @@ cargo run -p balaur_cli -- play my-game.bpak    # run from bytecode only
 cargo run -p balaur_cli --features window -- edit my-game   # open in the editor
 ```
 
+The engine has three run modes:
+
+| Mode | GPU | Window | What it is for |
+| --- | --- | --- | --- |
+| headless (`--headless`) | no | no | tests, CI, servers, determinism runs |
+| offscreen (`--offscreen`) | yes | no | screenshots, automation, visual CI |
+| windowed | yes | yes | playing and editing |
+
 Build with `--features window` for the kiss3d/wgpu window; without it,
-everything runs headless — tests, servers, CI, and `run --headless`.
+everything runs headless. All three modes compute exactly the same
+simulation.
 
 | Command | Effect |
 | --- | --- |
@@ -36,8 +45,11 @@ everything runs headless — tests, servers, CI, and `run --headless`.
 | `play <pack>` | Run a pack, with no compiler and no watcher |
 | `edit <path>` | Open the project in the editor (requires `--features window`) |
 
-Useful dev flags: `--frames N` stops after N frames, `--screenshot out.png`
-saves the window's framebuffer to a PNG, `--headless` runs without a window.
+Useful dev flags: `--frames N` stops after N frames; `--headless` and
+`--offscreen` select the run mode. Screenshots are taken from scripts —
+`render.screenshot("out.png")` captures the next rendered frame, in
+offscreen and windowed runs alike — so the caller decides *when* to capture,
+not a frame number chosen before the game started.
 
 ## Project layout
 

@@ -13,8 +13,10 @@ main_scene = "scenes/main.toml"
 language = "rune"
 ```
 
-One project, one language. Both backends can run in a process, but scripts
-within a project do not mix languages.
+A project can also set `language = "mixed"` to run both languages at once:
+`.luau` files run on the Luau host, `.rn` files on Rune, and a script in one
+language calls a script in the other by node and method name
+(`node:call("method", ...)`).
 
 ## The script model
 

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 12
 ---
 
 # Determinism
@@ -24,8 +24,8 @@ replays, lockstep networking, and "did the content change?" checks possible.
   bare `HashMap` iteration.
 - Scene instantiation order and scene-key application order are
   deterministic.
-- Rendering and audio are pure observers of simulation state: a headless run
-  computes exactly what a windowed run computes.
+- Rendering and audio are pure observers of simulation state: headless,
+  offscreen, and windowed runs compute exactly the same simulation.
 - Input is captured once per frame into a snapshot, so recording it per tick
   is all a replay system needs.
 - Dev-mode and shipped bytecode come from one compiler configuration.

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 10
 ---
 
 # Modules and extensions
@@ -43,12 +43,30 @@ Scripts then call `greeter.greet("...")` like any built-in module, in either
 language. `examples/extension_greeter` in the repository is the complete
 working example.
 
-## Safety at the boundary
+## Rust or C at the boundary
 
-A shared library shares the host process, so loading is refused unless the
-extension's fingerprint — engine version and registry ABI — matches the
-host's exactly. A mismatched build fails with a message naming the
+Rust has no stable ABI, so an extension comes in one of two shapes, picked by
+which symbols the library exports:
+
+| | Rust extension | C extension |
+| --- | --- | --- |
+| Crosses the boundary | Full Rust types | `#[repr(C)]` types only |
+| Checked by | Compiler + engine version + registry ABI fingerprint | One ABI version number |
+| Written in | Rust, with the exact compiler that built the host | Anything with a C ABI: C, Zig, Odin, C++ |
+
+The Rust path is refused unless the extension's fingerprint matches the
+host's exactly — checked through a fixed-size tag *before* anything
+Rust-shaped crosses, so a mismatched build fails with a message naming the
 differences rather than crashing later.
+
+The C path keeps its state behind its own pointer and receives a table of
+host function pointers; no allocation crosses the boundary, and the committed
+C header is asserted against the Rust layout from both sides. Today it
+covers script modules of functions and constants.
+
+Extensions load in an order sorted by name and declared requirements — never
+by directory iteration — because load order decides registration order,
+which decides the simulation.
 
 For the binding API itself — declaring functions, registering components and
 scene keys — see [Architecture](../architecture.mdx); `balaur_physics` is
