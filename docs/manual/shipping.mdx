@@ -46,10 +46,15 @@ pack means it is a shipped game, so it boots that; finding nothing means it
 is the CLI. One binary is therefore the editor, the CLI, and every game's
 runtime.
 
-Templates for your own platform ship with the editor download in
-`templates/`. To export for another platform, drop that platform's
-`balaur-runtime-*` binary into `templates/`, point `BALAUR_TEMPLATES` at a
-directory of them, or pass `--template <file>`.
+The template for your own platform ships with the editor download in
+`templates/`. For another platform, `balaur export` offers to download the
+template from the engine's own release tag — verified against the release's
+`SHA256SUMS` — into a per-user cache (`<data dir>/balaur/templates/<version>`,
+never inside a project). The version pinning is deliberate: a pack must only
+meet the runtime its compiler shipped with. `--download` skips the prompt and
+`--no-download` forbids fetching (for CI); the manual routes still work —
+drop a `balaur-runtime-*` binary into `templates/`, point `BALAUR_TEMPLATES`
+at a directory, or pass `--template <file>`.
 
 Two practical notes:
 

@@ -190,9 +190,10 @@ function ReleaseView({release}: {release: Release}) {
           <Heading as="h2">Runtime templates and other builds</Heading>
           <p>
             Needed only to export a game <em>for a different platform</em> than
-            the one you are on: drop the platform's{' '}
-            <code>balaur-runtime-*</code> file into <code>templates/</code>{' '}
-            next to the editor binary. See{' '}
+            the one you are on — and <code>balaur export</code> offers to
+            download a missing one itself, checksum-verified, into a per-user
+            cache. These files are for offline installs: drop one into{' '}
+            <code>templates/</code> next to the editor binary. See{' '}
             <Link to="/docs/manual/shipping">Shipping a game</Link>.
           </p>
           <ul className={styles.assetList}>
