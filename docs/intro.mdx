@@ -73,9 +73,19 @@ shape = { kind = "ball", radius = 0.5 }
   on a fixed 60 Hz accumulator.
 - Rendering through kiss3d/wgpu behind a feature flag; everything also runs
   headless for tests, servers, and CI.
+- Animation: clip assets with transform, component-property, and method
+  tracks, plus script-driven tweens — all on a fixed timestep.
+- A shared-asset layer: content by reference or inline, one rule for every
+  asset type a plugin registers.
+- Networking: HTTP and websockets for scripts, with handler methods or
+  `await`, delivered into the simulation once per tick — replayable. A
+  Gamend backend plugin (login, REST, realtime, server hooks) on the same
+  contract.
 - Immediate-mode UI for scripts (egui) plus widget components for in-game HUDs.
 - Audio (rodio), backend-agnostic input snapshots, and a seeded deterministic
   `rng` module.
+- A plugin system where the same source ships as a linked-in module or a
+  run-time extension loaded from a shared library.
 - An editor that is a regular Balaur project: scene tree, inspector, viewport
   with gizmos, script editing with hot reload, play-in-editor, and a keyframe
   timeline.

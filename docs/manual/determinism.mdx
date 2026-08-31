@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 11
 ---
 
 # Determinism
@@ -12,7 +12,14 @@ replays, lockstep networking, and "did the content change?" checks possible.
 
 - Rapier's `enhanced-determinism` feature is enabled workspace-wide, for both
   the 3D and 2D worlds.
-- Physics steps on a fixed 60 Hz accumulator, never the variable frame delta.
+- Physics and animation each step on their own fixed 60 Hz accumulator, never
+  the variable frame delta.
+- Transcendentals on a simulation path — animation easing, euler↔quaternion
+  conversion, slerp — are computed on the `libm` crate rather than the
+  platform's math library, which differs across OSes.
+- Network completions enter the simulation once per tick, at the start of the
+  frame, in arrival order — never from an I/O thread — so a recorded network
+  snapshot replays a session.
 - Order-sensitive Rust iteration uses an insertion-ordered map type, never
   bare `HashMap` iteration.
 - Scene instantiation order and scene-key application order are

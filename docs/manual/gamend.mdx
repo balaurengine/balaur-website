@@ -1,0 +1,39 @@
+---
+sidebar_position: 8
+---
+
+# Gamend
+
+The `balaur_gamend` plugin connects scripts to a Gamend backend — login,
+REST endpoints, realtime rooms, and server hooks — through the `gamend`
+module. It is on by default; building without the `gamend` feature drops it.
+
+It follows the same delivery contract as [networking](./networking.mdx): all
+I/O on worker threads, completions entering the simulation once per tick,
+dispatched to handler methods or waking `await` tokens, in arrival order.
+Handlers never run from an I/O thread, so a recorded snapshot replays a whole
+online session.
+
+## The sequential shape
+
+```lua
+function S:init()
+    gamend.configure("http://localhost:4000")
+    local login = await(gamend.login({ device_id = "player-1" }))
+    self.socket = gamend.connect(self.node)
+    local hook = await(gamend.call_hook(self.socket, "arena", "start", {}))
+end
+
+function S:on_gamend_event(e)
+    -- socket events: open / message / closed / error
+end
+```
+
+One-shot operations — `login`, `rest`, `call_hook`, `join`, `push`, `leave` —
+wake their returned id and, when a node is given, also dispatch to its
+handler. Socket events are a stream, so they only dispatch. Every event map
+carries a `kind` (`login`, `rest`, `reply`, `error`, `open`, `message`,
+`closed`), so one handler can take them all.
+
+The full function list is in the
+[script API reference](../reference/script-api.md).

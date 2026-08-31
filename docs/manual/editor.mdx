@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 10
 ---
 
 # The editor
@@ -42,10 +42,11 @@ editor. Stop rebuilds the mirror from the document.
 - **Script editing.** Buffers persist per file; save writes to the game
   project and hot reloads the code — live, while playing. The buffer is
   Luau-syntax-highlighted.
-- **Animation.** A keyframe system implemented in editor scripts: clips live
-  on scene nodes and are saved with the scene, a timeline dock scrubs and
-  inserts keys from the node's current transform, and play samples every
-  animated node.
+- **Animation.** The Animate persona edits the engine's own clips — the
+  timeline's lanes are the clip's tracks, the ruler scrubs the node's actual
+  player, and preview parses through the engine's parser, so what the editor
+  previews is what ships. A clip is held inline in the scene or in its own
+  file, and *Save as file* / *Make inline* convert between the two exactly.
 - **Command palette** as the single overlay, dark and light themes, and an
   output dock over the engine's log ring buffer.
 

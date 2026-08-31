@@ -88,11 +88,30 @@ const config: Config = {
         src: 'img/logo.svg',
       },
       items: [
+        {to: '/features', label: 'Features', position: 'left'},
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Docs',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialsSidebar',
+          position: 'left',
+          label: 'Tutorials',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'referenceSidebar',
+          position: 'left',
+          label: 'Reference',
+        },
+        {
+          type: 'doc',
+          docId: 'roadmap',
+          position: 'left',
+          label: 'Roadmap',
         },
         {to: '/blog', label: 'Devlog', position: 'left'},
         {

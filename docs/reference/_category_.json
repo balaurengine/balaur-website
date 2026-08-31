@@ -1,8 +1,0 @@
-{
-  "label": "Reference",
-  "position": 6,
-  "link": {
-    "type": "generated-index",
-    "description": "Synced verbatim from the engine repository's generated docs (scripts/gen_docs.py; engine CI fails on drift). Do not edit here — run scripts/sync-docs.sh to refresh."
-  }
-}

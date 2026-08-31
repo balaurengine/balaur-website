@@ -1,0 +1,103 @@
+---
+sidebar_position: 4
+---
+
+# Animation
+
+Animation is a plugin (`balaur_anim`): one asset type (`animation_clip`), one
+component (`animation`), one script module (`animation`), one system. It
+depends only on the engine core — and can still animate the renderer and the
+UI, because tracks address properties through the component registry.
+
+## Clips
+
+A clip is a length, what to do with time past it (`none | loop | pingpong`),
+and a list of tracks. A clip lives in its own file — referenced from the
+scene — or inline in the scene node; a library file holds several clips under
+`[clips.<name>]`, addressed `file.toml#name`:
+
+```toml
+# animations/platform.toml
+type = "animation_clip"
+
+[clips.patrol]
+length = 4.0
+loop = "pingpong"
+
+[[clips.patrol.tracks]]
+property = "position"      # position | rotation_euler | scale | <component>/<property>
+interp = "linear"          # step | linear | cubic
+keys = [
+  { t = 0.0, value = [-2.5, 0.25, -2.0] },
+  { t = 4.0, value = [-2.5, 0.25, 2.0], ease = "in_out_sine" },
+]
+
+[[clips.patrol.tracks]]
+keys = [{ t = 4.0, call = "on_reached_end" }]   # a method track
+```
+
+```toml
+# in the scene
+[nodes.animation]
+library = "animations/platform.toml"
+autoplay = "patrol"
+```
+
+A track drives the transform or any registered component's property
+(`color/rgba`, `shape/radius`, `widget/x`) — third-party plugin components
+animate the day they are registered, with no animation-plugin changes. A
+track with no `property` is a method track: its keys call a method on the
+node's script. Rotation keys are authored as euler radians and interpolated
+as quaternions.
+
+## The script module
+
+```lua
+animation.play(self.node, "hop", { speed = 1.0 })
+animation.pause(self.node)   -- resume continues; stop ends
+animation.queue(self.node, "wave")
+
+function Platform:on_reached_end()   -- called by the clip's method track
+    ...
+end
+```
+
+Plus `seek`, `time`, `current`, `is_playing`, `is_running`, `just_finished`,
+and `define` for building a clip from a table at run time.
+
+## Tweens
+
+A tween is a clip generated on the spot, from the values the node has now,
+run through the same sampler and the same fixed step:
+
+```lua
+animation.tween(self.node, {
+    steps = {
+        { property = "position",   to = { 0, 3, 0 },    duration = 0.5, ease = "out_back" },
+        { property = "color/rgba", to = { 1, 0, 0, 1 }, duration = 0.5, parallel = true },
+        { call = "on_landed" },
+    },
+})
+
+animation.tween_to(self.node, "position", { 0, 9, 0 }, 0.2, "linear")   -- the one-step shorthand
+```
+
+Steps run in order; `parallel = true` joins a step to the one before it. `to`
+is absolute, `by` relative, `from` explicit, `target` tweens another node,
+and `interval` and `call` sequence among the property steps. The spec is
+data, so a tween is serialisable — the editor can author one and it hot
+reloads. Easing is twelve transitions in four modes with Godot's names and
+shapes, so ported curves behave.
+
+## Deterministic, and scheduled deliberately
+
+Playback advances on its own fixed 1/60 accumulator — the sampler never sees
+a variable dt — and every transcendental (easing, euler↔quaternion, slerp)
+is computed on bit-identical `libm` implementations, so an animation is the
+same on every platform.
+
+The system runs after the script tick, so `animation.play()` takes effect the
+same frame, and before physics reads transforms — so an animated kinematic
+platform pushes whatever stands on it with no extra wiring. `examples/hello`
+demonstrates exactly that, and the editor's Animate persona edits the same
+clip files.

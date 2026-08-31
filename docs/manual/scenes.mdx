@@ -48,8 +48,9 @@ nodes with `scene.spawn`.
 
 Plugins declare named, schema-described components. A schema gives each
 property a `type` from a closed set — `float`, `bool`, `string`, `enum`,
-`vec2`, `vec3`, `color` — plus defaults, enum options, an optional scalar
-shorthand (`body = "dynamic"`), and `readonly` markers the inspector honours.
+`vec2`, `vec3`, `color`, `asset` — plus defaults, enum options, an optional
+scalar shorthand (`body = "dynamic"`), and `readonly` markers the inspector
+honours.
 A malformed schema fails at boot, naming the component and property, rather
 than at the first inspector row.
 
@@ -74,6 +75,7 @@ The components registered by the standard plugins:
 | `shape`, `shape2d` | render | Renderable 3D / 2D shape |
 | `color` | render | Node color, as channel floats or `#rrggbb` / `#rrggbbaa` |
 | `widget` | ui | HUD element (label / button / panel) anchored to the screen |
+| `animation` | anim | A clip library (by reference or inline) and an `autoplay` clip |
 
 A tagged-union property is always called `kind` (`kind = "ball"`), so `type`
 always means the datatype.

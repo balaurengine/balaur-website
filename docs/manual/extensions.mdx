@@ -1,0 +1,55 @@
+---
+sidebar_position: 9
+---
+
+# Modules and extensions
+
+Everything above the core is a plugin, and a plugin ships one of two ways
+from the same source:
+
+- A **module** is linked into the engine and switched on by a cargo feature —
+  `audio`, `net`, and `gamend` work this way (all on by default; switching
+  one off drops its entire dependency stack from the binary).
+- An **extension** is the same `Plugin` trait built as a shared library
+  (`cdylib`) and loaded at run time from the project's `extensions/`
+  directory, with the `extensions` feature enabled.
+
+One trait, so the same source ships either way.
+
+## Writing a plugin
+
+A plugin declares a manifest and registers what it needs — resources, script
+modules, functions, constants, components, asset types:
+
+```rust
+impl Plugin for Greeter {
+    fn manifest(&self) -> &Manifest {
+        &self.manifest
+    }
+
+    fn declare(&mut self, reg: &mut Registry<'_>) -> anyhow::Result<()> {
+        reg.insert_resource(GreetingCount(0));
+        let mut m = reg.script_module("greeter")?;
+        m.function("greet", |eng: &Engine, name: String| {
+            eng.resource::<GreetingCount>().borrow_mut().0 += 1;
+            Ok(format!("hello, {name}"))
+        });
+        Ok(())
+    }
+}
+```
+
+Scripts then call `greeter.greet("...")` like any built-in module, in either
+language. `examples/extension_greeter` in the repository is the complete
+working example.
+
+## Safety at the boundary
+
+A shared library shares the host process, so loading is refused unless the
+extension's fingerprint — engine version and registry ABI — matches the
+host's exactly. A mismatched build fails with a message naming the
+differences rather than crashing later.
+
+For the binding API itself — declaring functions, registering components and
+scene keys — see [Architecture](../architecture.mdx); `balaur_physics` is
+the reference implementation of a full plugin.

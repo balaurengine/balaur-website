@@ -15,26 +15,39 @@ depends on a backend, which is what keeps it language-free.
 ```mermaid
 graph TD
   balaur[balaur]
+  balaur_anim[balaur_anim]
   balaur_audio[balaur_audio]
   balaur_bench[balaur_bench]
   balaur_cli[balaur_cli]
   balaur_core[balaur_core]
+  balaur_gamend[balaur_gamend]
   balaur_input[balaur_input]
+  balaur_net[balaur_net]
   balaur_physics[balaur_physics]
+  balaur_plugin[balaur_plugin]
   balaur_render[balaur_render]
   balaur_script[balaur_script]
   balaur_script_luau[balaur_script_luau]
   balaur_script_rune[balaur_script_rune]
   balaur_ui[balaur_ui]
+  extension_greeter[extension_greeter]
+  gamend_client[gamend_client]
+  balaur --> balaur_anim
   balaur --> balaur_audio
   balaur --> balaur_core
+  balaur --> balaur_gamend
   balaur --> balaur_input
+  balaur --> balaur_net
   balaur --> balaur_physics
+  balaur --> balaur_plugin
   balaur --> balaur_render
   balaur --> balaur_script_luau
   balaur --> balaur_script_rune
   balaur --> balaur_ui
+  balaur_anim --> balaur_core
+  balaur_anim --> balaur_script
   balaur_audio --> balaur_core
+  balaur_audio --> balaur_plugin
   balaur_audio --> balaur_script
   balaur_bench --> balaur
   balaur_bench --> balaur_core
@@ -44,10 +57,18 @@ graph TD
   balaur_bench --> balaur_script_rune
   balaur_cli --> balaur
   balaur_core --> balaur_script
+  balaur_gamend --> balaur_core
+  balaur_gamend --> balaur_plugin
+  balaur_gamend --> balaur_script
   balaur_input --> balaur_core
   balaur_input --> balaur_script
+  balaur_net --> balaur_core
+  balaur_net --> balaur_plugin
+  balaur_net --> balaur_script
   balaur_physics --> balaur_core
   balaur_physics --> balaur_script
+  balaur_plugin --> balaur_core
+  balaur_plugin --> balaur_script
   balaur_render --> balaur_core
   balaur_render --> balaur_input
   balaur_render --> balaur_script
@@ -58,4 +79,7 @@ graph TD
   balaur_script_rune --> balaur_script
   balaur_ui --> balaur_core
   balaur_ui --> balaur_script
+  extension_greeter --> balaur_core
+  extension_greeter --> balaur_plugin
+  extension_greeter --> balaur_script
 ```

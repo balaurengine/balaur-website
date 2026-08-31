@@ -1,0 +1,95 @@
+---
+title: Features
+description: Everything in the Balaur engine today, with links into the documentation.
+---
+
+# Features
+
+Everything in the engine today. Each item links into the documentation.
+
+## Core
+
+- **Scene tree over an ECS.** A game is a tree of named nodes with scripts
+  attached; every node is a `hecs` entity, and every subsystem is a plugin
+  over the same data plane. Node paths, transform propagation, and a fixed
+  frame schedule are core systems. → [Scenes and nodes](/docs/manual/scenes)
+- **Declarative scenes.** Scenes are TOML; plugins extend the vocabulary with
+  schema-described components, and one registration buys the scene key, the
+  runtime API, and editor support at once. → [Scenes and nodes](/docs/manual/scenes)
+- **Shared assets.** Content by reference or inline — a string is a
+  reference, a table is a definition — for every asset type a plugin
+  registers. → [Assets](/docs/manual/assets)
+- **Headless by default.** Everything runs without a window or GPU: tests,
+  servers, CI, and benchmarks measure the engine itself.
+
+## Scripting
+
+- **Two languages, one API.** Luau (default) and Rune call the same bindings,
+  declared once against a language-neutral seam; a third language costs one
+  crate. → [Scripting](/docs/manual/scripting)
+- **Instant hot reload.** Saving a script swaps code into the running game in
+  milliseconds, preserving live state — automatic, always on in dev mode,
+  provided by the core. → [Scripting](/docs/manual/scripting)
+- **Events without signals.** The engine calls handler methods scripts
+  declare by name, and async results can be `await`ed sequentially; both
+  arrive deterministically at the start of a tick.
+  → [Networking](/docs/manual/networking)
+
+## Simulation
+
+- **3D and 2D physics.** Rapier with `enhanced-determinism`, both worlds on a
+  fixed 60 Hz step, declared in scenes or driven from scripts.
+  → [Physics](/docs/manual/physics)
+- **Animation.** Clip assets with transform, component-property, and method
+  tracks; script-driven tweens through the same sampler; twelve easing
+  curves; all on a fixed timestep. → [Animation](/docs/manual/animation)
+- **Cross-platform determinism.** Identical inputs produce bit-for-bit
+  identical simulations on every platform: seeded RNG, `libm`
+  transcendentals, ordered collections, replayable input and network
+  snapshots. → [Determinism](/docs/manual/determinism)
+
+## Interface
+
+- **Rendering.** 3D and 2D shapes through kiss3d/wgpu behind a feature flag,
+  with cameras, debug drawing, grids, and screenshots.
+- **UI.** Widget components for in-game HUDs, and an immediate-mode egui API
+  for scripts with script-defined themes. → [UI](/docs/manual/ui)
+- **Audio and input.** rodio-backed playback; backend-agnostic per-frame
+  input snapshots (keys, mouse, edges).
+
+## Online
+
+- **Networking.** HTTP requests and websocket connections for scripts, on
+  background threads, delivered into the simulation once per tick.
+  → [Networking](/docs/manual/networking)
+- **Gamend backend.** Login, REST, realtime rooms, and server hooks on the
+  same delivery contract. → [Gamend](/docs/manual/gamend)
+
+## Tooling
+
+- **An editor that is a Balaur project.** Scene tree, generated inspector,
+  viewport gizmos in 3D and 2D, script editing with hot reload,
+  play-in-editor, and a clip timeline — built entirely on the public
+  scripting surface. → [The editor](/docs/manual/editor)
+- **Extensions.** The same `Plugin` trait ships linked in behind a cargo
+  feature or as a shared library loaded at run time, with an ABI fingerprint
+  check at the boundary. → [Modules and extensions](/docs/manual/extensions)
+- **Benchmarks.** A headless suite reporting each result as a share of one
+  60 fps frame, running the same scenarios on both script languages.
+  → [Getting started](/docs/getting-started#benchmarks)
+
+## Shipping
+
+- **Reproducible packs.** Export compiles scripts to bytecode and bundles
+  them with scenes and assets; the same sources give the same bytes on any
+  machine. → [Shipping](/docs/manual/shipping)
+- **One executable.** Fusing a pack onto a runtime template produces a single
+  binary per platform — no compiler, no sources, no Rust toolchain required
+  to ship. CI cross-compiles the headless engine to iOS, Android, and
+  WebAssembly on every push. → [Shipping](/docs/manual/shipping)
+
+---
+
+Balaur is free and open source under Apache-2.0:
+[github.com/balaurengine/balaur](https://github.com/balaurengine/balaur).
+There is no binary release yet; see [Getting started](/docs/getting-started).

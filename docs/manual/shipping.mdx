@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 12
 ---
 
 # Shipping a game
@@ -20,9 +20,14 @@ exist in the shipped build. A pack is written in sorted key order, so
 exporting the same sources twice gives the same bytes, on any machine —
 which makes reproducible builds and content-change checks possible.
 
+TOML assets (animation clips and every other registered asset type) are
+bundled too, and resolve by the same references, so a packed run loads them
+exactly as a dev run does.
+
 Because packed execution is pure interpretation of precompiled bytecode, it
 ships on platforms with JIT/codegen restrictions; CI cross-compiles the
-headless engine to iOS on every run to keep that true.
+headless engine to iOS, Android, and WebAssembly (Emscripten) on every push
+to keep that true.
 
 ## Fused executables
 
@@ -31,7 +36,7 @@ player can just open, fuse it onto a *runtime template*, the engine binary
 published for each platform:
 
 ```bash
-balaur export my-game --target linux-x64     # or macos-arm64, windows-x64
+balaur export my-game --target linux-x64     # or macos-universal, windows-x64
 ```
 
 The result is one executable. Fusing appends the pack to the template binary

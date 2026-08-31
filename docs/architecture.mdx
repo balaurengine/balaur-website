@@ -22,12 +22,12 @@ This page is the condensed version.
 │  Traits only. No language, no dependencies.                │
 ├────────────────────────────────────────────────────────────┤
 │  modules declared once, reaching every language:           │
-│  engine, scene, log, node, rng, input, physics, render, .. │
-├──────────┬──────────┬──────────┬─────────┬─────────────────┤
-│ physics  │ render   │ audio    │ input   │  your plugin    │
-│ (rapier) │ (kiss3d) │ (rodio)  │ (winit) │                 │
-├──────────┴──────────┴──────────┴─────────┴─────────────────┤
-│  balaur_core: hecs ECS + scene tree + scheduler + packs.   │
+│  engine, scene, node, assets, animation, input, physics, ..│
+├──────────┬─────────┬────────┬────────┬───────┬─────────────┤
+│ physics  │ render  │ audio  │ input  │ anim  │ your plugin │
+│ (rapier) │ (kiss3d)│ (rodio)│ (winit)│ (clip)│             │
+├──────────┴─────────┴────────┴────────┴───────┴─────────────┤
+│  balaur_core: hecs ECS + scene tree + assets + scheduler.  │
 │  Names no scripting language.                              │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -73,9 +73,12 @@ call sugar.
 
 **Plugins.** Wrapping a Rust crate for scripting is one call per entry point
 — argument and return conversions are inferred. A plugin can also register
-schema-described components and scene-file keys, which buys the scene
-vocabulary, the runtime component API, and full editor support in one
-registration. `balaur_physics` is the reference implementation.
+schema-described components, scene-file keys, and asset types, which buys
+the scene vocabulary, the runtime component API, and full editor support in
+one registration. `balaur_physics` is the reference implementation. One
+`Plugin` trait covers both shipping modes: linked in behind a cargo feature
+(`audio`, `net`, `gamend`), or built as a shared library and loaded at run
+time — see [Modules and extensions](./manual/extensions.mdx).
 
 ## The workspace
 
@@ -87,8 +90,12 @@ registration. `balaur_physics` is the reference implementation.
 | `balaur_script_rune` | Rune backend |
 | `balaur_physics` | Rapier plugin; the reference example for wrapping a Rust crate for scripting |
 | `balaur_render` | Renderable components + `render` module; kiss3d/wgpu backend behind a feature flag |
+| `balaur_anim` | Animation clips, the pure sampler, tweens, easing; the `animation` module |
 | `balaur_audio` | rodio-backed `audio` module |
 | `balaur_input` | Backend-agnostic input snapshot + `input` module |
+| `balaur_net` | `http` and `websocket` for scripts, delivered into the simulation per tick |
+| `balaur_gamend` | The Gamend backend (`gamend` module): login, REST, realtime, server hooks |
+| `balaur_plugin` | The `Plugin` trait a module or run-time extension implements, plus the loader |
 | `balaur_ui` | Immediate-mode egui API (`ui` module): panels, widgets, script-defined themes |
 | `balaur` | Batteries-included facade: `standard_app`, `boot_project`, `boot_pack` |
 | `balaur_cli` | The `balaur` binary: `new`, `run`, `export`, `play`, `edit` |

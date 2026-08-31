@@ -1,0 +1,61 @@
+---
+sidebar_position: 7
+---
+
+# Networking
+
+The `balaur_net` plugin gives scripts HTTP requests (`http.request`) and
+websocket connections (`websocket.connect` / `send` / `close`). It is on by
+default; building without the `net` feature drops the entire HTTP/TLS stack
+from the binary.
+
+## The delivery model
+
+All I/O runs on background threads. Completions cross back over a channel and
+enter the simulation once per tick, at the start of the frame, recorded in a
+snapshot — the same model as input, which means recording the snapshot per
+tick is all a replay of a networked session needs. Nothing blocks the frame,
+and handlers never run from an I/O thread.
+
+Scripts never poll. There are two shapes:
+
+**Handler methods.** A request or connection names the node that handles its
+results, and results are dispatched as method calls — the same signal shape a
+widget's `on_click` or an animation method track uses:
+
+```lua
+function S:init()
+    self.request = http.request(self.node, "https://example.com")
+end
+
+function S:on_response(r)
+    print(r.status, r.body)
+end
+```
+
+**Sequential await.** A request made without a node is a token the script
+suspends on until the result arrives:
+
+```lua
+local r = await(http.request(url))          -- Luau
+```
+
+```rust
+let r = task::wait(http::request(url)).await;   // Rune
+```
+
+Both resume at the start of a later tick, in arrival order — deterministic
+given the same recorded arrivals.
+
+## Why there are no signals
+
+The engine has no `connect`-style signal registration: a script cannot
+register a persistent callback and be handed a payload three frames later
+(persistent callbacks would need an id space with explicit release). Events
+go the other way — the engine calls a method the script declares by name.
+Most events also have a polling twin (`input.just_pressed`,
+`animation.just_finished`) for scripts that would rather ask than declare a
+method: an event is a frame-scoped snapshot, not a subscription.
+
+For a hosted game backend — auth, storage, realtime rooms — see
+[Gamend](./gamend.mdx), which is built on the same delivery contract.

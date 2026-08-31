@@ -20,4 +20,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 }
+
+.example {
+  padding: 2rem 0 4rem;
+}
+

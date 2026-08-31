@@ -23,9 +23,10 @@ Luau. One project, one language.
 Scripts see the same modules in both languages, because subsystems declare
 their bindings once against a language-neutral seam: `node`, `engine`,
 `scene`, `log`, `input`, `rng`, `physics`, `physics2d`, `render`, `audio`,
-`ui`, `fs`, and `toml`. The complete surface — every function and constant —
-is in the [script API reference](../reference/script-api.md), which is
-generated from a booted engine so it cannot drift.
+`ui`, `animation`, `assets`, `http`, `websocket`, `gamend`, `fs`, `toml`,
+and `json`. The complete surface — every function and constant — is in the
+[script API reference](../reference/script-api.md), which is generated from
+a booted engine so it cannot drift.
 
 Values a binding accepts are named rather than spelled: `input.KEY_SPACE`,
 `input.MOUSE_LEFT`, `physics.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`.
@@ -35,6 +36,21 @@ Some calls return several values — `local text, changed = ui.text_field(...)`
 `local x, y, z = table.unpack(node:position())`.
 
 `require` works in both languages, with in-place module hot reload.
+
+## Events
+
+There are no `connect`-style signals. The engine calls methods a script
+declares by name — `on_animation_finished(name)` from an animation, a
+widget's `on_click`, `on_response(r)` from an HTTP request — so a handler
+reads exactly like `update(dt)` does. Most events also have a polling twin
+(`input.just_pressed`, `animation.just_finished`): an event is a frame-scoped
+snapshot, not a subscription.
+
+Asynchronous operations can also be awaited sequentially —
+`local r = await(http.request(url))` in Luau,
+`task::wait(http::request(url)).await` in Rune — with the script suspending
+until the result enters the simulation at the start of a later tick. See
+[Networking](./networking.mdx) for the delivery model.
 
 ## Hot reload
 

@@ -18,9 +18,21 @@ Balaur game engine: batteries-included facade over the core and standard plugins
 
 Batteries-included entry points for Balaur games and tools.
 
-- **workspace deps:** `balaur_audio`, `balaur_core`, `balaur_input`, `balaur_physics`, `balaur_render`, `balaur_script_luau`, `balaur_script_rune`, `balaur_ui`
-- **external deps:** 1 (anyhow)
+- **workspace deps:** `balaur_anim`, `balaur_audio`, `balaur_core`, `balaur_gamend`, `balaur_input`, `balaur_net`, `balaur_physics`, `balaur_plugin`, `balaur_render`, `balaur_script_luau`, `balaur_script_rune`, `balaur_ui`
+- **external deps:** 2 (anyhow, tracing)
 - **public surface:** 5 fn
+
+## `balaur_anim`
+
+Balaur animation plugin: clips, sampling and fixed-step playback
+
+Animation as a Balaur plugin: clips, a pure sampler, and playback.
+
+- **workspace deps:** `balaur_core`, `balaur_script`
+- **external deps:** 5 (anyhow, glamx, libm, toml, tracing)
+- **public surface:** 26 fn, 8 struct, 6 enum, 1 const, 2 type
+- **structs:** `AnimationPlugin`, `AnimationState`, `Clip`, `Easing`, `Key`, `Playback`, `Track`, `Tween`
+- **enums:** `Interp`, `Mode`, `Property`, `TrackValue`, `Transition`, `Wrap`
 
 ## `balaur_audio`
 
@@ -28,7 +40,7 @@ Balaur audio plugin backed by rodio
 
 Audio as a Balaur plugin, backed by rodio.
 
-- **workspace deps:** `balaur_core`, `balaur_script`
+- **workspace deps:** `balaur_core`, `balaur_plugin`, `balaur_script`
 - **external deps:** 3 (anyhow, rodio, tracing)
 - **public surface:** 2 struct
 - **structs:** `AudioPlugin`, `AudioState`
@@ -60,11 +72,23 @@ Balaur engine core: ECS data plane, scene tree, frame scheduler, plugin API
 Balaur engine core: the Rust data plane.
 
 - **workspace deps:** `balaur_script`
-- **external deps:** 10 (anyhow, glamx, hecs, indexmap, rustc-hash, serde, toml, tracing, …)
-- **public surface:** 29 fn, 24 struct, 2 enum, 1 trait, 4 const, 8 type
+- **external deps:** 11 (anyhow, glamx, hecs, indexmap, rustc-hash, serde, serde_json, toml, …)
+- **public surface:** 47 fn, 28 struct, 3 enum, 1 trait, 4 const, 9 type
 - **traits:** `Plugin`
-- **structs:** `App`, `AppConfig`, `Children`, `ComponentDef`, `ComponentRegistry`, `Engine`, `EngineOp`, `GlobalTransform`, `LogEntry`, `Name`, `NodeOp`, `Pack`, `Parent`, `Pcg32`, `ProjectManifest`, `ProjectRoot`, `Resources`, `RngState`, `SceneKeyRegistry`, `ScriptArgs`, `ScriptAttachment`, `ScriptSetup`, `StableId`, `Transform`
-- **enums:** `Command`, `Stage`
+- **structs:** `App`, `AppConfig`, `AssetState`, `AssetType`, `AssetTypeRegistry`, `Children`, `ComponentDef`, `ComponentRegistry`, `Engine`, `EngineOp`, `GlobalTransform`, `LogEntry`, `Name`, `NodeOp`, `Pack`, `Parent`, `Pcg32`, `ProjectManifest`, `ProjectRoot`, `Resources`, `RngState`, `SceneAsset`, `SceneKeyRegistry`, `ScriptArgs`, `ScriptAttachment`, `ScriptSetup`, `StableId`, `Transform`
+- **enums:** `AssetRef`, `Command`, `Stage`
+
+## `balaur_gamend`
+
+Balaur plugin for the Gamend backend: login, REST, realtime and server hooks for scripts
+
+The Gamend backend as a Balaur plugin: `gamend.*` for scripts.
+
+- **workspace deps:** `balaur_core`, `balaur_plugin`, `balaur_script`
+- **external deps:** 4 (anyhow, gamend_client, serde_json, tracing)
+- **public surface:** 4 struct, 1 enum
+- **structs:** `GamendPlugin`, `GamendSnapshot`, `GamendState`, `Handler`
+- **enums:** `LoginCredentials`
 
 ## `balaur_input`
 
@@ -77,6 +101,17 @@ Input as a Balaur plugin.
 - **public surface:** 1 fn, 2 struct, 2 const
 - **structs:** `InputPlugin`, `InputSnapshot`
 
+## `balaur_net`
+
+Balaur networking plugin: http requests and websocket connections for scripts
+
+Networking as a Balaur plugin: `http.*` and `websocket.*` for scripts.
+
+- **workspace deps:** `balaur_core`, `balaur_plugin`, `balaur_script`
+- **external deps:** 4 (anyhow, tracing, tungstenite, ureq)
+- **public surface:** 5 struct
+- **structs:** `Handler`, `HttpCall`, `NetPlugin`, `NetSnapshot`, `NetState`
+
 ## `balaur_physics`
 
 Balaur plugin wrapping the Rapier physics engine
@@ -87,6 +122,18 @@ Rapier physics as a Balaur plugin.
 - **external deps:** 6 (anyhow, glamx, rapier2d, rapier3d, toml, tracing)
 - **public surface:** 4 fn, 3 struct, 3 const
 - **structs:** `PhysicsPlugin`, `PhysicsState`, `PhysicsState2d`
+
+## `balaur_plugin`
+
+What a module or an extension implements to register itself with the engine
+
+What a module or an extension implements to register itself.
+
+- **workspace deps:** `balaur_core`, `balaur_script`
+- **external deps:** 2 (anyhow, libloading)
+- **public surface:** 5 fn, 5 struct, 1 trait, 3 const
+- **traits:** `Plugin`
+- **structs:** `AbiTag`, `Extension`, `Fingerprint`, `Manifest`, `Registry`
 
 ## `balaur_render`
 
@@ -141,4 +188,27 @@ Immediate-mode UI for scripts, rendered with egui.
 - **external deps:** 5 (anyhow, egui, image, toml, tracing)
 - **public surface:** 1 fn, 6 struct, 4 const
 - **structs:** `ThemeTokens`, `UiConfig`, `UiPlugin`, `UiState`, `Widget`, `WidgetLayerConfig`
+
+## `extension_greeter`
+
+An extension built outside the engine, loaded at run time
+
+An extension: the same `Plugin` a module implements, built as a cdylib and loaded at run time rather than linked in.
+
+- **workspace deps:** `balaur_core`, `balaur_plugin`, `balaur_script`
+- **external deps:** 1 (anyhow)
+- **public surface:** 2 struct
+- **structs:** `Greeter`, `GreetingCount`
+
+## `gamend_client`
+
+Gamend backend client: auth, REST and Phoenix Channels realtime, engine-agnostic
+
+A Gamend backend client for Rust games: auth, REST and realtime.
+
+- **workspace deps:** none
+- **external deps:** 5 (anyhow, serde_json, tracing, tungstenite, ureq)
+- **public surface:** 2 fn, 4 struct, 2 enum
+- **structs:** `Client`, `Reply`, `Session`, `Socket`
+- **enums:** `Credentials`, `SocketEvent`
 
