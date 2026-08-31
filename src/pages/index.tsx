@@ -29,6 +29,11 @@ function HomepageHeader() {
             to="/features">
             Features
           </Link>
+          <Link
+            className="button button--outline button--secondary button--lg"
+            to="/download">
+            Download
+          </Link>
         </div>
       </div>
     </header>

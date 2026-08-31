@@ -1,0 +1,85 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.card {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-card-border-radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cardPrimary {
+  border-color: var(--ifm-color-primary);
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cardDetail {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.85rem;
+  flex-grow: 1;
+}
+
+.cardSize {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.8rem;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.meta {
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 999px;
+  padding: 0.05rem 0.6rem;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.assetList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.assetList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.9rem;
+}
+
+.assetList a {
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.notes {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-card-border-radius);
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.stateCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-card-border-radius);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
