@@ -5,78 +5,130 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
+  icon: ReactNode;
   description: ReactNode;
 };
+
+function Icon({children}: {children: ReactNode}) {
+  return (
+    <svg
+      className={styles.featureIcon}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      role="img"
+      aria-hidden="true">
+      {children}
+    </svg>
+  );
+}
 
 const FeatureList: FeatureItem[] = [
   {
     title: 'Nodes and scenes',
+    icon: (
+      <Icon>
+        <circle cx="12" cy="5" r="2.5" />
+        <circle cx="6" cy="18" r="2.5" />
+        <circle cx="18" cy="18" r="2.5" />
+        <path d="M10.8 7.2 7.2 15.8M13.2 7.2l3.6 8.6" />
+      </Icon>
+    ),
     description: (
       <>
-        A game is a scene tree of named nodes with scripts attached, the way
-        Godot works. Under the hood every node is an ECS entity, and every
-        subsystem is a plugin over the same data plane.
+        A game is a <strong>scene tree</strong> of named nodes with scripts
+        attached. Underneath, every node is an <strong>ECS entity</strong> and
+        every subsystem a plugin over the same data.
       </>
     ),
   },
   {
     title: 'Instant hot reload',
+    icon: (
+      <Icon>
+        <path d="M13 2 4 14h6l-1 8 9-12h-6z" />
+      </Icon>
+    ),
     description: (
       <>
-        Saving a script swaps its code into the running game in milliseconds,
-        preserving all live state. It is automatic, always on in dev mode, and
-        provided by the core.
+        Save a script while the game runs: the new code is{' '}
+        <strong>live in milliseconds</strong>, and the state survives.
       </>
     ),
   },
   {
-    title: 'Cross-platform determinism',
+    title: 'Determinism',
+    icon: (
+      <Icon>
+        <path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2" />
+        <path d="M18.5 2v3.8h-3.8M5.5 22v-3.8h3.8" />
+      </Icon>
+    ),
     description: (
       <>
-        Identical inputs produce bit-for-bit identical simulations on every
-        platform. Every subsystem decision is vetted against this guarantee.
+        Identical inputs give <strong>bit-for-bit identical</strong>{' '}
+        simulations on every platform — replays and lockstep for free.
       </>
     ),
   },
   {
     title: 'Two scripting languages',
+    icon: (
+      <Icon>
+        <path d="m8 7-5 5 5 5M16 7l5 5-5 5" />
+      </Icon>
+    ),
     description: (
       <>
-        Luau and Rune ship out of the box, and a project can run both at
-        once. Subsystems declare their bindings once against a
-        language-neutral seam, so neither language is privileged and a third
-        costs one crate.
+        <strong>Luau and Rune</strong> call one binding API — a project can
+        even run both, and a third language costs one crate.
       </>
     ),
   },
   {
     title: '3D and 2D',
+    icon: (
+      <Icon>
+        <path d="M12 3 4 7.5v9L12 21l8-4.5v-9z" />
+        <path d="M4 7.5 12 12l8-4.5M12 12v9" />
+      </Icon>
+    ),
     description: (
       <>
-        2D is a second set of components over the same scene tree: rapier2d
-        physics with the same determinism guarantees, an orthographic pan/zoom
-        camera, and an editor that adapts automatically.
+        Two component sets over <strong>one scene tree</strong>, with rapier
+        physics behind both and an editor that adapts.
       </>
     ),
   },
   {
-    title: 'One executable to ship',
+    title: 'One executable',
+    icon: (
+      <Icon>
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <path d="M9 15l6-6M15 15V9H9" />
+      </Icon>
+    ),
     description: (
       <>
-        Export compiles scripts to bytecode, bundles them into a pack, and
-        fuses the pack onto a runtime template. The result is a single binary
-        with no compiler and no script sources in it.
+        Export fuses precompiled bytecode onto a runtime:{' '}
+        <strong>a single binary</strong>, no compiler, no sources.
       </>
     ),
   },
 ];
 
-function Feature({title, description}: FeatureItem) {
+function Feature({title, icon, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center padding-horiz--md padding-vert--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+      <div className={styles.featureCard}>
+        {icon}
+        <Heading as="h3" className={styles.featureTitle}>
+          {title}
+        </Heading>
+        <p className={styles.featureText}>{description}</p>
       </div>
     </div>
   );

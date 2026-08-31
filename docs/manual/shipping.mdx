@@ -58,10 +58,22 @@ at a directory, or pass `--template <file>`.
 
 Two practical notes:
 
-- Appending invalidates a macOS code signature, so sign after exporting, not
-  before.
+- A flat fused binary cannot be validly code-signed — appending is exactly
+  what a signature cannot cover. For a signed macOS game, export a bundle:
+  `balaur export my-game --target macos-universal --app` builds a `.app`
+  with the pack as a sealed resource and signs it ad-hoc;
+  `--sign "Developer ID Application: …"` uses a real identity.
 - The exporter sets the execute bits on its output, because templates that
   came through a zip or CI artifact store usually lost theirs.
+
+## Keeping the install current
+
+`balaur update` replaces the whole install — the binary, the bundled editor
+and its runtime template, which only work as a set — with the latest
+published build, verified against the release's checksums. A tagged release
+updates to the newest release; a nightly build follows the rolling nightly;
+a source build refuses and points at git. `--check` only reports, `--tag`
+picks a specific release.
 
 ## Saved data
 

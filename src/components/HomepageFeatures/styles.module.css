@@ -1,11 +1,41 @@
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 3rem 0;
   width: 100%;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+.featureCard {
+  height: calc(100% - 2rem);
+  margin: 1rem 0.25rem;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--balaur-card-bg);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.featureCard:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-2px);
+}
+
+.featureIcon {
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.75rem;
+}
+
+.featureTitle {
+  font-family: var(--balaur-display-font);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.featureText {
+  font-size: 0.92rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 0;
 }

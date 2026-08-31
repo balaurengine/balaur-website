@@ -1,10 +1,10 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Global styles. Infima variables first, then the Balaur look: ember red on
+ * near-black, with a carved serif for display text.
  */
 
-/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap');
+
 :root {
   --ifm-color-primary: #b4402a;
   --ifm-color-primary-dark: #a23a26;
@@ -15,9 +15,11 @@
   --ifm-color-primary-lightest: #d96449;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --balaur-display-font: 'Cinzel', 'Iowan Old Style', Georgia, serif;
+  --balaur-card-border: var(--ifm-color-emphasis-200);
+  --balaur-card-bg: var(--ifm-background-surface-color);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #e8724f;
   --ifm-color-primary-dark: #e45a32;
@@ -27,4 +29,14 @@
   --ifm-color-primary-lighter: #ee947a;
   --ifm-color-primary-lightest: #f3b5a3;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  /* Near-black with a drop of oxblood, not neutral gray. */
+  --ifm-background-color: #120e10;
+  --ifm-background-surface-color: #1a1417;
+  --balaur-card-border: #2c2225;
+  --balaur-card-bg: #171215;
+}
+
+.navbar__title {
+  font-family: var(--balaur-display-font);
+  letter-spacing: 0.05em;
 }
