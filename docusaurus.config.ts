@@ -175,7 +175,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Balaur is free and open source, Apache-2.0. Copyright © ${new Date().getFullYear()} balaurengine. Built with Docusaurus.`,
+      copyright: `Balaur is free and open source, MIT. Copyright © ${new Date().getFullYear()} balaurengine. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

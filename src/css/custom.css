@@ -40,3 +40,11 @@
   font-family: var(--balaur-display-font);
   letter-spacing: 0.05em;
 }
+
+/* Raw <details> in the synced reference docs pick up the info-blue alert
+   look; keep them on the site's own surfaces instead. */
+.markdown details {
+  background: var(--balaur-card-bg);
+  border: 1px solid var(--balaur-card-border);
+  --docusaurus-details-decoration-color: var(--ifm-color-primary);
+}

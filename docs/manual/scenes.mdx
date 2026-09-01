@@ -77,5 +77,11 @@ The components registered by the standard plugins:
 | `widget` | ui | HUD element (label / button / panel) anchored to the screen |
 | `animation` | anim | A clip library (by reference or inline) and an `autoplay` clip |
 
+There is deliberately no class hierarchy behind any of this: no `Node2D`
+that inherits from `Node`, no `RigidBody` subtype. A node *is* whatever its
+components make it, and the generated
+[component catalog](../reference/components.md) lists every registered
+component with every property, default, and option.
+
 A tagged-union property is always called `kind` (`kind = "ball"`), so `type`
 always means the datatype.

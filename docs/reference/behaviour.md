@@ -1,6 +1,6 @@
 ---
 title: "Behaviour"
-sidebar_position: 4
+sidebar_position: 5
 sidebar_label: "Behaviour"
 custom_edit_url: null
 ---
@@ -21,6 +21,7 @@ flow nothing checks.
 - a call on a track that animates a value is rejected
 - a call step takes no time of its own
 - a callback does not outlive its call
+- a checksum mismatch rejects the download and leaves no file
 - a clip animates a component the animation crate does not depend on
 - a clip defined at run time plays by the name it was given
 - a clip drives a nodes position over time
@@ -59,17 +60,15 @@ flow nothing checks.
 - a hex colour reaches apply expanded through patch as well as add
 - a hex string is a colour wherever a colour is taken
 - a key that neither calls nor carries a value says which it needs
+- a language selects its own tokens
 - a leaf subtree is just itself
 - a library file addresses its clips by name
 - a looping clip never ends and a plain one does
 - a looping clip wraps back to the start
 - a looping tween plays its sequence that many times
 - a lua array reaches a binding as a list
-- a lua script awaits a fetch
-- a lua script awaits a rest call
-- a lua script fetches over http
-- a lua script logs in and calls a hook
-- a lua script talks over a websocket
+- a lua script fetches awaits and echoes
+- a lua script logs in calls a hook and rests
 - a luau script defines a clip of its own and plays it
 - a luau script pauses and resumes a clip
 - a luau script plays a clip and hears it finish
@@ -93,6 +92,7 @@ flow nothing checks.
 - a missing node argument is an error not a panic
 - a missing requirement names what is absent
 - a missing resource is none rather than a panic
+- a missing texture is an error
 - a modal runs its body
 - a node is not json data
 - a node path round trips through find
@@ -133,12 +133,10 @@ flow nothing checks.
 - a rotation crossing 180 degrees interpolates the short way
 - a rotation track is sampled as a quaternion the short way round
 - a rune project that calls the engine can be exported
-- a rune script awaits a fetch
 - a rune script defines a clip of its own and plays it
-- a rune script fetches over http
+- a rune script fetches awaits and echoes
 - a rune script logs in and calls a hook
 - a rune script plays the same clip and hears the same signal
-- a rune script talks over a websocket
 - a rune script tweens the same node the same way
 - a saved animation node no longer warns that nothing handles it
 - a scene asset block resolves by its id from a node in that scene
@@ -153,8 +151,11 @@ flow nothing checks.
 - a seek does not fire the keys it skipped
 - a sequential tween lands its steps in order
 - a shape component puts a renderable on the node
+- a sheet is sized to one frame
+- a source build prints that it is one
 - a sparse table keeps its keys
 - a spawned node is named parented and has a transform
+- a sprite is sized from its image
 - a standalone binary gives the pack back
 - a standalone file is read back from disk
 - a step can tween another node from the same call
@@ -164,6 +165,7 @@ flow nothing checks.
 - a step that says nothing is rejected
 - a subtree is collected parent first
 - a suspended task dies with its node
+- a tagged build updates to the latest release
 - a theme can be set from a script
 - a track can name a component property
 - a track naming a component nothing registered leaves the node alone
@@ -183,9 +185,11 @@ flow nothing checks.
 - a tween that would run backwards forever is rejected
 - a typed binding reaches rune
 - a vector argument and three numbers agree
+- a verified download lands at the final path
 - a waiting task dies with its node
 - a websocket opens echoes and closes
 - a windowed backend keeps the fallback off its buffers
+- a windows target downloads the exe asset
 - a wrong argument is reported not fatal
 - a wrong argument type is an error not a panic
 - a wrong argument type is reported not fatal
@@ -225,6 +229,7 @@ flow nothing checks.
 - an unknown body kind is rejected with its name
 - an unknown event reply carries the error status
 - an unknown key is simply not down
+- an unknown language falls back to luau
 - an unknown language is a named error
 - an unknown loop mode is rejected naming it
 - an unknown path is nil rather than an error
@@ -246,9 +251,12 @@ flow nothing checks.
 - by is relative to the value at the start of its step
 - by on its own offsets where the node already is
 - camera input can be switched off
+- changing only the frame does not force a rebuild
+- changing the texture forces a rebuild
 - colliders can be added in every shape the api offers
 - commands queue and drain once
 - compile error keeps previous version running
+- constant names are unique and well formed
 - crates/balaur/src/lib.rs - (line 5)
 - cubic interpolation still passes through every key
 - debug lines accumulate and can be cleared
@@ -258,7 +266,6 @@ flow nothing checks.
 - defaults fill in what was not given
 - degrees and radians are two readings of one rotation
 - dependencies load before the plugins that need them
-- det
 - dispatch over a thousand nodes stays inside a frame
 - draw ui is actually called
 - duplicate hands back a private copy rather than the shared one
@@ -267,6 +274,7 @@ flow nothing checks.
 - every component emits only keys its schema declares
 - every component round trips through get and apply
 - every constant is screaming snake and unique
+- every constant names a key the engine knows
 - every curve starts at zero and ends at one
 - every declaration rejects a non node
 - every declared body kind is accepted
@@ -278,13 +286,13 @@ flow nothing checks.
 - every shape kind the schema offers is accepted
 - exists answers for all three reference forms
 - expect arity names the function and both counts
+- explicit half extents win over the image
 - extra arguments are ignored like lua does
 - freeing a node frees its children
 - freeing a subtree removes all of it and unlinks the parent
 - from states the start outright
 - fs is rooted at the project
 - fs list is sorted and hides dotfiles
-- gamepad
 - gravity and clear are callable
 - hierarchy reads back what it wrote
 - holding a key does not re fire
@@ -312,6 +320,7 @@ flow nothing checks.
 - malformed json is an error rather than a crash
 - math fastcalls are routed through the global table
 - math functions are libm backed
+- math random works on an engine built without an app
 - merge defaults prefers what was given
 - missing ids are generated not rejected
 - mouse buttons follow the same edge rules
@@ -331,6 +340,7 @@ flow nothing checks.
 - pause and sleeping are readable after being set
 - pause holds the playhead and resume carries on from it
 - pausing stops the simulation and resuming continues it
+- pixels per unit scales the result
 - play can pick the current clip back up where it left off
 - playing a missing file does not take the frame down
 - plugin components roundtrip through the registry
@@ -357,6 +367,7 @@ flow nothing checks.
 - script module works without a backend
 - scroll accumulates within a frame and resets between
 - set text replaces a field buffer
+- shape2d does not claim a sprite
 - shapes can be set from a script in both dimensions
 - shortcuts report no press without input
 - siblings keep their order
@@ -368,16 +379,18 @@ flow nothing checks.
 - stop takes a tween handle as readily as a node
 - stopping when nothing plays is harmless
 - strings and bools convert
-- tests
+- swapping replaces the binary and directories
 - text and layout helpers run
 - the 2d camera reports its centre and zoom
 - the 2d world has the same shape of api
 - the asset key belongs only to an asset property
 - the backend decides what a script compiles to
 - the buffer is bounded and keeps the newest
+- the cache is keyed by the build id
 - the camera can be aimed and its pose read
 - the clock advances and reports the last step
 - the code editor returns its buffer unchanged
+- the component round trips
 - the engine modules reach rune
 - the euler convention matches the engines own
 - the fingerprint names a real compiler
@@ -385,10 +398,12 @@ flow nothing checks.
 - the four linear modes are one straight line
 - the generation moves only when a reload actually dropped something
 - the grid background and camera input are settable
+- the mangling reads the way a script author would guess
 - the mouse constants address real buttons
 - the neutral value accepts anything
 - the node api is available as methods
 - the order does not depend on how the plugins were listed
+- the pad vocabulary and the gilrs mapping agree
 - the plugin builds without an output device
 - the plugin inserts the resources a frame reads
 - the plugin registers its components
@@ -423,6 +438,5 @@ flow nothing checks.
 - watcher reloads automatically
 - what the component reports back is what the scene set
 - widget kind constants match the registered schema
-- widgets
 - world transforms compose down the chain
 - world transforms report the composed result
