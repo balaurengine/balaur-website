@@ -79,6 +79,8 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
+      // First visit follows the OS; the swizzled toggle (src/theme/
+      // ColorModeToggle) then offers a plain light/dark switch that persists.
       respectPrefersColorScheme: true,
     },
     navbar: {

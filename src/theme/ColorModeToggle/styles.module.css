@@ -1,0 +1,26 @@
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--ifm-navbar-link-color);
+}
+
+.toggle:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+/* Show the mode a click switches to: moon in light, sun in dark. */
+.sun {
+  display: none;
+}
+
+:global([data-theme='dark']) .sun {
+  display: block;
+}
+
+:global([data-theme='dark']) .moon {
+  display: none;
+}
