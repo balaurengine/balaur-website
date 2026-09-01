@@ -4,30 +4,56 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(180, 64, 42, 0.28), transparent),
-    linear-gradient(180deg, #171114 0%, #0e0b0d 100%);
-  color: #e8e0da;
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(180, 64, 42, 0.14), transparent),
+    linear-gradient(180deg, #f8f2eb 0%, #efe5da 100%);
+  color: #2b2320;
 }
 
 .heroTitle {
   font-family: var(--balaur-display-font);
   font-size: 3.4rem;
   letter-spacing: 0.06em;
-  color: #f0e6dd;
+  color: #33241f;
 }
 
 .heroSubtitle {
-  color: #b8aaa2;
+  color: #6b5a52;
   max-width: 42rem;
   margin: 0 auto 2rem;
 }
 
 .heroGhost {
+  color: #4a3b38;
+  border-color: #cbb9ae;
+}
+
+.heroGhost:hover {
+  color: #33241f;
+  border-color: var(--ifm-color-primary);
+  background: rgba(180, 64, 42, 0.08);
+}
+
+[data-theme='dark'] .heroBanner {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(180, 64, 42, 0.28), transparent),
+    linear-gradient(180deg, #171114 0%, #0e0b0d 100%);
+  color: #e8e0da;
+}
+
+[data-theme='dark'] .heroTitle {
+  color: #f0e6dd;
+}
+
+[data-theme='dark'] .heroSubtitle {
+  color: #b8aaa2;
+}
+
+[data-theme='dark'] .heroGhost {
   color: #e8e0da;
   border-color: #4a3b38;
 }
 
-.heroGhost:hover {
+[data-theme='dark'] .heroGhost:hover {
   color: #fff;
   border-color: var(--ifm-color-primary);
   background: rgba(180, 64, 42, 0.12);
