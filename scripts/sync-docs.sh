@@ -39,4 +39,6 @@ sync_doc script-api.md 1 "Script API"
 sync_doc components.md 2 "Components"
 sync_doc crates.md 3 "Crates"
 sync_doc crate-graph.md 4 "Crate graph"
-sync_doc behaviour.md 5 "Behaviour"
+# behaviour.md is generated in the engine repo but deliberately not published:
+# it is a catalogue of test names, which is useful to contributors reading the
+# source and noise to anyone reading the manual.
