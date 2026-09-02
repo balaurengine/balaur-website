@@ -1,67 +1,67 @@
 /**
- * Global styles. Infima variables first, then the Balaur look: the colors of
- * the Balaur bondoc reconstruction (rust, chestnut, olive, cream, a black
- * collar), Alegreya for display and headings, Source Sans 3 for text.
+ * Global styles. Infima variables first, then the Balaur look: ink on paper
+ * with one blue wash, after the pen-and-ink drawing; Alegreya for display and
+ * headings, Source Sans 3 for text.
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  --ifm-color-primary: #b4502e;
-  --ifm-color-primary-dark: #a34829;
-  --ifm-color-primary-darker: #9a4427;
-  --ifm-color-primary-darkest: #823a21;
-  --ifm-color-primary-light: #c35632;
-  --ifm-color-primary-lighter: #cb5a34;
-  --ifm-color-primary-lightest: #d27150;
+  --ifm-color-primary: #2f6a9e;
+  --ifm-color-primary-dark: #2b6291;
+  --ifm-color-primary-darker: #295c89;
+  --ifm-color-primary-darkest: #224d72;
+  --ifm-color-primary-light: #3271a9;
+  --ifm-color-primary-lighter: #3577b1;
+  --ifm-color-primary-lightest: #4389c7;
 
-  /* Warm gray ramp; Infima builds the emphasis scale from it in both modes. */
-  --ifm-color-gray-0: #fbf7f0;
-  --ifm-color-gray-100: #f3ebdf;
-  --ifm-color-gray-200: #e8dccb;
-  --ifm-color-gray-300: #d9cab5;
-  --ifm-color-gray-400: #bfae98;
-  --ifm-color-gray-500: #9c8a76;
-  --ifm-color-gray-600: #7d6b5c;
-  --ifm-color-gray-700: #5d4e44;
-  --ifm-color-gray-800: #3f332d;
-  --ifm-color-gray-900: #2a201b;
-  --ifm-color-gray-1000: #1a1412;
+  /* Cool gray ramp; Infima builds the emphasis scale from it in both modes. */
+  --ifm-color-gray-0: #fbfcfd;
+  --ifm-color-gray-100: #f1f3f6;
+  --ifm-color-gray-200: #e3e7ec;
+  --ifm-color-gray-300: #d0d6dd;
+  --ifm-color-gray-400: #b3bcc6;
+  --ifm-color-gray-500: #8e99a5;
+  --ifm-color-gray-600: #6b7683;
+  --ifm-color-gray-700: #4e5761;
+  --ifm-color-gray-800: #343b44;
+  --ifm-color-gray-900: #1c2128;
+  --ifm-color-gray-1000: #0b0e12;
 
-  --ifm-background-color: #f6efe4;
-  --ifm-background-surface-color: #fbf7f0;
-  --ifm-font-color-base: #2a201b;
-  --ifm-code-background: #efe4d3;
+  --ifm-background-color: #f8f7f3;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #14181d;
+  --ifm-code-background: #eef1f4;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(180, 80, 46, 0.12);
+  --docusaurus-highlighted-code-line-bg: rgba(47, 106, 158, 0.12);
 
   --ifm-font-family-base: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --balaur-display-font: 'Alegreya', 'Iowan Old Style', Georgia, serif;
   --ifm-heading-font-family: var(--balaur-display-font);
   --ifm-heading-font-weight: 600;
 
-  --balaur-card-border: #e8dccb;
-  --balaur-card-bg: #fbf7f0;
+  --balaur-card-border: #e3e7ec;
+  --balaur-card-bg: #ffffff;
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #d9714a;
-  --ifm-color-primary-dark: #d6663d;
-  --ifm-color-primary-darker: #d55f35;
-  --ifm-color-primary-darkest: #c25129;
-  --ifm-color-primary-light: #dc7a56;
-  --ifm-color-primary-lighter: #dd815f;
-  --ifm-color-primary-lightest: #e4987c;
+  --ifm-color-primary: #6fa4d8;
+  --ifm-color-primary-dark: #629cd5;
+  --ifm-color-primary-darker: #5b96d3;
+  --ifm-color-primary-darkest: #4287cc;
+  --ifm-color-primary-light: #7babdb;
+  --ifm-color-primary-lighter: #83b0dd;
+  --ifm-color-primary-lightest: #9fc2e5;
 
-  /* Umber, not neutral gray. */
-  --ifm-background-color: #1a1412;
-  --ifm-background-surface-color: #231b18;
-  --ifm-font-color-base: #efe6da;
-  --ifm-code-background: #2a211d;
-  --docusaurus-highlighted-code-line-bg: rgba(217, 113, 74, 0.16);
+  /* Blue-black ink, not neutral gray. */
+  --ifm-background-color: #0b0e12;
+  --ifm-background-surface-color: #12161c;
+  --ifm-font-color-base: #e6e9ee;
+  --ifm-code-background: #161b22;
+  --docusaurus-highlighted-code-line-bg: rgba(111, 164, 216, 0.16);
 
-  --balaur-card-border: #3a2e29;
-  --balaur-card-bg: #211a17;
+  --balaur-card-border: #232a33;
+  --balaur-card-bg: #12161c;
 }
 
 /* Source Sans 3 runs small; give running text in the docs a little more. */
@@ -77,13 +77,13 @@
   letter-spacing: 0.01em;
 }
 
-/* The black collar: one footer color in both modes. */
+/* Ink footer in both modes. */
 .footer--dark {
-  --ifm-footer-background-color: #241c19;
-  --ifm-footer-color: #cdbba4;
-  --ifm-footer-link-color: #efe6da;
+  --ifm-footer-background-color: #0f1318;
+  --ifm-footer-color: #a8b3bf;
+  --ifm-footer-link-color: #e6e9ee;
   --ifm-footer-link-hover-color: var(--ifm-color-primary-lightest);
-  --ifm-footer-title-color: #efe6da;
+  --ifm-footer-title-color: #e6e9ee;
 }
 
 /* Raw <details> in the synced reference docs pick up the info-blue alert

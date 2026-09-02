@@ -4,9 +4,9 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(180, 80, 46, 0.16), transparent),
-    linear-gradient(180deg, #fbf7f0 0%, #f1e6d6 100%);
-  color: #2a201b;
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(47, 106, 158, 0.14), transparent),
+    linear-gradient(180deg, #ffffff 0%, #eef1f4 100%);
+  color: #14181d;
 }
 
 .heroMark {
@@ -21,11 +21,11 @@
   font-size: 3.8rem;
   line-height: 1.05;
   letter-spacing: 0.01em;
-  color: #2a201b;
+  color: #14181d;
 }
 
 .heroSubtitle {
-  color: #6e5f55;
+  color: #5b6670;
   max-width: 46rem;
   margin: 0 auto 2rem;
 }
@@ -38,40 +38,40 @@
 }
 
 .heroGhost {
-  color: #4a3b33;
-  border-color: #d9cab5;
+  color: #3a444e;
+  border-color: #d0d6dd;
 }
 
 .heroGhost:hover {
-  color: #2a201b;
+  color: #14181d;
   border-color: var(--ifm-color-primary);
-  background: rgba(180, 80, 46, 0.08);
+  background: rgba(47, 106, 158, 0.08);
 }
 
 [data-theme='dark'] .heroBanner {
   background:
-    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(217, 113, 74, 0.22), transparent),
-    linear-gradient(180deg, #231b18 0%, #160f0d 100%);
-  color: #efe6da;
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(111, 164, 216, 0.2), transparent),
+    linear-gradient(180deg, #12161c 0%, #080a0e 100%);
+  color: #e6e9ee;
 }
 
 [data-theme='dark'] .heroTitle {
-  color: #f3ebdf;
+  color: #f1f3f6;
 }
 
 [data-theme='dark'] .heroSubtitle {
-  color: #b3a294;
+  color: #98a3ae;
 }
 
 [data-theme='dark'] .heroGhost {
-  color: #efe6da;
-  border-color: #4a3b33;
+  color: #e6e9ee;
+  border-color: #343b44;
 }
 
 [data-theme='dark'] .heroGhost:hover {
   color: #fff;
   border-color: var(--ifm-color-primary);
-  background: rgba(217, 113, 74, 0.12);
+  background: rgba(111, 164, 216, 0.12);
 }
 
 .buttons {

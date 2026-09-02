@@ -179,8 +179,8 @@ const config: Config = {
       copyright: `Balaur is free and open source, MIT. Copyright © ${new Date().getFullYear()} balaurengine. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.gruvboxMaterialLight,
-      darkTheme: prismThemes.gruvboxMaterialDark,
+      theme: prismThemes.nightOwlLight,
+      darkTheme: prismThemes.nightOwl,
     },
   } satisfies Preset.ThemeConfig,
 };

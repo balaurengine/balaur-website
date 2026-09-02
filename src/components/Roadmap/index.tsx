@@ -5,6 +5,8 @@ import styles from './styles.module.css';
 export type RoadmapItem = {
   title: string;
   text: ReactNode;
+  /** The engine's plan document for this item; kept as data, not rendered. */
+  plan?: string;
 };
 
 // One card per thing that does not exist yet: a title and one sentence. The

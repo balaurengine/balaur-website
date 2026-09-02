@@ -10,24 +10,24 @@ already in the engine. Within each group the order is the one the
 
 <Roadmap items={[
   {
-    title: 'Editor plugins',
-    text: 'Tools, docks and inspector panels written in a project\'s own scripts.',
-  },
-  {
     title: 'Tilemap editor',
     text: 'Painting tiles in the viewport, with autotiling and layers.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor.md#tilemap-editor',
   },
   {
     title: 'Curve editor and onion skin',
     text: 'Tangent handles on keys and ghosted neighbouring frames in the timeline.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor.md#curve-editor-and-onion-skin',
   },
   {
     title: 'Profiler',
     text: 'Per-frame timings for scripts, physics and rendering in an editor dock, against a budget.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor.md#profiler',
   },
   {
     title: 'Debugging from your editor',
-    text: 'The debugger over the Debug Adapter Protocol for VS Code and others, plus break on error.',
+    text: 'The debugger over the Debug Adapter Protocol, so VS Code and others can pause and step a running game.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-debugger.md#outside-the-editor-phase-6',
   },
 ]} />
 
@@ -37,22 +37,27 @@ already in the engine. Within each group the order is the one the
   {
     title: 'Exported script properties',
     text: 'A field a script marks shows up in the inspector and is stored in the scene.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-scripting.md',
   },
   {
     title: 'Prefabs',
     text: 'A scene placed inside another, with overrides per instance.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-scenes-and-assets.md#prefabs',
   },
   {
     title: 'Stable asset ids',
     text: 'References that survive renames and moves, and assets that reload on save like scripts do.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-scenes-and-assets.md#stable-asset-ids-and-hot-reload',
   },
   {
     title: 'Sprite-sheet import',
     text: 'Aseprite tags and slices read straight into clips and atlases.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-scenes-and-assets.md#sprite-sheets',
   },
   {
     title: 'Extensions, tier two',
     text: 'Native extensions that add components and systems, and call back into scripts.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-c-api.md#what-tier-1-does-not-do',
   },
 ]} />
 
@@ -62,10 +67,12 @@ already in the engine. Within each group the order is the one the
   {
     title: 'Soft bodies, tearing, fluids',
     text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md',
   },
   {
     title: 'Animation blending',
     text: 'Blend trees and state machines that mix clips by weight, and IK in 3D.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md#6-blending-and-state-machines-planned',
   },
 ]} />
 
@@ -75,10 +82,12 @@ already in the engine. Within each group the order is the one the
   {
     title: '2D lights and shadows',
     text: 'Light nodes, shadow occluders and post-processing for 2D scenes.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md#2d-lights-and-shadows',
   },
   {
     title: 'GPU skinning in 3D',
     text: 'Imported meshes skinned in the vertex shader instead of on the CPU.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md#gpu-skinning-in-3d',
   },
 ]} />
 
@@ -88,22 +97,27 @@ already in the engine. Within each group the order is the one the
   {
     title: 'Game UI toolkit',
     text: 'A retained widget tree for menus and HUDs: layouts, themes, nine-slice, gamepad focus.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-batteries.md#game-ui-toolkit',
   },
   {
     title: 'Input actions',
     text: 'Named actions bound to keys, buttons and axes, rebindable by the player and saved.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-batteries.md#input-actions',
   },
   {
     title: 'Save games',
     text: 'Versioned saves written through the same serializer as scenes, migrating old files forward.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-batteries.md#save-games',
   },
   {
     title: 'Localization',
     text: 'Translated strings and plurals, switchable at run time.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-batteries.md#localization',
   },
   {
     title: 'Audio buses',
     text: 'Buses, events and parameters over the mixer, with volume ducking and effects.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-batteries.md#audio-buses',
   },
 ]} />
 
@@ -111,12 +125,19 @@ already in the engine. Within each group the order is the one the
 
 <Roadmap items={[
   {
-    title: 'Multiplayer',
-    text: 'Replicated nodes with an authority rule, lockstep or rollback on the deterministic step.',
+    title: 'Rollback netcode',
+    text: 'Inputs on the wire, not state: peers predict, roll back on a late input and re-simulate, with the per-tick digest catching any desync.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-phases',
+  },
+  {
+    title: 'State replication',
+    text: 'A `replicate` key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-phases',
   },
   {
     title: 'QUIC transport',
-    text: 'One transport with reliable streams and unreliable datagrams, native and in the browser.',
+    text: 'Reliable streams and unreliable datagrams in one transport, native and in the browser; binary websocket frames on the way there.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-phases',
   },
 ]} />
 
@@ -126,14 +147,17 @@ already in the engine. Within each group the order is the one the
   {
     title: 'Binary releases',
     text: 'An editor download per platform with its runtime, signed and notarized, so shipping needs no Rust toolchain.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md#binary-releases',
   },
   {
     title: 'Web export',
     text: 'A game that runs in the browser: a wgpu canvas, a WebAssembly build and the pack fetched beside it.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mobile-export.md#web',
   },
   {
     title: 'Published benchmarks',
     text: 'What a frame costs, measured headless and posted with every release.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md#published-benchmarks',
   },
 ]} />
 

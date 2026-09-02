@@ -86,3 +86,11 @@ method: an event is a frame-scoped snapshot, not a subscription.
 
 For a hosted game backend — auth, storage, realtime rooms — see
 [Gamend](./gamend.mdx), which is built on the same delivery contract.
+
+## What is not there yet
+
+No multiplayer layer: no rollback, no replication, no RPC, and every
+transport is TCP. Websockets carry text only. The plan, in order — bytes,
+rollback, QUIC, replication — is
+[PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md)
+in the engine repository; the [roadmap](../roadmap.mdx) has the short form.
