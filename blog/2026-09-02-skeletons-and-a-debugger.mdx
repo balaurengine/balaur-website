@@ -7,7 +7,7 @@ tags: [balaur]
 
 Since the last post the engine gained skeletal animation in 2D and 3D, a
 script debugger, and the pieces that make a deterministic simulation
-something you can check rather than hope for.
+something you can check rather than hope for. It also lost a language.
 
 {/* truncate */}
 
@@ -36,9 +36,23 @@ verbs apply in the 3D viewport.
 
 ## A debugger
 
-Luau scripts can be paused on a breakpoint, stepped over, into and out of,
-and inspected frame by frame with named locals, from the editor's Debugger
-dock or through the `debugger` script module.
+Scripts can be paused on a breakpoint and stepped over, into and out of,
+with the call frames and their named locals in the editor's Debugger dock —
+click a line number to set a breakpoint, then `F5` / `F10` / `F11` /
+`Shift+F11` — or through the `debugger` script module, so a tool can drive
+it. A pause parks the script and freezes the game: physics holds and the
+editor's own scripts keep drawing, so the editor stays usable while you
+look. Two limits for now: an async entry point cannot be paused, and locals
+are a frame's named arguments.
+
+## One language
+
+The same day, Luau was removed. Rune is the one scripting language: `.luau`
+scripts, `language = "luau"` and `"mixed"` are gone, and the editor, every
+example and the debugger run on Rune. Two languages meant two hosts to keep
+in step, two debuggers to write and two sets of docs to keep honest; one
+language means one of each. The seam that made a second language cost one
+crate is still there.
 
 ## A fixed step, and proof
 

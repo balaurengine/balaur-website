@@ -75,7 +75,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Two scripting languages',
+    title: 'Scripting in Rune',
     icon: (
       <Icon>
         <path d="m8 7-5 5 5 5M16 7l5 5-5 5" />
@@ -83,8 +83,8 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>Luau and Rune</strong> call one binding API — a project can
-        even run both, and a third language costs one crate.
+        Scripts are <strong>Rune</strong>: Rust's syntax, no build step, a
+        debugger in the editor. One binding API reaches every module.
       </>
     ),
   },

@@ -4,8 +4,8 @@ sidebar_position: 8
 
 # Networking
 
-The `balaur_net` plugin gives scripts HTTP requests (`http.request`) and
-websocket connections (`websocket.connect` / `send` / `close`). It is on by
+The `balaur_net` plugin gives scripts HTTP requests (`http::request`) and
+websocket connections (`websocket::connect` / `send` / `close`). It is on by
 default; building without the `net` feature drops the entire HTTP/TLS stack
 from the binary.
 
@@ -23,29 +23,29 @@ Scripts never poll. There are two shapes:
 results, and results are dispatched as method calls — the same signal shape a
 widget's `on_click` or an animation method track uses:
 
-```lua
-function S:init()
-    self.request = http.request(self.node, "https://example.com")
-end
+```rust
+pub fn init(this) {
+    this.request = http::request(this.node, "https://example.com");
+}
 
-function S:on_response(r)
-    print(r.status, r.body)
-end
+pub fn on_response(this, r) {
+    log::info(format!("{} {}", r["status"], r["body"]));
+}
 ```
 
 **Sequential await.** A request made without a node is a token the script
-suspends on until the result arrives:
-
-```lua
-local r = await(http.request(url))          -- Luau
-```
+suspends on until the result arrives. The entry point is declared `async`:
 
 ```rust
-let r = task::wait(http::request(url)).await;   // Rune
+pub async fn init(this) {
+    let r = task::wait(http::request(url)).await;
+    log::info(format!("{} {}", r["status"], r["body"]));
+}
 ```
 
-Both resume at the start of a later tick, in arrival order — deterministic
-given the same recorded arrivals.
+The script resumes at the start of a later tick, in arrival order —
+deterministic given the same recorded arrivals. One limit: an async entry
+point cannot be paused by the [debugger](./scripting.mdx#debugging).
 
 ## Why there are no signals
 
@@ -53,8 +53,8 @@ The engine has no `connect`-style signal registration: a script cannot
 register a persistent callback and be handed a payload three frames later
 (persistent callbacks would need an id space with explicit release). Events
 go the other way — the engine calls a method the script declares by name.
-Most events also have a polling twin (`input.just_pressed`,
-`animation.just_finished`) for scripts that would rather ask than declare a
+Most events also have a polling twin (`input::just_pressed`,
+`animation::just_finished`) for scripts that would rather ask than declare a
 method: an event is a frame-scoped snapshot, not a subscription.
 
 For a hosted game backend — auth, storage, realtime rooms — see

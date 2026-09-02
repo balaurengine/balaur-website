@@ -13,7 +13,7 @@ their own components off the same entities, so "node" is an API surface, not
 a data structure with a cost.
 
 Scripts reach the tree through the node API — 30 operations declared once in
-the core and available in every language: `get_node`, `parent`, `children`,
+the core, reached as methods on a node value: `get_node`, `parent`, `children`,
 `add_child`, `set_parent` (which keeps the node where it is in the world),
 `queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
 `translate`, `attach_script`, the component operations, and the rest. Node
@@ -35,15 +35,15 @@ id = "n_ball"
 name = "Ball"
 parent = "n_world"
 position = [0, 6, 0]
-script = "scripts/ball.luau"
+script = "scripts/ball.rn"
 body3d = "dynamic"
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
 ```
 
 Scene keys are applied in plugin registration order, which is deterministic.
-Scripts can instantiate scenes at run time with `scene.instantiate` and spawn
-nodes with `scene.spawn`.
+Scripts can instantiate scenes at run time with `scene::instantiate` and spawn
+nodes with `scene::spawn`.
 
 ## Components
 
@@ -59,9 +59,9 @@ One registration buys three things at once:
 
 - **The scene-file key.** `collider = { kind = "ball", radius = 0.5 }` works
   because the physics plugin registered `collider3d`.
-- **The runtime API.** `node:set_component`, `get_component`,
+- **The runtime API.** `node.set_component`, `get_component`,
   `has_component`, `remove_component`, `component_names`, plus
-  `scene.component_types()` and `scene.component_schema(name)` for
+  `scene::component_types()` and `scene::component_schema(name)` for
   discovery.
 - **Editor support.** The editor's "Add component" palette and property
   inspectors are generated from the registry, so third-party plugin

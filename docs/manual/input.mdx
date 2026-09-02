@@ -11,10 +11,10 @@ one snapshot, recording it per tick is all a replay system needs.
 
 ## Keyboard and mouse
 
-```lua
-if input.just_pressed(input.KEY_SPACE) then ... end
-if input.is_mouse_down(input.MOUSE_LEFT) then ... end
-local mx, my = input.mouse_position()
+```rust
+if input::just_pressed(input::KEY_SPACE) { /* ... */ }
+if input::is_mouse_down(input::MOUSE_LEFT) { /* ... */ }
+let (mx, my) = input::mouse_position();
 ```
 
 `is_down`, `just_pressed`, and `just_released` cover keys by named constant;
@@ -22,24 +22,24 @@ the mouse adds position, per-frame delta, button edges, and scroll delta.
 
 ## Gamepads
 
-`input.gamepads()` lists the connected pads; every query takes a pad id and
+`input::gamepads()` lists the connected pads; every query takes a pad id and
 a named constant:
 
-```lua
-for _, pad in input.gamepads() do
-    if input.gamepad_just_pressed(pad, input.PAD_SOUTH) then ... end
-    local x = input.gamepad_axis(pad, input.AXIS_LEFT_STICK_X)
-end
+```rust
+for pad in input::gamepads() {
+    if input::gamepad_just_pressed(pad, input::PAD_SOUTH) { /* ... */ }
+    let x = input::gamepad_axis(pad, input::AXIS_LEFT_STICK_X);
+}
 ```
 
 Buttons are `PAD_*` constants, axes `AXIS_*` (sticks, triggers, d-pad), and
-`input.gamepad_name(pad)` names the hardware.
+`input::gamepad_name(pad)` names the hardware.
 
 ## Touch and dropped files
 
-`input.touches()` returns the touch points active this frame, with
-`input.touches_started()` and `input.touches_ended()` for the edges.
-`input.dropped_files()` returns the paths of files dropped onto the window
+`input::touches()` returns the touch points active this frame, with
+`input::touches_started()` and `input::touches_ended()` for the edges.
+`input::dropped_files()` returns the paths of files dropped onto the window
 this frame — which is how a tool accepts a drag-and-drop.
 
 ## The full surface

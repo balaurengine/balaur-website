@@ -6,13 +6,13 @@ sidebar_position: 7
 
 ## Where the engine stands
 
-The core loop is in place: scene tree over an ECS, scripting in Luau and Rune
-with hot reload and a debugger, 3D and 2D physics, rendering (windowed,
-offscreen and headless), animation with clip assets, tweens and 2D and 3D
-skeletons, glTF import, a shared-asset layer, networking (HTTP, websockets,
-and the Gamend backend), audio, input, UI, run-time extensions, a working
-editor with play-in-editor, undo, a clip timeline and rig tools, a fixed
-60 Hz simulation step with per-tick digests, session recording and replay,
+The core loop is in place: scene tree over an ECS, Rune scripting with hot
+reload and a debugger, 3D and 2D physics, rendering (windowed, offscreen and
+headless), animation with clip assets, tweens and 2D and 3D skeletons, glTF
+import, a shared-asset layer, networking (HTTP, websockets, and the Gamend
+backend), audio, input, UI, run-time extensions, a working editor with
+play-in-editor, undo, a clip timeline and rig tools, a fixed 60 Hz
+simulation step with per-tick digests, session recording and replay,
 rollback snapshots, reproducible pack export with binary assets, and fused
 single-file executables. CI cross-compiles the headless engine to iOS,
 Android, and WebAssembly on every push. There is no binary release yet; the
@@ -23,17 +23,22 @@ engine builds from source.
 1. Editor plugins: tools, docks and inspector sections registered from a
    project's own scripts. The editor is already a Balaur project; what
    remains is the registration seam.
-2. Animation blending — blend trees and state machines composed over the
+2. New physics through Rapier: soft bodies, tearing, fluids, particles and
+   granular materials are being built in Rapier itself and reach Balaur
+   through the same plugin.
+3. Rune, extended: a fork with script properties exported to the inspector
+   and a faster compile path.
+4. Animation blending — blend trees and state machines composed over the
    pure sampler — and 3D modifiers to match the 2D `look_at` and
    `two_bone_ik`.
-3. `--!strict` type checking surfaced in editor diagnostics; palette-driven
-   node search; multi-scene tabs.
-4. Prefabs/sub-scenes. The asset layer landed, so a prefab is another
+5. Compile diagnostics surfaced in the editor's script buffer;
+   palette-driven node search; multi-scene tabs.
+6. Prefabs/sub-scenes. The asset layer landed, so a prefab is another
    registered asset type; what remains is the scene key that instantiates one
    and the rule for overriding properties on the instance.
-5. GPU skinning for 3D meshes; they are skinned on the CPU today.
-6. Parallel system execution inside the data plane, once profiling demands
-   it.
+7. GPU skinning for 3D meshes; they are skinned on the CPU today.
+8. Published benchmarks, and parallel system execution inside the data
+   plane once profiling demands it.
 
 ## Links
 

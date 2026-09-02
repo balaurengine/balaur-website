@@ -17,25 +17,21 @@ cargo run -p balaur_cli --features window -- run my-game
 
 `new` scaffolds a `project.toml`, a main scene with one node, and a script:
 
-```lua
--- scripts/hello.luau
-local Hello = {}
+```rust
+// scripts/hello.rn
+pub fn init(this) {
+    println!("hello from {}", this.node.name());
+    this.elapsed = 0.0;
+}
 
-function Hello:init()
-    print("hello from", self.node:name())
-    self.elapsed = 0
-end
-
-function Hello:update(dt)
-    self.elapsed += dt
-end
-
-return Hello
+pub fn update(this, dt) {
+    this.elapsed += dt;
+}
 ```
 
-A script returns a class table. The engine makes one instance per node the
-script is attached to, calls `init` once and `update(dt)` every frame, and
-puts the owning node on `self.node`.
+A script is a set of free functions taking the instance first. The engine
+makes one instance per node the script is attached to, calls `init` once
+and `update(dt)` every frame, and puts the owning node on `this.node`.
 
 ## Build a scene
 
@@ -55,14 +51,14 @@ shape3d = { kind = "cuboid", half_extents = [10, 0.5, 10] }
 [[nodes]]
 name = "Ball"
 position = [0, 6, 0]
-script = "scripts/ball.luau"
+script = "scripts/ball.rn"
 shape3d = { kind = "ball", radius = 0.5 }
 
 [[nodes]]
 name = "Spinner"
 position = [2.5, 0.5, 0]
 color = [0.2, 0.4, 0.9]
-script = "scripts/spinner.luau"
+script = "scripts/spinner.rn"
 shape3d = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
 ```
 
@@ -71,25 +67,21 @@ shape3d = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
 Components can come from the scene file or from code. The ball sets up its own
 physics in `init`:
 
-```lua
--- scripts/ball.luau
-local Ball = {}
+```rust
+// scripts/ball.rn
+pub fn init(this) {
+    physics3d::add_body(this.node, physics3d::BODY_DYNAMIC);
+    physics3d::add_ball_collider(this.node, 0.5);
+    this.reported = false;
+}
 
-function Ball:init()
-    physics3d.add_body(self.node, physics3d.BODY_DYNAMIC)
-    physics3d.add_ball_collider(self.node, 0.5)
-    self.reported = false
-end
-
-function Ball:update(dt)
-    local y = self.node:position()[2]
-    if y < 0.2 and not self.reported then
-        self.reported = true
-        print("ball touched down at t =", string.format("%.2f", engine.time()))
-    end
-end
-
-return Ball
+pub fn update(this, dt) {
+    let y = this.node.position().y;
+    if y < 0.2 && !this.reported {
+        this.reported = true;
+        println!("ball touched down at t = {:.2}", engine::time());
+    }
+}
 ```
 
 Because the simulation is deterministic, the touchdown time is the same on
@@ -99,39 +91,37 @@ every run, headless or windowed, on every platform.
 
 The spinner rotates continuously and reverses direction on Space:
 
-```lua
--- scripts/spinner.luau
-local Spinner = {}
+```rust
+// scripts/spinner.rn
+const SPEED = 2.0;
 
-local SPEED = 2.0
+pub fn init(this) {
+    this.angle = 0.0;
+    this.direction = 1.0;
+}
 
-function Spinner:init()
-    self.angle = 0
-    self.direction = 1
-end
-
-function Spinner:update(dt)
-    if input.just_pressed(input.KEY_SPACE) then
-        self.direction = -self.direction
-    end
-    self.angle += dt * SPEED * self.direction
-    self.node:set_rotation_euler(0, self.angle, 0)
-end
-
-return Spinner
+pub fn update(this, dt) {
+    if input::just_pressed(input::KEY_SPACE) {
+        this.direction = -this.direction;
+    }
+    this.angle += dt * SPEED * this.direction;
+    this.node.set_rotation_euler(0.0, this.angle, 0.0);
+}
 ```
 
 Values a binding accepts are named constants rather than spelled strings:
-`input.KEY_SPACE`, `physics3d.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`. The full list
-is in the [script API reference](../reference/script-api.md).
+`input::KEY_SPACE`, `physics3d::BODY_DYNAMIC`, `ui::ANCHOR_TOP_LEFT`. The
+full list is in the [script API reference](../reference/script-api.md).
+Note the `0.0`: integers and floats never mix in Rune, and the angle is a
+float.
 
 ## Hot reload
 
-While `run` is going, change `SPEED` in `spinner.luau` and save. The new code
+While `run` is going, change `SPEED` in `spinner.rn` and save. The new code
 is live within milliseconds and the current angle survives: the engine
-recompiles the file, evaluates it into a fresh class table, and swaps the
-contents of the existing class in place, so every live instance sees the new
-code while its `self` state stays untouched.
+recompiles the file into a new unit and swaps it for the old one; every
+instance keeps its state object, and the next call resolves against the new
+code.
 
 If the save does not compile, the old code keeps running and the error is
 reported once.
@@ -139,5 +129,6 @@ reported once.
 ## Next
 
 - [A 2D game](./2d-game.mdx) — 2D components, 2D physics, and widgets.
+- [Rune basics](./rune-basics.mdx) — the language in ten minutes.
 - [Scenes and nodes](../manual/scenes.mdx) — the scene format and component
   system in full.

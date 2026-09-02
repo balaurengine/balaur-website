@@ -50,13 +50,13 @@ render through the widget layer.
 The 2D camera is orthographic with pan and zoom. Zoom is expressed in logical
 pixels per world unit:
 
-```lua
-render.set_camera_2d(0, 3, 52)          -- center x, center y, zoom
-local cx, cy, zoom = render.camera_2d()
+```rust
+render::set_camera_2d(0.0, 3.0, 52.0);      // center x, center y, zoom
+let (cx, cy, zoom) = render::camera_2d();
 ```
 
-`render.mouse_world_2d()` converts the cursor to world coordinates for
-picking, and `render.draw_line_2d(...)` draws debug or aiming overlays — the
+`render::mouse_world_2d()` converts the cursor to world coordinates for
+picking, and `render::draw_line_2d(...)` draws debug or aiming overlays — the
 example uses both for the slingshot band.
 
 ## 2D physics
@@ -66,14 +66,14 @@ guarantees as 3D: the `enhanced-determinism` build, a fixed 60 Hz
 accumulator, and ordered collections. The `physics2d` module drives it from
 scripts:
 
-```lua
-physics2d.set_gravity(0, -9.81)
-physics2d.add_body(node, physics2d.BODY_DYNAMIC)
-physics2d.add_collider(node, { kind = physics2d.SHAPE_CIRCLE, radius = 0.4 })
-physics2d.apply_impulse(node, dx * POWER, dy * POWER)
+```rust
+physics2d::set_gravity(0.0, -9.81);
+physics2d::add_body(node, physics2d::BODY_DYNAMIC);
+physics2d::add_collider(node, #{ kind: physics2d::SHAPE_CIRCLE, radius: 0.4 });
+physics2d::apply_impulse(node, dx * POWER, dy * POWER);
 ```
 
-`physics2d.max_contact_impulse(node)` returns the strongest impact a body took
+`physics2d::max_contact_impulse(node)` returns the strongest impact a body took
 this frame — the example uses it to decide when a pig is popped.
 
 ## Components from scripts
@@ -81,10 +81,10 @@ this frame — the example uses it to decide when a pig is popped.
 Scripts read and write the same components the scene file declares. Updating
 the score label is a component write:
 
-```lua
-local w = node:get_component("widget")
-w.text = "Score " .. self.score
-node:set_component("widget", w)
+```rust
+let w = node.get_component("widget");
+w.text = format!("Score {}", this.score);
+node.set_component("widget", w);
 ```
 
 Removing a node's 2D components (`remove_component("body2d")`, ...) takes it

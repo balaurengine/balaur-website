@@ -7,6 +7,13 @@ description: Everything in the Balaur engine today, with links into the document
 
 Everything in the engine today. Each item links into the documentation.
 
+## Principles
+
+- **Fast to run, fast to iterate.** Hot reload in milliseconds, and as
+  little engine as possible between a game and the libraries it stands on.
+- **Easy to use.** Nodes and scripts on top, one scripting language, an
+  editor built from the same parts as a game.
+
 ## Core
 
 - **Scene tree over an ECS.** A game is a tree of named nodes with scripts
@@ -21,14 +28,19 @@ Everything in the engine today. Each item links into the documentation.
   registers. → [Assets](/docs/reference/assets)
 - **Headless by default.** Everything runs without a window or GPU: tests,
   servers, CI, and benchmarks measure the engine itself.
+- **Rust, and the Rust ecosystem.** Safe Rust throughout, so a script
+  mistake is an error message rather than a crash. Rapier, wgpu, rodio and
+  tungstenite are used as they are, not re-implemented.
 
 ## Scripting
 
-- **Two languages, one API.** Luau (default) and Rune call the same bindings,
-  declared once against a language-neutral seam; a third language costs one
-  crate. A project can even run both at once (`language = "mixed"`), with
-  cross-language calls by node and method name.
-  → [Scripting](/docs/manual/scripting)
+- **One language, one API.** Scripts are [Rune](https://rune-rs.github.io/):
+  Rust's syntax, no types, no build step. Every binding is declared once
+  against a language-neutral seam, so a second language would cost one
+  crate. → [Scripting](/docs/manual/scripting)
+- **A debugger.** Breakpoints, continue, step over / into / out, and call
+  frames with named locals — in the editor's Debugger dock or from the
+  `debugger` script module. → [Scripting](/docs/manual/scripting#debugging)
 - **Instant hot reload.** Saving a script swaps code into the running game in
   milliseconds, preserving live state — automatic, always on in dev mode,
   provided by the core. → [Scripting](/docs/manual/scripting)
@@ -59,7 +71,7 @@ Everything in the engine today. Each item links into the documentation.
 - **Rendering.** 3D and 2D shapes through kiss3d/wgpu in three run modes —
   windowed, offscreen (GPU without a window), and headless — with cameras,
   debug drawing, grids, and script-driven screenshots
-  (`render.screenshot`).
+  (`render::screenshot`).
 - **UI.** Widget components for in-game HUDs, and an immediate-mode egui API
   for scripts with script-defined themes. → [UI](/docs/manual/ui)
 - **Audio and input.** rodio-backed playback; backend-agnostic per-frame
@@ -86,8 +98,7 @@ Everything in the engine today. Each item links into the documentation.
   the exact engine build, or in any C-ABI language through a small stable C
   boundary. → [Modules and extensions](/docs/manual/extensions)
 - **Benchmarks.** A headless suite reporting each result as a share of one
-  60 fps frame, running the same scenarios on both script languages.
-  → [Getting started](/docs/getting-started#benchmarks)
+  60 fps frame. → [Getting started](/docs/getting-started#benchmarks)
 
 ## Shipping
 
@@ -98,7 +109,7 @@ Everything in the engine today. Each item links into the documentation.
   binary per platform — no compiler, no sources, no Rust toolchain required
   to ship. CI cross-compiles the headless engine to iOS, Android, and
   WebAssembly on every push. → [Shipping](/docs/manual/shipping)
-- **Saved data.** `engine.user_data_dir()` gives every game a writable
+- **Saved data.** `engine::user_data_dir()` gives every game a writable
   per-user directory for saves and settings, resolved per platform.
 
 ---

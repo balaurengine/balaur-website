@@ -12,14 +12,14 @@ replays, lockstep networking, and "did the content change?" checks possible.
 
 - Rapier's `enhanced-determinism` feature is enabled workspace-wide, for both
   the 3D and 2D worlds.
-- Physics and animation each step on their own fixed 60 Hz accumulator, never
-  the variable frame delta.
+- Physics and animation step on one app-owned fixed 60 Hz accumulator
+  (`FixedUpdate`), never the variable frame delta.
 - Transcendentals on a simulation path — animation easing, euler↔quaternion
   conversion, slerp — are computed on the `libm` crate rather than the
   platform's math library, which differs across OSes.
 - Network completions enter the simulation once per tick, at the start of the
-  frame, in arrival order — never from an I/O thread — so a recorded network
-  snapshot replays a session.
+  frame, in arrival order — never from an I/O thread — so a recorded session
+  replays without touching the network, logins and retries included.
 - Order-sensitive Rust iteration uses an insertion-ordered map type, never
   bare `HashMap` iteration.
 - Scene instantiation order and scene-key application order are
@@ -33,18 +33,18 @@ replays, lockstep networking, and "did the content change?" checks possible.
 
 ## Scripting and determinism
 
-Luau numbers are IEEE-754 doubles; `+ - * / sqrt floor` are exactly specified
-and reproducible everywhere, and the VM as configured (interpreted, no JIT)
-has fixed evaluation order. The known hazards are addressed directly:
+Rune numbers are IEEE-754 doubles and 64-bit integers that never mix;
+`+ - * /` and `sqrt` are exactly specified and reproducible everywhere, and
+the VM is a single-threaded interpreter with no native codegen, so evaluation
+order is fixed. The known hazards are addressed directly:
 
 | Hazard | Status |
 | --- | --- |
-| `math.sin/cos/exp/...` call the platform libm, which differs across OSes | Rebound to pure-Rust implementations that are bit-identical everywhere; the compiler's `math.*` fastcalls are disabled so O2-compiled code routes through the rebound table |
-| `math.random` seeded from entropy | Rebound to an engine-owned seeded PCG32 stream, also exposed as the `rng` module (`rng.seed/random/range/int`) |
-| The `^` operator calls the C `pow` inside the VM | Simulation code must call `math.pow` instead |
-| `pairs()` order on tables with table/userdata keys depends on pointer values | Rule: simulation-affecting iteration uses arrays or string/number keys |
-| Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, which runs on the 60 Hz step with a constant dt; `update(dt)` is for presentation. Use `engine.tick()`, not `os.clock()` |
-| Luau native codegen (JIT) may change float behavior | Not enabled in deterministic builds |
+| `sin`, `cos`, `exp`, `pow`, ... call the platform libm, which differs across OSes | The engine's `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is implemented on pure-Rust `libm` and is bit-identical everywhere. Simulation code calls `math::*`; Rune's own float methods stay the platform's |
+| A random source seeded from entropy | Rune has none of its own; the `rng` module (`rng::seed/random/range/int`) is an engine-owned seeded PCG32 stream with a fixed default seed, so a fresh run reproduces by construction |
+| Iteration order over an object (`for (k, v) in obj`) is the hash map's, not insertion order | Rule: simulation-affecting iteration uses lists or sorted keys |
+| Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, which runs on the 60 Hz step with a constant dt; `update(dt)` is for presentation. Use `engine::tick()` for time |
+| Hot reload mid-session | Changing code changes behaviour; turn it off for a run you intend to verify |
 
 ## Checking, recording, replaying
 

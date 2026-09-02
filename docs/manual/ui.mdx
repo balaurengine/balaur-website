@@ -27,8 +27,8 @@ text_color = "#2b2b2b"
 
 Widgets live in the scene tree like any node, so they are saved with the
 scene, editable in the editor (which previews them in its viewport), and
-updatable from scripts through `node:get_component("widget")` /
-`set_component`. `ui.set_widget_layer` scopes and toggles the layer.
+updatable from scripts through `node.get_component("widget")` /
+`set_component`. `ui::set_widget_layer` scopes and toggles the layer.
 
 ## The `ui` module: immediate-mode UI
 
@@ -36,28 +36,30 @@ For tools and anything beyond a HUD, the `ui` module exposes immediate-mode
 [egui](https://github.com/emilk/egui) to scripts. A script implements a
 `draw_ui` lifecycle method, which runs once per frame inside the egui pass:
 
-```lua
-function Tool:draw_ui()
-    ui.left_panel("outline", { width = 260, fill = colors.bg }, function()
-        ui.label("Nodes", { size = 14, color = colors.text })
-        if ui.pill("Add node", { fill = colors.accent }) then
-            -- ...
-        end
-    end)
-end
+```rust
+pub fn draw_ui(this) {
+    let k = this.theme;
+    ui::left_panel("outline", #{ width: 260, fill: k.bg }, || {
+        ui::label("Nodes", #{ size: 14, color: k.text });
+        if ui::pill("Add node", #{ fill: k.accent }) {
+            // ...
+        }
+    });
+}
 ```
 
-Panel and container calls take a callback and push their child UI around it,
-so a script composes layouts exactly like Rust egui code. The widget set
-includes panels, labels, pills, toggles, sliders, drag values, selects, text
-fields, modals, scroll areas, menus, shortcuts, and `ui.code_editor` — an
-editable, Luau-syntax-highlighted buffer.
+Panel and container calls take a closure and push their child UI around it,
+so a script composes layouts exactly like Rust egui code. Widgets that
+change return a tuple — `let (text, changed) = ui::text_field(...)`. The
+widget set includes panels, labels, pills, toggles, sliders, drag values,
+dropdowns, text fields, modals, scroll areas, menus, shortcuts, and
+`ui::code_editor` — an editable, Rune-syntax-highlighted buffer.
 
 Widgets take colors per call, so complete themes live in scripts and hot
 reload with them. Fonts load from `<project>/fonts/*.ttf`, with the named
 families `heading` / `ui` / `mono` always available.
 
-All dimensions are design pixels: `ui.set_scale(f)` multiplies every metric
+All dimensions are design pixels: `ui::set_scale(f)` multiplies every metric
 and the query functions divide back, so scripts author against the design's
 pixel values at any zoom. HiDPI is separate and automatic.
 

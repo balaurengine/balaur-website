@@ -53,37 +53,37 @@ an imported model's clips hold.
 
 ## The script module
 
-```lua
-animation.play(self.node, "hop", { speed = 1.0 })
-animation.pause(self.node)   -- resume continues; stop ends
-animation.queue(self.node, "wave")
+```rust
+animation::play(this.node, "hop", #{ speed: 1.0 });
+animation::pause(this.node);   // resume continues; stop ends
+animation::queue(this.node, "wave");
 
-function Platform:on_reached_end()   -- called by the clip's method track
-    ...
-end
+pub fn on_reached_end(this) {   // called by the clip's method track
+    // ...
+}
 ```
 
 Plus `seek`, `time`, `current`, `is_playing`, `is_running`, `just_finished`,
-and `define` for building a clip from a table at run time.
+and `define` for building a clip from an object at run time.
 
 ## Tweens
 
 A tween is a clip generated on the spot, from the values the node has now,
 run through the same sampler and the same fixed step:
 
-```lua
-animation.tween(self.node, {
-    steps = {
-        { property = "position",   to = { 0, 3, 0 },    duration = 0.5, ease = "out_back" },
-        { property = "color/rgba", to = { 1, 0, 0, 1 }, duration = 0.5, parallel = true },
-        { call = "on_landed" },
-    },
-})
+```rust
+animation::tween(this.node, #{
+    steps: [
+        #{ property: "position",   to: [0.0, 3.0, 0.0],      duration: 0.5, ease: "out_back" },
+        #{ property: "color/rgba", to: [1.0, 0.0, 0.0, 1.0], duration: 0.5, parallel: true },
+        #{ call: "on_landed" },
+    ],
+});
 
-animation.tween_to(self.node, "position", { 0, 9, 0 }, 0.2, "linear")   -- the one-step shorthand
+animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "linear");   // the one-step shorthand
 ```
 
-Steps run in order; `parallel = true` joins a step to the one before it. `to`
+Steps run in order; `parallel: true` joins a step to the one before it. `to`
 is absolute, `by` relative, `from` explicit, `target` tweens another node,
 and `interval` and `call` sequence among the property steps. The spec is
 data, so a tween is serialisable — the editor can author one and it hot
@@ -124,9 +124,9 @@ palette, so bones are part of the determinism digest.
 ![A polygon's inspector: vertices, drawn polygons, bones and brush](/img/editor/component_limb.png)
 
 The `skeleton` module has Godot's two rest-pose verbs and a query:
-`skeleton.apply_rest(node)` returns a rig to its rest pose,
-`skeleton.overwrite_rest(node)` makes the current pose the rest pose, and
-`skeleton.bones(node)` lists the bones under a node.
+`skeleton::apply_rest(node)` returns a rig to its rest pose,
+`skeleton::overwrite_rest(node)` makes the current pose the rest pose, and
+`skeleton::bones(node)` lists the bones under a node.
 
 ### Modifiers
 
@@ -164,7 +164,7 @@ a variable dt — and every transcendental (easing, euler↔quaternion, slerp)
 is computed on bit-identical `libm` implementations, so an animation is the
 same on every platform.
 
-The system runs after the script tick, so `animation.play()` takes effect the
+The system runs after the script tick, so `animation::play()` takes effect the
 same frame, and before physics reads transforms — so an animated kinematic
 platform pushes whatever stands on it with no extra wiring. `examples/hello`
 demonstrates exactly that, and the editor's Animate persona edits the same

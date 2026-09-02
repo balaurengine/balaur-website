@@ -50,10 +50,11 @@ simulation.
 | `edit <path>` | Open the project in the editor (requires `--features window`) |
 | `import <file.glb> --project <path>` | Bring a glTF model in: the file, its joints as `bone3d` nodes, its animations as clips |
 | `replay <session>` | Play back a session recorded with `run --record`; `--verify` re-checks every tick |
+| `api` | Dump every script module, function and constant as JSON |
 
 Useful dev flags: `--frames N` stops after N frames; `--headless` and
 `--offscreen` select the run mode. Screenshots are taken from scripts —
-`render.screenshot("out.png")` captures the next rendered frame, in
+`render::screenshot("out.png")` captures the next rendered frame, in
 offscreen and windowed runs alike — so the caller decides *when* to capture,
 not a frame number chosen before the game started.
 
@@ -63,9 +64,9 @@ not a frame number chosen before the game started.
 
 ```text
 my-game/
-├── project.toml        # name, main_scene, optional language = "luau" | "rune"
+├── project.toml        # name, main_scene (language defaults to "rune")
 ├── scenes/main.toml    # the scene tree, declarative TOML
-└── scripts/hello.luau  # a script attached to a node in the scene
+└── scripts/hello.rn    # a script attached to a node in the scene
 ```
 
 ## The examples
@@ -76,9 +77,6 @@ The example projects ship in the repository:
 # 3D: a spinning cube, a bouncing ball, physics and a HUD label
 cargo run -p balaur_cli -- run examples/hello --headless
 cargo run -p balaur_cli --features window -- run examples/hello
-
-# The same project scripted in Rune
-cargo run -p balaur_cli --features window -- run examples/hello_rune
 
 # 2D: a small slingshot game — 2D shapes, 2D physics, widgets
 cargo run -p balaur_cli --features window -- run examples/angrynerds
@@ -91,7 +89,7 @@ cargo run -p balaur_cli --features window -- edit examples/rig
 cargo run -p balaur_cli --features window -- edit examples/rig3d
 ```
 
-To see hot reload, edit `examples/hello/scripts/spinner.luau` while `run` is
+To see hot reload, edit `examples/hello/scripts/spinner.rn` while `run` is
 going: the change applies the moment you save, without losing state.
 
 ## Benchmarks
@@ -105,5 +103,5 @@ python3 scripts/bench.py              # full run
 python3 scripts/bench.py --no-run     # re-report the last run
 ```
 
-Results are reported as a share of one 60 fps frame, and scripting benchmarks
-run the same scenario on both languages.
+Results are reported as a share of one 60 fps frame, because a nanosecond
+count on its own says nothing about whether you have headroom.

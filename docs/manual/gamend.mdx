@@ -16,17 +16,17 @@ online session.
 
 ## The sequential shape
 
-```lua
-function S:init()
-    gamend.configure("http://localhost:4000")
-    local login = await(gamend.login({ device_id = "player-1" }))
-    self.socket = gamend.connect(self.node)
-    local hook = await(gamend.call_hook(self.socket, "arena", "start", {}))
-end
+```rust
+pub async fn init(this) {
+    gamend::configure("http://localhost:4000");
+    let login = task::wait(gamend::login(#{ device_id: "player-1" })).await;
+    this.socket = gamend::connect(this.node);
+    let hook = task::wait(gamend::call_hook(this.socket, "arena", "start", #{})).await;
+}
 
-function S:on_gamend_event(e)
-    -- socket events: open / message / closed / error
-end
+pub fn on_gamend_event(this, e) {
+    // socket events: open / message / closed / error
+}
 ```
 
 One-shot operations — `login`, `rest`, `call_hook`, `join`, `push`, `leave` —

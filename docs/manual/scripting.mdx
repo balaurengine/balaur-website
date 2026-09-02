@@ -4,44 +4,102 @@ sidebar_position: 2
 
 # Scripting
 
+Scripts are [Rune](https://rune-rs.github.io/) — `.rn` files attached to
+nodes in a scene. Rune reads like Rust without types; the
+[Rune basics](../tutorials/rune-basics.mdx) tutorial is the short version of
+the language.
+
 ## The model
 
 A script declares lifecycle functions — `init`, `update(dt)`,
-`fixed_update(dt)`, `draw_ui`, `on_free`, `hot_reload` — and gets one
-instance per attached node, with the owning node available on the instance.
+`fixed_update(dt)`, `draw_ui`, `on_free`, `hot_reload` — as free functions
+taking the instance first. The engine makes one instance per attached node,
+hands it back on every call as `this`, and puts the owning node on
+`this.node`. An object handed into a Rune function is mutated in place, so
+what a script writes to `this` is what the host reads next frame.
+
+```rust
+// scripts/spinner.rn
+pub fn init(this) {
+    this.angle = 0.0;
+}
+
+pub fn update(this, dt) {
+    this.angle += dt;
+    this.node.set_rotation_euler(0.0, this.angle, 0.0);
+}
+
+pub fn fixed_update(this, dt) {}   // the fixed 60 Hz step, before physics
+pub fn draw_ui(this) {}            // immediate-mode UI, once per frame
+```
+
 `update` runs once per frame with the measured frame time; `fixed_update`
 runs on the fixed 60 Hz step, before physics, and is where simulation
-belongs.
+belongs. See [Determinism](./determinism.mdx).
 
-In Luau, a `.luau` file returns a class table; each instance is a table whose
-metatable indexes it, and the node is `self.node`. In Rune, a `.rn` file
-declares free functions taking the instance first (`pub fn update(this, dt)`),
-and the node is `this.node`.
-
-A project picks its language with `language` in `project.toml`; absent means
-Luau. `language = "mixed"` runs both hosts side by side, routing each file by
-extension — `.luau` on the Luau host, `.rn` on Rune — with a fixed fan-out
-order, so a mixed project stays as deterministic as a single-language one.
+`project.toml` names the language with `language`; it defaults to `"rune"`,
+and any other value is an error.
 
 ## Modules
 
-Scripts see the same modules in both languages, because subsystems declare
-their bindings once against a language-neutral seam: `node`, `engine`,
+Subsystems declare their bindings once against a language-neutral seam
+(`balaur_script`), and scripts reach them as modules with `::`: `engine`,
 `scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`,
 `physics3d`, `render`, `audio`, `ui`, `animation`, `skeleton`, `assets`,
-`http`, `websocket`, `gamend`, `task`, `debugger`, `fs`, `toml`, and
-`json`. The complete surface — every function and constant — is in the
-[script API reference](../reference/script-api.md), which is generated from
-a booted engine so it cannot drift.
+`http`, `websocket`, `gamend`, `task`, `debugger`, `fs`, `toml`, `json`
+and `script`. The complete surface — every function and constant — is in
+the [script API reference](../reference/script-api.md), which is generated
+from a booted engine so it cannot drift.
 
-Values a binding accepts are named rather than spelled: `input.KEY_SPACE`,
-`input.MOUSE_LEFT`, `physics3d.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`.
+```rust
+let t = engine::time();
+let ball = scene::get_node("World/Ball");
+physics3d::add_body(this.node, physics3d::BODY_DYNAMIC);
+```
 
-Some calls return several values — `local text, changed = ui.text_field(...)`
-— while a vector is one value and arrives as a table, indexed or unpacked:
-`local x, y, z = table.unpack(node:position())`.
+Values a binding accepts are named rather than spelled: `input::KEY_SPACE`,
+`input::MOUSE_LEFT`, `physics3d::BODY_DYNAMIC`, `ui::ANCHOR_TOP_LEFT`.
 
-`require` works in both languages, with in-place module hot reload.
+Node operations are methods on a node value: `this.node.position()`,
+`node.get_node("../Target")`, `node.set_component("widget", w)`. A call
+that returns several values returns a tuple — `let (text, changed) =
+ui::text_field(...)` — while a vector is one value with fields:
+`this.node.position().y`.
+
+Tables are objects, `#{ kind: "ball", radius: 0.5 }`; lists are `[1, 2]`;
+nothing is `()`. Integers and floats never mix, so anything a binding takes
+as a float is written `0.0`.
+
+## Script files as modules
+
+`mod name;` at the top of a script pulls in `name.rn` beside it — from disk
+in a dev run, from the pack when shipped — and its items are reached as
+`name::item`:
+
+```rust
+mod util;   // scripts/util.rn
+
+pub fn update(this, dt) {
+    this.speed = util::clamp(this.speed + dt, 0.0, 10.0);
+}
+```
+
+`script::require("lib.rn")` loads a file at run time instead and returns
+its functions in an object. Both hot reload in place: a module object held
+since `init` sees the new code after a save.
+
+## Errors
+
+A binding that fails raises an error and the call ends there. Wrap a call
+that may legitimately fail in `script::attempt`, which returns `(ok, value)`
+— the result, or the error message:
+
+```rust
+let (ok, clip) = script::attempt(|| assets::load("animations/missing.toml"));
+if !ok {
+    log::warn(format!("no clip: {}", clip));
+}
+```
 
 ## Events
 
@@ -49,58 +107,59 @@ There are no `connect`-style signals. The engine calls methods a script
 declares by name — `on_animation_finished(name)` from an animation, a
 widget's `on_click`, `on_response(r)` from an HTTP request — so a handler
 reads exactly like `update(dt)` does. Most events also have a polling twin
-(`input.just_pressed`, `animation.just_finished`): an event is a frame-scoped
-snapshot, not a subscription.
+(`input::just_pressed`, `animation::just_finished`): an event is a
+frame-scoped snapshot, not a subscription.
 
-Asynchronous operations can also be awaited sequentially —
-`local r = await(http.request(url))` in Luau,
-`task::wait(http::request(url)).await` in Rune — with the script suspending
-until the result enters the simulation at the start of a later tick. See
-[Networking](./networking.mdx) for the delivery model.
+An asynchronous operation can also be awaited in sequence. An entry point
+declared `async` suspends on `task::wait` and resumes when the result enters
+the simulation at the start of a later tick:
+
+```rust
+pub async fn init(this) {
+    let r = task::wait(http::request("https://example.com")).await;
+    log::info(format!("{} {}", r["status"], r["body"]));
+}
+```
+
+See [Networking](./networking.mdx) for the delivery model.
 
 Scripts invoke each other the same way the engine does:
-`node:call("method", ...)` calls a method on another node's script instance
-by name — including across languages in a mixed project, because the seam
-moves names and neutral values, never live code.
+`node.call("method", args...)` calls a method on another node's script
+instance by name.
 
 ## Hot reload
 
-The host watches the project directory. On save, in Luau:
-
-1. The file is recompiled with the Luau compiler. A compile error keeps the
-   old class running and is reported once.
-2. The new chunk is evaluated into a fresh class table.
-3. The contents of the existing class table are swapped in place.
-
-Because instances reference the class only through their metatable, every
-live instance sees the new code immediately while `self` state survives
-untouched. The swap is O(class size) — microseconds in practice; measured
-save-to-live latency is file-watcher latency, a few milliseconds. The
-optional `hot_reload` hook lets scripts migrate state shapes.
-
-Rune compiles to an immutable unit, so the new unit replaces the old one;
-instances keep their state objects, and the next call resolves against the
-new code.
+The host watches the project directory. On save, the file is recompiled; a
+compile error keeps the previous unit running and is reported once. Rune
+compiles to an immutable unit, so there is nothing to patch: the new unit
+replaces the old one, instances keep their state objects, and the next call
+resolves against the new code. Measured save-to-live latency is
+file-watcher latency, a few milliseconds. The optional `hot_reload(this)`
+hook lets a script migrate the shape of its state.
 
 ## Debugging
 
-Luau scripts can be paused on a breakpoint and stepped. The editor's Script
-persona sets breakpoints in the gutter and steps with `F5` (run), `F10`
-(over), `F11` (into) and `Shift+F11` (out); the Debugger dock shows the call
-frames and their named locals. The same controls are a script module, so a
-tool can drive them:
+A script can be paused on a breakpoint and stepped. In the editor's Script
+persona, click a line number to set a breakpoint and run the scene; the
+Debugger dock shows the call frames and their locals, with continue and
+step over / into / out on `F5` / `F10` / `F11` / `Shift+F11`. The same
+controls are the `debugger` script module, so a tool can drive them:
 
-```lua
-debugger.set_breakpoints("scripts/ball.luau", { 12, 30 })
-local pause = debugger.paused()          -- nil, or the frame the VM stopped in
-debugger.resume(debugger.STEP_OVER)      -- CONTINUE | STEP_OVER | STEP_INTO | STEP_OUT
+```rust
+debugger::set_breakpoints("scripts/ball.rn", [12, 30]);
+let pause = debugger::paused();         // (), or the pause: reason, line, frames
+debugger::resume(debugger::STEP_OVER);  // CONTINUE | STEP_OVER | STEP_INTO | STEP_OUT
 ```
+
+Two limits: an async entry point (one that uses `task::wait`) runs as a
+future and cannot be paused, so a breakpoint inside one is let through; and
+locals are a frame's named arguments, since Rune keeps no names for its
+other slots.
 
 ## Determinism in scripts
 
-The scripting environment is set up so that straightforward simulation code
-is deterministic by construction: `math.sin`, `math.cos`, and the rest are
-rebound to bit-identical pure-Rust implementations, and `math.random` is
-backed by an engine-owned seeded PCG32 stream (also exposed as the `rng`
-module). See [Determinism](./determinism.mdx) for the full picture and the
-rules simulation code should follow.
+Straightforward simulation code is deterministic by construction: the
+engine's `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is
+`libm`-backed and bit-identical on every platform, and `rng` is an
+engine-owned seeded stream. Simulation goes in `fixed_update`. See
+[Determinism](./determinism.mdx) for the rules.
