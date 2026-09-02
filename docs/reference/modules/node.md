@@ -11,6 +11,8 @@ The component functions take a component name from the [component reference](/do
 
 ## Functions
 
+Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+
 - `add_child`
 - `attach_script`
 - `call`

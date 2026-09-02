@@ -74,14 +74,24 @@ function scriptType(t) {
 }
 // `name(arg kinds) -> result`, or the bare name when the function came in
 // without a signature.
-function signatureOf(m, f) {
+function signatureOf(m, f, prefix = '') {
+  const sig = m.signatures?.[f];
+  if (!sig) return code(prefix + f);
+  const [args, ret] = sig.split(' -> ');
+  const r = scriptType(ret ?? '');
+  return code(`${prefix}${f}(${scriptType(args)})${r ? ' -> ' + r : ''}`);
+}
+const modulesDriving = (component) => modules.filter((m) => (m.components ?? []).includes(component));
+// The handle spelling: `apply_impulse(float, float)`, the node argument
+// bound by the handle itself.
+function handleSignatureOf(m, f) {
   const sig = m.signatures?.[f];
   if (!sig) return code(f);
   const [args, ret] = sig.split(' -> ');
+  const rest = splitTop(args.startsWith('(') ? args.slice(1, -1) : args).slice(1).map(scriptType).join(', ');
   const r = scriptType(ret ?? '');
-  return code(`${f}(${scriptType(args)})${r ? ' -> ' + r : ''}`);
+  return code(`${f}(${rest})${r ? ' -> ' + r : ''}`);
 }
-const modulesDriving = (component) => modules.filter((m) => (m.components ?? []).includes(component));
 const frontMatter = (title, extra = {}) =>
   [
     '---',
@@ -171,9 +181,19 @@ for (const name of Object.keys(components).sort()) {
   const driving = modulesDriving(name);
   if (driving.length) {
     lines.push('## Script functions', '');
+    lines.push(
+      `Methods of ${code('node.' + name)}, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has ${code('get()')}, ${code('set(table)')}, ${code('has()')} and ${code('remove()')}.`,
+      '',
+    );
     for (const m of driving) {
-      lines.push(`From [${code(m.name)}](../modules/${m.name}.md), called as ${code(m.name + '::function(...)')}:`, '');
-      lines.push(...m.functions.map((f) => `- ${signatureOf(m, f)}`), '');
+      const bound = m.functions.filter((f) => /^\(?NodeId\b/.test(m.signatures?.[f] ?? ''));
+      const free = m.functions.filter((f) => !bound.includes(f));
+      lines.push(`From [${code(m.name)}](../modules/${m.name}.md):`, '');
+      lines.push(...bound.map((f) => `- ${handleSignatureOf(m, f)}`));
+      if (free.length) {
+        lines.push('', `Module-level, not on the handle:`, '', ...free.map((f) => `- ${signatureOf(m, f, m.name + '::')}`));
+      }
+      lines.push('');
     }
   }
   write(`components/${name}.md`, lines);

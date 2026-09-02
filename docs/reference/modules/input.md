@@ -9,25 +9,27 @@ custom_edit_url: null
 
 ## Functions
 
-- `dropped_files`
-- `gamepad_axis`
-- `gamepad_down`
-- `gamepad_just_pressed`
-- `gamepad_just_released`
-- `gamepad_name`
-- `gamepads`
-- `is_down`
-- `is_mouse_down`
-- `just_pressed`
-- `just_released`
-- `mouse_delta`
-- `mouse_just_pressed`
-- `mouse_just_released`
-- `mouse_position`
-- `scroll_delta`
-- `touches`
-- `touches_ended`
-- `touches_started`
+Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+
+- `dropped_files() -> any`
+- `gamepad_axis(int, string) -> float`
+- `gamepad_down(int, string) -> bool`
+- `gamepad_just_pressed(int, string) -> bool`
+- `gamepad_just_released(int, string) -> bool`
+- `gamepad_name(int) -> string`
+- `gamepads() -> any`
+- `is_down(string) -> bool`
+- `is_mouse_down(int) -> bool`
+- `just_pressed(string) -> bool`
+- `just_released(string) -> bool`
+- `mouse_delta() -> float, float`
+- `mouse_just_pressed(int) -> bool`
+- `mouse_just_released(int) -> bool`
+- `mouse_position() -> float, float`
+- `scroll_delta() -> float, float`
+- `touches() -> any`
+- `touches_ended() -> any`
+- `touches_started() -> any`
 
 ## Constants
 

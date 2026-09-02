@@ -65,6 +65,21 @@ that returns several values returns a tuple — `let (text, changed) =
 ui::text_field(...)` — while a vector is one value with fields:
 `this.node.position().y`.
 
+Each component a node can carry is also a field on the node, and that field
+is a handle whose methods are the driving module's functions with the node
+filled in: `this.node.body2d.apply_impulse(x, y)` is
+`physics2d::apply_impulse(this.node, x, y)`. Every handle has `get()`,
+`set(table)`, `has()` and `remove()` too. The [component
+reference](/docs/reference/components) lists the methods per component.
+
+```rust
+let body = this.node.body2d;
+body.apply_impulse(0.0, 12.0);
+if body.linear_velocity().0 > 5.0 {
+    body.set_linear_velocity(5.0, 0.0);
+}
+```
+
 Tables are objects, `#{ kind: "ball", radius: 0.5 }`; lists are `[1, 2]`;
 nothing is `()`. Integers and floats never mix, so anything a binding takes
 as a float is written `0.0`.

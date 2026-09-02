@@ -7,16 +7,20 @@ custom_edit_url: null
 
 8 functions, 5 constants. Scripts reach it as `physics3d::`.
 
+Acts on [`body3d`](../components/body3d.md), [`collider3d`](../components/collider3d.md).
+
 ## Functions
 
-- `add_ball_collider`
-- `add_body`
-- `add_cuboid_collider`
-- `apply_impulse`
-- `linear_velocity`
-- `overlaps`
-- `set_gravity`
-- `set_linear_velocity`
+Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+
+- `add_ball_collider(node, float)`
+- `add_body(node, string)`
+- `add_cuboid_collider(node, float, float, float)`
+- `apply_impulse(node, float, float, float)`
+- `linear_velocity(node) -> float, float, float`
+- `overlaps(node) -> [node]`
+- `set_gravity(float, float, float)`
+- `set_linear_velocity(node, float, float, float)`
 
 ## Constants
 

@@ -25,7 +25,7 @@ Every component, asset type and script module in the engine, read from a booted 
 | [`modifier2d`](./components/modifier2d.md) | `2d` · `animation` | 5 |
 | [`polygon`](./components/polygon.md) | `2d` · `render` · `animation` | 5 |
 | [`shape2d`](./components/shape2d.md) | `2d` · `render` | 8 |
-| [`sprite`](./components/sprite.md) | `2d` · `render` | 9 |
+| [`sprite`](./components/sprite.md) | `2d` · `render` | 10 |
 | [`tilemap`](./components/tilemap.md) | `2d` · `render` | 3 |
 
 ### 3D
@@ -69,7 +69,7 @@ Every component, asset type and script module in the engine, read from a booted 
 | --- | --- | --- |
 | [`animation_clip`](./assets/animation_clip.md) | `animations/` | `animation.library` |
 | [`heightfield`](./assets/heightfield.md) | `terrain/` | `collider3d.heightfield` |
-| [`material`](./assets/material.md) | `materials/` | — |
+| [`material`](./assets/material.md) | `materials/` | `sprite.material` |
 | [`mesh`](./assets/mesh.md) | `models/` | `collider3d.mesh`, `mesh.source`, `polygon.mesh`, `shape2d.mesh` |
 | [`tileset`](./assets/tileset.md) | `tilesets/` | `tilemap.tileset` |
 
@@ -96,7 +96,7 @@ Every component, asset type and script module in the engine, read from a booted 
 | [`render`](./modules/render.md) | 33 | 0 |
 | [`rng`](./modules/rng.md) | 4 | 0 |
 | [`scene`](./modules/scene.md) | 12 | 0 |
-| [`script`](./modules/script.md) | 2 | 0 |
+| [`script`](./modules/script.md) | 3 | 0 |
 | [`skeleton`](./modules/skeleton.md) | 3 | 0 |
 | [`task`](./modules/task.md) | 1 | 0 |
 | [`toml`](./modules/toml.md) | 2 | 0 |

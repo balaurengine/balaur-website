@@ -5,7 +5,7 @@ custom_edit_url: null
 
 # `material`
 
-Files live in `materials/`. Used by no component property yet.
+Files live in `materials/`. Used by [`sprite`](../components/sprite.md) · `material`.
 
 A shader and the values it draws with. `shader` names a `.wesl` file
 (project-relative); `[features]` are the `@if` flags that pick a variant when

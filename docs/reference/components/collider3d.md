@@ -27,3 +27,21 @@ In a scene, `collider3d` is the node key that applies it. From a script, the [`n
 | `sensor` | bool | `false` | Detects overlaps without colliding: bodies pass through and are reported |
 
 Asset types this component references: [`heightfield`](../assets/heightfield.md), [`mesh`](../assets/mesh.md).
+
+## Script functions
+
+Methods of `node.collider3d`, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+
+From [`physics3d`](../modules/physics3d.md):
+
+- `add_ball_collider(float)`
+- `add_body(string)`
+- `add_cuboid_collider(float, float, float)`
+- `apply_impulse(float, float, float)`
+- `linear_velocity() -> float, float, float`
+- `overlaps() -> [node]`
+- `set_linear_velocity(float, float, float)`
+
+Module-level, not on the handle:
+
+- `physics3d::set_gravity(float, float, float)`

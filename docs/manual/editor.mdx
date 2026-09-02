@@ -48,6 +48,14 @@ their locals, with continue and step over / into / out on `F5`, `F10`,
 
 ![The Script persona with the Debugger dock open](/img/editor/dock_debugger.png)
 
+A save that does not compile is reported rather than assumed: the Output
+dock gets the compiler's own diagnostic — file, line, column and caret —
+and the previously compiled code keeps running. Because Rune resolves
+module paths at compile time, a misspelled engine call (`input::just_pressd`
+below) is caught on save, not when the line finally runs.
+
+![A save that did not compile, reported in the Output dock](/img/editor/save_error.png)
+
 **Animate.** The timeline's lanes are the selected clip's tracks, the ruler
 scrubs the node's own player, and preview goes through the engine's parser,
 so what the editor shows is what ships. A clip lives inline in the scene or

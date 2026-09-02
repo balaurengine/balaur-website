@@ -11,6 +11,8 @@ Asset references resolve to one of the [asset types](/docs/reference/assets).
 
 ## Functions
 
+Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+
 - `directory`
 - `duplicate`
 - `exists`
