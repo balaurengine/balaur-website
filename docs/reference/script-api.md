@@ -18,19 +18,25 @@ cannot drift from what scripts actually see.
 | [`animation`](#animation) | 14 | 0 | every language |
 | [`assets`](#assets) | 6 | 0 | every language |
 | [`audio`](#audio) | 8 | 0 | every language |
-| [`engine`](#engine) | 6 | 0 | every language |
+| [`debugger`](#debugger) | 6 | 4 | every language |
+| [`engine`](#engine) | 7 | 0 | every language |
 | [`fs`](#fs) | 4 | 0 | every language |
 | [`gamend`](#gamend) | 9 | 0 | every language |
 | [`http`](#http) | 1 | 0 | every language |
 | [`input`](#input) | 19 | 190 | every language |
 | [`json`](#json) | 2 | 0 | every language |
 | [`log`](#log) | 5 | 0 | every language |
-| [`node`](#node) | 29 | 0 | every language |
-| [`physics`](#physics) | 13 | 5 | every language |
+| [`math`](#math) | 24 | 3 | every language |
+| [`node`](#node) | 30 | 0 | every language |
+| [`physics`](#physics) | 5 | 0 | every language |
 | [`physics2d`](#physics2d) | 10 | 5 | every language |
-| [`render`](#render) | 31 | 0 | every language |
+| [`physics3d`](#physics3d) | 8 | 5 | every language |
+| [`render`](#render) | 32 | 0 | every language |
 | [`rng`](#rng) | 4 | 0 | every language |
-| [`scene`](#scene) | 7 | 0 | every language |
+| [`scene`](#scene) | 12 | 0 | every language |
+| [`script`](#script) | 2 | 0 | every language |
+| [`skeleton`](#skeleton) | 3 | 0 | every language |
+| [`task`](#task) | 1 | 0 | every language |
 | [`toml`](#toml) | 2 | 0 | every language |
 | [`ui`](#ui) | 39 | 14 | every language |
 | [`websocket`](#websocket) | 3 | 0 | every language |
@@ -47,9 +53,22 @@ cannot drift from what scripts actually see.
 
 **Functions:** `is_playing`, `play`, `play_on`, `set_pitch`, `set_volume`, `stop`, `stop_all`, `stop_on`
 
+## `debugger`
+
+**Functions:** `breakpoints`, `paused`, `resume`, `scope`, `set_breakpoints`, `set_scope`
+
+**Constants** (4):
+
+| Name | Value |
+| --- | --- |
+| `CONTINUE` | `continue` |
+| `STEP_INTO` | `into` |
+| `STEP_OUT` | `out` |
+| `STEP_OVER` | `over` |
+
 ## `engine`
 
-**Functions:** `args`, `delta`, `quit`, `reload_script`, `time`, `user_data_dir`
+**Functions:** `args`, `delta`, `quit`, `reload_script`, `tick`, `time`, `user_data_dir`
 
 ## `fs`
 
@@ -106,23 +125,25 @@ cannot drift from what scripts actually see.
 
 **Functions:** `clear`, `error`, `info`, `recent`, `warn`
 
-## `node`
+## `math`
 
-**Functions:** `add_child`, `attach_script`, `call`, `children`, `component_names`, `get_component`, `get_node`, `global_position`, `global_rotation_euler`, `global_scale`, `has_component`, `is_valid`, `name`, `parent`, `path`, `position`, `queue_free`, `remove_component`, `rotation_degrees`, `rotation_euler`, `scale`, `script_path`, `set_component`, `set_name`, `set_position`, `set_rotation_degrees`, `set_rotation_euler`, `set_scale`, `translate`
+**Functions:** `abs`, `acos`, `asin`, `atan`, `atan2`, `ceil`, `clamp`, `cos`, `cosh`, `deg`, `exp`, `floor`, `log`, `log10`, `max`, `min`, `pow`, `rad`, `round`, `sin`, `sinh`, `sqrt`, `tan`, `tanh`
 
-## `physics`
-
-**Functions:** `add_ball_collider`, `add_body`, `add_cuboid_collider`, `apply_impulse`, `clear`, `is_paused`, `linear_velocity`, `overlaps`, `set_gravity`, `set_linear_velocity`, `set_paused`, `set_sleeping_allowed`, `sleeping_allowed`
-
-**Constants** (5):
+**Constants** (3):
 
 | Name | Value |
 | --- | --- |
-| `BODY_DYNAMIC` | `dynamic` |
-| `BODY_KINEMATIC` | `kinematic` |
-| `BODY_STATIC` | `static` |
-| `SHAPE_BALL` | `ball` |
-| `SHAPE_CUBOID` | `cuboid` |
+| `INF` | `inf` |
+| `PI` | `3.141592653589793` |
+| `TAU` | `6.283185307179586` |
+
+## `node`
+
+**Functions:** `add_child`, `attach_script`, `call`, `children`, `component_names`, `get_component`, `get_node`, `global_position`, `global_rotation_euler`, `global_scale`, `has_component`, `is_valid`, `name`, `parent`, `path`, `position`, `queue_free`, `remove_component`, `rotation_degrees`, `rotation_euler`, `scale`, `script_path`, `set_component`, `set_name`, `set_parent`, `set_position`, `set_rotation_degrees`, `set_rotation_euler`, `set_scale`, `translate`
+
+## `physics`
+
+**Functions:** `clear`, `is_paused`, `set_paused`, `set_sleeping_allowed`, `sleeping_allowed`
 
 ## `physics2d`
 
@@ -138,9 +159,23 @@ cannot drift from what scripts actually see.
 | `SHAPE_CIRCLE` | `circle` |
 | `SHAPE_RECT` | `rect` |
 
+## `physics3d`
+
+**Functions:** `add_ball_collider`, `add_body`, `add_cuboid_collider`, `apply_impulse`, `linear_velocity`, `overlaps`, `set_gravity`, `set_linear_velocity`
+
+**Constants** (5):
+
+| Name | Value |
+| --- | --- |
+| `BODY_DYNAMIC` | `dynamic` |
+| `BODY_KINEMATIC` | `kinematic` |
+| `BODY_STATIC` | `static` |
+| `SHAPE_BALL` | `ball` |
+| `SHAPE_CUBOID` | `cuboid` |
+
 ## `render`
 
-**Functions:** `camera_2d`, `camera_matrix`, `camera_pose`, `color`, `draw_line`, `draw_line_2d`, `mouse_ray`, `mouse_world_2d`, `screenshot`, `set_app_icon`, `set_background`, `set_ball`, `set_camera`, `set_camera_2d`, `set_camera_input`, `set_circle`, `set_color`, `set_cuboid`, `set_cursor_grab`, `set_cursor_hidden`, `set_fullscreen`, `set_grid`, `set_grid_colors`, `set_rect`, `set_sprite`, `set_sprite_frame`, `set_sprite_sheet`, `set_sprite_size`, `shape`, `shape2d`, `sprite`
+**Functions:** `camera_2d`, `camera_matrix`, `camera_pose`, `color`, `draw_line`, `draw_line_2d`, `mouse_ray`, `mouse_world_2d`, `screenshot`, `set_app_icon`, `set_background`, `set_ball`, `set_camera`, `set_camera_2d`, `set_camera_input`, `set_circle`, `set_color`, `set_cuboid`, `set_cursor_grab`, `set_cursor_hidden`, `set_fullscreen`, `set_grid`, `set_grid_colors`, `set_rect`, `set_sprite`, `set_sprite_frame`, `set_sprite_sheet`, `set_sprite_size`, `shape2d`, `shape3d`, `sprite`, `texture_size`
 
 ## `rng`
 
@@ -148,7 +183,19 @@ cannot drift from what scripts actually see.
 
 ## `scene`
 
-**Functions:** `component_schema`, `component_types`, `get_node`, `instantiate`, `root`, `source`, `spawn`
+**Functions:** `apply_preset`, `component_schema`, `component_tags`, `component_types`, `get_node`, `instantiate`, `preset_info`, `presets`, `root`, `source`, `spawn`, `unmet_expectations`
+
+## `script`
+
+**Functions:** `attempt`, `require`
+
+## `skeleton`
+
+**Functions:** `apply_rest`, `bones`, `overwrite_rest`
+
+## `task`
+
+**Functions:** `wait`
 
 ## `toml`
 

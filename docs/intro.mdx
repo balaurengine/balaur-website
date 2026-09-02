@@ -25,8 +25,10 @@ Two features are load-bearing and non-negotiable:
   in milliseconds, preserving all live state. It is automatic, always on in
   dev mode, and provided by the core, not by frameworks or per-game glue.
 - **Cross-platform determinism.** Identical inputs produce bit-for-bit
-  identical simulations across platforms. Every subsystem decision is vetted
-  against this; see [Determinism](./manual/determinism.mdx).
+  identical simulations across platforms, and the engine can prove it: a
+  fixed 60 Hz step, a digest per tick, session recording and replay. Every
+  subsystem decision is vetted against this; see
+  [Determinism](./manual/determinism.mdx).
 
 ## A script
 
@@ -51,17 +53,17 @@ return Spinner
 
 ## A scene
 
-Scenes are declarative TOML. Plugins extend the vocabulary: `body` and
-`collider` come from the physics plugin, `shape` from the rendering plugin.
+Scenes are declarative TOML. Plugins extend the vocabulary: `body3d` and
+`collider3d` come from the physics plugin, `shape3d` from the rendering plugin.
 
 ```toml
 [[nodes]]
 name = "Ball"
 position = [0.0, 6.0, 0.0]
 script = "scripts/ball.luau"
-body = "dynamic"
-collider = { kind = "ball", radius = 0.5 }
-shape = { kind = "ball", radius = 0.5 }
+body3d = "dynamic"
+collider3d = { kind = "ball", radius = 0.5 }
+shape3d = { kind = "ball", radius = 0.5 }
 ```
 
 ## What is in the engine today
@@ -75,9 +77,12 @@ shape = { kind = "ball", radius = 0.5 }
   on a fixed 60 Hz accumulator.
 - Rendering through kiss3d/wgpu in three run modes — windowed, offscreen
   (GPU without a window, for screenshots and visual CI), and fully headless
-  for tests and servers — all computing the same simulation.
+  for tests and servers — all computing the same simulation. 3D and 2D
+  shapes, sprites, tile maps, particles, skinned polygons and glTF meshes.
 - Animation: clip assets with transform, component-property, and method
-  tracks, plus script-driven tweens — all on a fixed timestep.
+  tracks, plus script-driven tweens — all on a fixed timestep. Skeletons in
+  2D and 3D: bones with rest poses, skinned polygons and meshes, glTF import,
+  `look_at` and two-bone IK modifiers.
 - A shared-asset layer: content by reference or inline, one rule for every
   asset type a plugin registers.
 - Networking: HTTP and websockets for scripts, with handler methods or
@@ -91,10 +96,10 @@ shape = { kind = "ball", radius = 0.5 }
 - A plugin system where the same source ships as a linked-in module or a
   run-time extension loaded from a shared library.
 - An editor that is a regular Balaur project: scene tree, inspector, viewport
-  with gizmos, script editing with hot reload, play-in-editor, and a keyframe
-  timeline.
-- Export to precompiled, reproducible packs, and fused single-file executables
-  per platform.
+  with gizmos, undo, script editing with hot reload and a debugger,
+  play-in-editor, a keyframe timeline, and bone and polygon tools.
+- Export to precompiled, reproducible packs — scripts, scenes, TOML and
+  binary assets — and fused single-file executables per platform.
 - A headless benchmark suite that reports results as a share of one 60 fps
   frame and compares both script languages on the same scenarios.
 

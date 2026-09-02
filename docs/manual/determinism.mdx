@@ -43,8 +43,35 @@ has fixed evaluation order. The known hazards are addressed directly:
 | `math.random` seeded from entropy | Rebound to an engine-owned seeded PCG32 stream, also exposed as the `rng` module (`rng.seed/random/range/int`) |
 | The `^` operator calls the C `pow` inside the VM | Simulation code must call `math.pow` instead |
 | `pairs()` order on tables with table/userdata keys depends on pointer values | Rule: simulation-affecting iteration uses arrays or string/number keys |
-| Wall-clock time leaking into simulation | Physics is fixed-step; a `fixed_update` callback with a constant dt is planned |
+| Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, which runs on the 60 Hz step with a constant dt; `update(dt)` is for presentation. Use `engine.tick()`, not `os.clock()` |
 | Luau native codegen (JIT) may change float behavior | Not enabled in deterministic builds |
+
+## Checking, recording, replaying
+
+Pin the step and write a hash of the world each tick:
+
+```bash
+balaur run my-game --fixed-tick --trace-digest run-a.txt
+```
+
+Two runs that differ parted at the first differing line; run it on two
+machines and `diff` the files. That is the whole cross-platform check, and
+CI does it for every example on Linux, macOS and Windows.
+
+A recorded session stores input, not state — minutes of play is kilobytes —
+and replaying it re-checks every tick:
+
+```bash
+balaur run my-game --fixed-tick --record session.blr
+balaur replay session.blr --verify          # stops at the first tick that disagrees
+balaur replay session.blr --entries-at 25   # that tick, one digest per node and component
+```
+
+Network replies are recorded too, and a replay never touches the network.
+Rollback works the same way in the other direction: a snapshot restores a
+tick and the deterministic simulation re-runs the same inputs forward. The
+engine's [determinism guide](https://github.com/balaurengine/balaur/blob/main/docs/DETERMINISM.md)
+has the rules of thumb and the hazards that remain your problem.
 
 ## Verified, not asserted
 

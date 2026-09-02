@@ -19,36 +19,98 @@ cargo run -p balaur_cli --features window -- edit my-game
 arguments. The editor parses the game's scene TOML into a document model and
 mirrors it as a real node subtree, so the viewport shows the actual scene and
 physics builds the actual bodies (paused until play). Edits are written back
-to the scene file as TOML.
+to the scene file as TOML, and every edit is undoable (`Ctrl+Z` /
+`Ctrl+Shift+Z`).
 
 **Play-in-editor** attaches the game's scripts to the mirrored nodes and
 unpauses: the actual game code runs against the actual scene inside the
 editor. Stop rebuilds the mirror from the document.
 
-## What it has today
+## Personas
 
-- **Scene tree** with connector rails, collapse arrows, colored type icons,
-  and a right-click context menu per row (add child, attach script,
-  duplicate, delete).
-- **Inspector** generated from the component registry: every registered
-  component — including third-party plugin components — is addable and
-  editable with no editor changes.
-- **Viewport gizmos.** A bounding-box gizmo: dragging a face translates in
-  that face's plane (with snap), face-center handles scale along the normal,
-  corner brackets scale uniformly, and a three-ring rotation ball rotates.
-- **2D mode.** The editor detects a 2D scene from its components and switches
-  automatically: 2D grid, pan/zoom camera, a 2D selection gizmo, world-space
-  click-picking, and collider overlays.
-- **Script editing.** Buffers persist per file; save writes to the game
-  project and hot reloads the code — live, while playing. The buffer is
-  Luau-syntax-highlighted.
-- **Animation.** The Animate persona edits the engine's own clips — the
-  timeline's lanes are the clip's tracks, the ruler scrubs the node's actual
-  player, and preview parses through the engine's parser, so what the editor
-  previews is what ships. A clip is held inline in the scene or in its own
-  file, and *Save as file* / *Make inline* convert between the two exactly.
-- **Command palette** as the single overlay, dark and light themes, and an
-  output dock over the engine's log ring buffer.
+The top bar switches between five personas. Each arranges the same panels —
+node tree, viewport or code, docks, inspector — around one job.
+
+**Scene.** The tree, the viewport with its gizmos, and the inspector
+generated from the component registry: every registered component —
+third-party plugin components included — is addable and editable with no
+editor changes. A 2D scene is detected from its components and gets a 2D
+grid, a pan-and-zoom camera, a 2D gizmo, click-picking and collider overlays.
+
+![The Scene persona, editing examples/rig](/img/editor/persona_scene.png)
+
+**Script.** One buffer per file with Luau highlighting, the hooks the file
+declares, and the events the node receives. Save writes to the project and
+hot reloads the code — live, while playing. The Debugger dock sets
+breakpoints in the gutter and steps with `F5`, `F10`, `F11` and `Shift+F11`.
+
+![The Script persona with the Debugger dock open](/img/editor/dock_debugger.png)
+
+**Animate.** The timeline's lanes are the selected clip's tracks, the ruler
+scrubs the node's own player, and preview goes through the engine's parser,
+so what the editor shows is what ships. A clip lives inline in the scene or
+in its own file; *Save as file* and *Make inline* convert between the two
+exactly. Keying a bone writes a rotation track on its character's clip, and a
+skinned polygon deforms as the clip plays.
+
+![The Animate persona, a skinned leg mid-clip](/img/editor/persona_animate.png)
+
+**Physics** shows bodies and colliders with their overlays; **Interface**
+lays widgets out over the safe area.
+
+![The Physics persona](/img/editor/persona_physics.png)
+
+![The Interface persona](/img/editor/persona_interface.png)
+
+## Tools
+
+The strip beside the viewport holds Select, Move, Rotate and Scale, then two
+rig tools.
+
+**Rig bone** draws bones as diamonds in 2D and octahedra in 3D. Click one to
+select it, drag to pose it, and *+ bone* grows a child from the selection.
+The inspector's Skeleton section has the two rest-pose verbs: *reset* returns
+the rig to its rest pose, *overwrite* makes the current pose the rest pose.
+
+![The bone tool on a 2D rig](/img/editor/tool_bone.png)
+
+![The bone tool on an imported 3D rig](/img/editor/view3d_bone_tool.png)
+
+**Polygon** edits a `polygon` component's mesh in four modes: *Points* places
+outline and internal vertices, *Polygons* draws the triangulation by hand,
+*UV* places the points over the texture, and *Weights* paints bone influence
+with a brush. The polygon stays skinned while you edit it.
+
+![Points mode](/img/editor/tool_polygon_points.png)
+
+![UV mode, over the texture](/img/editor/tool_polygon_uv.png)
+
+![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.png)
+
+## Docks, palette, themes
+
+Four docks sit under the viewport: **Output** over the engine's log ring
+buffer, with level filters; **Assets**; **Timeline**; **Debugger**. The
+command palette is the single overlay — nodes, commands and personas — and
+the editor has a dark and a light theme.
+
+![The command palette](/img/editor/palette.png)
+
+![The light theme](/img/editor/theme_light.png)
+
+## Driving it from the command line
+
+The editor starts in any state you name, which is how it is tested and how
+every screenshot on this page was taken:
+
+```bash
+balaur edit examples/rig --offscreen --frames 100 \
+  --state "anim,select:Thigh,tool:bone,shot=thigh.png"
+```
+
+`--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
+`ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`, `palette`,
+`light`, `play`, and `shot=<file>` to capture a frame.
 
 ## Why it is built this way
 

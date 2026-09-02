@@ -48,6 +48,8 @@ simulation.
 | `export <path>` | Compile scripts to bytecode and bundle a `.bpak` pack; `--target <platform>` produces a fused executable |
 | `play <pack>` | Run a pack, with no compiler and no watcher |
 | `edit <path>` | Open the project in the editor (requires `--features window`) |
+| `import <file.glb> --project <path>` | Bring a glTF model in: the file, its joints as `bone3d` nodes, its animations as clips |
+| `replay <session>` | Play back a session recorded with `run --record`; `--verify` re-checks every tick |
 
 Useful dev flags: `--frames N` stops after N frames; `--headless` and
 `--offscreen` select the run mode. Screenshots are taken from scripts —
@@ -68,7 +70,7 @@ my-game/
 
 ## The examples
 
-Three example projects ship in the repository:
+The example projects ship in the repository:
 
 ```bash
 # 3D: a spinning cube, a bouncing ball, physics and a HUD label
@@ -81,6 +83,12 @@ cargo run -p balaur_cli --features window -- run examples/hello_rune
 # 2D: a small slingshot game — 2D shapes, 2D physics, widgets
 cargo run -p balaur_cli --features window -- run examples/angrynerds
 cargo run -p balaur_cli --features window -- edit examples/angrynerds
+
+# A 2D skeleton: a skinned leg on a clip, an arm on two-bone IK
+cargo run -p balaur_cli --features window -- edit examples/rig
+
+# A 3D rig imported from a .glb
+cargo run -p balaur_cli --features window -- edit examples/rig3d
 ```
 
 To see hot reload, edit `examples/hello/scripts/spinner.luau` while `run` is

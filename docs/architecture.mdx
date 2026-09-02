@@ -58,10 +58,13 @@ later live inside systems without changing this facade.
 propagation, and recursive free are core systems; plugins hang their
 components off the same entities.
 
-**Fixed frame schedule.** `First → PreUpdate (reload pump) → Update (scripts)
-→ PostUpdate (physics, audio) → SceneSync (transform propagation) → Render →
-Last (deferred destruction)`. Structural changes requested by scripts are
-deferred to `Last`, so iteration is never invalidated mid-frame.
+**Fixed frame schedule.** `First → PreUpdate (reload pump) → Update (scripts,
+animation) → FixedUpdate (fixed_update, physics) → PostUpdate (audio) →
+SceneSync (transform propagation) → Render → Last (deferred destruction)`.
+`FixedUpdate` drains one app-owned accumulator into whole 60 Hz steps, zero
+to four per frame, so simulation never sees the measured frame time.
+Structural changes requested by scripts are deferred to `Last`, so iteration
+is never invalidated mid-frame.
 
 **The scripting seam.** `balaur_script` is traits and a neutral `Value` type,
 with no language in it. A subsystem declares its bindings once against the
@@ -85,12 +88,12 @@ time — see [Modules and extensions](./manual/extensions.mdx).
 | Crate | Role |
 | --- | --- |
 | `balaur_script` | The scripting seam: traits and a neutral value type, no language and no dependencies |
-| `balaur_core` | ECS world (hecs), scene tree, scheduler, plugin API, pack export |
+| `balaur_core` | ECS world (hecs), scene tree, scheduler, plugin API, skeletons, glTF and mesh assets, digests, replay, snapshots, pack export |
 | `balaur_script_luau` | Luau backend (mlua): host, hot reload, `require`, bytecode packs |
 | `balaur_script_rune` | Rune backend |
 | `balaur_physics` | Rapier plugin; the reference example for wrapping a Rust crate for scripting |
-| `balaur_render` | Renderable components + `render` module; kiss3d/wgpu backend behind a feature flag |
-| `balaur_anim` | Animation clips, the pure sampler, tweens, easing; the `animation` module |
+| `balaur_render` | Renderable components (shapes, sprites, skinned polygons, meshes) + `render` module; kiss3d/wgpu backend behind a feature flag |
+| `balaur_anim` | Animation clips, the pure sampler, tweens, easing, rig modifiers; the `animation` module |
 | `balaur_audio` | rodio-backed `audio` module |
 | `balaur_input` | Backend-agnostic input snapshot + `input` module |
 | `balaur_net` | `http` and `websocket` for scripts, delivered into the simulation per tick |
@@ -98,7 +101,7 @@ time — see [Modules and extensions](./manual/extensions.mdx).
 | `balaur_plugin` | The `Plugin` trait a module or run-time extension implements, plus the loader |
 | `balaur_ui` | Immediate-mode egui API (`ui` module): panels, widgets, script-defined themes |
 | `balaur` | Batteries-included facade: `standard_app`, `boot_project`, `boot_pack` |
-| `balaur_cli` | The `balaur` binary: `new`, `run`, `export`, `play`, `edit` |
+| `balaur_cli` | The `balaur` binary: `new`, `run`, `export`, `play`, `edit`, `import`, `replay` |
 | `balaur_bench` | Headless benchmarks: where a frame's time goes, and what each language costs |
 
 The per-crate detail — dependencies and public surface — is generated from

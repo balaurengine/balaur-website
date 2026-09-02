@@ -6,9 +6,12 @@ sidebar_position: 2
 
 ## The model
 
-A script declares lifecycle functions — `init`, `update(dt)`, `draw_ui`,
-`on_free`, `hot_reload` — and gets one instance per attached node, with the
-owning node available on the instance.
+A script declares lifecycle functions — `init`, `update(dt)`,
+`fixed_update(dt)`, `draw_ui`, `on_free`, `hot_reload` — and gets one
+instance per attached node, with the owning node available on the instance.
+`update` runs once per frame with the measured frame time; `fixed_update`
+runs on the fixed 60 Hz step, before physics, and is where simulation
+belongs.
 
 In Luau, a `.luau` file returns a class table; each instance is a table whose
 metatable indexes it, and the node is `self.node`. In Rune, a `.rn` file
@@ -24,14 +27,15 @@ order, so a mixed project stays as deterministic as a single-language one.
 
 Scripts see the same modules in both languages, because subsystems declare
 their bindings once against a language-neutral seam: `node`, `engine`,
-`scene`, `log`, `input`, `rng`, `physics`, `physics2d`, `render`, `audio`,
-`ui`, `animation`, `assets`, `http`, `websocket`, `gamend`, `fs`, `toml`,
-and `json`. The complete surface — every function and constant — is in the
+`scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`,
+`physics3d`, `render`, `audio`, `ui`, `animation`, `skeleton`, `assets`,
+`http`, `websocket`, `gamend`, `task`, `debugger`, `fs`, `toml`, and
+`json`. The complete surface — every function and constant — is in the
 [script API reference](../reference/script-api.md), which is generated from
 a booted engine so it cannot drift.
 
 Values a binding accepts are named rather than spelled: `input.KEY_SPACE`,
-`input.MOUSE_LEFT`, `physics.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`.
+`input.MOUSE_LEFT`, `physics3d.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`.
 
 Some calls return several values — `local text, changed = ui.text_field(...)`
 — while a vector is one value and arrives as a table, indexed or unpacked:
@@ -77,6 +81,20 @@ optional `hot_reload` hook lets scripts migrate state shapes.
 Rune compiles to an immutable unit, so the new unit replaces the old one;
 instances keep their state objects, and the next call resolves against the
 new code.
+
+## Debugging
+
+Luau scripts can be paused on a breakpoint and stepped. The editor's Script
+persona sets breakpoints in the gutter and steps with `F5` (run), `F10`
+(over), `F11` (into) and `Shift+F11` (out); the Debugger dock shows the call
+frames and their named locals. The same controls are a script module, so a
+tool can drive them:
+
+```lua
+debugger.set_breakpoints("scripts/ball.luau", { 12, 30 })
+local pause = debugger.paused()          -- nil, or the frame the VM stopped in
+debugger.resume(debugger.STEP_OVER)      -- CONTINUE | STEP_OVER | STEP_INTO | STEP_OUT
+```
 
 ## Determinism in scripts
 

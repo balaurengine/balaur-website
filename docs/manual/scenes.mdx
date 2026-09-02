@@ -12,11 +12,12 @@ transform propagation, and recursive free are core systems. Plugins hang
 their own components off the same entities, so "node" is an API surface, not
 a data structure with a cost.
 
-Scripts reach the tree through the node API — 28 operations declared once in
+Scripts reach the tree through the node API — 30 operations declared once in
 the core and available in every language: `get_node`, `parent`, `children`,
-`add_child`, `queue_free`, `position` / `set_position`, `rotation_euler`,
-`scale`, `translate`, `attach_script`, the component operations, and the
-rest. The full list is in the
+`add_child`, `set_parent` (which keeps the node where it is in the world),
+`queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
+`translate`, `attach_script`, the component operations, and the rest. Node
+paths accept `..`, so `../Target` names a sibling. The full list is in the
 [script API reference](../reference/script-api.md).
 
 Structural changes requested by scripts (`queue_free`) are deferred to the
@@ -35,9 +36,9 @@ name = "Ball"
 parent = "n_world"
 position = [0, 6, 0]
 script = "scripts/ball.luau"
-body = "dynamic"
-collider = { kind = "ball", radius = 0.5 }
-shape = { kind = "ball", radius = 0.5 }
+body3d = "dynamic"
+collider3d = { kind = "ball", radius = 0.5 }
+shape3d = { kind = "ball", radius = 0.5 }
 ```
 
 Scene keys are applied in plugin registration order, which is deterministic.
@@ -57,7 +58,7 @@ than at the first inspector row.
 One registration buys three things at once:
 
 - **The scene-file key.** `collider = { kind = "ball", radius = 0.5 }` works
-  because the physics plugin registered `collider`.
+  because the physics plugin registered `collider3d`.
 - **The runtime API.** `node:set_component`, `get_component`,
   `has_component`, `remove_component`, `component_names`, plus
   `scene.component_types()` and `scene.component_schema(name)` for
@@ -70,12 +71,18 @@ The components registered by the standard plugins:
 
 | Component | Plugin | Purpose |
 | --- | --- | --- |
-| `body`, `collider` | physics | 3D rigid body and collider (rapier3d) |
+| `body3d`, `collider3d` | physics | 3D rigid body and collider (rapier3d) |
 | `body2d`, `collider2d` | physics | 2D rigid body and collider (rapier2d) |
-| `shape`, `shape2d` | render | Renderable 3D / 2D shape |
-| `color` | render | Node color, as channel floats or `#rrggbb` / `#rrggbbaa` |
-| `widget` | ui | HUD element (label / button / panel) anchored to the screen |
+| `shape3d`, `shape2d` | render | Renderable 3D / 2D shape, with a `color` |
+| `sprite`, `tilemap`, `particles` | render | Textured 2D quad (with sheets), a tile grid over a tileset, a particle emitter |
+| `mesh` | render | An OBJ or glTF mesh, optionally skinned to a `skeleton` |
+| `polygon` | render | A textured 2D polygon, GPU-skinned to a rig |
+| `camera` | render | The 2D or 3D camera |
+| `bone2d`, `bone3d` | core | A rest pose; a node with one is a bone |
+| `modifier2d` | anim | `look_at` or `two_bone_ik` on a rig, run after the clip |
 | `animation` | anim | A clip library (by reference or inline) and an `autoplay` clip |
+| `sound` | audio | A sound file with volume and looping |
+| `widget` | ui | HUD element (label / button / panel) anchored to the screen |
 
 There is deliberately no class hierarchy behind any of this: no `Node2D`
 that inherits from `Node`, no `RigidBody` subtype. A node *is* whatever its

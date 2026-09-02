@@ -5,7 +5,7 @@ sidebar_position: 5
 # Physics
 
 Physics is a plugin wrapping [Rapier](https://rapier.rs): rapier3d for the
-`body` / `collider` components, rapier2d for `body2d` / `collider2d`. The two
+`body3d` / `collider3d` components, rapier2d for `body2d` / `collider2d`. The two
 worlds live side by side over the same scene tree, and both are built with
 Rapier's `enhanced-determinism` feature and stepped on a fixed 60 Hz
 accumulator.
@@ -18,8 +18,8 @@ In a scene file:
 [[nodes]]
 name = "Crate"
 position = [0, 3, 0]
-body = "dynamic"                 # dynamic | kinematic | static
-collider = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
+body3d = "dynamic"                 # dynamic | kinematic | static
+collider3d = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
 ```
 
 Colliders take `kind` (`ball` / `cuboid` in 3D, `circle` / `rect` in 2D) with
@@ -28,8 +28,8 @@ the matching dimensions, plus `restitution`, `friction`, and `density`.
 Or from a script, with the same vocabulary:
 
 ```lua
-physics.add_body(self.node, physics.BODY_DYNAMIC)
-physics.add_ball_collider(self.node, 0.5)
+physics3d.add_body(self.node, physics3d.BODY_DYNAMIC)
+physics3d.add_ball_collider(self.node, 0.5)
 
 physics2d.add_body(self.node, physics2d.BODY_DYNAMIC)
 physics2d.add_collider(self.node, { kind = physics2d.SHAPE_RECT, half_extents = { 0.5, 0.5 } })

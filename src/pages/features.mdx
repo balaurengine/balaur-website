@@ -18,7 +18,7 @@ Everything in the engine today. Each item links into the documentation.
   runtime API, and editor support at once. → [Scenes and nodes](/docs/manual/scenes)
 - **Shared assets.** Content by reference or inline — a string is a
   reference, a table is a definition — for every asset type a plugin
-  registers. → [Assets](/docs/manual/assets)
+  registers. → [Assets](/docs/reference/assets)
 - **Headless by default.** Everything runs without a window or GPU: tests,
   servers, CI, and benchmarks measure the engine itself.
 
@@ -45,10 +45,14 @@ Everything in the engine today. Each item links into the documentation.
 - **Animation.** Clip assets with transform, component-property, and method
   tracks; script-driven tweens through the same sampler; twelve easing
   curves; all on a fixed timestep. → [Animation](/docs/manual/animation)
+- **Skeletons.** 2D bones with GPU-skinned textured polygons, 3D bones with
+  skinned meshes imported from glTF, `look_at` and two-bone IK modifiers —
+  all keyed by the same clips. → [Animation](/docs/manual/animation#skeletons-and-skins)
 - **Cross-platform determinism.** Identical inputs produce bit-for-bit
-  identical simulations on every platform: seeded RNG, `libm`
-  transcendentals, ordered collections, replayable input and network
-  snapshots. → [Determinism](/docs/manual/determinism)
+  identical simulations on every platform: a fixed 60 Hz `fixed_update`,
+  seeded RNG, `libm` transcendentals, ordered collections, per-tick digests,
+  session recording and replay, and rollback snapshots.
+  → [Determinism](/docs/manual/determinism)
 
 ## Interface
 
@@ -73,9 +77,10 @@ Everything in the engine today. Each item links into the documentation.
 ## Tooling
 
 - **An editor that is a Balaur project.** Scene tree, generated inspector,
-  viewport gizmos in 3D and 2D, script editing with hot reload,
-  play-in-editor, and a clip timeline — built entirely on the public
-  scripting surface. → [The editor](/docs/manual/editor)
+  viewport gizmos in 3D and 2D, undo, script editing with hot reload and a
+  debugger, play-in-editor, a clip timeline, and bone and polygon tools —
+  built entirely on the public scripting surface.
+  → [The editor](/docs/manual/editor)
 - **Extensions.** The same `Plugin` trait ships linked in behind a cargo
   feature or as a shared library loaded at run time — written in Rust against
   the exact engine build, or in any C-ABI language through a small stable C

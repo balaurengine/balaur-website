@@ -1,6 +1,6 @@
 ---
 title: "Crate graph"
-sidebar_position: 4
+sidebar_position: 5
 sidebar_label: "Crate graph"
 custom_edit_url: null
 ---

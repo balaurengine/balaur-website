@@ -40,7 +40,7 @@ puts the owning node on `self.node`.
 ## Build a scene
 
 Replace `scenes/main.toml` with a ground plane, a ball, and a spinner. Scene
-keys such as `body`, `collider`, and `shape` are components contributed by the
+keys such as `body3d`, `collider3d`, and `shape3d` are components contributed by the
 physics and rendering plugins:
 
 ```toml
@@ -48,22 +48,22 @@ physics and rendering plugins:
 name = "Ground"
 position = [0, -1, 0]
 color = [0.3, 0.55, 0.3]
-body = "static"
-collider = { kind = "cuboid", half_extents = [10, 0.5, 10] }
-shape = { kind = "cuboid", half_extents = [10, 0.5, 10] }
+body3d = "static"
+collider3d = { kind = "cuboid", half_extents = [10, 0.5, 10] }
+shape3d = { kind = "cuboid", half_extents = [10, 0.5, 10] }
 
 [[nodes]]
 name = "Ball"
 position = [0, 6, 0]
 script = "scripts/ball.luau"
-shape = { kind = "ball", radius = 0.5 }
+shape3d = { kind = "ball", radius = 0.5 }
 
 [[nodes]]
 name = "Spinner"
 position = [2.5, 0.5, 0]
 color = [0.2, 0.4, 0.9]
 script = "scripts/spinner.luau"
-shape = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
+shape3d = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
 ```
 
 ## Add physics from a script
@@ -76,8 +76,8 @@ physics in `init`:
 local Ball = {}
 
 function Ball:init()
-    physics.add_body(self.node, physics.BODY_DYNAMIC)
-    physics.add_ball_collider(self.node, 0.5)
+    physics3d.add_body(self.node, physics3d.BODY_DYNAMIC)
+    physics3d.add_ball_collider(self.node, 0.5)
     self.reported = false
 end
 
@@ -122,7 +122,7 @@ return Spinner
 ```
 
 Values a binding accepts are named constants rather than spelled strings:
-`input.KEY_SPACE`, `physics.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`. The full list
+`input.KEY_SPACE`, `physics3d.BODY_DYNAMIC`, `ui.ANCHOR_TOP_LEFT`. The full list
 is in the [script API reference](../reference/script-api.md).
 
 ## Hot reload

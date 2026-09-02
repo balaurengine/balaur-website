@@ -22,7 +22,8 @@ which makes reproducible builds and content-change checks possible.
 
 TOML assets (animation clips and every other registered asset type) are
 bundled too, and resolve by the same references, so a packed run loads them
-exactly as a dev run does.
+exactly as a dev run does. Binary assets — textures, models, audio — ship in
+the same pack, each verified against its SHA-256 when loaded.
 
 Because packed execution is pure interpretation of precompiled bytecode, it
 ships on platforms with JIT/codegen restrictions; CI cross-compiles the

@@ -7,27 +7,31 @@ sidebar_position: 7
 ## Where the engine stands
 
 The core loop is in place: scene tree over an ECS, scripting in Luau and Rune
-with hot reload, 3D and 2D physics, rendering (windowed and headless),
-animation with clip assets and tweens, a shared-asset layer, networking
-(HTTP, websockets, and the Gamend backend), audio, input, UI, run-time
-extensions, a working editor with play-in-editor and a clip timeline,
-deterministic simulation, reproducible pack export, and fused single-file
-executables. CI cross-compiles the headless engine to iOS, Android, and
-WebAssembly on every push. There is no binary release yet; the engine builds
-from source.
+with hot reload and a debugger, 3D and 2D physics, rendering (windowed,
+offscreen and headless), animation with clip assets, tweens and 2D and 3D
+skeletons, glTF import, a shared-asset layer, networking (HTTP, websockets,
+and the Gamend backend), audio, input, UI, run-time extensions, a working
+editor with play-in-editor, undo, a clip timeline and rig tools, a fixed
+60 Hz simulation step with per-tick digests, session recording and replay,
+rollback snapshots, reproducible pack export with binary assets, and fused
+single-file executables. CI cross-compiles the headless engine to iOS,
+Android, and WebAssembly on every push. There is no binary release yet; the
+engine builds from source.
 
 ## Next
 
-1. `--!strict` type checking surfaced in editor diagnostics; palette-driven
-   node search.
-2. Editor: scene saving UX (autosave/undo), multi-scene tabs.
-3. Prefabs/sub-scenes. The asset layer landed, so a prefab is another
+1. Editor plugins: tools, docks and inspector sections registered from a
+   project's own scripts. The editor is already a Balaur project; what
+   remains is the registration seam.
+2. Animation blending — blend trees and state machines composed over the
+   pure sampler — and 3D modifiers to match the 2D `look_at` and
+   `two_bone_ik`.
+3. `--!strict` type checking surfaced in editor diagnostics; palette-driven
+   node search; multi-scene tabs.
+4. Prefabs/sub-scenes. The asset layer landed, so a prefab is another
    registered asset type; what remains is the scene key that instantiates one
    and the rule for overriding properties on the instance.
-4. Binary assets (audio, textures, fonts) in packs, with content hashing —
-   TOML assets already pack and resolve by reference.
-5. `fixed_update` script callback and a fixed-tick mode where `update` sees a
-   constant dt.
+5. GPU skinning for 3D meshes; they are skinned on the CPU today.
 6. Parallel system execution inside the data plane, once profiling demands
    it.
 

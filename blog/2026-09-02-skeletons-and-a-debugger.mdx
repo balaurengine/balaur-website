@@ -1,0 +1,52 @@
+---
+slug: skeletons-and-a-debugger
+title: Skeletons, a debugger, and a fixed step
+authors: [dragos]
+tags: [balaur]
+---
+
+Since the last post the engine gained skeletal animation in 2D and 3D, a
+script debugger, and the pieces that make a deterministic simulation
+something you can check rather than hope for.
+
+{/* truncate */}
+
+## Skeletons and skins
+
+A bone is a node with a rest pose; a skin is a textured polygon whose mesh
+carries bone weights. Nothing else is new: a clip on the character keys its
+bones by path, the same clip files the timeline already edited. The joint
+palette comes from the scene tree, so a headless run computes the same
+deformation as the GPU does and bones stay inside the determinism digest.
+
+![A skinned leg bending under a clip in the Animate persona](/img/editor/persona_animate.png)
+
+The editor grew a bone tool and a polygon tool with Points, Polygons, UV and
+Weights modes. Two modifiers run after the clip every frame: `look_at` aims
+one bone, `two_bone_ik` solves a root–middle–tip chain toward a target.
+
+![Painting weights](/img/editor/tool_polygon_weights.png)
+
+3D rigs come from files: `balaur import model.glb` writes the joint hierarchy
+as a scene with `bone3d` rest poses, the mesh node, and the animations as a
+clip library — all TOML, all editable. The same bone tool and rest-pose
+verbs apply in the 3D viewport.
+
+![An imported column with its three bones](/img/editor/view3d_bone_tool.png)
+
+## A debugger
+
+Luau scripts can be paused on a breakpoint, stepped over, into and out of,
+and inspected frame by frame with named locals, from the editor's Debugger
+dock or through the `debugger` script module.
+
+## A fixed step, and proof
+
+Simulation now runs in `fixed_update(dt)` on a 60 Hz step. Each tick hashes
+the world into a digest; `run --record` stores a session's inputs and
+digests, `replay --verify` re-runs it and stops at the first tick that
+disagrees, and `--entries-at` names the node and component that differed.
+Rollback snapshots restore a tick and re-simulate forward.
+
+The manual has the details: [Animation](/docs/manual/animation),
+[The editor](/docs/manual/editor), [Determinism](/docs/manual/determinism).
