@@ -1,48 +1,28 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0 2.5rem;
 }
 
 .card {
-  padding: 1.25rem 1.25rem 1rem;
+  padding: 1.75rem 1.5rem;
   border: 1px solid var(--balaur-card-border);
+  border-left: 4px solid var(--ifm-color-primary);
   border-radius: 10px;
   background: var(--balaur-card-bg);
-  display: flex;
-  flex-direction: column;
-}
-
-.area {
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ifm-color-primary);
-  margin-bottom: 0.35rem;
 }
 
 .title {
   font-family: var(--balaur-display-font);
-  font-size: 1.05rem;
+  font-size: 1.5rem;
   letter-spacing: 0.02em;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.6rem;
 }
 
-.what {
-  font-size: 0.92rem;
-  color: var(--ifm-color-emphasis-700);
-  margin: 0 0 0.75rem;
-}
-
-.next {
-  font-size: 0.88rem;
-  margin: auto 0 0;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--balaur-card-border);
-}
-
-.next strong {
-  color: var(--ifm-color-primary);
-  margin-right: 0.3rem;
+.text {
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-800);
+  margin: 0;
 }

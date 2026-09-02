@@ -6,78 +6,52 @@ import Roadmap from '@site/src/components/Roadmap';
 
 # Roadmap
 
-What we want to add, and for each the one step that comes next. The engine
-already has its core loop — nodes over an ECS, Rune with hot reload and a
-debugger, 2D and 3D physics, rendering in three modes, animation and
-skeletons, networking, an editor that is itself a Balaur project, a fixed
-step with record and replay, and reproducible packs. There is no binary
-release yet.
+What does not exist yet and will, in the order the
+[principles](./principles.mdx) rank it. Everything in [Features](/features)
+is already in the engine.
 
 <Roadmap items={[
   {
-    area: 'Editor',
     title: 'Editor plugins',
-    what: 'Tools, docks and inspector sections written in a project\'s own scripts, so a game can grow the editor it needs.',
-    next: 'A registration seam: a script declares a tool or a dock, the shell draws it in the right place.',
+    text: 'Tools, docks and inspector panels written in a project\'s own scripts.',
   },
   {
-    area: 'Physics',
     title: 'Soft bodies, tearing, fluids',
-    what: 'Soft bodies, tearing, fluids and particles, and granular materials such as sand and mud — built in Rapier itself.',
-    next: 'Land them in Rapier, then expose each as components and a script API through the same physics plugin.',
+    text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
   },
   {
-    area: 'Scripting',
-    title: 'Rune, extended',
-    what: 'A fork of Rune shaped for games: script properties exported to the inspector, faster compiles, better errors.',
-    next: 'Exported properties: a field annotation the inspector reads and the scene file stores.',
+    title: 'Exported script properties',
+    text: 'A field a script marks shows up in the inspector and is stored in the scene.',
   },
   {
-    area: 'Animation',
-    title: 'Blending and state machines',
-    what: 'Blend trees and state machines composed over the pure sampler, plus 3D modifiers to match the 2D look-at and two-bone IK.',
-    next: 'A blend node that mixes two sampled poses by weight, driven from a script.',
+    title: 'Animation blending',
+    text: 'Blend trees and state machines that mix clips by weight, and IK in 3D.',
   },
   {
-    area: 'Scenes',
     title: 'Prefabs',
-    what: 'A scene instantiated inside another, with per-instance property overrides — the asset layer already stores one.',
-    next: 'The scene key that instantiates a scene asset, and the override rule for its nodes.',
+    text: 'A scene placed inside another, with overrides per instance.',
   },
   {
-    area: 'Networking',
-    title: 'State replication',
-    what: 'Multiplayer on top of the deterministic step: replicated components with an authority rule, and lockstep or rollback from the same record and replay machinery.',
-    next: 'A `replicate` component that syncs a node\'s transform and body across a Gamend room.',
+    title: 'Multiplayer',
+    text: 'Replicated nodes with an authority rule, lockstep or rollback on the deterministic step.',
   },
   {
-    area: 'Editor',
-    title: 'Diagnostics and search',
-    what: 'Compile errors shown in the script buffer, node search from the palette, several scenes open as tabs.',
-    next: 'Compile diagnostics in the gutter, from the same compiler hot reload runs.',
+    title: 'QUIC transport',
+    text: 'One transport with reliable streams and unreliable datagrams, native and in the browser.',
   },
   {
-    area: 'Rendering',
     title: 'GPU skinning in 3D',
-    what: 'Imported meshes are skinned on the CPU today; 2D polygons already skin on the GPU.',
-    next: 'Move the 3D joint palette into the vertex shader, keeping the headless path bit-identical.',
+    text: 'Imported meshes skinned in the vertex shader instead of on the CPU.',
   },
   {
-    area: 'Release',
-    title: 'First binary release',
-    what: 'An editor download per platform with its runtime template, so shipping a game needs no Rust toolchain.',
-    next: 'Signed macOS and Windows builds from CI, and the Download page pointing at them.',
+    title: 'Binary releases',
+    text: 'An editor download per platform with its runtime, so shipping needs no Rust toolchain.',
   },
   {
-    area: 'Performance',
-    title: 'Benchmarks and parallelism',
-    what: 'Published numbers for what a frame costs, and parallel system execution inside the data plane once profiling asks for it.',
-    next: 'Publish the headless benchmark suite\'s results on every release.',
+    title: 'Published benchmarks',
+    text: 'What a frame costs, measured headless and posted with every release.',
   },
 ]} />
 
-## Links
-
-- [Engine repository](https://github.com/balaurengine/balaur)
-- [Issues](https://github.com/balaurengine/balaur/issues) ·
-  [Discussions](https://github.com/balaurengine/balaur/discussions)
+[Issues](https://github.com/balaurengine/balaur/issues) ·
+[Discussions](https://github.com/balaurengine/balaur/discussions)

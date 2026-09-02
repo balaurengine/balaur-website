@@ -26,6 +26,7 @@ function Icon({children}: {children: ReactNode}) {
   );
 }
 
+// Twelve cards, one line each. The long form is /features.
 const FeatureList: FeatureItem[] = [
   {
     title: 'Nodes and scenes',
@@ -39,9 +40,22 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        A game is a <strong>scene tree</strong> of named nodes with scripts
-        attached. Underneath, every node is an <strong>ECS entity</strong> and
-        every subsystem a plugin over the same data.
+        A game is a <strong>tree of named nodes</strong> with scripts attached.
+        Scenes are plain TOML.
+      </>
+    ),
+  },
+  {
+    title: 'Scripting in Rune',
+    icon: (
+      <Icon>
+        <path d="m8 7-5 5 5 5M16 7l5 5-5 5" />
+      </Icon>
+    ),
+    description: (
+      <>
+        Rust's syntax, no build step, <strong>async/await</strong>, and a
+        debugger in the editor.
       </>
     ),
   },
@@ -55,12 +69,12 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Save a script while the game runs: the new code is{' '}
-        <strong>live in milliseconds</strong>, and the state survives.
+        <strong>live in milliseconds</strong>, state intact.
       </>
     ),
   },
   {
-    title: 'Determinism',
+    title: 'Determinism, always on',
     icon: (
       <Icon>
         <path d="M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2" />
@@ -69,27 +83,29 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Identical inputs give <strong>bit-for-bit identical</strong>{' '}
-        simulations on every platform — replays and lockstep for free.
+        Same inputs, <strong>same bits</strong> on every platform. Record a
+        session and replay it, network replies included.
       </>
     ),
   },
   {
-    title: 'Scripting in Rune',
+    title: '2D and 3D physics',
     icon: (
       <Icon>
-        <path d="m8 7-5 5 5 5M16 7l5 5-5 5" />
+        <circle cx="8" cy="15" r="4" />
+        <rect x="13" y="5" width="7" height="7" rx="1" />
+        <path d="M3 21h18" />
       </Icon>
     ),
     description: (
       <>
-        Scripts are <strong>Rune</strong>: Rust's syntax, no build step, a
-        debugger in the editor. One binding API reaches every module.
+        <strong>Rapier</strong> under both, stepped on a fixed 60 Hz tick,
+        declared in scenes or driven from scripts.
       </>
     ),
   },
   {
-    title: '3D and 2D',
+    title: 'Rendering',
     icon: (
       <Icon>
         <path d="M12 3 4 7.5v9L12 21l8-4.5v-9z" />
@@ -98,8 +114,69 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Two component sets over <strong>one scene tree</strong>, with rapier
-        physics behind both and an editor that adapts.
+        3D and 2D on <strong>wgpu</strong>: windowed, offscreen for screenshots
+        and CI, or fully headless.
+      </>
+    ),
+  },
+  {
+    title: 'Animation and skeletons',
+    icon: (
+      <Icon>
+        <path d="M12 4v6M12 10l-5 5M12 10l5 5M7 15l-2 5M17 15l2 5" />
+        <circle cx="12" cy="3" r="1.5" />
+      </Icon>
+    ),
+    description: (
+      <>
+        Clips and tweens, <strong>2D bones</strong> with skinned polygons,{' '}
+        <strong>3D rigs</strong> from glTF, two-bone IK.
+      </>
+    ),
+  },
+  {
+    title: 'The editor',
+    icon: (
+      <Icon>
+        <rect x="3" y="4" width="18" height="14" rx="2" />
+        <path d="M3 9h18M8 4v14" />
+      </Icon>
+    ),
+    description: (
+      <>
+        Itself a Balaur project: scene tree, inspector, gizmos, timeline, rig
+        tools, <strong>play-in-editor</strong>.
+      </>
+    ),
+  },
+  {
+    title: 'Networking',
+    icon: (
+      <Icon>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </Icon>
+    ),
+    description: (
+      <>
+        HTTP and <strong>websockets</strong> with compression, delivered into
+        the simulation once per tick.
+      </>
+    ),
+  },
+  {
+    title: 'Every platform',
+    icon: (
+      <Icon>
+        <rect x="2" y="5" width="13" height="10" rx="1.5" />
+        <path d="M6 19h5" />
+        <rect x="17" y="8" width="5" height="11" rx="1" />
+      </Icon>
+    ),
+    description: (
+      <>
+        Desktop today; <strong>iOS, Android and the web</strong> are
+        cross-compiled in CI on every push.
       </>
     ),
   },
@@ -115,6 +192,21 @@ const FeatureList: FeatureItem[] = [
       <>
         Export fuses precompiled bytecode onto a runtime:{' '}
         <strong>a single binary</strong>, no compiler, no sources.
+      </>
+    ),
+  },
+  {
+    title: 'Built on Rust',
+    icon: (
+      <Icon>
+        <path d="M12 2 3 7v10l9 5 9-5V7z" />
+        <path d="M12 12v10M12 12 3 7M12 12l9-5" />
+      </Icon>
+    ),
+    description: (
+      <>
+        <strong>Safe Rust</strong> throughout, and the ecosystem as it is:
+        Rapier, wgpu, egui, rodio, Rune.
       </>
     ),
   },

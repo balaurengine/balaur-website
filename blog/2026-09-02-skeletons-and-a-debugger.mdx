@@ -5,62 +5,44 @@ authors: [dragos]
 tags: [balaur]
 ---
 
-Since the last post the engine gained skeletal animation in 2D and 3D, a
-script debugger, and the pieces that make a deterministic simulation
-something you can check rather than hope for. It also lost a language.
+Skeletal animation in 2D and 3D, a script debugger, a fixed simulation step
+with record and replay — and one scripting language instead of two.
 
 {/* truncate */}
 
-## Skeletons and skins
+## Skeletons
 
-A bone is a node with a rest pose; a skin is a textured polygon whose mesh
-carries bone weights. Nothing else is new: a clip on the character keys its
-bones by path, the same clip files the timeline already edited. The joint
-palette comes from the scene tree, so a headless run computes the same
-deformation as the GPU does and bones stay inside the determinism digest.
+A bone is a node with a rest pose; a skin is a textured polygon with bone
+weights. A clip keys the bones by path, in the same timeline as before.
 
-![A skinned leg bending under a clip in the Animate persona](/img/editor/persona_animate.png)
+![A skinned leg bending under a clip](/img/editor/persona_animate.png)
 
-The editor grew a bone tool and a polygon tool with Points, Polygons, UV and
-Weights modes. Two modifiers run after the clip every frame: `look_at` aims
-one bone, `two_bone_ik` solves a root–middle–tip chain toward a target.
+The editor has a bone tool and a polygon tool with Points, Polygons, UV and
+Weights modes. Two modifiers run after the clip: `look_at` and `two_bone_ik`.
 
 ![Painting weights](/img/editor/tool_polygon_weights.png)
 
-3D rigs come from files: `balaur import model.glb` writes the joint hierarchy
-as a scene with `bone3d` rest poses, the mesh node, and the animations as a
-clip library — all TOML, all editable. The same bone tool and rest-pose
-verbs apply in the 3D viewport.
+3D rigs are imported: `balaur import model.glb` writes the joints, the mesh
+and the animations as TOML the editor edits.
 
-![An imported column with its three bones](/img/editor/view3d_bone_tool.png)
+![An imported column and its bones](/img/editor/view3d_bone_tool.png)
 
 ## A debugger
 
-Scripts can be paused on a breakpoint and stepped over, into and out of,
-with the call frames and their named locals in the editor's Debugger dock —
-click a line number to set a breakpoint, then `F5` / `F10` / `F11` /
-`Shift+F11` — or through the `debugger` script module, so a tool can drive
-it. A pause parks the script and freezes the game: physics holds and the
-editor's own scripts keep drawing, so the editor stays usable while you
-look. Two limits for now: an async entry point cannot be paused, and locals
-are a frame's named arguments.
+Set a breakpoint in the gutter, run the scene, step with `F5` / `F10` /
+`F11` / `Shift+F11`. Frames and locals show in the Debugger dock; the game
+freezes while the editor stays live.
 
 ## One language
 
-The same day, Luau was removed. Rune is the one scripting language: `.luau`
-scripts, `language = "luau"` and `"mixed"` are gone, and the editor, every
-example and the debugger run on Rune. Two languages meant two hosts to keep
-in step, two debuggers to write and two sets of docs to keep honest; one
-language means one of each. The seam that made a second language cost one
-crate is still there.
+Luau is gone. Rune is the scripting language: the editor, every example and
+the debugger run on it.
 
 ## A fixed step, and proof
 
-Simulation now runs in `fixed_update(dt)` on a 60 Hz step. Each tick hashes
-the world into a digest; `run --record` stores a session's inputs and
-digests, `replay --verify` re-runs it and stops at the first tick that
-disagrees, and `--entries-at` names the node and component that differed.
-Rollback snapshots restore a tick and re-simulate forward.
+Simulation runs in `fixed_update(dt)` at 60 Hz. Each tick hashes the world;
+`run --record` stores a session, `replay --verify` re-runs it and stops at the
+first tick that differs.
 
-The manual has the details: [Animation](/docs/manual/animation),
-[The editor](/docs/manual/editor), [Determinism](/docs/manual/determinism).
+Details: [Animation](/docs/manual/animation), [The editor](/docs/manual/editor),
+[Determinism](/docs/manual/determinism).

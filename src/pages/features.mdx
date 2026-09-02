@@ -1,120 +1,46 @@
 ---
 title: Features
-description: Everything in the Balaur engine today, with links into the documentation.
+description: What is in the Balaur engine today, one line each.
 ---
 
 # Features
 
-Everything in the engine today. Each item links into the documentation.
+What is in the engine today, one line each. The why is in [Principles](/docs/principles).
 
-## Principles
+## Nodes, scenes, scripts
 
-- **Fast to run, fast to iterate.** Hot reload in milliseconds, and as
-  little engine as possible between a game and the libraries it stands on.
-- **Easy to use.** Nodes and scripts on top, one scripting language, an
-  editor built from the same parts as a game.
-
-## Core
-
-- **Scene tree over an ECS.** A game is a tree of named nodes with scripts
-  attached; every node is a `hecs` entity, and every subsystem is a plugin
-  over the same data plane. Node paths, transform propagation, and a fixed
-  frame schedule are core systems. → [Scenes and nodes](/docs/manual/scenes)
-- **Declarative scenes.** Scenes are TOML; plugins extend the vocabulary with
-  schema-described components, and one registration buys the scene key, the
-  runtime API, and editor support at once. → [Scenes and nodes](/docs/manual/scenes)
-- **Shared assets.** Content by reference or inline — a string is a
-  reference, a table is a definition — for every asset type a plugin
-  registers. → [Assets](/docs/reference/assets)
-- **Headless by default.** Everything runs without a window or GPU: tests,
-  servers, CI, and benchmarks measure the engine itself.
-- **Rust, and the Rust ecosystem.** Safe Rust throughout, so a script
-  mistake is an error message rather than a crash. Rapier, wgpu, rodio and
-  tungstenite are used as they are, not re-implemented.
-  → [Built on](/docs/built-on)
-
-## Scripting
-
-- **One language, one API.** Scripts are [Rune](https://rune-rs.github.io/):
-  Rust's syntax, no types, no build step. Every binding is declared once
-  against a language-neutral seam, so a second language would cost one
-  crate. → [Scripting](/docs/manual/scripting)
-- **A debugger.** Breakpoints, continue, step over / into / out, and call
-  frames with named locals — in the editor's Debugger dock or from the
-  `debugger` script module. → [Scripting](/docs/manual/scripting#debugging)
-- **Instant hot reload.** Saving a script swaps code into the running game in
-  milliseconds, preserving live state — automatic, always on in dev mode,
-  provided by the core. → [Scripting](/docs/manual/scripting)
-- **Events without signals.** The engine calls handler methods scripts
-  declare by name, and async results can be `await`ed sequentially; both
-  arrive deterministically at the start of a tick.
-  → [Networking](/docs/manual/networking)
+- **Scene tree.** Named nodes with scripts, over an ECS you never see. → [Scenes](/docs/manual/scenes)
+- **TOML scenes.** Every component is a scene key, a script call and an inspector row at once. → [Scenes](/docs/manual/scenes)
+- **Rune.** Rust's syntax, no build step, `async`/`await`. → [Scripting](/docs/manual/scripting)
+- **Hot reload.** A saved script is live in milliseconds, state intact. → [Scripting](/docs/manual/scripting#hot-reload)
+- **Debugger.** Breakpoints, stepping, frames and locals, in the editor. → [Scripting](/docs/manual/scripting#debugging)
+- **Assets.** Content by reference or inline, one rule for every type. → [Assets](/docs/reference/assets)
 
 ## Simulation
 
-- **3D and 2D physics.** Rapier with `enhanced-determinism`, both worlds on a
-  fixed 60 Hz step, declared in scenes or driven from scripts.
-  → [Physics](/docs/manual/physics)
-- **Animation.** Clip assets with transform, component-property, and method
-  tracks; script-driven tweens through the same sampler; twelve easing
-  curves; all on a fixed timestep. → [Animation](/docs/manual/animation)
-- **Skeletons.** 2D bones with GPU-skinned textured polygons, 3D bones with
-  skinned meshes imported from glTF, `look_at` and two-bone IK modifiers —
-  all keyed by the same clips. → [Animation](/docs/manual/animation#skeletons-and-skins)
-- **Cross-platform determinism.** Identical inputs produce bit-for-bit
-  identical simulations on every platform: a fixed 60 Hz `fixed_update`,
-  seeded RNG, `libm` transcendentals, ordered collections, per-tick digests,
-  session recording and replay, and rollback snapshots.
-  → [Determinism](/docs/manual/determinism)
+- **Physics.** 2D and 3D through Rapier, on a fixed 60 Hz step. → [Physics](/docs/manual/physics)
+- **Animation.** Clips, tweens, twelve easings, method tracks. → [Animation](/docs/manual/animation)
+- **Skeletons.** 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK. → [Animation](/docs/manual/animation#skeletons-and-skins)
+- **Determinism.** Same inputs, same bits everywhere; per-tick digests, record and replay, rollback. → [Determinism](/docs/manual/determinism)
 
-## Interface
+## Screen and sound
 
-- **Rendering.** 3D and 2D shapes through kiss3d/wgpu in three run modes —
-  windowed, offscreen (GPU without a window), and headless — with cameras,
-  debug drawing, grids, and script-driven screenshots
-  (`render::screenshot`).
-- **UI.** Widget components for in-game HUDs, and an immediate-mode egui API
-  for scripts with script-defined themes. → [UI](/docs/manual/ui)
-- **Audio and input.** rodio-backed playback; backend-agnostic per-frame
-  input snapshots covering keyboard, mouse, gamepads, touch, and files
-  dropped onto the window. → [Input](/docs/manual/input)
+- **Rendering.** 3D and 2D on wgpu — windowed, offscreen, or headless — with sprites, tile maps, particles and meshes.
+- **UI.** Widgets for HUDs, an immediate-mode API for tools. → [UI](/docs/manual/ui)
+- **Audio and input.** rodio playback; keyboard, mouse, gamepads, touch. → [Input](/docs/manual/input)
 
 ## Online
 
-- **Networking.** HTTP requests and websocket connections for scripts, on
-  background threads, delivered into the simulation once per tick.
-  → [Networking](/docs/manual/networking)
-- **Gamend backend.** Login, REST, realtime rooms, and server hooks on the
-  same delivery contract. → [Gamend](/docs/manual/gamend)
+- **Networking.** HTTP and websockets with compression, delivered once per tick and replayable. → [Networking](/docs/manual/networking)
+- **Gamend.** Login, REST, realtime rooms, server hooks. → [Gamend](/docs/manual/gamend)
 
-## Tooling
+## Tools and shipping
 
-- **An editor that is a Balaur project.** Scene tree, generated inspector,
-  viewport gizmos in 3D and 2D, undo, script editing with hot reload and a
-  debugger, play-in-editor, a clip timeline, and bone and polygon tools —
-  built entirely on the public scripting surface.
-  → [The editor](/docs/manual/editor)
-- **Extensions.** The same `Plugin` trait ships linked in behind a cargo
-  feature or as a shared library loaded at run time — written in Rust against
-  the exact engine build, or in any C-ABI language through a small stable C
-  boundary. → [Modules and extensions](/docs/manual/extensions)
-- **Benchmarks.** A headless suite reporting each result as a share of one
-  60 fps frame. → [Getting started](/docs/getting-started#benchmarks)
+- **The editor.** A Balaur project itself: tree, inspector, gizmos, timeline, rig tools, play-in-editor, undo. → [The editor](/docs/manual/editor)
+- **Extensions.** Plugins linked in or loaded at run time. → [Extensions](/docs/manual/extensions)
+- **Packs.** Reproducible exports with bytecode, scenes and assets. → [Shipping](/docs/manual/shipping)
+- **One executable.** A pack fused onto a runtime; no compiler, no sources. → [Shipping](/docs/manual/shipping)
+- **Platforms.** Desktop today; iOS, Android and WebAssembly compile in CI on every push.
+- **Built on Rust.** Safe code and the ecosystem as it is. → [Built on](/docs/built-on)
 
-## Shipping
-
-- **Reproducible packs.** Export compiles scripts to bytecode and bundles
-  them with scenes and assets; the same sources give the same bytes on any
-  machine. → [Shipping](/docs/manual/shipping)
-- **One executable.** Fusing a pack onto a runtime template produces a single
-  binary per platform — no compiler, no sources, no Rust toolchain required
-  to ship. CI cross-compiles the headless engine to iOS, Android, and
-  WebAssembly on every push. → [Shipping](/docs/manual/shipping)
-- **Saved data.** `engine::user_data_dir()` gives every game a writable
-  per-user directory for saves and settings, resolved per platform.
-
----
-
-Balaur is free and open source under MIT:
-[github.com/balaurengine/balaur](https://github.com/balaurengine/balaur).
-There is no binary release yet; see [Getting started](/docs/getting-started).
+MIT licensed, on [GitHub](https://github.com/balaurengine/balaur). No binary release yet — see [Getting started](/docs/getting-started).

@@ -1,26 +1,22 @@
 import type {ReactNode} from 'react';
+import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
 export type RoadmapItem = {
-  area: string;
   title: string;
-  what: ReactNode;
-  next: ReactNode;
+  text: ReactNode;
 };
 
-// One card per thing we want to add: what it is, and the concrete next step.
+// One card per thing that does not exist yet: a title and one sentence.
 export default function Roadmap({items}: {items: RoadmapItem[]}): ReactNode {
   return (
     <div className={styles.grid}>
       {items.map((item) => (
         <div className={styles.card} key={item.title}>
-          <div className={styles.area}>{item.area}</div>
-          <h3 className={styles.title}>{item.title}</h3>
-          <p className={styles.what}>{item.what}</p>
-          <p className={styles.next}>
-            <strong>Next</strong>
-            {item.next}
-          </p>
+          <Heading as="h2" className={styles.title}>
+            {item.title}
+          </Heading>
+          <p className={styles.text}>{item.text}</p>
         </div>
       ))}
     </div>

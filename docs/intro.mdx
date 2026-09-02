@@ -4,51 +4,33 @@ sidebar_position: 1
 
 # Introduction
 
-Balaur is a node-based game engine written in Rust: 2D and 3D, scripting,
-physics, animation, networking, and an editor.
+Balaur is a node-based game engine in Rust: 2D and 3D, scripting, physics,
+animation, networking, and an editor. Fast to run, fast to iterate, easy to
+use.
 
 To a game developer it is a scene tree of named nodes with scripts attached.
-Underneath, every node is an ECS entity and every subsystem — physics,
-rendering, audio, input, UI — is a plugin over the same data plane; only
-plugin authors see that layer. The editor is itself a Balaur project.
+Underneath, every node is an ECS entity and every subsystem is a plugin —
+a layer only plugin authors see. The editor is itself a Balaur project.
+
+![The editor: scene tree, viewport, inspector](/img/editor/persona_scene.png)
 
 :::warning
 
-There is no published release yet. Balaur builds from source with a Rust
-toolchain — see [Getting started](./getting-started.mdx). The first published
-build will appear on the [Download](/download) page.
+No published release yet. Balaur builds from source — see
+[Getting started](./getting-started.mdx).
 
 :::
 
-## Mission
+## Two things it will not compromise on
 
-Two principles decide everything else.
-
-- **Fast to run, fast to iterate.** A script change is live in milliseconds
-  with its state intact, and the engine adds as little of its own as it can
-  between a game and the libraries it stands on — Rapier, wgpu, rodio — so
-  the time a frame spends in physics is spent in physics.
-- **Easy to use.** A game is nodes and scripts. One scripting language, an
-  editor built from the same parts as a game, and safe Rust throughout, so a
-  mistake is an error message rather than a crash.
-
-Two features are load-bearing and non-negotiable:
-
-- **Instant hot reload.** Saving a script swaps its code into the running game
-  in milliseconds, preserving all live state. It is automatic, always on in
-  dev mode, and provided by the core, not by frameworks or per-game glue.
-- **Determinism, always on.** Identical inputs produce bit-for-bit identical
-  simulations on every platform, and the engine can prove it: a fixed 60 Hz
-  step, a digest per tick, session recording and replay. It holds for the
-  network too — a reply never lands mid-frame but enters an ordered queue
-  and is delivered at the start of a tick, so a recorded session replays
-  exactly, logins and retries included, without touching the network. See
-  [Determinism](./manual/determinism.mdx).
+- **Instant hot reload.** Save a script while the game runs; the new code is
+  live in milliseconds and the state survives.
+- **Determinism, always on.** Same inputs, same bits on every platform, and
+  the engine can prove it: a fixed 60 Hz step, a digest per tick, record and
+  replay. Network replies enter an ordered queue and land at the start of a
+  tick, so a replay covers logins and retries without touching the network.
 
 ## A script
-
-A script declares lifecycle methods and is attached to a node. Scripts are
-[Rune](https://rune-rs.github.io/):
 
 ```rust
 // scripts/spinner.rn
@@ -62,9 +44,6 @@ pub fn update(this, dt) {
 
 ## A scene
 
-Scenes are declarative TOML. Plugins extend the vocabulary: `body3d` and
-`collider3d` come from the physics plugin, `shape3d` from the rendering plugin.
-
 ```toml
 [[nodes]]
 name = "Ball"
@@ -75,58 +54,21 @@ collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
 ```
 
-## What is in the engine today
-
-- A scene tree over an ECS (`hecs`): node paths, transform propagation, a
-  fixed frame schedule, and a plugin API.
-- Scripting in Rune, with hot reload, `mod` files and `script::require`
-  with in-place module reload, a debugger, and a language-neutral binding
-  seam.
-- 3D and 2D physics (rapier, with its `enhanced-determinism` feature), stepped
-  on a fixed 60 Hz accumulator.
-- Rendering through kiss3d/wgpu in three run modes — windowed, offscreen
-  (GPU without a window, for screenshots and visual CI), and fully headless
-  for tests and servers — all computing the same simulation. 3D and 2D
-  shapes, sprites, tile maps, particles, skinned polygons and glTF meshes.
-- Animation: clip assets with transform, component-property, and method
-  tracks, plus script-driven tweens — all on a fixed timestep. Skeletons in
-  2D and 3D: bones with rest poses, skinned polygons and meshes, glTF import,
-  `look_at` and two-bone IK modifiers.
-- A shared-asset layer: content by reference or inline, one rule for every
-  asset type a plugin registers.
-- Networking: HTTP and websockets for scripts, with handler methods or
-  `await`, delivered into the simulation once per tick — replayable. A
-  Gamend backend plugin (login, REST, realtime, server hooks) on the same
-  contract.
-- Immediate-mode UI for scripts (egui) plus widget components for in-game HUDs.
-- Audio (rodio), per-frame input snapshots covering keyboard, mouse,
-  gamepads, touch, and window file drops, and a seeded deterministic `rng`
-  module.
-- A plugin system where the same source ships as a linked-in module or a
-  run-time extension loaded from a shared library.
-- An editor that is a regular Balaur project: scene tree, inspector, viewport
-  with gizmos, undo, script editing with hot reload and a debugger,
-  play-in-editor, a keyframe timeline, and bone and polygon tools.
-- Export to precompiled, reproducible packs — scripts, scenes, TOML and
-  binary assets — and fused single-file executables per platform.
-- A headless benchmark suite that reports results as a share of one 60 fps
-  frame.
+`body3d`, `collider3d` and `shape3d` are components: the physics and render
+plugins registered them, which also made them script calls and inspector rows.
 
 ## Where to go next
 
-- [Getting started](./getting-started.mdx) — build the engine and run the
-  examples.
-- [Tutorials](./tutorials/first-project.mdx) — a first project, a 2D game,
-  and Rune basics.
-- [Manual](./manual/scenes.mdx) — scenes, scripting, physics, UI, the editor,
-  determinism, and shipping.
-- [Architecture](./architecture.mdx) — the layer model and the decisions
-  behind it; [Built on](./built-on.mdx) — the libraries underneath.
-- [Reference](./reference/script-api.md) — generated from the engine on every
-  change: the full script API, the component catalog, and crate list.
+- [Principles](./principles.mdx) — what the engine optimises for, and how it is run.
+- [Getting started](./getting-started.mdx) — build the engine, run the examples.
+- [Tutorials](./tutorials/first-project.mdx) — a first project, a 2D game, Rune basics.
+- [Manual](./manual/scenes.mdx) — scenes, scripting, physics, animation, the editor, determinism, shipping.
+- [Features](/features) — everything in the engine, one line each.
+- [Architecture](./architecture.mdx) and [Built on](./built-on.mdx) — how it is put together, and from what.
+- [Reference](./reference/script-api.md) — generated from the engine: script API, components, crates.
 
 ## Who and how
 
 Balaur is made by Dragos Daian and Sébastien Crozet, the author of
-[Rapier](https://rapier.rs), and is open source under MIT. Sources are at
-[github.com/balaurengine/balaur](https://github.com/balaurengine/balaur).
+[Rapier](https://rapier.rs). MIT, on
+[GitHub](https://github.com/balaurengine/balaur).

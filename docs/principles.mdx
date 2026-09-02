@@ -1,0 +1,73 @@
+---
+sidebar_position: 1
+---
+
+# Principles
+
+Two lists. The first says what the engine optimises for — the why behind
+every feature and everything on the [roadmap](./roadmap.mdx). The second
+says how the project is run, for anyone who wants to help build it.
+
+## What the engine is for
+
+1. **Fast to run.** As little engine as possible between a game and the
+   libraries it stands on. Physics time is physics time. Everything runs
+   headless, so what we measure is the engine.
+2. **Fast to iterate.** A saved script is live in milliseconds with its state
+   intact. No build step for game code. The editor reloads itself the same
+   way.
+3. **Easy to use.** Nodes and scripts on top, a Godot-like editor, one
+   scripting language. The ECS underneath is a detail only plugin authors
+   see.
+4. **Always deterministic.** Same inputs, same bits, on every platform — and
+   provable: a fixed step, a digest per tick, record and replay, rollback.
+   Every subsystem is held to it, the network included. It is never
+   optional.
+5. **Few rules, applied everywhere.** A component is a scene key, a script
+   call and an inspector row at once. A string is a reference, a table is a
+   definition. An event is a method the engine calls by name. One rule per
+   idea, no special cases.
+6. **Reuse, don't rewrite.** Rapier, wgpu, egui, rodio, Rune, and the rest of
+   the Rust ecosystem, used as they are. Where a standard exists — TLS,
+   glTF, websocket compression — the engine speaks it.
+7. **Safe by construction.** Safe Rust throughout. A mistake in a script is
+   an error message, not a crash.
+8. **Verified, not asserted.** Each promise above has a test that holds it:
+   digests compared across three operating systems in CI, every example run
+   four ways, reference docs generated from a booted engine so they cannot
+   drift.
+9. **Ship as one file, anywhere.** Reproducible packs fused onto a runtime;
+   desktop, mobile and the web from the same sources.
+
+When two of these conflict, the lower number wins.
+
+## How the project is run
+
+1. **Contributions must serve the mission.** A change is measured against the
+   list above. Speed of iteration and determinism are never traded for a
+   feature.
+2. **The maintainers own the architecture.** Dragos Daian and Sébastien
+   Crozet decide the shape of the engine and write it down in
+   [ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md)
+   and the `docs/PLAN-*.md` files. Propose before building anything large;
+   a [discussion](https://github.com/balaurengine/balaur/discussions) is
+   the place.
+3. **AI-assisted contributions are welcome.** They meet the same bar as any
+   other: the contributor understands and stands behind every line, and the
+   change comes with its tests and its docs.
+4. **Every change is complete.** Code, tests, documentation and a changelog
+   line land together. Generated docs are regenerated. Lints, naming rules
+   and the comment style are enforced by CI, not by review.
+5. **Determinism is a hard gate.** A change that alters a recorded digest
+   without explaining why does not merge.
+6. **Small and reviewed.** One concern per pull request, reviewed by a
+   maintainer, squashed with a message that says what changed and why.
+7. **Design in the open.** Decisions are recorded where the code lives, in
+   plain prose, before and after they are made.
+8. **Direct and kind.** Say what is wrong with the code, never with the
+   person.
+9. **MIT, no CLA.** Contributions are licensed as the project is.
+
+The practical version — how to build, test and lint — is
+[CONTRIBUTING.md](https://github.com/balaurengine/balaur/blob/main/CONTRIBUTING.md)
+in the engine repository.

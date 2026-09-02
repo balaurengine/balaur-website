@@ -19,7 +19,19 @@
 .heroSubtitle {
   color: #6b5a52;
   max-width: 42rem;
+  margin: 0 auto 0.5rem;
+  font-size: 1.45rem;
+}
+
+.heroMission {
+  color: #7d6a61;
+  max-width: 40rem;
   margin: 0 auto 2rem;
+  font-size: 1.02rem;
+}
+
+[data-theme='dark'] .heroMission {
+  color: #a89a92;
 }
 
 .heroGhost {

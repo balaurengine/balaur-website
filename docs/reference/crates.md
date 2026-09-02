@@ -77,9 +77,9 @@ The `balaur` command line tool: create, run, export, and play projects.
 
 ## `balaur_core`
 
-Balaur engine core: ECS data plane, scene tree, frame scheduler, plugin API
+Balaur engine core: ECS world, scene tree, frame scheduler, plugin API
 
-Balaur engine core: the Rust data plane.
+Balaur engine core: the ECS world every plugin builds on.
 
 - **workspace deps:** `balaur_script`
 - **external deps:** 15 (anyhow, dirs, glamx, gltf, hecs, indexmap, libm, rustc-hash, …)
@@ -119,9 +119,9 @@ Balaur networking plugin: http requests and websocket connections for scripts
 Networking as a Balaur plugin: `http.*` and `websocket.*` for scripts.
 
 - **workspace deps:** `balaur_core`, `balaur_plugin`, `balaur_script`
-- **external deps:** 6 (anyhow, serde, serde_json, tracing, tungstenite, ureq)
-- **public surface:** 5 struct
-- **structs:** `Handler`, `HttpCall`, `NetPlugin`, `NetSnapshot`, `NetState`
+- **external deps:** 12 (anyhow, flate2, httparse, rand, rustls, serde, serde_json, toml, …)
+- **public surface:** 7 struct
+- **structs:** `Handler`, `HttpCall`, `NetConfig`, `NetPlugin`, `NetSnapshot`, `NetState`, `SocketOptions`
 
 ## `balaur_physics`
 
