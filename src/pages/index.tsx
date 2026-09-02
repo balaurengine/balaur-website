@@ -35,7 +35,7 @@ function Header() {
         </p>
         <p className={styles.heroMission}>
           Written in Rust. Fast to run, fast to iterate, easy to use — and one
-          executable to ship.
+          file to ship.
         </p>
         <div className={styles.buttons}>
           <Link className="button button--primary button--lg" to="/docs/intro">
