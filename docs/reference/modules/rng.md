@@ -9,9 +9,11 @@ custom_edit_url: null
 
 ## Functions
 
-Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.
 
-- `int`
-- `random`
-- `range`
-- `seed`
+| function | acts on | what it does |
+| --- | --- | --- |
+| `int` | — | A whole number from the deterministic engine stream, uniform in `[low, high]`, both ends included. |
+| `random` | — | A float from the deterministic engine stream, uniform in `[0, 1)`. |
+| `range` | — | A float from the deterministic engine stream, uniform in `[low, high)` — the two arguments. |
+| `seed` | — | Restart the deterministic engine stream at the given seed, so every draw after it repeats. |

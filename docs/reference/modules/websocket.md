@@ -9,8 +9,10 @@ custom_edit_url: null
 
 ## Functions
 
-Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.
 
-- `close(int) -> any`
-- `connect(any, string, any?) -> any`
-- `send(int, string) -> any`
+| function | acts on | what it does |
+| --- | --- | --- |
+| `close(int) -> any` | — |  |
+| `connect(any, string, any?) -> any` | — |  |
+| `send(int, string) -> any` | — | Queue a text frame on the connection; false when it is already gone. |

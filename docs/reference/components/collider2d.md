@@ -7,7 +7,11 @@ custom_edit_url: null
 
 `2d` · `physics` · 8 properties · 2D
 
-In a scene, `collider2d` is the node key that applies it. From a script, the [`node`](../modules/node.md) module's component functions read and write the same properties by name.
+The shape the 2D physics world sees for this node, and the surface it presents: friction, bounciness and density. With a `body2d` it moves with the body; on its own it is static geometry a scene can be built from. A sensor reports overlaps without pushing anything.
+
+In a scene, `collider2d` is the node key that applies it. A script reaches the same properties through `node.collider2d.get()` and `node.collider2d.set(table)`.
+
+## Properties
 
 | property | type | default | description |
 | --- | --- | --- | --- |
@@ -22,20 +26,11 @@ In a scene, `collider2d` is the node key that applies it. From a script, the [`n
 
 ## Script functions
 
-Methods of `node.collider2d`, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.collider2d`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
 
 From [`physics2d`](../modules/physics2d.md):
 
-- `add_body(string)`
-- `add_collider(any)`
-- `angular_velocity() -> float`
-- `apply_impulse(float, float)`
-- `linear_velocity() -> float, float`
-- `max_contact_impulse() -> float`
-- `overlaps() -> [node]`
-- `set_angular_velocity(float)`
-- `set_linear_velocity(float, float)`
-
-Module-level, not on the handle:
-
-- `physics2d::set_gravity(float, float)`
+| method | what it does |
+| --- | --- |
+| `add_collider(any)` | Attach a 2D collider from a `collider2d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary. |
+| `overlaps() -> [node]` | The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor. |

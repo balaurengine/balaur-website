@@ -6,6 +6,6 @@
     "type": "generated-index",
     "title": "Components",
     "slug": "/reference/components",
-    "description": "Every component a node can carry: the properties a scene sets and a script reads or writes."
+    "description": "Every component a node can carry: what it gives the node, the properties a scene sets, and the functions a script calls on it."
   }
 }

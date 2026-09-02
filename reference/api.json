@@ -21,6 +21,25 @@
       "doc": "An image cut into equal tiles for the `tilemap` component: `texture` names\nthe image, `tile_size` is the pixel length of one tile edge and `columns` is\nhow many tiles one row of the image holds. Tile indices count row by row\nfrom the top left.\n\n```toml\n[[assets]]\nid = \"dungeon\"\ntype = \"tileset\"\ntexture = \"art/dungeon.png\"\ntile_size = 16\ncolumns = 8\n```"
     }
   },
+  "component_docs": {
+    "animation": "Plays animation clips on a node: the library to play them from, one to start \\\n                  when the scene loads, and the rate every clip on the node runs at. The \\\n                  `animation` script module drives the playhead from there.",
+    "body2d": "Makes the node a 2D rigid body rapier simulates: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. On its own a body has no shape; add a `collider2d` for it to collide with anything.",
+    "body3d": "Makes the node a 3D rigid body rapier simulates: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. On its own a body has no shape; add a `collider3d` for it to collide with anything.",
+    "bone2d": "Makes the node a 2D bone: the rest position and rotation about z a rig returns \\\n                  to, plus the length and angle its gizmo is drawn with. A skin names its rig by \\\n                  node path and deforms by the bones under it, in tree order.",
+    "bone3d": "Makes the node a 3D bone: the rest position, euler rotation and scale a rig \\\n                  returns to, plus the length its gizmo is drawn with. A skinned mesh names its \\\n                  rig by node path and deforms by the bones under it, in tree order.",
+    "camera": "The view the scene is drawn from, following the node's global pose: `look_at` aims the 3D camera, `zoom` scales the 2D one in logical pixels per world unit. The last `current` camera of a kind, in tree order, drives that view.",
+    "collider2d": "The shape the 2D physics world sees for this node, and the surface it presents: friction, bounciness and density. With a `body2d` it moves with the body; on its own it is static geometry a scene can be built from. A sensor reports overlaps without pushing anything.",
+    "collider3d": "The shape the 3D physics world sees for this node, and the surface it presents: friction, bounciness and density. With a `body3d` it moves with the body; on its own it is static geometry a scene can be built from. A sensor reports overlaps without pushing anything.",
+    "modifier2d": "Aims a 2D bone at a target node every frame, after the clip has posed the rig: \\\n                  `look_at` turns one bone toward the target, `two_bone_ik` bends a root, middle \\\n                  and tip chain so the tip reaches it.",
+    "particles": "A purely visual 2D emitter at the node: rate, lifetime, speed, cone and gravity. The live particles and the randomness scattering them are backend state the simulation never sees.",
+    "polygon": "A filled, textured 2D polygon from a `mesh` asset's points and triangles, deformed by the rig `skeleton` names when the mesh carries skin weights.",
+    "shape2d": "An untextured 2D primitive drawn at the node -- circle, rect, capsule or a polyline traced through a mesh asset's points -- sized in world units.",
+    "shape3d": "An untextured 3D primitive drawn at the node -- ball, cuboid, capsule, cylinder, cone or plane -- sized in world units and tinted by `color`.",
+    "sound": "A sound of the node's own: which file, at what volume and pitch, \\\n                  looping or not. `audio.play_on` and `audio.stop_on` trigger it, and \\\n                  `autoplay` starts it when the node enters the scene.",
+    "sprite": "A textured 2D quad at the node, sized from its image at `pixels_per_unit` texture pixels per world unit. A `columns` x `rows` sheet makes it a flipbook `frame` steps through.",
+    "tilemap": "A grid of tiles cut from one `tileset` atlas and centred on the node, one character per cell, drawn at `pixels_per_unit` tile-texture pixels per world unit.",
+    "widget": "A HUD element the widget layer draws every frame: a label, button or panel \\\n                  anchored to a screen corner or the center, offset in design pixels. A button \\\n                  records its click in `clicked` and calls the node's `on_click` method."
+  },
   "component_tags": {
     "animation": [
       "animation"
@@ -850,10 +869,62 @@
   },
   "modules": [
     {
+      "acts_on": {
+        "current": [
+          "animation"
+        ],
+        "define": [
+          "animation"
+        ],
+        "is_playing": [
+          "animation"
+        ],
+        "just_finished": [
+          "animation"
+        ],
+        "pause": [
+          "animation"
+        ],
+        "play": [
+          "animation"
+        ],
+        "queue": [
+          "animation"
+        ],
+        "resume": [
+          "animation"
+        ],
+        "seek": [
+          "animation"
+        ],
+        "stop": [
+          "animation"
+        ],
+        "time": [
+          "animation"
+        ]
+      },
       "components": [
         "animation"
       ],
       "constants": [],
+      "doc": "Clip playback on a node's `animation` component \u2014 starting, holding, seeking \u2014 and tweens, short clips generated from a table of steps and addressed by the handle they hand back.",
+      "docs": {
+        "current": "The clip playing or paused on this node, and nil once it has ended, been stopped, or never started.",
+        "define": "Give this node a clip of its own under that name, from a definition table shaped like a scene file's.",
+        "is_playing": "Whether a clip is advancing on this node; a paused, stopped, finished or absent one answers false.",
+        "is_tween_running": "Whether a handle still names a running tween; one that finished, was stopped, or lost its node answers false. Takes a tween handle, where `is_playing` takes a node and asks about its clip.",
+        "just_finished": "The clip that ended on this node during the last step, and nil on every other frame.",
+        "pause": "Stop between ticks, holding the simulation still while the frame loop keeps drawing.",
+        "play": "Run the loaded session, one recorded tick per frame.",
+        "queue": "Play the clip of that name once the current one ends; a looping clip never ends, so a queue behind one never drains.",
+        "resume": "Carry on from where `pause` left off; a stopped, finished or never-started node is left alone.",
+        "seek": "Run recorded ticks until playback reaches the given tick; forward only.",
+        "stop": "Close the recording, naming why it ended, and return the file it wrote.",
+        "time": "Seconds of engine time since the app started, accumulated as a float.",
+        "tween": "Generate a clip on the node from a table of steps and run it, returning the handle `stop` and `is_tween_running` take.",
+        "tween_to": "Move one property of the node to a value over a number of seconds on an optional easing curve, returning a handle."
+      },
       "functions": [
         "current",
         "define",
@@ -889,8 +960,18 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "directory": "The project-relative directory files of an asset type belong in; empty when the type is unknown or declared none.",
+        "duplicate": "A private copy of a definition, read past the cache, so editing it disturbs no other holder of that reference.",
+        "exists": "Whether a project-relative path has anything at it, file or directory.",
+        "load": "Read a session and put it in front of the engine, paused before its first tick.",
+        "reload": "Forget a reference so the next load re-reads its file, along with every entry cut from that same file.",
+        "save": "Write a definition table to the project-relative file a reference names; an error unless it names a whole file."
+      },
       "functions": [
         "directory",
         "duplicate",
@@ -903,10 +984,29 @@
       "signatures": {}
     },
     {
+      "acts_on": {
+        "play_on": [
+          "sound"
+        ],
+        "stop_on": [
+          "sound"
+        ]
+      },
       "components": [
         "sound"
       ],
       "constants": [],
+      "doc": "Sound playback: a file plays under an integer handle, with `volume`, `pitch` and `loop` options, and the `sound` component gives a node a sound of its own. With no output device every call still works and nothing is heard.",
+      "docs": {
+        "is_playing": "Whether a handle's sound is still audible; false once it ends, and always false with no output device.",
+        "play": "Start the audio file at a path and return the handle `stop`, `set_volume`, `set_pitch` and `is_playing` take.",
+        "play_on": "Start the node's own `sound` from the top, replacing what it had going, and return the new handle.",
+        "set_pitch": "Set a playing handle's speed multiplier, which carries its pitch with it.",
+        "set_volume": "Set a playing handle's linear gain, where 1 is the file's own level.",
+        "stop": "Silence the sound a handle names; a finished, stopped or unknown handle is left alone.",
+        "stop_all": "Silence everything at once and clear the playback every `sound` component was holding.",
+        "stop_on": "Silence what the node's `sound` started; a node carrying none is left alone."
+      },
       "functions": [
         "is_playing",
         "play",
@@ -930,6 +1030,7 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [
         {
@@ -949,6 +1050,18 @@
           "value": "over"
         }
       ],
+      "doc": "Breakpoints, the pause a stopped script sits in, and the ways out of it. The same machinery the editor's Debugger dock and the Debug Adapter Protocol server drive, so an outside editor and the built-in one see one debugger.",
+      "docs": {
+        "break_on_error": "Whether a script that throws stops rather than being logged.",
+        "breakpoints": "The lines one file's breakpoints landed on.",
+        "paused": "Where a script is stopped \u2014 node, path, line, reason and frames, innermost first \u2014 or nil while none is.",
+        "request_break": "Ask to stop at the next line any script runs; nothing is stopped yet when it returns.",
+        "resume": "Let the stopped script go on, in the given step mode (`CONTINUE`, `STEP_OVER`, `STEP_INTO`, `STEP_OUT`).",
+        "scope": "The node whose subtree a pause holds still, or nil when a pause stops the whole tree.",
+        "set_break_on_error": "Stop where a script throws instead of logging it and moving on; off by default.",
+        "set_breakpoints": "Replace one file's breakpoints with the given lines, returning the lines they landed on.",
+        "set_scope": "Limit the pause to one node's subtree, so an editor keeps running while the game stops; nil means the whole tree."
+      },
       "functions": [
         "break_on_error",
         "breakpoints",
@@ -964,8 +1077,18 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "args": "The command-line arguments the app was started with, empty when it was given none.",
+        "delta": "Seconds the frame in progress covers, the same number a system is handed.",
+        "quit": "Ask the app to shut down; the frame in flight still finishes.",
+        "reload_script": "Recompile one script by its project-relative key, for a tool editing files outside the watched root.",
+        "tick": "Which frame this is, counted whole \u2014 what simulation code branches on instead of `time`.",
+        "user_data_dir": "A writable per-user directory for saves and settings, created on first call and named after the project."
+      },
       "functions": [
         "args",
         "delta",
@@ -979,8 +1102,19 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "list": "A directory's entries as `{ name, is_dir }`, sorted, dotfiles skipped; empty for a directory that is not there.",
+        "mkdir": "Create a project-relative directory and every parent it needs.",
+        "mtime": "When a file last changed, in seconds since the Unix epoch; nil for one that is not there.",
+        "read": "A whole file as text, project-relative unless absolute; nil when it cannot be read.",
+        "remove": "Delete a project-relative file, or a directory and everything under it; false when there was nothing there.",
+        "rename": "Move a project-relative file or directory, creating the destination's parent first.",
+        "write": "Write text to a project-relative file, creating the directory it goes in."
+      },
       "functions": [
         "exists",
         "list",
@@ -995,8 +1129,21 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "The Gamend backend: a session, its REST API, and a realtime socket carrying topics and server hooks. Every call returns an id to await, and each result also reaches the handler method of the node it was given (`on_gamend_event` unless `on_event` names another) as a map tagged with a `kind`.",
+      "docs": {
+        "call_hook": "Call a server plugin's function over the socket; the reply's `response` holds `data` or `error`.",
+        "close": "Ask the connection to close, which still delivers a `closed` event; false when it was already gone.",
+        "configure": "Point the plugin at a server's base url; every other call errors until this one runs.",
+        "connect": "Open a connection and return the id `send` and `close` take; options are `on_event`, `compression` and `headers`.",
+        "join": "Subscribe the socket to a topic and return the id the server's `reply` answers.",
+        "leave": "Unsubscribe the socket from a topic, returning the id the `reply` answers.",
+        "login": "Open a session from a `device_id`, or an `email` and `password`, and return the id its `login` result answers.",
+        "push": "Send an event and its payload to a topic on the socket, returning the id the `reply` answers.",
+        "rest": "Call a path on the configured server over HTTP; the result carries the `status` and the decoded `body`."
+      },
       "functions": [
         "call_hook",
         "close",
@@ -1022,8 +1169,13 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "request": "Start an HTTP request and return the id its reply carries, to await or to match inside the handler."
+      },
       "functions": [
         "request"
       ],
@@ -1033,6 +1185,7 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [
         {
@@ -1796,6 +1949,36 @@
           "value": "West"
         }
       ],
+      "doc": "One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges \u2014 what went down or came up this frame. Nothing feeds it in a headless run, where every query answers neutrally rather than failing.",
+      "docs": {
+        "action_just_pressed": "Whether the action went down this frame.",
+        "action_just_released": "Whether the action came up this frame.",
+        "action_pressed": "Whether the action is held down now.",
+        "action_value": "How far the action is pushed, -1 to 1; a key answers 0 or 1, a stick or `keys:A,D` the whole range.",
+        "actions": "Every action `[input.actions]` declares, so a rebinding screen can list them.",
+        "bind": "Rebind the action to one binding or a list of them, replacing what it had and saving to the user data directory.",
+        "bindings": "What the action is bound to now, whether from the project or from the player's own rebinding.",
+        "dropped_files": "The absolute paths of files dropped onto the window this frame, in drop order; desktop only.",
+        "gamepad_axis": "How far the pad's `AXIS_*` stick or trigger is pushed, -1 to 1; zero at rest and for an absent pad.",
+        "gamepad_down": "Whether the pad's `PAD_*` button is held down right now, however many frames it has been down.",
+        "gamepad_just_pressed": "Whether the pad's `PAD_*` button went down this frame; true for that one frame only.",
+        "gamepad_just_released": "Whether the pad's `PAD_*` button came up this frame; true for that one frame only.",
+        "gamepad_name": "The pad's name as the platform reports it, empty when no pad has that id.",
+        "gamepads": "The ids of every connected pad, ordered so the list is stable from frame to frame.",
+        "is_down": "Whether the `KEY_*` key is held down right now, however many frames it has been down.",
+        "is_mouse_down": "Whether the `MOUSE_*` button is held down right now, however many frames it has been down.",
+        "just_pressed": "Whether the `KEY_*` key went down this frame; true for that one frame only.",
+        "just_released": "Whether the `KEY_*` key came up this frame; true for that one frame only.",
+        "mouse_delta": "How far the cursor moved this frame, in pixels; movement, not a position.",
+        "mouse_just_pressed": "Whether the `MOUSE_*` button went down this frame; true for that one frame only.",
+        "mouse_just_released": "Whether the `MOUSE_*` button came up this frame; true for that one frame only.",
+        "mouse_position": "The cursor's position in window pixels, with (0, 0) at the top-left corner.",
+        "reset_bindings": "Drop every saved rebinding and go back to what the project declared.",
+        "scroll_delta": "How far the wheel turned this frame, as an (x, y) pair; zero when it did not turn.",
+        "touches": "Every finger on the screen as `{ id, x, y }`, oldest first, in the same pixels as `mouse_position`.",
+        "touches_ended": "The ids of the fingers that lifted or were cancelled this frame.",
+        "touches_started": "The ids of the fingers that touched down this frame."
+      },
       "functions": [
         "dropped_files",
         "gamepad_axis",
@@ -1841,8 +2024,14 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "encode": "A value written back out as JSON text; NaN, infinity, a node or a callback has no JSON form and is an error.",
+        "parse": "The value a JSON document describes; an error on text that does not parse."
+      },
       "functions": [
         "encode",
         "parse"
@@ -1851,8 +2040,17 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "clear": "Empty the buffer, so a console reading it starts again from nothing.",
+        "error": "Write a line at error level, tagged as coming from a script.",
+        "info": "The same summary for a session file on disk, without loading it.",
+        "recent": "The last n buffered entries, 100 by default, each `{ time, level, tag, message, fields }`.",
+        "warn": "Write a line at warning level, tagged as coming from a script."
+      },
       "functions": [
         "clear",
         "error",
@@ -1864,6 +2062,7 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [
         {
@@ -1879,6 +2078,33 @@
           "value": "6.283185307179586"
         }
       ],
+      "doc": "Deterministic float maths, backed by pure-Rust `libm`: the same inputs give the same bits on every platform. A script uses these rather than the language's own float methods, which reach for the platform's libm and drift between machines.",
+      "docs": {
+        "abs": "The magnitude, with the sign dropped.",
+        "acos": "The angle in radians whose cosine is the argument, from 0 to PI; NaN outside -1..1.",
+        "asin": "The angle in radians whose sine is the argument, from -PI/2 to PI/2; NaN outside -1..1.",
+        "atan": "The angle in radians whose tangent is the argument; with two arguments, the y-then-x form instead.",
+        "atan2": "The angle in radians from the positive x axis to the point, taking y first and x second.",
+        "ceil": "The smallest whole number at or above the argument, still a float.",
+        "clamp": "The first argument held inside the range given by the second (low) and third (high).",
+        "cos": "The cosine of an angle in radians.",
+        "cosh": "The hyperbolic cosine.",
+        "deg": "Radians converted to degrees.",
+        "exp": "e raised to the given power.",
+        "floor": "The largest whole number at or below the argument, still a float.",
+        "log": "The natural logarithm, or the logarithm in the base given as a second argument.",
+        "log10": "The base-10 logarithm; -INF at zero and NaN below it.",
+        "max": "The larger of two numbers.",
+        "min": "The smaller of two numbers.",
+        "pow": "The first argument raised to the power of the second.",
+        "rad": "Degrees converted to radians.",
+        "round": "The nearest whole number, with halfway cases going away from zero.",
+        "sin": "The sine of an angle in radians.",
+        "sinh": "The hyperbolic sine.",
+        "sqrt": "The square root; NaN for a negative argument.",
+        "tan": "The tangent of an angle in radians.",
+        "tanh": "The hyperbolic tangent, between -1 and 1."
+      },
       "functions": [
         "abs",
         "acos",
@@ -1909,8 +2135,42 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).",
+      "docs": {
+        "add_child": "Create a named child node under this one and return it.",
+        "attach_script": "Attach the script at a path, with an optional table overriding what the script exports.",
+        "call": "Call a method on the node's script and return what it gives back; nil when there is no such script or method.",
+        "children": "The node's direct children, an empty list when it has none.",
+        "component_names": "The names of every component on the node.",
+        "get_component": "The named component's properties as a table, nil when the node does not carry it.",
+        "get_node": "The node at an `A/B/C` path relative to this one, `..` climbing to the parent; nil when nothing matches.",
+        "global_position": "The node's position in world space, as of the last transform sync.",
+        "global_rotation_euler": "The node's world rotation as euler angles in radians, as of the last transform sync.",
+        "global_scale": "The node's scale in world space, as of the last transform sync.",
+        "has_component": "Whether the node carries the named component.",
+        "is_valid": "Whether the node is still in the world; false rather than an error when the value is not a node.",
+        "name": "The node's own name, empty when it carries none.",
+        "parent": "The node's parent, nil at the root.",
+        "path": "The node's slash-separated path, built by climbing parents from the node up to the root.",
+        "position": "The tick playback has reached.",
+        "queue_free": "Destroy the node and its subtree at the end of the frame.",
+        "remove_component": "Take the named component off the node.",
+        "rotation_degrees": "The same local rotation as `rotation_euler`, in degrees.",
+        "rotation_euler": "The node's local rotation as euler angles in radians, x then y then z.",
+        "scale": "The node's scale relative to its parent.",
+        "script_path": "The path of the script attached to the node, nil when it has none.",
+        "set_component": "Give the node the named component, built from the given table over the component's schema defaults.",
+        "set_name": "Rename the node, doing nothing when it carries no name.",
+        "set_parent": "Move the node under another, keeping where it is in the world; an error for a cycle or a dead parent.",
+        "set_position": "Move the node to a local position, given as three numbers or one vector.",
+        "set_rotation_degrees": "Set the node's local rotation from euler angles in degrees.",
+        "set_rotation_euler": "Set the node's local rotation from euler angles in radians.",
+        "set_scale": "Set the node's scale relative to its parent, as three numbers or one vector.",
+        "translate": "Move the node by an offset in its parent's space, given as three numbers or one vector."
+      },
       "functions": [
         "add_child",
         "attach_script",
@@ -1947,8 +2207,19 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "The 3D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. `physics` holds what spans both worlds.",
+      "docs": {
+        "clear": "Remove every body and collider from both worlds, as a play-in-editor session does on stop.",
+        "debug_draw": "What the debug renderer is drawing now, as a table of `enabled` and one flag per mode.",
+        "is_paused": "Whether stepping is stopped.",
+        "set_debug_draw": "Draw the physics world over the scene: `true` for the usual shapes, or a table naming modes (`#{ colliders = true, joints = true }`).",
+        "set_paused": "Stop or resume stepping both worlds; nodes keep their poses.",
+        "set_sleeping_allowed": "Allow or forbid resting bodies falling asleep, in both worlds and for bodies added later.",
+        "sleeping_allowed": "Whether resting bodies are allowed to fall asleep."
+      },
       "functions": [
         "clear",
         "is_paused",
@@ -1966,6 +2237,35 @@
       }
     },
     {
+      "acts_on": {
+        "add_body": [
+          "body2d"
+        ],
+        "add_collider": [
+          "collider2d"
+        ],
+        "angular_velocity": [
+          "body2d"
+        ],
+        "apply_impulse": [
+          "body2d"
+        ],
+        "linear_velocity": [
+          "body2d"
+        ],
+        "max_contact_impulse": [
+          "body2d"
+        ],
+        "overlaps": [
+          "collider2d"
+        ],
+        "set_angular_velocity": [
+          "body2d"
+        ],
+        "set_linear_velocity": [
+          "body2d"
+        ]
+      },
       "components": [
         "body2d",
         "collider2d"
@@ -1992,6 +2292,19 @@
           "value": "rect"
         }
       ],
+      "doc": "The 2D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. `physics` holds what spans both worlds.",
+      "docs": {
+        "add_body": "Give the node a 2D rigid body of the given kind (`BODY_DYNAMIC`, `BODY_STATIC`, `BODY_KINEMATIC`).",
+        "add_collider": "Attach a 2D collider from a `collider2d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary.",
+        "angular_velocity": "How fast the body is spinning, in radians per second.",
+        "apply_impulse": "Add an instant change in momentum, as if the body were struck.",
+        "linear_velocity": "How fast the body is travelling, in units per second.",
+        "max_contact_impulse": "The hardest contact this body took in the last step, zero when nothing touched it.",
+        "overlaps": "The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor.",
+        "set_angular_velocity": "Set how fast the body spins, in radians per second.",
+        "set_gravity": "Set the 2D world's gravity, in units per second squared.",
+        "set_linear_velocity": "Set how fast the body travels, in units per second."
+      },
       "functions": [
         "add_body",
         "add_collider",
@@ -2019,6 +2332,29 @@
       }
     },
     {
+      "acts_on": {
+        "add_ball_collider": [
+          "collider3d"
+        ],
+        "add_body": [
+          "body3d"
+        ],
+        "add_cuboid_collider": [
+          "collider3d"
+        ],
+        "apply_impulse": [
+          "body3d"
+        ],
+        "linear_velocity": [
+          "body3d"
+        ],
+        "overlaps": [
+          "collider3d"
+        ],
+        "set_linear_velocity": [
+          "body3d"
+        ]
+      },
       "components": [
         "body3d",
         "collider3d"
@@ -2045,6 +2381,17 @@
           "value": "cuboid"
         }
       ],
+      "doc": "",
+      "docs": {
+        "add_ball_collider": "Attach a sphere collider of the given radius.",
+        "add_body": "Give the node a rigid body of the given kind (`BODY_DYNAMIC`, `BODY_STATIC`, `BODY_KINEMATIC`).",
+        "add_cuboid_collider": "Attach a box collider from its three half-extents.",
+        "apply_impulse": "Add an instant change in momentum, as if the body were struck.",
+        "linear_velocity": "How fast the body is travelling, in units per second.",
+        "overlaps": "The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor.",
+        "set_gravity": "Set the 3D world's gravity, in units per second squared.",
+        "set_linear_velocity": "Set how fast the body travels, in units per second."
+      },
       "functions": [
         "add_ball_collider",
         "add_body",
@@ -2068,6 +2415,54 @@
       }
     },
     {
+      "acts_on": {
+        "color": [
+          "shape3d",
+          "shape2d",
+          "sprite",
+          "polygon"
+        ],
+        "set_ball": [
+          "shape3d"
+        ],
+        "set_circle": [
+          "shape2d"
+        ],
+        "set_color": [
+          "sprite",
+          "shape2d",
+          "shape3d",
+          "polygon",
+          "particles"
+        ],
+        "set_cuboid": [
+          "shape3d"
+        ],
+        "set_rect": [
+          "shape2d"
+        ],
+        "set_sprite": [
+          "sprite"
+        ],
+        "set_sprite_frame": [
+          "sprite"
+        ],
+        "set_sprite_sheet": [
+          "sprite"
+        ],
+        "set_sprite_size": [
+          "sprite"
+        ],
+        "shape2d": [
+          "shape2d"
+        ],
+        "shape3d": [
+          "shape3d"
+        ],
+        "sprite": [
+          "sprite"
+        ]
+      },
       "components": [
         "camera",
         "shape2d",
@@ -2075,6 +2470,43 @@
         "sprite"
       ],
       "constants": [],
+      "doc": "What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.",
+      "docs": {
+        "camera_2d": "The 2D camera this frame: centre xy and zoom in logical pixels per world unit; all zeros with no window.",
+        "camera_matrix": "The camera's projection*view matrix this frame, 16 numbers column-major; all zeros with no window.",
+        "camera_pose": "The camera the renderer actually used: eye xyz, target xyz, vertical fov in radians, HiDPI scale.",
+        "check_material": "Every diagnostic about the material at that path, as `[#{ file, line, column, severity, message }]`; empty when it links.",
+        "color": "The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all.",
+        "draw_line": "Draw one 3D world-space line for this frame; the width is in pixels unless perspective scales it with distance.",
+        "draw_line_2d": "Draw one 2D world-space line for this frame; width is in pixels.",
+        "mouse_ray": "The picking ray through the mouse position: its origin xyz then its direction xyz, in world units.",
+        "mouse_world_2d": "The mouse position in 2D world coordinates, for picking.",
+        "pick_ray": "The nearest node with a 3D shape that a world-space ray meets, from its origin xyz and direction xyz.",
+        "screenshot": "Save the next rendered frame as a PNG at a project-relative path; a run with no renderer says so.",
+        "set_app_icon": "Set the application icon (the dock or taskbar one) from a PNG in the project, named by its path.",
+        "set_background": "Set the colour the viewport is cleared to behind everything drawn, as r, g, b channel floats.",
+        "set_ball": "Draw the node as a sphere of the given radius in world units, replacing any other 3D shape.",
+        "set_camera": "Point the 3D camera: the eye position xyz, then the world point it looks at, in world units.",
+        "set_camera_2d": "Point the 2D camera: the world centre xy, then the zoom in logical pixels per world unit.",
+        "set_camera_input": "Allow or inhibit the backend's own mouse camera controls, so an editor can take the pointer for a drag.",
+        "set_circle": "Draw the node as a circle of the given radius in world units, replacing any other 2D shape.",
+        "set_color": "Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque.",
+        "set_cuboid": "Draw the node as a box from its three half-extents, in world units, replacing any other 3D shape.",
+        "set_cursor_grab": "Confine the cursor to the window, for FPS-style mouse look.",
+        "set_cursor_hidden": "Hide or show the mouse cursor over the window.",
+        "set_fullscreen": "Put the window into borderless fullscreen on the current monitor, or back into a window.",
+        "set_grid": "Turn the ground grid on or off, and optionally set its step in world units, major-line interval and extent.",
+        "set_grid_colors": "Set the ground grid's minor line colour then its major line colour, as r, g, b channel floats.",
+        "set_rect": "Draw the node as a rectangle from its two half-extents, in world units, replacing any other 2D shape.",
+        "set_sprite": "Draw the node as a quad textured with a project image, sized from it at 100 texture pixels per world unit.",
+        "set_sprite_frame": "Show a sheet cell, numbered left to right then top to bottom; only the UVs move, so it is cheap per frame.",
+        "set_sprite_sheet": "Draw the node as one cell of a columns-by-rows sheet, sizing the quad to a single frame, not the whole image.",
+        "set_sprite_size": "Override the size the sprite took from its image, giving half-extents in world units instead.",
+        "shape2d": "The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape.",
+        "shape3d": "The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape.",
+        "sprite": "The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite.",
+        "texture_size": "An image's width and height in pixels, read from the file's own header."
+      },
       "functions": [
         "camera_2d",
         "camera_matrix",
@@ -2148,8 +2580,16 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "int": "A whole number from the deterministic engine stream, uniform in `[low, high]`, both ends included.",
+        "random": "A float from the deterministic engine stream, uniform in `[0, 1)`.",
+        "range": "A float from the deterministic engine stream, uniform in `[low, high)` \u2014 the two arguments.",
+        "seed": "Restart the deterministic engine stream at the given seed, so every draw after it repeats."
+      },
       "functions": [
         "int",
         "random",
@@ -2160,8 +2600,23 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "apply_preset": "Add every component a preset names to the node; a part that fails leaves the parts before it in place.",
+        "component_schema": "A component type's property schema as a table; nil for a name nothing registered.",
+        "component_tags": "The facets a component type is filed under, for filtering a palette; nil for a name nothing registered.",
+        "component_types": "The names of every registered component type, not the components on any node.",
+        "instantiate": "Build a scene document \u2014 TOML text, not a path \u2014 under a parent; `{ scripts: false }` leaves scripts unattached.",
+        "preset_info": "A preset's description, tags and the components it adds; nil for a name nothing registered.",
+        "presets": "The names of every registered preset.",
+        "root": "The tree's root node.",
+        "source": "A scene file's raw TOML text, project-relative and found inside the pack in a packed run; nil when missing.",
+        "spawn": "Create one empty named node under the given parent, or under the root when none is given.",
+        "unmet_expectations": "Components on the node whose expectations nothing satisfies, as `{ component, expects }`; advisory only."
+      },
       "functions": [
         "apply_preset",
         "component_schema",
@@ -2180,8 +2635,11 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {},
       "functions": [
         "attempt",
         "check",
@@ -2191,8 +2649,28 @@
       "signatures": {}
     },
     {
+      "acts_on": {
+        "apply_rest": [
+          "bone2d",
+          "bone3d"
+        ],
+        "bones": [
+          "bone2d",
+          "bone3d"
+        ],
+        "overwrite_rest": [
+          "bone2d",
+          "bone3d"
+        ]
+      },
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "apply_rest": "Move every bone under the node back to its rest transform.",
+        "bones": "The bones under the node in tree order, the order a skin numbers them in, the node itself first when it is one.",
+        "overwrite_rest": "Record every bone's current transform under the node as its new rest pose."
+      },
       "functions": [
         "apply_rest",
         "bones",
@@ -2202,8 +2680,11 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {},
       "functions": [
         "wait"
       ],
@@ -2211,8 +2692,11 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {},
       "functions": [
         "encode",
         "parse"
@@ -2221,6 +2705,7 @@
       "signatures": {}
     },
     {
+      "acts_on": {},
       "components": [
         "widget"
       ],
@@ -2282,6 +2767,53 @@
           "value": "panel"
         }
       ],
+      "doc": "Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.",
+      "docs": {
+        "add_space": "Insert blank space along the current layout, in design pixels.",
+        "available_height": "The height left in the current container, in design pixels.",
+        "available_width": "The width left in the current container, in design pixels.",
+        "bottom_panel": "Dock a strip across the bottom of the window and draw the callback inside it; `height` is in design pixels.",
+        "central_panel": "Draw the callback into whatever room the docked panels left over.",
+        "central_rect": "The x, y, width and height of the surface being drawn into, in design pixels.",
+        "circle_button": "Draw a round button holding one glyph, `d` design pixels across; true on the frame it was clicked.",
+        "clipboard": "The text pasted this frame, empty otherwise: the platform clipboard is not readable on demand.",
+        "code_editor": "Draw an editable, highlighted buffer with a gutter; returns the text, whether it changed, and any line clicked.",
+        "code_line": "Draw one read-only code row from a list of `{ text, color, strong }` spans, with a gutter label on the left.",
+        "color": "Draw a colour picker over `value`, an `[r, g, b, a]` of unit floats; returns the colour and whether it changed.",
+        "dot": "Draw a filled circle in a `#rrggbb` colour, `d` design pixels across.",
+        "drag_value": "Draw a number dragged sideways to change it; returns the value and whether this frame changed it.",
+        "dropdown": "Draw a pill-shaped select over a list of strings; returns the selection and whether it changed this frame.",
+        "frame": "Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels.",
+        "horizontal": "Lay the callback's widgets out in a row; `width`, `height` and `tight` size it, in design pixels.",
+        "image": "Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path.",
+        "label": "Draw a line of text; `size`, `font`, `color`, `strong` and `wrap` style it.",
+        "left_panel": "Dock a column down the left of the window and draw the callback inside it; `width` is in design pixels.",
+        "menu_item": "Draw a row inside a context menu; true on the frame it was clicked, which also closes the menu.",
+        "modal": "Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked.",
+        "overlay": "Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer.",
+        "pill": "Draw a rounded button, or a left-aligned row when `align = \"left\"`; true on the frame it was clicked.",
+        "rect_stroke": "Outline a rectangle at x/y/w/h design pixels from the current panel's corner, `dashed` when asked.",
+        "right": "Lay the callback's widgets out against the right edge, still declared left to right.",
+        "right_panel": "Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels.",
+        "scale": "The global UI scale: real pixels per design pixel.",
+        "screen_size": "The window's width and height, in design pixels.",
+        "scroll": "Put the callback in a vertical scroll area; `max_height` caps it and `stick_to_bottom` follows new content.",
+        "separator": "Draw a one-pixel rule across the container, in the given `#rrggbb` colour when one is passed.",
+        "set_clipboard": "Copy text to the system clipboard.",
+        "set_scale": "Set the global UI scale, clamped to between 0.5 and 3.0 real pixels per design pixel.",
+        "set_text": "Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone.",
+        "set_theme": "Replace the colour tokens from a table of `name = \"#rrggbb\"` entries, plus `dark = true|false`.",
+        "set_widget_layer": "Turn drawing of the scene's `widget` nodes on or off, and confine it to an x/y/w/h rect in design pixels.",
+        "shortcut": "Whether this chord was pressed this frame, consuming it; `mods` is `\"cmd+shift\"`, from the `MOD_*` constants.",
+        "slider": "Draw a horizontal slider between `min` and `max`; returns the value after this frame and whether it moved.",
+        "spacing": "Set the gap between the current container's widgets, in design pixels.",
+        "text_field": "Draw a single-line text box keyed by `id`; returns its text, whether it changed, and whether Enter was pressed.",
+        "toggle": "Draw an on/off switch; returns the state after this frame and whether it was clicked.",
+        "top_panel": "Dock a strip across the top of the window and draw the callback inside it; `height` is in design pixels.",
+        "vertical": "Lay the callback's widgets out in a column.",
+        "wants_keyboard": "Whether a UI widget holds keyboard focus, so the game should leave this frame's key presses alone.",
+        "window": "Draw the callback in a floating window the user drags and resizes; false once its close button is used."
+      },
       "functions": [
         "add_space",
         "available_height",
@@ -2377,8 +2909,13 @@
       }
     },
     {
+      "acts_on": {},
       "components": [],
       "constants": [],
+      "doc": "",
+      "docs": {
+        "send": "Queue a text frame on the connection; false when it is already gone."
+      },
       "functions": [
         "close",
         "connect",

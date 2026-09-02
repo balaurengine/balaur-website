@@ -63,8 +63,9 @@ pub fn on_reached_end(this) {   // called by the clip's method track
 }
 ```
 
-Plus `seek`, `time`, `current`, `is_playing`, `is_running`, `just_finished`,
-and `define` for building a clip from an object at run time.
+Plus `seek`, `time`, `current`, `is_playing`, `just_finished`, and `define`
+for building a clip from an object at run time. A tween is asked about
+separately, with `is_tween_running(handle)`.
 
 ## Tweens
 

@@ -130,19 +130,34 @@ already in the engine. Within each group the order is the one the
 
 <Roadmap items={[
   {
+    title: 'Binary websocket frames',
+    text: 'A bytes value in scripts, so a websocket carries binary frames as well as text. The first step every item below needs.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
+  },
+  {
     title: 'Rollback netcode',
     text: 'Inputs on the wire, not state: peers predict, roll back on a late input and re-simulate, with the per-tick digest catching any desync.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-phases',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
   },
   {
-    title: 'State replication',
-    text: 'A `replicate` key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-phases',
+    title: 'WebTransport (QUIC)',
+    text: 'One transport for everything: reliable streams and unreliable datagrams in one encrypted connection, native and in the browser. Datagrams do the job of raw UDP, so the engine never exposes a UDP socket.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
   },
   {
-    title: 'QUIC transport',
-    text: 'Reliable streams and unreliable datagrams in one transport, native and in the browser; binary websocket frames on the way there.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-phases',
+    title: 'State replication and RPC',
+    text: <>A <code>replicate</code> key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.</>,
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
+  },
+  {
+    title: 'Sessions from Gamend',
+    text: 'A room becomes a session and the relay for browser peers; matchmaking and presence stay on the server.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
+  },
+  {
+    title: 'WebRTC data channels',
+    text: 'Browser peer-to-peer without a relay, behind the same transport trait. Built only once a game needs it.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
   },
 ]} />
 

@@ -19,8 +19,11 @@ replays, lockstep networking, and "did the content change?" checks possible.
   platform's math library, which differs across OSes. `glamx` is pinned to
   `libm` and `scalar-math` workspace-wide, so glam's own `Quat::from_euler`
   and `Vec3::normalize` land on that same libm and take no SIMD path.
-- A house lint fails the build on a bare `.sin()` or `.powf()` in Rust, and on
-  `.powf()` or `.powi()` in a Rune script.
+- A house lint fails the build on a bare `.sin()` or `f32::sin(x)` in Rust.
+- Rune's `f64::powf` and `f64::powi` were its stdlib's, calling the platform
+  `pow`. Rune installs its stdlib wholesale and a function cannot be
+  overridden from outside, so Balaur ships a small fork that puts both on
+  `libm` — the only two platform float calls in the whole Rune stdlib.
 - Network completions enter the simulation once per tick, at the start of the
   frame, in arrival order — never from an I/O thread — so a recorded session
   replays without touching the network, logins and retries included.
@@ -44,7 +47,7 @@ order is fixed. The known hazards are addressed directly:
 
 | Hazard | Status |
 | --- | --- |
-| `sin`, `cos`, `exp`, `pow`, ... call the platform libm, which differs across OSes | The engine's `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is implemented on pure-Rust `libm` and is bit-identical everywhere. Rune has no transcendentals of its own, so simulation code reaches `math::*` by default. Its `powf` and `powi` do call the platform's, and the lint rejects them; `sqrt`, `abs`, `floor`, `ceil`, `round`, `min` and `max` are IEEE-exact and safe to call directly |
+| `sin`, `cos`, `exp`, `pow`, ... call the platform libm, which differs across OSes | The engine's `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is implemented on pure-Rust `libm` and is bit-identical everywhere. Rune has no transcendentals of its own, so simulation code reaches `math::*` by default. Every float method Rune *does* expose is safe: `sqrt`, `abs`, `floor`, `ceil`, `round`, `min` and `max` are IEEE-exact, and `powf`/`powi` are on `libm` in Balaur's fork |
 | A random source seeded from entropy | Rune has none of its own; the `rng` module (`rng::seed/random/range/int`) is an engine-owned seeded PCG32 stream with a fixed default seed, so a fresh run reproduces by construction |
 | Iteration order over an object (`for (k, v) in obj`) is the hash map's, not insertion order | Rule: simulation-affecting iteration uses lists or sorted keys |
 | Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, which runs on the 60 Hz step with a constant dt; `update(dt)` is for presentation. Use `engine::tick()` for time |

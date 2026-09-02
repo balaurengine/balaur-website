@@ -5,58 +5,60 @@ custom_edit_url: null
 
 # `ui`
 
-44 functions, 14 constants. Scripts reach it as `ui::`.
+Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
 
-Acts on [`widget`](../components/widget.md).
+44 functions, 14 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
-Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.
 
-- `add_space(float)`
-- `available_height() -> float`
-- `available_width() -> float`
-- `bottom_panel(string, any?, fn)`
-- `central_panel(any?, fn)`
-- `central_rect() -> float, float, float, float`
-- `circle_button(string, any?) -> bool`
-- `clipboard() -> string`
-- `code_editor(string, string, any?) -> string, bool, int?`
-- `code_line(string, any, any?)`
-- `color(any?) -> [float], bool`
-- `dot(string, float)`
-- `drag_value(float, any?) -> float, bool`
-- `dropdown(string, string, any, any?) -> string, bool`
-- `frame(any?, fn)`
-- `horizontal(any?, fn)`
-- `image(string, any?)`
-- `label(string, any?)`
-- `left_panel(string, any?, fn)`
-- `menu_item(string, any?) -> bool`
-- `modal(string, any?, fn) -> bool`
-- `overlay(string, any?, fn)`
-- `pill(string, any?) -> bool`
-- `rect_stroke(float, float, float, float, any?)`
-- `right(fn)`
-- `right_panel(string, any?, fn)`
-- `scale() -> float`
-- `screen_size() -> float, float`
-- `scroll(string, any?, fn)`
-- `separator(string?)`
-- `set_clipboard(string)`
-- `set_scale(float)`
-- `set_text(string, string)`
-- `set_theme(any)`
-- `set_widget_layer(bool, float?, float?, float?, float?)`
-- `shortcut(string, string) -> bool`
-- `slider(float, float, float, any?) -> float, bool`
-- `spacing(float, float)`
-- `text_field(string, string?, any?) -> string, bool, bool`
-- `toggle(bool, any?) -> bool, bool`
-- `top_panel(string, any?, fn)`
-- `vertical(fn)`
-- `wants_keyboard() -> bool`
-- `window(string, any?, fn) -> bool`
+| function | acts on | what it does |
+| --- | --- | --- |
+| `add_space(float)` | — | Insert blank space along the current layout, in design pixels. |
+| `available_height() -> float` | — | The height left in the current container, in design pixels. |
+| `available_width() -> float` | — | The width left in the current container, in design pixels. |
+| `bottom_panel(string, any?, fn)` | — | Dock a strip across the bottom of the window and draw the callback inside it; `height` is in design pixels. |
+| `central_panel(any?, fn)` | — | Draw the callback into whatever room the docked panels left over. |
+| `central_rect() -> float, float, float, float` | — | The x, y, width and height of the surface being drawn into, in design pixels. |
+| `circle_button(string, any?) -> bool` | — | Draw a round button holding one glyph, `d` design pixels across; true on the frame it was clicked. |
+| `clipboard() -> string` | — | The text pasted this frame, empty otherwise: the platform clipboard is not readable on demand. |
+| `code_editor(string, string, any?) -> string, bool, int?` | — | Draw an editable, highlighted buffer with a gutter; returns the text, whether it changed, and any line clicked. |
+| `code_line(string, any, any?)` | — | Draw one read-only code row from a list of `{ text, color, strong }` spans, with a gutter label on the left. |
+| `color(any?) -> [float], bool` | — | Draw a colour picker over `value`, an `[r, g, b, a]` of unit floats; returns the colour and whether it changed. |
+| `dot(string, float)` | — | Draw a filled circle in a `#rrggbb` colour, `d` design pixels across. |
+| `drag_value(float, any?) -> float, bool` | — | Draw a number dragged sideways to change it; returns the value and whether this frame changed it. |
+| `dropdown(string, string, any, any?) -> string, bool` | — | Draw a pill-shaped select over a list of strings; returns the selection and whether it changed this frame. |
+| `frame(any?, fn)` | — | Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels. |
+| `horizontal(any?, fn)` | — | Lay the callback's widgets out in a row; `width`, `height` and `tight` size it, in design pixels. |
+| `image(string, any?)` | — | Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path. |
+| `label(string, any?)` | — | Draw a line of text; `size`, `font`, `color`, `strong` and `wrap` style it. |
+| `left_panel(string, any?, fn)` | — | Dock a column down the left of the window and draw the callback inside it; `width` is in design pixels. |
+| `menu_item(string, any?) -> bool` | — | Draw a row inside a context menu; true on the frame it was clicked, which also closes the menu. |
+| `modal(string, any?, fn) -> bool` | — | Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked. |
+| `overlay(string, any?, fn)` | — | Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer. |
+| `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. |
+| `rect_stroke(float, float, float, float, any?)` | — | Outline a rectangle at x/y/w/h design pixels from the current panel's corner, `dashed` when asked. |
+| `right(fn)` | — | Lay the callback's widgets out against the right edge, still declared left to right. |
+| `right_panel(string, any?, fn)` | — | Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels. |
+| `scale() -> float` | — | The global UI scale: real pixels per design pixel. |
+| `screen_size() -> float, float` | — | The window's width and height, in design pixels. |
+| `scroll(string, any?, fn)` | — | Put the callback in a vertical scroll area; `max_height` caps it and `stick_to_bottom` follows new content. |
+| `separator(string?)` | — | Draw a one-pixel rule across the container, in the given `#rrggbb` colour when one is passed. |
+| `set_clipboard(string)` | — | Copy text to the system clipboard. |
+| `set_scale(float)` | — | Set the global UI scale, clamped to between 0.5 and 3.0 real pixels per design pixel. |
+| `set_text(string, string)` | — | Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone. |
+| `set_theme(any)` | — | Replace the colour tokens from a table of `name = "#rrggbb"` entries, plus `dark = true\|false`. |
+| `set_widget_layer(bool, float?, float?, float?, float?)` | — | Turn drawing of the scene's `widget` nodes on or off, and confine it to an x/y/w/h rect in design pixels. |
+| `shortcut(string, string) -> bool` | — | Whether this chord was pressed this frame, consuming it; `mods` is `"cmd+shift"`, from the `MOD_*` constants. |
+| `slider(float, float, float, any?) -> float, bool` | — | Draw a horizontal slider between `min` and `max`; returns the value after this frame and whether it moved. |
+| `spacing(float, float)` | — | Set the gap between the current container's widgets, in design pixels. |
+| `text_field(string, string?, any?) -> string, bool, bool` | — | Draw a single-line text box keyed by `id`; returns its text, whether it changed, and whether Enter was pressed. |
+| `toggle(bool, any?) -> bool, bool` | — | Draw an on/off switch; returns the state after this frame and whether it was clicked. |
+| `top_panel(string, any?, fn)` | — | Dock a strip across the top of the window and draw the callback inside it; `height` is in design pixels. |
+| `vertical(fn)` | — | Lay the callback's widgets out in a column. |
+| `wants_keyboard() -> bool` | — | Whether a UI widget holds keyboard focus, so the game should leave this frame's key presses alone. |
+| `window(string, any?, fn) -> bool` | — | Draw the callback in a floating window the user drags and resizes; false once its close button is used. |
 
 ## Constants
 

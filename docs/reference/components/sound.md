@@ -7,7 +7,13 @@ custom_edit_url: null
 
 `audio` · 5 properties · Audio
 
-In a scene, `sound` is the node key that applies it. From a script, the [`node`](../modules/node.md) module's component functions read and write the same properties by name.
+A sound of the node's own: which file, at what volume and pitch, \
+                  looping or not. `audio.play_on` and `audio.stop_on` trigger it, and \
+                  `autoplay` starts it when the node enters the scene.
+
+In a scene, `sound` is the node key that applies it. A script reaches the same properties through `node.sound.get()` and `node.sound.set(table)`.
+
+## Properties
 
 | property | type | default | description |
 | --- | --- | --- | --- |
@@ -19,18 +25,11 @@ In a scene, `sound` is the node key that applies it. From a script, the [`node`]
 
 ## Script functions
 
-Methods of `node.sound`, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.sound`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
 
 From [`audio`](../modules/audio.md):
 
-- `play_on() -> int`
-- `stop_on()`
-
-Module-level, not on the handle:
-
-- `audio::is_playing(int) -> bool`
-- `audio::play(string, any?) -> int`
-- `audio::set_pitch(int, float)`
-- `audio::set_volume(int, float)`
-- `audio::stop(int)`
-- `audio::stop_all()`
+| method | what it does |
+| --- | --- |
+| `play_on() -> int` | Start the node's own `sound` from the top, replacing what it had going, and return the new handle. |
+| `stop_on()` | Silence what the node's `sound` started; a node carrying none is left alone. |

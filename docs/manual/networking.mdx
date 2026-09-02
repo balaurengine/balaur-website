@@ -89,8 +89,12 @@ For a hosted game backend — auth, storage, realtime rooms — see
 
 ## What is not there yet
 
-No multiplayer layer: no rollback, no replication, no RPC, and every
-transport is TCP. Websockets carry text only. The plan, in order — bytes,
-rollback, QUIC, replication — is
+No multiplayer layer: no rollback, no replication, no RPC. Every transport
+is TCP — no UDP, QUIC, WebTransport or WebRTC — and websockets carry text
+only. The plan, in order — bytes, rollback, WebTransport native and in the
+browser, replication, sessions from Gamend, WebRTC for browser peer-to-peer —
+is
 [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md)
 in the engine repository; the [roadmap](../roadmap.mdx) has the short form.
+Raw UDP is not coming: QUIC datagrams cover it, with encryption and a
+browser story.

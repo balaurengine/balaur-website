@@ -7,7 +7,9 @@ custom_edit_url: null
 
 `3d` · `render` · 3 properties · 3D
 
-In a scene, `mesh` is the node key that applies it. From a script, the [`node`](../modules/node.md) module's component functions read and write the same properties by name.
+In a scene, `mesh` is the node key that applies it. A script reaches the same properties through `node.mesh.get()` and `node.mesh.set(table)`.
+
+## Properties
 
 | property | type | default | description |
 | --- | --- | --- | --- |

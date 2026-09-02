@@ -7,7 +7,11 @@ custom_edit_url: null
 
 `3d` · `physics` · 1 property · 3D
 
-In a scene, `body3d` is the node key that applies it. From a script, the [`node`](../modules/node.md) module's component functions read and write the same properties by name.
+Makes the node a 3D rigid body rapier simulates: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. On its own a body has no shape; add a `collider3d` for it to collide with anything.
+
+In a scene, `body3d` is the node key that applies it. A script reaches the same properties through `node.body3d.get()` and `node.body3d.set(table)`.
+
+## Properties
 
 | property | type | default | description |
 | --- | --- | --- | --- |
@@ -15,18 +19,13 @@ In a scene, `body3d` is the node key that applies it. From a script, the [`node`
 
 ## Script functions
 
-Methods of `node.body3d`, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.body3d`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
 
 From [`physics3d`](../modules/physics3d.md):
 
-- `add_ball_collider(float)`
-- `add_body(string)`
-- `add_cuboid_collider(float, float, float)`
-- `apply_impulse(float, float, float)`
-- `linear_velocity() -> float, float, float`
-- `overlaps() -> [node]`
-- `set_linear_velocity(float, float, float)`
-
-Module-level, not on the handle:
-
-- `physics3d::set_gravity(float, float, float)`
+| method | what it does |
+| --- | --- |
+| `add_body(string)` | Give the node a rigid body of the given kind (`BODY_DYNAMIC`, `BODY_STATIC`, `BODY_KINEMATIC`). |
+| `apply_impulse(float, float, float)` | Add an instant change in momentum, as if the body were struck. |
+| `linear_velocity() -> float, float, float` | How fast the body is travelling, in units per second. |
+| `set_linear_velocity(float, float, float)` | Set how fast the body travels, in units per second. |

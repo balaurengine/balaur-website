@@ -15,7 +15,7 @@ the major libraries underneath, and what each one does for the engine.
 | [egui](https://github.com/emilk/egui) | The immediate-mode UI scripts draw, and the editor itself |
 | [rodio](https://github.com/RustAudio/rodio) | Audio playback |
 | [gilrs](https://gitlab.com/gilrs-project/gilrs) | Gamepads |
-| [Rune](https://rune-rs.github.io/) | The scripting language and VM |
+| [Rune](https://rune-rs.github.io/) | The scripting language and VM, [lightly forked](https://github.com/balaurengine/rune/tree/deterministic-pow) so `powf`/`powi` are deterministic |
 | [glamx](https://github.com/dimforge/glamx) | Math: [glam](https://github.com/bitshifter/glam-rs) re-exported whole, plus pose and rotation types. Shared with Rapier and kiss3d so nothing converts |
 | [libm](https://github.com/rust-lang/libm) | Bit-identical transcendentals on every platform, under both glam and the engine's own math |
 | [gltf](https://github.com/gltf-rs/gltf), [image](https://github.com/image-rs/image) | Model and texture loading |

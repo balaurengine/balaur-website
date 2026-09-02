@@ -5,31 +5,35 @@ custom_edit_url: null
 
 # `input`
 
+One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges — what went down or came up this frame. Nothing feeds it in a headless run, where every query answers neutrally rather than failing.
+
 19 functions, 190 constants. Scripts reach it as `input::`.
 
 ## Functions
 
-Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.
 
-- `dropped_files() -> any`
-- `gamepad_axis(int, string) -> float`
-- `gamepad_down(int, string) -> bool`
-- `gamepad_just_pressed(int, string) -> bool`
-- `gamepad_just_released(int, string) -> bool`
-- `gamepad_name(int) -> string`
-- `gamepads() -> any`
-- `is_down(string) -> bool`
-- `is_mouse_down(int) -> bool`
-- `just_pressed(string) -> bool`
-- `just_released(string) -> bool`
-- `mouse_delta() -> float, float`
-- `mouse_just_pressed(int) -> bool`
-- `mouse_just_released(int) -> bool`
-- `mouse_position() -> float, float`
-- `scroll_delta() -> float, float`
-- `touches() -> any`
-- `touches_ended() -> any`
-- `touches_started() -> any`
+| function | acts on | what it does |
+| --- | --- | --- |
+| `dropped_files() -> any` | — | The absolute paths of files dropped onto the window this frame, in drop order; desktop only. |
+| `gamepad_axis(int, string) -> float` | — | How far the pad's `AXIS_*` stick or trigger is pushed, -1 to 1; zero at rest and for an absent pad. |
+| `gamepad_down(int, string) -> bool` | — | Whether the pad's `PAD_*` button is held down right now, however many frames it has been down. |
+| `gamepad_just_pressed(int, string) -> bool` | — | Whether the pad's `PAD_*` button went down this frame; true for that one frame only. |
+| `gamepad_just_released(int, string) -> bool` | — | Whether the pad's `PAD_*` button came up this frame; true for that one frame only. |
+| `gamepad_name(int) -> string` | — | The pad's name as the platform reports it, empty when no pad has that id. |
+| `gamepads() -> any` | — | The ids of every connected pad, ordered so the list is stable from frame to frame. |
+| `is_down(string) -> bool` | — | Whether the `KEY_*` key is held down right now, however many frames it has been down. |
+| `is_mouse_down(int) -> bool` | — | Whether the `MOUSE_*` button is held down right now, however many frames it has been down. |
+| `just_pressed(string) -> bool` | — | Whether the `KEY_*` key went down this frame; true for that one frame only. |
+| `just_released(string) -> bool` | — | Whether the `KEY_*` key came up this frame; true for that one frame only. |
+| `mouse_delta() -> float, float` | — | How far the cursor moved this frame, in pixels; movement, not a position. |
+| `mouse_just_pressed(int) -> bool` | — | Whether the `MOUSE_*` button went down this frame; true for that one frame only. |
+| `mouse_just_released(int) -> bool` | — | Whether the `MOUSE_*` button came up this frame; true for that one frame only. |
+| `mouse_position() -> float, float` | — | The cursor's position in window pixels, with (0, 0) at the top-left corner. |
+| `scroll_delta() -> float, float` | — | How far the wheel turned this frame, as an (x, y) pair; zero when it did not turn. |
+| `touches() -> any` | — | Every finger on the screen as `{ id, x, y }`, oldest first, in the same pixels as `mouse_position`. |
+| `touches_ended() -> any` | — | The ids of the fingers that lifted or were cancelled this frame. |
+| `touches_started() -> any` | — | The ids of the fingers that touched down this frame. |
 
 ## Constants
 

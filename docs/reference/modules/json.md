@@ -9,7 +9,9 @@ custom_edit_url: null
 
 ## Functions
 
-Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.
 
-- `encode`
-- `parse`
+| function | acts on | what it does |
+| --- | --- | --- |
+| `encode` | — | A value written back out as JSON text; NaN, infinity, a node or a callback has no JSON form and is an error. |
+| `parse` | — | The value a JSON document describes; an error on text that does not parse. |

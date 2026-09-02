@@ -7,7 +7,11 @@ custom_edit_url: null
 
 `2d` · `render` · 3 properties · 2D
 
-In a scene, `tilemap` is the node key that applies it. From a script, the [`node`](../modules/node.md) module's component functions read and write the same properties by name.
+A grid of tiles cut from one `tileset` atlas and centred on the node, one character per cell, drawn at `pixels_per_unit` tile-texture pixels per world unit.
+
+In a scene, `tilemap` is the node key that applies it. A script reaches the same properties through `node.tilemap.get()` and `node.tilemap.set(table)`.
+
+## Properties
 
 | property | type | default | description |
 | --- | --- | --- | --- |

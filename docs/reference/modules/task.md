@@ -9,6 +9,8 @@ custom_edit_url: null
 
 ## Functions
 
-Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.
+Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.
 
-- `wait`
+| function | acts on | what it does |
+| --- | --- | --- |
+| `wait` | — |  |

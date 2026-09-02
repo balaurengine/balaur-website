@@ -7,7 +7,11 @@ custom_edit_url: null
 
 `2d` · `render` · 10 properties · 2D
 
-In a scene, `sprite` is the node key that applies it. From a script, the [`node`](../modules/node.md) module's component functions read and write the same properties by name.
+A textured 2D quad at the node, sized from its image at `pixels_per_unit` texture pixels per world unit. A `columns` x `rows` sheet makes it a flipbook `frame` steps through.
+
+In a scene, `sprite` is the node key that applies it. A script reaches the same properties through `node.sprite.get()` and `node.sprite.set(table)`.
+
+## Properties
 
 | property | type | default | description |
 | --- | --- | --- | --- |
@@ -26,43 +30,16 @@ Asset types this component references: [`material`](../assets/material.md).
 
 ## Script functions
 
-Methods of `node.sprite`, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.sprite`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
 
 From [`render`](../modules/render.md):
 
-- `color() -> float, float, float, float`
-- `set_ball(float)`
-- `set_circle(float)`
-- `set_color(float, float, float, float?)`
-- `set_cuboid(float, float, float)`
-- `set_rect(float, float)`
-- `set_sprite(string)`
-- `set_sprite_frame(int)`
-- `set_sprite_sheet(string, int, int)`
-- `set_sprite_size(float, float)`
-- `shape2d() -> string, float, float`
-- `shape3d() -> string, float, float, float`
-- `sprite() -> string, int, int, int`
-
-Module-level, not on the handle:
-
-- `render::camera_2d() -> float, float, float`
-- `render::camera_matrix() -> [float]`
-- `render::camera_pose() -> float, float, float, float, float, float, float, float`
-- `render::draw_line(float, float, float, float, float, float, float, float, float, float?, bool?, bool?)`
-- `render::draw_line_2d(float, float, float, float, float, float, float, float?)`
-- `render::mouse_ray() -> float, float, float, float, float, float`
-- `render::mouse_world_2d() -> float, float`
-- `render::pick_ray(float, float, float, float, float, float) -> node?`
-- `render::screenshot(string)`
-- `render::set_app_icon(string)`
-- `render::set_background(float, float, float)`
-- `render::set_camera(float, float, float, float, float, float)`
-- `render::set_camera_2d(float, float, float)`
-- `render::set_camera_input(bool)`
-- `render::set_cursor_grab(bool)`
-- `render::set_cursor_hidden(bool)`
-- `render::set_fullscreen(bool)`
-- `render::set_grid(bool, float?, int?, int?)`
-- `render::set_grid_colors(float, float, float, float, float, float)`
-- `render::texture_size(string) -> int, int`
+| method | what it does |
+| --- | --- |
+| `color() -> float, float, float, float` | The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all. |
+| `set_color(float, float, float, float?)` | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |
+| `set_sprite(string)` | Draw the node as a quad textured with a project image, sized from it at 100 texture pixels per world unit. |
+| `set_sprite_frame(int)` | Show a sheet cell, numbered left to right then top to bottom; only the UVs move, so it is cheap per frame. |
+| `set_sprite_sheet(string, int, int)` | Draw the node as one cell of a columns-by-rows sheet, sizing the quad to a single frame, not the whole image. |
+| `set_sprite_size(float, float)` | Override the size the sprite took from its image, giving half-extents in world units instead. |
+| `sprite() -> string, int, int, int` | The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite. |

@@ -13,9 +13,9 @@ const out = join(root, 'docs', 'reference');
 
 const components = api.components ?? {};
 const tags = api.component_tags ?? {};
+const componentDocs = api.component_docs ?? {};
 const assetTypes = api.asset_types ?? {};
 const modules = [...(api.modules ?? [])].sort((a, b) => a.name.localeCompare(b.name));
-const moduleNames = new Set(modules.map((m) => m.name));
 
 // Section order on the index; a component lands in the first group whose
 // tag it carries.
@@ -32,8 +32,9 @@ const groupOf = (name) =>
   (GROUPS.find(([tag]) => (tags[name] ?? []).includes(tag)) ?? [null, 'Other'])[1];
 
 const code = (s) => '`' + s + '`';
-const cell = (s) => String(s).replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
+const cell = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+const properties = (n) => `${n} ${n === 1 ? 'property' : 'properties'}`;
 
 // Signatures arrive as Rust types (`(NodeId, f32, f32) -> ()`); scripts see
 // the neutral value kinds, so spell those.
@@ -72,26 +73,24 @@ function scriptType(t) {
   if (array) return `[${scriptType(array[1])}]`;
   return SCRIPT_TYPES[t] ?? t;
 }
-// `name(arg kinds) -> result`, or the bare name when the function came in
-// without a signature.
-function signatureOf(m, f, prefix = '') {
+// `name(arg kinds) -> result`. A signature is either recorded by the typed
+// seam (Rust types, node included) or spelled out by the module (script
+// types, node included); `dropFirst` takes the node off for a component
+// handle's method, where the handle supplies it.
+function signatureOf(m, f, {prefix = '', dropFirst = false} = {}) {
   const sig = m.signatures?.[f];
   if (!sig) return code(prefix + f);
   const [args, ret] = sig.split(' -> ');
+  let list = splitTop(args.startsWith('(') ? args.slice(1, -1) : args);
+  if (dropFirst) list = list.slice(1);
   const r = scriptType(ret ?? '');
-  return code(`${prefix}${f}(${scriptType(args)})${r ? ' -> ' + r : ''}`);
+  return code(`${prefix}${f}(${list.map(scriptType).join(', ')})${r ? ' -> ' + r : ''}`);
 }
-const modulesDriving = (component) => modules.filter((m) => (m.components ?? []).includes(component));
-// The handle spelling: `apply_impulse(float, float)`, the node argument
-// bound by the handle itself.
-function handleSignatureOf(m, f) {
-  const sig = m.signatures?.[f];
-  if (!sig) return code(f);
-  const [args, ret] = sig.split(' -> ');
-  const rest = splitTop(args.startsWith('(') ? args.slice(1, -1) : args).slice(1).map(scriptType).join(', ');
-  const r = scriptType(ret ?? '');
-  return code(`${f}(${rest})${r ? ' -> ' + r : ''}`);
-}
+const actsOn = (m, f) => m.acts_on?.[f] ?? [];
+const docOf = (m, f) => m.docs?.[f] ?? '';
+const modulesActingOn = (component) =>
+  modules.filter((m) => Object.values(m.acts_on ?? {}).some((list) => list.includes(component)));
+
 const frontMatter = (title, extra = {}) =>
   [
     '---',
@@ -102,7 +101,7 @@ const frontMatter = (title, extra = {}) =>
     '',
   ].join('\n');
 
-// component.property pairs per asset type, read off the schemas.
+// component.property pairs per asset type, read off the component schemas.
 const users = {};
 for (const [cname, schema] of Object.entries(components)) {
   for (const [prop, spec] of Object.entries(schema)) {
@@ -126,8 +125,7 @@ function propertyRow(name, spec) {
     type = asset in assetTypes ? `asset · [${code(asset)}](../assets/${asset}.md)` : `asset · ${code(asset)}`;
   }
   const raw = spec.default === undefined ? '' : JSON.stringify(spec.default).replace(/^"|"$/g, '');
-  const dflt = raw ? code(raw) : '—';
-  return `| ${code(name)} | ${cell(type)} | ${cell(dflt)} | ${cell(notes.filter(Boolean).join(' '))} |`;
+  return `| ${code(name)} | ${cell(type)} | ${raw ? code(raw) : '—'} | ${cell(notes.filter(Boolean).join(' '))} |`;
 }
 
 rmSync(out, {recursive: true, force: true});
@@ -142,7 +140,7 @@ const category = (label, position, slug, description) =>
 
 writeFileSync(
   join(out, 'components', '_category_.json'),
-  category('Components', 1, '/reference/components', 'Every component a node can carry: the properties a scene sets and a script reads or writes.'),
+  category('Components', 1, '/reference/components', 'Every component a node can carry: what it gives the node, the properties a scene sets, and the functions a script calls on it.'),
 );
 writeFileSync(
   join(out, 'assets', '_category_.json'),
@@ -153,7 +151,6 @@ writeFileSync(
   category('Script modules', 3, '/reference/modules', 'What a script can call: every module, function and constant, read from a booted engine.'),
 );
 
-const nodeLink = moduleNames.has('node') ? `the [${code('node')}](../modules/node.md) module's` : 'the `node` module\'s';
 for (const name of Object.keys(components).sort()) {
   const schema = components[name];
   const props = Object.keys(schema).sort();
@@ -163,37 +160,44 @@ for (const name of Object.keys(components).sort()) {
     frontMatter(name),
     `# ${code(name)}`,
     '',
-    `${t.length ? t.map(code).join(' · ') : 'untagged'} · ${plural(props.length, 'property').replace('propertys', 'properties')} · ${groupOf(name)}`,
+    `${t.length ? t.map(code).join(' · ') : 'untagged'} · ${properties(props.length)} · ${groupOf(name)}`,
     '',
-    `In a scene, ${code(name)} is the node key that applies it. From a script, ${nodeLink} component functions read and write the same properties by name.`,
+  ];
+  if (componentDocs[name]) lines.push(componentDocs[name], '');
+  lines.push(
+    `In a scene, ${code(name)} is the node key that applies it. A script reaches the same properties through ${code('node.' + name + '.get()')} and ${code('node.' + name + '.set(table)')}.`,
+    '',
+    '## Properties',
     '',
     '| property | type | default | description |',
     '| --- | --- | --- | --- |',
     ...props.map((p) => propertyRow(p, schema[p])),
     '',
-  ];
+  );
   if (referenced.length) {
     lines.push(
       `Asset types this component references: ${referenced.map((a) => (a in assetTypes ? `[${code(a)}](../assets/${a}.md)` : code(a))).join(', ')}.`,
       '',
     );
   }
-  const driving = modulesDriving(name);
-  if (driving.length) {
-    lines.push('## Script functions', '');
+  const acting = modulesActingOn(name);
+  if (acting.length) {
     lines.push(
-      `Methods of ${code('node.' + name)}, the handle every node with this component exposes. Each is also a free function on its module with the node as the first argument. Every handle also has ${code('get()')}, ${code('set(table)')}, ${code('has()')} and ${code('remove()')}.`,
+      '## Script functions',
+      '',
+      `Methods of ${code('node.' + name)}, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has ${code('get()')}, ${code('set(table)')}, ${code('has()')} and ${code('remove()')}.`,
       '',
     );
-    for (const m of driving) {
-      const bound = m.functions.filter((f) => /^\(?NodeId\b/.test(m.signatures?.[f] ?? ''));
-      const free = m.functions.filter((f) => !bound.includes(f));
-      lines.push(`From [${code(m.name)}](../modules/${m.name}.md):`, '');
-      lines.push(...bound.map((f) => `- ${handleSignatureOf(m, f)}`));
-      if (free.length) {
-        lines.push('', `Module-level, not on the handle:`, '', ...free.map((f) => `- ${signatureOf(m, f, m.name + '::')}`));
-      }
-      lines.push('');
+    for (const m of acting) {
+      const own = m.functions.filter((f) => actsOn(m, f).includes(name));
+      lines.push(
+        `From [${code(m.name)}](../modules/${m.name}.md):`,
+        '',
+        '| method | what it does |',
+        '| --- | --- |',
+        ...own.map((f) => `| ${signatureOf(m, f, {dropFirst: true})} | ${cell(docOf(m, f))} |`),
+        '',
+      );
     }
   }
   write(`components/${name}.md`, lines);
@@ -217,28 +221,33 @@ for (const type of Object.keys(assetTypes).sort()) {
 }
 
 for (const m of modules) {
-  const lines = [
-    frontMatter(m.name),
-    `# ${code(m.name)}`,
-    '',
+  const lines = [frontMatter(m.name), `# ${code(m.name)}`, ''];
+  if (m.doc) lines.push(m.doc, '');
+  lines.push(
     `${plural(m.functions.length, 'function')}, ${plural(m.constants.length, 'constant')}. Scripts reach it as ${code(m.name + '::')}.`,
     '',
-  ];
-  if (m.name === 'node' && Object.keys(components).length) {
-    lines.push(`The component functions take a component name from the [component reference](/docs/reference/components) and a property table shaped like that component's page.`, '');
-  }
-  if (m.name === 'assets' && Object.keys(assetTypes).length) {
-    lines.push(`Asset references resolve to one of the [asset types](/docs/reference/assets).`, '');
-  }
-  if ((m.components ?? []).length) {
+  );
+  const touched = [...new Set(Object.values(m.acts_on ?? {}).flat())].sort();
+  if (touched.length) {
     lines.push(
-      `Acts on ${m.components.map((c) => (c in components ? `[${code(c)}](../components/${c}.md)` : code(c))).join(', ')}.`,
+      `Acts on ${touched.map((c) => (c in components ? `[${code(c)}](../components/${c}.md)` : code(c))).join(', ')}: those functions are also methods on the component's handle, without the node argument.`,
       '',
     );
   }
   if (m.functions.length) {
-    lines.push('## Functions', '', 'Argument kinds are the script values a call passes; `node` is a node handle, `any` a table or value of any kind.', '');
-    lines.push(...m.functions.map((f) => `- ${signatureOf(m, f)}`), '');
+    lines.push(
+      '## Functions',
+      '',
+      'Argument kinds are the script values a call passes: `node` is a node handle, `any` a table or value of any kind, `fn` a callback.',
+      '',
+      '| function | acts on | what it does |',
+      '| --- | --- | --- |',
+      ...m.functions.map((f) => {
+        const on = actsOn(m, f).map((c) => (c in components ? `[${code(c)}](../components/${c}.md)` : code(c)));
+        return `| ${signatureOf(m, f)} | ${on.join(', ') || '—'} | ${cell(docOf(m, f))} |`;
+      }),
+      '',
+    );
   }
   if (m.constants.length) {
     lines.push('## Constants', '', '| name | value |', '| --- | --- |', ...m.constants.map((c) => `| ${code(c.name)} | ${code(String(c.value))} |`), '');
@@ -252,7 +261,7 @@ const index = [
   '',
   'Every component, asset type and script module in the engine, read from a booted engine rather than the source, so nothing here can drift from what a scene or a script actually sees.',
   '',
-  '- A **component** is what gives a node a capability; its page lists the properties a scene sets and a script reads or writes.',
+  '- A **component** is what gives a node a capability; its page lists the properties a scene sets and the functions a script calls on it.',
   '- An **asset type** is the content an asset-typed property names, in a file or inline; its page shows the definition table.',
   '- A **script module** is what a script calls; its page lists functions and constants.',
   '',
@@ -263,22 +272,25 @@ const grouped = {};
 for (const name of Object.keys(components).sort()) (grouped[groupOf(name)] ??= []).push(name);
 for (const label of [...GROUPS.map(([, l]) => l), 'Other']) {
   if (!grouped[label]) continue;
-  index.push(`### ${label}`, '', '| component | tags | properties |', '| --- | --- | --- |');
+  index.push(`### ${label}`, '', '| component | properties | what it gives a node |', '| --- | ---: | --- |');
   for (const name of grouped[label]) {
-    index.push(`| [${code(name)}](./components/${name}.md) | ${(tags[name] ?? []).map(code).join(' · ')} | ${Object.keys(components[name]).length} |`);
+    index.push(`| [${code(name)}](./components/${name}.md) | ${Object.keys(components[name]).length} | ${cell(componentDocs[name])} |`);
   }
   index.push('');
 }
 index.push('## Asset types', '', '| type | files | used by |', '| --- | --- | --- |');
 for (const type of Object.keys(assetTypes).sort()) {
-  const used = (users[type] ?? []).map(([c, p]) => `${code(c + '.' + p)}`).join(', ') || '—';
+  const used = (users[type] ?? []).map(([c, p]) => code(c + '.' + p)).join(', ') || '—';
   index.push(`| [${code(type)}](./assets/${type}.md) | ${assetTypes[type].directory ? code(assetTypes[type].directory + '/') : '—'} | ${used} |`);
 }
-index.push('', '## Script modules', '', '| module | functions | constants |', '| --- | ---: | ---: |');
-for (const m of modules) index.push(`| [${code(m.name)}](./modules/${m.name}.md) | ${m.functions.length} | ${m.constants.length} |`);
+index.push('', '## Script modules', '', '| module | functions | what it is for |', '| --- | ---: | --- |');
+for (const m of modules) index.push(`| [${code(m.name)}](./modules/${m.name}.md) | ${m.functions.length} | ${cell(m.doc)} |`);
 index.push('');
 write('index.md', index);
 
+const described = modules.reduce((n, m) => n + Object.keys(m.docs ?? {}).length, 0);
+const total = modules.reduce((n, m) => n + m.functions.length, 0);
 console.log(
-  `reference: ${Object.keys(components).length} components, ${Object.keys(assetTypes).length} asset types, ${modules.length} modules → docs/reference/`,
+  `reference: ${Object.keys(components).length} components, ${Object.keys(assetTypes).length} asset types, ` +
+    `${modules.length} modules, ${described}/${total} functions described → docs/reference/`,
 );
