@@ -1,0 +1,30 @@
+---
+sidebar_position: 6
+---
+
+# Built on
+
+Balaur reuses the Rust ecosystem rather than re-implementing it. These are
+the major libraries underneath, and what each one does for the engine.
+
+| Library | What it does in Balaur |
+| --- | --- |
+| [hecs](https://github.com/Ralith/hecs) | The ECS every node is an entity in |
+| [Rapier](https://rapier.rs) | 2D and 3D physics, built with `enhanced-determinism` |
+| [wgpu](https://wgpu.rs) via [kiss3d](https://github.com/sebcrozet/kiss3d) | Rendering, windowed and offscreen; [winit](https://github.com/rust-windowing/winit) for the window |
+| [egui](https://github.com/emilk/egui) | The immediate-mode UI scripts draw, and the editor itself |
+| [rodio](https://github.com/RustAudio/rodio) | Audio playback |
+| [gilrs](https://gitlab.com/gilrs-project/gilrs) | Gamepads |
+| [Rune](https://rune-rs.github.io/) | The scripting language and VM |
+| [glam](https://github.com/bitshifter/glam-rs) | Math, shared with Rapier and kiss3d so nothing converts |
+| [libm](https://github.com/rust-lang/libm) | Bit-identical transcendentals on every platform |
+| [gltf](https://github.com/gltf-rs/gltf), [image](https://github.com/image-rs/image) | Model and texture loading |
+| [ureq](https://github.com/algesten/ureq), [tungstenite](https://github.com/snapview/tungstenite-rs), [rustls](https://github.com/rustls/rustls) | HTTP, websockets, TLS |
+| [serde](https://serde.rs), [toml](https://github.com/toml-rs/toml) | Scenes, assets, project files, packs |
+| [notify](https://github.com/notify-rs/notify) | The file watcher behind hot reload |
+| [tracing](https://github.com/tokio-rs/tracing) | Logging, into the editor's Output dock |
+| [clap](https://github.com/clap-rs/clap) | The `balaur` command line |
+| [libloading](https://github.com/nagisa/rust_libloading) | Run-time extensions from shared libraries |
+
+Every crate in the workspace, with its dependencies, is listed in the
+generated [Crates](./reference/crates.md) reference.

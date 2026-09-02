@@ -2,43 +2,79 @@
 sidebar_position: 7
 ---
 
+import Roadmap from '@site/src/components/Roadmap';
+
 # Roadmap
 
-## Where the engine stands
+What we want to add, and for each the one step that comes next. The engine
+already has its core loop — nodes over an ECS, Rune with hot reload and a
+debugger, 2D and 3D physics, rendering in three modes, animation and
+skeletons, networking, an editor that is itself a Balaur project, a fixed
+step with record and replay, and reproducible packs. There is no binary
+release yet.
 
-The core loop is in place: scene tree over an ECS, Rune scripting with hot
-reload and a debugger, 3D and 2D physics, rendering (windowed, offscreen and
-headless), animation with clip assets, tweens and 2D and 3D skeletons, glTF
-import, a shared-asset layer, networking (HTTP, websockets, and the Gamend
-backend), audio, input, UI, run-time extensions, a working editor with
-play-in-editor, undo, a clip timeline and rig tools, a fixed 60 Hz
-simulation step with per-tick digests, session recording and replay,
-rollback snapshots, reproducible pack export with binary assets, and fused
-single-file executables. CI cross-compiles the headless engine to iOS,
-Android, and WebAssembly on every push. There is no binary release yet; the
-engine builds from source.
-
-## Next
-
-1. Editor plugins: tools, docks and inspector sections registered from a
-   project's own scripts. The editor is already a Balaur project; what
-   remains is the registration seam.
-2. New physics through Rapier: soft bodies, tearing, fluids, particles and
-   granular materials are being built in Rapier itself and reach Balaur
-   through the same plugin.
-3. Rune, extended: a fork with script properties exported to the inspector
-   and a faster compile path.
-4. Animation blending — blend trees and state machines composed over the
-   pure sampler — and 3D modifiers to match the 2D `look_at` and
-   `two_bone_ik`.
-5. Compile diagnostics surfaced in the editor's script buffer;
-   palette-driven node search; multi-scene tabs.
-6. Prefabs/sub-scenes. The asset layer landed, so a prefab is another
-   registered asset type; what remains is the scene key that instantiates one
-   and the rule for overriding properties on the instance.
-7. GPU skinning for 3D meshes; they are skinned on the CPU today.
-8. Published benchmarks, and parallel system execution inside the data
-   plane once profiling demands it.
+<Roadmap items={[
+  {
+    area: 'Editor',
+    title: 'Editor plugins',
+    what: 'Tools, docks and inspector sections written in a project\'s own scripts, so a game can grow the editor it needs.',
+    next: 'A registration seam: a script declares a tool or a dock, the shell draws it in the right place.',
+  },
+  {
+    area: 'Physics',
+    title: 'Soft bodies, tearing, fluids',
+    what: 'Soft bodies, tearing, fluids and particles, and granular materials such as sand and mud — built in Rapier itself.',
+    next: 'Land them in Rapier, then expose each as components and a script API through the same physics plugin.',
+  },
+  {
+    area: 'Scripting',
+    title: 'Rune, extended',
+    what: 'A fork of Rune shaped for games: script properties exported to the inspector, faster compiles, better errors.',
+    next: 'Exported properties: a field annotation the inspector reads and the scene file stores.',
+  },
+  {
+    area: 'Animation',
+    title: 'Blending and state machines',
+    what: 'Blend trees and state machines composed over the pure sampler, plus 3D modifiers to match the 2D look-at and two-bone IK.',
+    next: 'A blend node that mixes two sampled poses by weight, driven from a script.',
+  },
+  {
+    area: 'Scenes',
+    title: 'Prefabs',
+    what: 'A scene instantiated inside another, with per-instance property overrides — the asset layer already stores one.',
+    next: 'The scene key that instantiates a scene asset, and the override rule for its nodes.',
+  },
+  {
+    area: 'Networking',
+    title: 'State replication',
+    what: 'Multiplayer on top of the deterministic step: replicated components with an authority rule, and lockstep or rollback from the same record and replay machinery.',
+    next: 'A `replicate` component that syncs a node\'s transform and body across a Gamend room.',
+  },
+  {
+    area: 'Editor',
+    title: 'Diagnostics and search',
+    what: 'Compile errors shown in the script buffer, node search from the palette, several scenes open as tabs.',
+    next: 'Compile diagnostics in the gutter, from the same compiler hot reload runs.',
+  },
+  {
+    area: 'Rendering',
+    title: 'GPU skinning in 3D',
+    what: 'Imported meshes are skinned on the CPU today; 2D polygons already skin on the GPU.',
+    next: 'Move the 3D joint palette into the vertex shader, keeping the headless path bit-identical.',
+  },
+  {
+    area: 'Release',
+    title: 'First binary release',
+    what: 'An editor download per platform with its runtime template, so shipping a game needs no Rust toolchain.',
+    next: 'Signed macOS and Windows builds from CI, and the Download page pointing at them.',
+  },
+  {
+    area: 'Performance',
+    title: 'Benchmarks and parallelism',
+    what: 'Published numbers for what a frame costs, and parallel system execution inside the data plane once profiling asks for it.',
+    next: 'Publish the headless benchmark suite\'s results on every release.',
+  },
+]} />
 
 ## Links
 

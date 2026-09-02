@@ -47,6 +47,33 @@ The script resumes at the start of a later tick, in arrival order —
 deterministic given the same recorded arrivals. One limit: an async entry
 point cannot be paused by the [debugger](./scripting.mdx#debugging).
 
+## Options and configuration
+
+A websocket takes options beside its handler: `compression` offers
+`permessage-deflate` (RFC 7692) and lets the server decide, and `headers`
+go on the upgrade request. An HTTP request takes `method`, `body`,
+`headers` and `timeout` the same way.
+
+```rust
+this.socket = websocket::connect(this.node, "wss://game.example/play", #{
+    on_event: "on_socket",
+    compression: true,
+    headers: #{ Authorization: "Bearer " + token },
+});
+```
+
+The defaults come from the `[net]` table of `project.toml`, so a project
+can turn compression off everywhere, or shorten every request's timeout,
+without touching a script:
+
+```toml
+[net]
+websocket_compression = true   # offer permessage-deflate on every connection
+http_timeout = 10.0            # seconds, for a request that names none
+```
+
+A call's own option wins over the table.
+
 ## Why there are no signals
 
 The engine has no `connect`-style signal registration: a script cannot
