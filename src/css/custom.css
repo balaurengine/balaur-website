@@ -1,44 +1,89 @@
 /**
- * Global styles. Infima variables first, then the Balaur look: ember red on
- * near-black, with a carved serif for display text.
+ * Global styles. Infima variables first, then the Balaur look: the colors of
+ * the Balaur bondoc reconstruction (rust, chestnut, olive, cream, a black
+ * collar), EB Garamond for display and headings, Source Sans 3 for text.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  --ifm-color-primary: #b4402a;
-  --ifm-color-primary-dark: #a23a26;
-  --ifm-color-primary-darker: #993724;
-  --ifm-color-primary-darkest: #7e2d1e;
-  --ifm-color-primary-light: #c6462e;
-  --ifm-color-primary-lighter: #cf4a31;
-  --ifm-color-primary-lightest: #d96449;
+  --ifm-color-primary: #b4502e;
+  --ifm-color-primary-dark: #a34829;
+  --ifm-color-primary-darker: #9a4427;
+  --ifm-color-primary-darkest: #823a21;
+  --ifm-color-primary-light: #c35632;
+  --ifm-color-primary-lighter: #cb5a34;
+  --ifm-color-primary-lightest: #d27150;
+
+  /* Warm gray ramp; Infima builds the emphasis scale from it in both modes. */
+  --ifm-color-gray-0: #fbf7f0;
+  --ifm-color-gray-100: #f3ebdf;
+  --ifm-color-gray-200: #e8dccb;
+  --ifm-color-gray-300: #d9cab5;
+  --ifm-color-gray-400: #bfae98;
+  --ifm-color-gray-500: #9c8a76;
+  --ifm-color-gray-600: #7d6b5c;
+  --ifm-color-gray-700: #5d4e44;
+  --ifm-color-gray-800: #3f332d;
+  --ifm-color-gray-900: #2a201b;
+  --ifm-color-gray-1000: #1a1412;
+
+  --ifm-background-color: #f6efe4;
+  --ifm-background-surface-color: #fbf7f0;
+  --ifm-font-color-base: #2a201b;
+  --ifm-code-background: #efe4d3;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --balaur-display-font: 'Cinzel', 'Iowan Old Style', Georgia, serif;
-  --balaur-card-border: var(--ifm-color-emphasis-200);
-  --balaur-card-bg: var(--ifm-background-surface-color);
+  --docusaurus-highlighted-code-line-bg: rgba(180, 80, 46, 0.12);
+
+  --ifm-font-family-base: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --balaur-display-font: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
+  --ifm-heading-font-family: var(--balaur-display-font);
+  --ifm-heading-font-weight: 600;
+
+  --balaur-card-border: #e8dccb;
+  --balaur-card-bg: #fbf7f0;
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #e8724f;
-  --ifm-color-primary-dark: #e45a32;
-  --ifm-color-primary-darker: #dd5028;
-  --ifm-color-primary-darkest: #b64121;
-  --ifm-color-primary-light: #ec8a6c;
-  --ifm-color-primary-lighter: #ee947a;
-  --ifm-color-primary-lightest: #f3b5a3;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  /* Near-black with a drop of oxblood, not neutral gray. */
-  --ifm-background-color: #120e10;
-  --ifm-background-surface-color: #1a1417;
-  --balaur-card-border: #2c2225;
-  --balaur-card-bg: #171215;
+  --ifm-color-primary: #d9714a;
+  --ifm-color-primary-dark: #d6663d;
+  --ifm-color-primary-darker: #d55f35;
+  --ifm-color-primary-darkest: #c25129;
+  --ifm-color-primary-light: #dc7a56;
+  --ifm-color-primary-lighter: #dd815f;
+  --ifm-color-primary-lightest: #e4987c;
+
+  /* Umber, not neutral gray. */
+  --ifm-background-color: #1a1412;
+  --ifm-background-surface-color: #231b18;
+  --ifm-font-color-base: #efe6da;
+  --ifm-code-background: #2a211d;
+  --docusaurus-highlighted-code-line-bg: rgba(217, 113, 74, 0.16);
+
+  --balaur-card-border: #3a2e29;
+  --balaur-card-bg: #211a17;
+}
+
+/* Source Sans 3 runs small; give running text in the docs a little more. */
+.theme-doc-markdown,
+.blog-wrapper .markdown {
+  font-size: 1.0625rem;
 }
 
 .navbar__title {
   font-family: var(--balaur-display-font);
-  letter-spacing: 0.05em;
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* The black collar: one footer color in both modes. */
+.footer--dark {
+  --ifm-footer-background-color: #241c19;
+  --ifm-footer-color: #cdbba4;
+  --ifm-footer-link-color: #efe6da;
+  --ifm-footer-link-hover-color: var(--ifm-color-primary-lightest);
+  --ifm-footer-title-color: #efe6da;
 }
 
 /* Raw <details> in the synced reference docs pick up the info-blue alert

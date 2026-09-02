@@ -1,8 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="4.6 1.5 63.8 63.8" width="64" height="64">
-  <title>Balaur</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="13" fill="#f6efe4"/>
+  <g transform="translate(6.4 6.4) scale(0.8020) translate(-4.6 -1.5)">
   <defs>
     <mask id="gap"><rect x="-10" y="-10" width="90" height="90" fill="#fff"/><path d="M 27.4 4.1 A 30 30 0 0 1 38.3 62.8 A 18 18 0 0 0 31.7 27.6 Z" fill="#000" stroke="#000" stroke-width="9" stroke-linejoin="round"/></mask>
   </defs>
   <path d="M 13.0 16.0 A 24 24 0 0 1 20.4 62.8 A 15 15 0 0 0 15.8 33.6 Z" fill="#2b211c" stroke="#2b211c" stroke-width="5" stroke-linejoin="round" mask="url(#gap)"/>
   <path d="M 27.4 4.1 A 30 30 0 0 1 38.3 62.8 A 18 18 0 0 0 31.7 27.6 Z" fill="#b4502e" stroke="#b4502e" stroke-width="5" stroke-linejoin="round"/>
+  </g>
 </svg>

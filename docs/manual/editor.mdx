@@ -114,6 +114,63 @@ balaur edit examples/rig --offscreen --frames 100 \
 `ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`, `palette`,
 `light`, `play`, and `shot=<file>` to capture a frame.
 
+## Extending the editor
+
+A plugin is a Rune file that adds docks, windows, palette commands,
+inspector sections, property editors, viewport overlays and start-up states.
+It goes in `editor/plugins/` to ship with the editor, or in your project's
+`editor/` directory to belong to that game alone. Both are loaded at
+start-up, in name order.
+
+A plugin declares `register()`, returning what it adds, and optionally
+`state()`, whose object becomes its own slice at `S.plugins.<name>`:
+
+```rune
+// mygame/editor/counter.rn
+pub fn state() {
+    #{ shown: -1 }
+}
+
+pub fn register() {
+    #{
+        docks: [#{ id: "counter", name: "Counter", draw: draw }],
+        commands: [#{ label: "Count scripted nodes", icon: "Σ", run: count }],
+    }
+}
+
+pub fn count(S) {
+    let n = 0;
+    for node in S.doc {
+        if node.contains_key("script") {
+            n += 1;
+        }
+    }
+    S.plugins.counter.shown = n;
+}
+
+pub fn draw(S, k) {
+    ui::label(format!("{} scripted nodes", S.plugins.counter.shown), #{
+        size: 11.5, font: "mono", color: k.dim,
+    });
+}
+```
+
+`S` is the editor's whole state, the same object every built-in module gets:
+the document (`S.doc`), the live mirror, the selection (`S.sel`), history and
+the theme. The one rule is to call the editor's history recorder before
+mutating the document, so undo keeps working.
+
+Each list is optional. `docks` and `windows` take a `draw(S, k)`; `commands`
+take a `run(S)`; `sections` are `draw(S, k, node)` and are drawn under the
+built-in inspector; `overlays` are `draw(S)` and draw viewport lines;
+`editors` map a schema datatype to `draw(S, k, target, spec, value)`, which
+replaces the built-in editor for that type; `states` map a name to `run(S)`
+so a plugin carries its own start-up state, and therefore its own test.
+
+Nothing is sandboxed: a plugin runs in the editor's host with the editor's
+capabilities. That is the right first cut for a tool a project writes for
+itself.
+
 ## Why it is built this way
 
 The editor dogfoods the scripting surface: everything it needs — filesystem

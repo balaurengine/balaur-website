@@ -151,9 +151,23 @@ let pause = debugger::paused();         // (), or the pause: reason, line, frame
 debugger::resume(debugger::STEP_OVER);  // CONTINUE | STEP_OVER | STEP_INTO | STEP_OUT
 ```
 
-Two limits: an async entry point (one that uses `task::wait`) runs as a
-future and cannot be paused, so a breakpoint inside one is let through; and
-locals are a frame's named arguments, since Rune keeps no names for its
+A script that throws normally logs the error and the engine carries on.
+Turning on break on error stops at the line that threw instead, with the
+frames and locals still there to read:
+
+```rust
+debugger::set_break_on_error(true);
+```
+
+It is off by default because it puts every synchronous call through the
+stepping executor, which is otherwise used only where you have set a
+breakpoint. The Debugger dock has the same switch. An error pause cannot be
+continued — the call is over — so letting go of one drops it and finishes
+the tick it interrupted, whichever step button you press.
+
+Two further limits: an async entry point (one that uses `task::wait`) runs
+as a future and cannot be paused, so a breakpoint inside one is let through;
+and locals are a frame's named arguments, since Rune keeps no names for its
 other slots.
 
 ## Determinism in scripts

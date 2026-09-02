@@ -77,7 +77,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/social-card.png',
     colorMode: {
       // First visit follows the OS; the swizzled toggle (src/theme/
       // ColorModeToggle) then offers a plain light/dark switch that persists.
@@ -88,6 +88,7 @@ const config: Config = {
       logo: {
         alt: 'Balaur Logo',
         src: 'img/logo.svg',
+        srcDark: 'img/logo-dark.svg',
       },
       items: [
         {to: '/features', label: 'Features', position: 'left'},
@@ -178,8 +179,8 @@ const config: Config = {
       copyright: `Balaur is free and open source, MIT. Copyright © ${new Date().getFullYear()} balaurengine. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: prismThemes.gruvboxMaterialLight,
+      darkTheme: prismThemes.gruvboxMaterialDark,
     },
   } satisfies Preset.ThemeConfig,
 };

@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageShowcase from '@site/src/components/HomepageShowcase';
 import Heading from '@theme/Heading';
@@ -14,6 +16,14 @@ function Header() {
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
+        <ThemedImage
+          alt=""
+          className={styles.heroMark}
+          sources={{
+            light: useBaseUrl('/img/logo.svg'),
+            dark: useBaseUrl('/img/logo-dark.svg'),
+          }}
+        />
         <Heading as="h1" className={clsx('hero__title', styles.heroTitle)}>
           {siteConfig.title}
         </Heading>
