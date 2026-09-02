@@ -90,9 +90,14 @@ already in the engine. Within each group the order is the one the
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md#gpu-skinning-in-3d',
   },
   {
-    title: 'Custom shaders',
-    text: 'A material asset naming a WESL shader, its parameters in the inspector, and errors and hot reload where scripts already have them.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md',
+    title: 'Shader debugging',
+    text: 'Channel views for normals, depth and UVs, and the value at the line your caret is on drawn for every pixel.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#value-preview-at-the-cursor',
+  },
+  {
+    title: 'Shader tests',
+    text: 'Shader functions asserted headless, with no GPU, so CI catches a broken one.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#shader-tests',
   },
 ]} />
 
@@ -132,12 +137,17 @@ already in the engine. Within each group the order is the one the
   {
     title: 'Binary websocket frames',
     text: 'A bytes value in scripts, so a websocket carries binary frames as well as text. The first step every item below needs.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
+  },
+  {
+    title: 'Stable ids for spawned nodes',
+    text: 'A node spawned at run time gets an id two machines agree on, and a snapshot restore that can respawn it or take it away again. What rollback and replication both stand on.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
   },
   {
     title: 'Rollback netcode',
     text: 'Inputs on the wire, not state: peers predict, roll back on a late input and re-simulate, with the per-tick digest catching any desync.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
   },
   {
     title: 'WebTransport (QUIC)',
@@ -145,14 +155,14 @@ already in the engine. Within each group the order is the one the
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
   },
   {
-    title: 'State replication and RPC',
-    text: <>A <code>replicate</code> key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
-  },
-  {
     title: 'Sessions from Gamend',
     text: 'A room becomes a session and the relay for browser peers; matchmaking and presence stay on the server.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-phases',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
+  },
+  {
+    title: 'State replication and RPC',
+    text: <>A <code>replicate</code> key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.</>,
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
   },
   {
     title: 'WebRTC data channels',
