@@ -16,8 +16,8 @@ the major libraries underneath, and what each one does for the engine.
 | [rodio](https://github.com/RustAudio/rodio) | Audio playback |
 | [gilrs](https://gitlab.com/gilrs-project/gilrs) | Gamepads |
 | [Rune](https://rune-rs.github.io/) | The scripting language and VM |
-| [glam](https://github.com/bitshifter/glam-rs) | Math, shared with Rapier and kiss3d so nothing converts |
-| [libm](https://github.com/rust-lang/libm) | Bit-identical transcendentals on every platform |
+| [glamx](https://github.com/dimforge/glamx) | Math: [glam](https://github.com/bitshifter/glam-rs) re-exported whole, plus pose and rotation types. Shared with Rapier and kiss3d so nothing converts |
+| [libm](https://github.com/rust-lang/libm) | Bit-identical transcendentals on every platform, under both glam and the engine's own math |
 | [gltf](https://github.com/gltf-rs/gltf), [image](https://github.com/image-rs/image) | Model and texture loading |
 | [ureq](https://github.com/algesten/ureq), [tungstenite](https://github.com/snapview/tungstenite-rs), [rustls](https://github.com/rustls/rustls) | HTTP, websockets, TLS |
 | [serde](https://serde.rs), [toml](https://github.com/toml-rs/toml) | Scenes, assets, project files, packs |
@@ -27,4 +27,19 @@ the major libraries underneath, and what each one does for the engine.
 | [libloading](https://github.com/nagisa/rust_libloading) | Run-time extensions from shared libraries |
 
 Every crate in the workspace, with its dependencies, is listed in the
-generated [Crates](./reference/crates.md) reference.
+generated [Crates](./crates.md) reference.
+
+## glamx, glam and libm
+
+These three look like three choices and are really one. `glamx` is dimforge's
+extension crate over `glam` — it adds `Pose2`/`Pose3`/`Rot2` and re-exports
+everything else, so depending on it *is* depending on glam. Balaur names only
+glamx; `use glamx::Vec3` is the single spelling across the workspace.
+
+`libm` is underneath both. Rapier's `enhanced-determinism` builds glam against
+libm instead of the platform's math library, and the workspace pins those
+features itself so they hold in every build rather than only when physics
+happens to be in the dependency graph. The engine calls libm directly for the
+transcendentals that do not come out of a glam type — skeleton rest poses,
+slerp, IK, easing curves, and the `math` module scripts call. Same library,
+reached two ways. See [Determinism](./manual/determinism.mdx).

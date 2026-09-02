@@ -32,7 +32,7 @@ This page is the condensed version.
 
 Backends depend on core; core never depends on a backend. That direction is
 what keeps core language-free, and the compiler enforces it. The
-[crates reference](./reference/crates.md) lists every workspace crate.
+[crates reference](./crates.md) lists every workspace crate.
 
 ## Key decisions
 
@@ -40,9 +40,12 @@ what keeps core language-free, and the compiler enforces it. The
 the way. Balaur adds its own scheduling, hierarchy, and resources on top
 rather than adopting a framework's opinions.
 
-**One math crate.** All crates share `glamx` (glam plus pose/rotation types),
-the same math used by rapier and kiss3d — zero conversion layers between
-core, physics, and rendering.
+**One math crate.** All crates share `glamx` (glam plus pose/rotation types,
+re-exporting the rest, so there is no separate `glam` dependency), the same
+math used by rapier and kiss3d — zero conversion layers between core,
+physics, and rendering. It is pinned to `libm` and `scalar-math` so every
+build gets the deterministic math, not only the ones with physics in the
+graph.
 
 **The `Engine` handle.** `Engine` is a cheaply clonable handle over the
 world, resources, command queue, and script host, with interior mutability
@@ -103,4 +106,4 @@ time — see [Modules and extensions](./manual/extensions.mdx).
 | `balaur_bench` | Headless benchmarks: where a frame's time goes, and what scripting costs |
 
 The per-crate detail — dependencies and public surface — is generated from
-the workspace on every change: see [Crates](./reference/crates.md).
+the workspace on every change: see [Crates](./crates.md).

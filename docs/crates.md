@@ -1,6 +1,5 @@
 ---
 title: "Crates"
-sidebar_position: 4
 sidebar_label: "Crates"
 custom_edit_url: null
 ---
@@ -51,7 +50,7 @@ Balaur audio plugin backed by rodio
 Audio as a Balaur plugin, backed by rodio.
 
 - **workspace deps:** `balaur_core`, `balaur_plugin`, `balaur_script`
-- **external deps:** 4 (anyhow, rodio, toml, tracing)
+- **external deps:** 5 (anyhow, rodio, toml, tracing, windows-sys)
 - **public surface:** 2 fn, 3 struct
 - **structs:** `AudioPlugin`, `AudioState`, `Sound`
 

@@ -1,0 +1,11 @@
+{
+  "label": "Script modules",
+  "position": 3,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Script modules",
+    "slug": "/reference/modules",
+    "description": "What a script can call: every module, function and constant, read from a booted engine."
+  }
+}

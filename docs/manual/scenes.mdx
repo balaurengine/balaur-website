@@ -18,7 +18,7 @@ the core, reached as methods on a node value: `get_node`, `parent`, `children`,
 `queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
 `translate`, `attach_script`, the component operations, and the rest. Node
 paths accept `..`, so `../Target` names a sibling. The full list is in the
-[script API reference](../reference/script-api.md).
+[script modules reference](/docs/reference/modules).
 
 Structural changes requested by scripts (`queue_free`) are deferred to the
 end of the frame, so iteration is never invalidated mid-frame.
@@ -87,7 +87,7 @@ The components registered by the standard plugins:
 There is deliberately no class hierarchy behind any of this: no `Node2D`
 that inherits from `Node`, no `RigidBody` subtype. A node *is* whatever its
 components make it, and the generated
-[component catalog](../reference/components.md) lists every registered
+[component reference](/docs/reference/components) lists every registered
 component with every property, default, and option.
 
 A tagged-union property is always called `kind` (`kind = "ball"`), so `type`

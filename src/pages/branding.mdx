@@ -1,0 +1,105 @@
+---
+title: Branding
+description: The Balaur mark, wordmark, colors and type, with the files to use them.
+---
+
+# Branding
+
+Balaur takes its name from the Romanian dragon and from *Balaur bondoc*, the
+stocky dromaeosaur found in Transylvania that carried two sickle claws on each
+foot instead of one. The mark is those two claws, drawn in ink with the tips
+dipped in one blue wash.
+
+## The mark
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem', margin: '1.5rem 0'}}>
+  <div style={{background: '#f8f7f3', border: '1px solid #e3e7ec', borderRadius: 10, padding: '2rem', display: 'flex', justifyContent: 'center'}}>
+    <img src="/brand/balaur-mark-light.svg" alt="The Balaur mark on paper" width="112" height="112" />
+  </div>
+  <div style={{background: '#0b0e12', border: '1px solid #232a33', borderRadius: 10, padding: '2rem', display: 'flex', justifyContent: 'center'}}>
+    <img src="/brand/balaur-mark-dark.svg" alt="The Balaur mark on ink" width="112" height="112" />
+  </div>
+  <div style={{background: '#f8f7f3', border: '1px solid #e3e7ec', borderRadius: 10, padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem'}}>
+    <img src="/brand/balaur-tile.svg" alt="The Balaur tile icon" width="64" height="64" />
+    <img src="/brand/balaur-mark-light.svg" alt="The Balaur mark at 32 pixels" width="32" height="32" />
+    <img src="/brand/balaur-mark-light.svg" alt="The Balaur mark at 16 pixels" width="16" height="16" />
+  </div>
+</div>
+
+Two versions exist and nothing else: ink claws with blue tips for paper, paper
+claws with blue tips for ink. The tile puts the paper version on a rounded
+square for favicons and app icons.
+
+- Keep the gap between the claws; it is what separates them at small sizes.
+- Use the mark as supplied. No recoloring, no outlines, no rotation, no
+  shadows.
+- Leave clear space around it of at least a quarter of its height.
+- Below 16 pixels use the tile, whose ground keeps the shape readable.
+
+## The wordmark
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem', margin: '1.5rem 0'}}>
+  <div style={{background: '#f8f7f3', border: '1px solid #e3e7ec', borderRadius: 10, padding: '1.5rem', display: 'flex', justifyContent: 'center'}}>
+    <img src="/brand/balaur-wordmark-light.png" alt="Balaur wordmark on paper" style={{maxWidth: 320, width: '100%'}} />
+  </div>
+  <div style={{background: '#0b0e12', border: '1px solid #232a33', borderRadius: 10, padding: '1.5rem', display: 'flex', justifyContent: 'center'}}>
+    <img src="/brand/balaur-wordmark-dark.png" alt="Balaur wordmark on ink" style={{maxWidth: 320, width: '100%'}} />
+  </div>
+</div>
+
+The name is set in Alegreya Bold with the mark on the left, its height a
+little under the cap height of the type. In running text the name is written
+"Balaur", never in capitals.
+
+## Color
+
+One accent, the blue of the wash, on tinted paper or blue-black ink. Nothing
+else is saturated.
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '0.5rem', margin: '1rem 0'}}>
+  {[
+    ['Paper', '#f8f7f3', '#14181d'],
+    ['Ink', '#0b0e12', '#e6e9ee'],
+    ['Blue', '#2f6a9e', '#ffffff'],
+    ['Light blue', '#6fa4d8', '#0b0e12'],
+    ['Slate', '#5b6670', '#ffffff'],
+    ['Line', '#e3e7ec', '#14181d'],
+  ].map(([name, hex, fg]) => (
+    <div key={name} style={{background: hex, color: fg, borderRadius: 8, padding: '0.75rem 0.75rem 0.6rem', minHeight: 64, border: '1px solid rgba(0,0,0,0.08)'}}>
+      <strong style={{display: 'block', fontSize: 13}}>{name}</strong>
+      <code style={{background: 'transparent', border: 0, padding: 0, color: 'inherit', fontSize: 12}}>{hex}</code>
+    </div>
+  ))}
+</div>
+
+| Role | On paper | On ink |
+| --- | --- | --- |
+| Ground | `#f8f7f3` | `#0b0e12` |
+| Surface | `#ffffff` | `#12161c` |
+| Text | `#14181d` | `#e6e9ee` |
+| Muted text | `#5b6670` | `#98a3ae` |
+| Accent | `#2f6a9e` | `#6fa4d8` |
+| Border | `#e3e7ec` | `#232a33` |
+
+The same tokens drive the website and the editor's light and dark chrome.
+
+## Type
+
+- **Alegreya**, 600 and 700, for the wordmark, headings and display text.
+- **Source Sans 3**, 400 and 600, for running text and interface labels.
+- The system monospace for code.
+
+Both faces are free, on [Google Fonts](https://fonts.google.com/share?selection.family=Alegreya:wght@600;700|Source+Sans+3:wght@400;600),
+and under the SIL Open Font License.
+
+## Downloads
+
+- [Everything as one zip](/brand/balaur-brand.zip)
+- Mark: [SVG on paper](/brand/balaur-mark-light.svg), [SVG on ink](/brand/balaur-mark-dark.svg), [PNG on paper, 512 px](/brand/balaur-mark-light-512.png), [PNG on ink, 512 px](/brand/balaur-mark-dark-512.png)
+- Tile: [SVG](/brand/balaur-tile.svg), [PNG, 512 px](/brand/balaur-tile-512.png)
+- Wordmark: [PNG on paper](/brand/balaur-wordmark-light.png), [PNG on ink](/brand/balaur-wordmark-dark.png)
+- [Social card, 1200 by 630](/brand/balaur-social-card.png)
+
+The mark and wordmark identify the Balaur project. Use them to point at
+Balaur, for instance "made with Balaur", and not as the identity of another
+product.

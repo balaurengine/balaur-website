@@ -1,0 +1,11 @@
+{
+  "label": "Asset types",
+  "position": 2,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Asset types",
+    "slug": "/reference/assets",
+    "description": "The content an asset-typed property names: a file in the project, or a definition written inline."
+  }
+}

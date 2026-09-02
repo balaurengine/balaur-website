@@ -175,13 +175,13 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Desktop today; <strong>iOS, Android and the web</strong> are
-        cross-compiled in CI on every push.
+        <strong>Windows, macOS and Linux</strong> today; iOS, Android and
+        the web are cross-compiled in CI on every push.
       </>
     ),
   },
   {
-    title: 'One executable',
+    title: 'One file to ship',
     icon: (
       <Icon>
         <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -190,8 +190,9 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Export fuses precompiled bytecode onto a runtime:{' '}
-        <strong>a single binary</strong>, no compiler, no sources.
+        Export fuses bytecode, scenes and assets onto the runtime:{' '}
+        <strong>one self-contained binary per target</strong>, nothing to
+        install.
       </>
     ),
   },
@@ -199,8 +200,13 @@ const FeatureList: FeatureItem[] = [
     title: 'Built on Rust',
     icon: (
       <Icon>
-        <path d="M12 2 3 7v10l9 5 9-5V7z" />
-        <path d="M12 12v10M12 12 3 7M12 12l9-5" />
+        <ellipse cx="12" cy="13.5" rx="6" ry="4" />
+        <path d="M9.6 10.2V8.9M14.4 10.2V8.9" />
+        <circle cx="9.6" cy="7.8" r="1.1" />
+        <circle cx="14.4" cy="7.8" r="1.1" />
+        <path d="M6.3 12.2 4.2 10.4m0 0L2.3 9.1m1.9 1.3L2.5 11.7" />
+        <path d="m17.7 12.2 2.1-1.8m0 0 1.9-1.3m-1.9 1.3 1.7 1.3" />
+        <path d="M7 16.3 5.2 18.5M9.7 17.4l-.8 2.4M14.3 17.4l.8 2.4M17 16.3l1.8 2.2" />
       </Icon>
     ),
     description: (

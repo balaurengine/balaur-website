@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-# Sync the generated reference docs from the engine repository into
-# docs/reference/. The engine generates these with scripts/gen_docs.py and
-# CI fails on drift, so they are always current on its main branch.
+# Sync the generated reference data from the engine repository. `api.json`
+# (what `balaur api` prints, plus component tags and asset docs) lands in
+# reference/ and scripts/gen-reference.mjs turns it into docs/reference/**
+# at build time; `crates.md` lands in the manual as docs/crates.md. The
+# engine generates both with scripts/gen_docs.py and CI fails on drift, so
+# they are always current on its main branch.
 #
 # By default this fetches from GitHub. Set BALAUR_REPO to a local checkout
 # to sync from the working tree instead:
@@ -12,33 +15,30 @@
 set -euo pipefail
 
 BASE_URL="https://raw.githubusercontent.com/balaurengine/balaur/main/docs/generated"
-DEST="$(cd "$(dirname "$0")/.." && pwd)/docs/reference"
-mkdir -p "$DEST"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
-sync_doc() {
-  local file="$1" position="$2" label="$3"
-  local tmp
+fetch() { # fetch <file> <dest>
+  local file="$1" dest="$2" tmp
   tmp="$(mktemp)"
   if [[ -n "${BALAUR_REPO:-}" ]]; then
     cp "$BALAUR_REPO/docs/generated/$file" "$tmp"
   elif ! curl -fsSL "$BASE_URL/$file" -o "$tmp"; then
     echo "warning: could not fetch $file; keeping the committed copy" >&2
     rm -f "$tmp"
-    return 0
+    return 1
   fi
-  {
-    printf -- '---\ntitle: "%s"\nsidebar_position: %s\nsidebar_label: "%s"\ncustom_edit_url: null\n---\n\n' \
-      "$label" "$position" "$label"
-    cat "$tmp"
-  } >"$DEST/$file"
-  rm -f "$tmp"
+  mv "$tmp" "$dest"
   echo "synced $file"
 }
 
-sync_doc script-api.md 1 "Script API"
-sync_doc components.md 2 "Components"
-sync_doc assets.md 3 "Assets"
-sync_doc crates.md 4 "Crates"
-# behaviour.md is generated in the engine repo but deliberately not published:
-# it is a catalogue of test names, which is useful to contributors reading the
-# source and noise to anyone reading the manual.
+mkdir -p "$ROOT/reference"
+fetch api.json "$ROOT/reference/api.json" || true
+
+tmp="$(mktemp)"
+if fetch crates.md "$tmp"; then
+  {
+    printf -- '---\ntitle: "Crates"\nsidebar_label: "Crates"\ncustom_edit_url: null\n---\n\n'
+    cat "$tmp"
+  } >"$ROOT/docs/crates.md"
+fi
+rm -f "$tmp"

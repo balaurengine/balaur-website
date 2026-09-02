@@ -1,0 +1,11 @@
+{
+  "label": "Components",
+  "position": 1,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Components",
+    "slug": "/reference/components",
+    "description": "Every component a node can carry: the properties a scene sets and a script reads or writes."
+  }
+}

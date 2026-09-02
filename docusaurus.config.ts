@@ -100,12 +100,6 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialsSidebar',
-          position: 'left',
-          label: 'Tutorials',
-        },
-        {
-          type: 'docSidebar',
           sidebarId: 'referenceSidebar',
           position: 'left',
           label: 'Reference',
@@ -140,8 +134,8 @@ const config: Config = {
               to: '/docs/getting-started',
             },
             {
-              label: 'Script API',
-              to: '/docs/reference/script-api',
+              label: 'Reference',
+              to: '/docs/reference',
             },
           ],
         },
@@ -168,6 +162,10 @@ const config: Config = {
             {
               label: 'Devlog',
               to: '/blog',
+            },
+            {
+              label: 'Branding',
+              to: '/branding',
             },
             {
               label: 'Website repo',
