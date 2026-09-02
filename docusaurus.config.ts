@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Balaur',
-  tagline: 'A node-based game engine, fully deterministic, 2D and 3D, with scripts that reload in milliseconds.',
+  tagline: 'A 2D & 3D node-based game engine, fully deterministic, with scripts that reload in milliseconds.',
   favicon: 'img/favicon.ico',
 
   markdown: {

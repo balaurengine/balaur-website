@@ -27,8 +27,11 @@ function Header() {
         <Heading as="h1" className={clsx('hero__title', styles.heroTitle)}>
           {siteConfig.title}
         </Heading>
+        {/* Same sentence as siteConfig.tagline, broken into its two halves. */}
         <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
-          {siteConfig.tagline}
+          A 2D &amp; 3D node-based game engine, fully deterministic,{' '}
+          <br className={styles.heroBreak} />
+          with scripts that reload in milliseconds.
         </p>
         <p className={styles.heroMission}>
           Written in Rust. Fast to run, fast to iterate, easy to use — and one
