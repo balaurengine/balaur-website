@@ -6,9 +6,9 @@ import styles from './styles.module.css';
 // Two screenshots with a title each: what the engine looks like, no prose.
 const Shots = [
   {
-    title: 'The editor',
-    caption: 'A scene, its tree, and the inspector — the editor is a Balaur project.',
-    src: '/img/editor/persona_scene.png',
+    title: 'Scripts, live',
+    caption: 'The code editor with the hooks a file declares; save, and the running game picks it up.',
+    src: '/img/editor/persona_script.png',
     to: '/docs/manual/editor',
   },
   {

@@ -21,8 +21,8 @@ function Header() {
           {siteConfig.tagline}
         </p>
         <p className={styles.heroMission}>
-          A node-based game engine in Rust — fast to run, fast to iterate,
-          easy to use, always deterministic.
+          Written in Rust. Fast to run, fast to iterate, easy to use — and one
+          executable to ship.
         </p>
         <div className={styles.buttons}>
           <Link className="button button--primary button--lg" to="/docs/intro">
@@ -53,7 +53,7 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={siteConfig.tagline}
+      title="A node-based, deterministic game engine"
       description="Balaur is a node-based game engine in Rust: 2D and 3D, Rune scripting with hot reload, deterministic physics and replay, and an editor that is itself a Balaur project.">
       <Header />
       <main>
