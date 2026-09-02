@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Balaur',
   tagline: 'A 2D & 3D node-based game engine, fully deterministic, with scripts that reload in milliseconds.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon-balaur.ico',
 
   markdown: {
     // .md files (the synced reference docs) render as CommonMark; .mdx as MDX.
@@ -87,7 +87,7 @@ const config: Config = {
       title: 'Balaur',
       logo: {
         alt: 'Balaur Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo-light.svg',
         srcDark: 'img/logo-dark.svg',
       },
       items: [

@@ -1,10 +1,10 @@
 /**
  * Global styles. Infima variables first, then the Balaur look: the colors of
  * the Balaur bondoc reconstruction (rust, chestnut, olive, cream, a black
- * collar), EB Garamond for display and headings, Source Sans 3 for text.
+ * collar), Alegreya for display and headings, Source Sans 3 for text.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
   --ifm-color-primary: #b4502e;
@@ -36,7 +36,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(180, 80, 46, 0.12);
 
   --ifm-font-family-base: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --balaur-display-font: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
+  --balaur-display-font: 'Alegreya', 'Iowan Old Style', Georgia, serif;
   --ifm-heading-font-family: var(--balaur-display-font);
   --ifm-heading-font-weight: 600;
 

@@ -20,7 +20,7 @@ function Header() {
           alt=""
           className={styles.heroMark}
           sources={{
-            light: useBaseUrl('/img/logo.svg'),
+            light: useBaseUrl('/img/logo-light.svg'),
             dark: useBaseUrl('/img/logo-dark.svg'),
           }}
         />

@@ -1,14 +1,12 @@
----
-sidebar_position: 7
----
-
 import Roadmap from '@site/src/components/Roadmap';
 
 # Roadmap
 
-What does not exist yet and will, in the order the
-[principles](./principles.mdx) rank it. Everything in [Features](/features)
-is already in the engine.
+What does not exist yet and will. Everything in [Features](/features) is
+already in the engine. Within each group the order is the one the
+[principles](./principles.mdx) rank it.
+
+## Editor
 
 <Roadmap items={[
   {
@@ -16,53 +14,77 @@ is already in the engine.
     text: 'Tools, docks and inspector panels written in a project\'s own scripts.',
   },
   {
-    title: 'Soft bodies, tearing, fluids',
-    text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
+    title: 'Tilemap editor',
+    text: 'Painting tiles in the viewport, with autotiling and layers.',
   },
+  {
+    title: 'Curve editor and onion skin',
+    text: 'Tangent handles on keys and ghosted neighbouring frames in the timeline.',
+  },
+  {
+    title: 'Profiler',
+    text: 'Per-frame timings for scripts, physics and rendering in an editor dock, against a budget.',
+  },
+  {
+    title: 'Debugging from your editor',
+    text: 'The debugger over the Debug Adapter Protocol for VS Code and others, plus break on error.',
+  },
+]} />
+
+## Scripts and assets
+
+<Roadmap items={[
   {
     title: 'Exported script properties',
     text: 'A field a script marks shows up in the inspector and is stored in the scene.',
-  },
-  {
-    title: 'Animation blending',
-    text: 'Blend trees and state machines that mix clips by weight, and IK in 3D.',
   },
   {
     title: 'Prefabs',
     text: 'A scene placed inside another, with overrides per instance.',
   },
   {
-    title: 'Multiplayer',
-    text: 'Replicated nodes with an authority rule, lockstep or rollback on the deterministic step.',
+    title: 'Stable asset ids',
+    text: 'References that survive renames and moves, and assets that reload on save like scripts do.',
   },
   {
-    title: 'QUIC transport',
-    text: 'One transport with reliable streams and unreliable datagrams, native and in the browser.',
+    title: 'Sprite-sheet import',
+    text: 'Aseprite tags and slices read straight into clips and atlases.',
   },
   {
-    title: 'GPU skinning in 3D',
-    text: 'Imported meshes skinned in the vertex shader instead of on the CPU.',
+    title: 'Extensions, tier two',
+    text: 'Native extensions that add components and systems, and call back into scripts.',
+  },
+]} />
+
+## Physics and animation
+
+<Roadmap items={[
+  {
+    title: 'Soft bodies, tearing, fluids',
+    text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
   },
   {
-    title: 'Binary releases',
-    text: 'An editor download per platform with its runtime, signed and notarized, so shipping needs no Rust toolchain.',
+    title: 'Animation blending',
+    text: 'Blend trees and state machines that mix clips by weight, and IK in 3D.',
   },
-  {
-    title: 'Published benchmarks',
-    text: 'What a frame costs, measured headless and posted with every release.',
-  },
-  {
-    title: 'Web export',
-    text: 'A game that runs in the browser: a wgpu canvas, a WebAssembly build and the pack fetched beside it.',
-  },
+]} />
+
+## Rendering
+
+<Roadmap items={[
   {
     title: '2D lights and shadows',
     text: 'Light nodes, shadow occluders and post-processing for 2D scenes.',
   },
   {
-    title: 'Tilemap editor',
-    text: 'Painting tiles in the viewport, with autotiling and layers.',
+    title: 'GPU skinning in 3D',
+    text: 'Imported meshes skinned in the vertex shader instead of on the CPU.',
   },
+]} />
+
+## Gameplay systems
+
+<Roadmap items={[
   {
     title: 'Game UI toolkit',
     text: 'A retained widget tree for menus and HUDs: layouts, themes, nine-slice, gamepad focus.',
@@ -83,29 +105,35 @@ is already in the engine.
     title: 'Audio buses',
     text: 'Buses, events and parameters over the mixer, with volume ducking and effects.',
   },
+]} />
+
+## Networking
+
+<Roadmap items={[
   {
-    title: 'Sprite-sheet import',
-    text: 'Aseprite tags and slices read straight into clips and atlases.',
+    title: 'Multiplayer',
+    text: 'Replicated nodes with an authority rule, lockstep or rollback on the deterministic step.',
   },
   {
-    title: 'Curve editor and onion skin',
-    text: 'Tangent handles on keys and ghosted neighbouring frames in the timeline.',
+    title: 'QUIC transport',
+    text: 'One transport with reliable streams and unreliable datagrams, native and in the browser.',
+  },
+]} />
+
+## Shipping
+
+<Roadmap items={[
+  {
+    title: 'Binary releases',
+    text: 'An editor download per platform with its runtime, signed and notarized, so shipping needs no Rust toolchain.',
   },
   {
-    title: 'Stable asset ids',
-    text: 'References that survive renames and moves, and assets that reload on save like scripts do.',
+    title: 'Web export',
+    text: 'A game that runs in the browser: a wgpu canvas, a WebAssembly build and the pack fetched beside it.',
   },
   {
-    title: 'Profiler',
-    text: 'Per-frame timings for scripts, physics and rendering in an editor dock, against a budget.',
-  },
-  {
-    title: 'Debugging from your editor',
-    text: 'The debugger over the Debug Adapter Protocol for VS Code and others, plus break on error.',
-  },
-  {
-    title: 'Extensions, tier two',
-    text: 'Native extensions that add components and systems, and call back into scripts.',
+    title: 'Published benchmarks',
+    text: 'What a frame costs, measured headless and posted with every release.',
   },
 ]} />
 

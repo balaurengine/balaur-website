@@ -1,0 +1,16 @@
+.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.4 / 1;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+}
+
+.coverFull {
+  aspect-ratio: auto;
+  object-fit: contain;
+  margin-bottom: 1.75rem;
+}
