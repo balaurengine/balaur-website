@@ -4,12 +4,22 @@ sidebar_position: 6
 
 # UI
 
-Balaur has two UI layers, both script-facing.
+Balaur has two UI layers, both script-facing. Which one you want depends on
+whether the interface belongs to the game or to a tool:
+
+- **`widget`**, a component on a scene node. Retained: it is saved with the
+  scene, edited in the inspector, and previewed in the editor viewport. This
+  is game HUD — a score readout, a menu button.
+- **the `ui` module**, immediate-mode egui redrawn every frame from a script's
+  `draw_ui`. This is what tools and the editor itself are built from.
 
 ## Widgets: game HUDs as scene nodes
 
-The `widget` component turns a node into a HUD element — `label`, `button`,
-or `panel` — anchored to a screen corner or the center:
+There is one `widget` component, not one per kind of element. What it draws is
+its `kind` — `label`, `button`, or `panel` — which is the engine's convention
+throughout: a component that comes in variants selects them with `kind`,
+rather than each variant being its own component. A button is a widget whose
+`kind` is `button`, anchored to a screen corner or the center:
 
 ```toml
 [[nodes]]
@@ -25,10 +35,46 @@ font_size = 22
 text_color = "#2b2b2b"
 ```
 
+A button does something in one of two ways. `on_click` names a method on that
+node's own script, called when the button is pressed; or the read-only
+`clicked` property is true for the frame the press happened, which a script
+can poll:
+
+```toml
+[nodes.widget]
+kind = "button"
+text = "Start"
+on_click = "start_pressed"
+```
+
+```rust
+pub fn start_pressed(this) {
+    log::info("start");
+}
+
+// or, without on_click:
+pub fn update(this, dt) {
+    if this.node.widget.get().clicked {
+        log::info("start");
+    }
+}
+```
+
 Widgets live in the scene tree like any node, so they are saved with the
 scene, editable in the editor (which previews them in its viewport), and
-updatable from scripts through `node.get_component("widget")` /
-`set_component`. `ui::set_widget_layer` scopes and toggles the layer.
+updatable from scripts through the component handle. `set` builds the
+component from your table over the schema's defaults rather than merging into
+what is there, so change one property by reading the table first:
+
+```rust
+let w = this.node.widget.get();
+w.text = "Score 10";
+this.node.widget.set(w);
+```
+
+Panels size to their content when `width` or `height` is 0, and `visible`
+hides a widget without losing its state. `ui::set_widget_layer` scopes and
+toggles the layer.
 
 ## The `ui` module: immediate-mode UI
 
