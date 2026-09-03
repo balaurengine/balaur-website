@@ -5,7 +5,7 @@ custom_edit_url: null
 
 # `shape2d`
 
-`2d` · `render` · 8 properties · 2D
+`2d` · `render` · 9 properties · 2D
 
 An untextured 2D primitive drawn at the node -- circle, rect, capsule or a polyline traced through a mesh asset's points -- sized in world units.
 
@@ -20,11 +20,12 @@ In a scene, `shape2d` is the node key that applies it. A script reaches the same
 | `half_extents` | vec2 | `[0.5,0.5]` | Half-sizes of the rect, when kind is rect |
 | `height` | float | `1` | Length along y of the straight part, when kind is capsule At least 0.01. |
 | `kind` | enum | `rect` | Rendered 2D shape One of `circle`, `rect`, `capsule`, `polyline`. |
+| `material` | asset · [`material`](../assets/material.md) | — | The material this draws with; empty draws with the built-in one |
 | `mesh` | asset · [`mesh`](../assets/mesh.md) | — | Points of a polyline, taken from a mesh asset's vertices |
 | `radius` | float | `0.5` | Radius, when kind is circle or capsule At least 0.01. |
 | `width` | float | `0.02` | Line thickness in world units, when kind is polyline At least 0.001. |
 
-Asset types this component references: [`mesh`](../assets/mesh.md).
+Asset types this component references: [`material`](../assets/material.md), [`mesh`](../assets/mesh.md).
 
 ## Script functions
 

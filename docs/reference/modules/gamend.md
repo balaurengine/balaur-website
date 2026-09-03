@@ -16,9 +16,9 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | function | acts on | what it does |
 | --- | --- | --- |
 | `call_hook(int, string, string, any?) -> any` | — | Call a server plugin's function over the socket; the reply's `response` holds `data` or `error`. |
-| `close(int) -> any` | — | Ask the connection to close, which still delivers a `closed` event; false when it was already gone. |
+| `close(int) -> any` | — | Shut the socket down; false when the connection was already gone. |
 | `configure(string)` | — | Point the plugin at a server's base url; every other call errors until this one runs. |
-| `connect(any, any?) -> any` | — | Open a connection and return the id `send` and `close` take; options are `on_event`, `compression` and `headers`. |
+| `connect(any, any?) -> any` | — | Open the realtime socket and return the id `join`, `push`, `leave`, `call_hook` and `close` take. |
 | `join(int, string, any?) -> any` | — | Subscribe the socket to a topic and return the id the server's `reply` answers. |
 | `leave(int, string) -> any` | — | Unsubscribe the socket from a topic, returning the id the `reply` answers. |
 | `login(any, any?, any?) -> any` | — | Open a session from a `device_id`, or an `email` and `password`, and return the id its `login` result answers. |

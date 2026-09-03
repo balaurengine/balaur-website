@@ -7,9 +7,7 @@ custom_edit_url: null
 
 `2d` · `animation` · 4 properties · 2D
 
-Makes the node a 2D bone: the rest position and rotation about z a rig returns \
-                  to, plus the length and angle its gizmo is drawn with. A skin names its rig by \
-                  node path and deforms by the bones under it, in tree order.
+Makes the node a 2D bone: the rest position and rotation about z a rig returns to, plus the length and angle its gizmo is drawn with. A skin names its rig by node path and deforms by the bones under it, in tree order.
 
 In a scene, `bone2d` is the node key that applies it. A script reaches the same properties through `node.bone2d.get()` and `node.bone2d.set(table)`.
 
@@ -30,6 +28,6 @@ From [`skeleton`](../modules/skeleton.md):
 
 | method | what it does |
 | --- | --- |
-| `apply_rest` | Move every bone under the node back to its rest transform. |
-| `bones` | The bones under the node in tree order, the order a skin numbers them in, the node itself first when it is one. |
-| `overwrite_rest` | Record every bone's current transform under the node as its new rest pose. |
+| `apply_rest()` | Move every bone under the node back to its rest transform. |
+| `bones()` | The bones under the node in tree order, the order a skin numbers them in, the node itself first when it is one. |
+| `overwrite_rest()` | Record every bone's current transform under the node as its new rest pose. |

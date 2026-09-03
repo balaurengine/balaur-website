@@ -7,9 +7,7 @@ custom_edit_url: null
 
 `2d` · `animation` · 5 properties · 2D
 
-Aims a 2D bone at a target node every frame, after the clip has posed the rig: \
-                  `look_at` turns one bone toward the target, `two_bone_ik` bends a root, middle \
-                  and tip chain so the tip reaches it.
+Aims a 2D bone at a target node every frame, after the clip has posed the rig: `look_at` turns one bone toward the target, `two_bone_ik` bends a root, middle and tip chain so the tip reaches it.
 
 In a scene, `modifier2d` is the node key that applies it. A script reaches the same properties through `node.modifier2d.get()` and `node.modifier2d.set(table)`.
 

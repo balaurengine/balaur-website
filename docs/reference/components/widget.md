@@ -7,9 +7,7 @@ custom_edit_url: null
 
 `ui` · 12 properties · UI
 
-A HUD element the widget layer draws every frame: a label, button or panel \
-                  anchored to a screen corner or the center, offset in design pixels. A button \
-                  records its click in `clicked` and calls the node's `on_click` method.
+A HUD element the widget layer draws every frame: a label, button or panel anchored to a screen corner or the center, offset in design pixels. A button records its click in `clicked` and calls the node's `on_click` method.
 
 In a scene, `widget` is the node key that applies it. A script reaches the same properties through `node.widget.get()` and `node.widget.set(table)`.
 

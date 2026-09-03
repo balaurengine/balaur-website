@@ -5,6 +5,8 @@ custom_edit_url: null
 
 # `json`
 
+JSON text to and from script values, for talking to anything outside the engine. Unlike TOML it has null, so nil survives a round trip.
+
 2 functions, 0 constants. Scripts reach it as `json::`.
 
 ## Functions
@@ -13,5 +15,5 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
-| `encode` | — | A value written back out as JSON text; NaN, infinity, a node or a callback has no JSON form and is an error. |
-| `parse` | — | The value a JSON document describes; an error on text that does not parse. |
+| `encode(value: any)` | — | A value written back out as JSON text; NaN, infinity, a node or a callback has no JSON form and is an error. |
+| `parse(text: string)` | — | The value a JSON document describes; an error on text that does not parse. |

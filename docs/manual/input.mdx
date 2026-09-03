@@ -75,11 +75,15 @@ this frame — which is how a tool accepts a drag-and-drop.
 ## Seeing input
 
 The editor's input overlay draws what the game is being fed this frame: a
-chip per key and mouse button held down, the actions they drive, the pointer,
-and a ripple where a button went down. It reads the same snapshot the game
-reads, so during a replay it shows the recording's own input. Turn it on
-from the command palette (*Show input overlay*) or start the editor with
-`--state input`.
+chip per key and mouse button held down, the actions they drive, a cursor at
+the pointer, and a ring that spreads from every press. It reads the same
+snapshot the game reads, so during a replay the cursor follows the recording
+rather than your hand. Turn it on from the command palette (*Show input
+overlay*) or start the editor with `--state input`.
+
+The actions come from the game's own `project.toml`. The editor is itself a
+Balaur project, so it declares the game's actions when it opens one — without
+that, every action a played game asked for would read zero.
 
 ## The full surface
 

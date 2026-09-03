@@ -7,9 +7,7 @@ custom_edit_url: null
 
 `audio` · 5 properties · Audio
 
-A sound of the node's own: which file, at what volume and pitch, \
-                  looping or not. `audio.play_on` and `audio.stop_on` trigger it, and \
-                  `autoplay` starts it when the node enters the scene.
+A sound of the node's own: which file, at what volume and pitch, looping or not. `audio.play_on` and `audio.stop_on` trigger it, and `autoplay` starts it when the node enters the scene.
 
 In a scene, `sound` is the node key that applies it. A script reaches the same properties through `node.sound.get()` and `node.sound.set(table)`.
 

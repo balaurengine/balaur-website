@@ -6,6 +6,10 @@
 # engine generates both with scripts/gen_docs.py and CI fails on drift, so
 # they are always current on its main branch.
 #
+# `CHANGELOG.md` comes from the engine's root rather than docs/generated — it
+# is hand written, one line per feature, and it is the "what shipped" that the
+# roadmap's "what has not" points at.
+#
 # By default this fetches from GitHub. Set BALAUR_REPO to a local checkout
 # to sync from the working tree instead:
 #
@@ -15,6 +19,7 @@
 set -euo pipefail
 
 BASE_URL="https://raw.githubusercontent.com/balaurengine/balaur/main/docs/generated"
+ROOT_URL="https://raw.githubusercontent.com/balaurengine/balaur/main"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 fetch() { # fetch <file> <dest>
@@ -40,5 +45,26 @@ if fetch crates.md "$tmp"; then
     printf -- '---\ntitle: "Crates"\nsidebar_label: "Crates"\ncustom_edit_url: null\n---\n\n'
     cat "$tmp"
   } >"$ROOT/docs/crates.md"
+fi
+rm -f "$tmp"
+
+# The changelog, from the engine's root rather than docs/generated.
+tmp="$(mktemp)"
+if [[ -n "${BALAUR_REPO:-}" ]]; then
+  cp "$BALAUR_REPO/CHANGELOG.md" "$tmp" && changelog=1 || changelog=0
+elif curl -fsSL "$ROOT_URL/CHANGELOG.md" -o "$tmp"; then
+  changelog=1
+else
+  changelog=0
+fi
+if [[ "$changelog" == 1 ]]; then
+  {
+    printf -- '---\ntitle: "Changelog"\nsidebar_label: "Changelog"\ndescription: "What each release of Balaur added."\ncustom_edit_url: null\n---\n\n'
+    # Its own `# Changelog` heading would repeat the page title.
+    sed '1{/^# Changelog$/d;}' "$tmp"
+  } >"$ROOT/docs/changelog.md"
+  echo "synced CHANGELOG.md"
+else
+  echo "warning: could not fetch CHANGELOG.md; keeping the committed copy" >&2
 fi
 rm -f "$tmp"

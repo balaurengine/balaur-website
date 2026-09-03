@@ -5,7 +5,7 @@ custom_edit_url: null
 
 # `heightfield`
 
-Files live in `terrain/`. Used by [`collider3d`](../components/collider3d.md) · `heightfield`.
+Files live in `terrain/`. Used by [`collider2d`](../components/collider2d.md) · `heightfield`, [`collider3d`](../components/collider3d.md) · `heightfield`.
 
 A grid of heights for terrain: `rows` by `columns` samples in `heights`,
 row-major, one value per grid point. The count has to match the grid.

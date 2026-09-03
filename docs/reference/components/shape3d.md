@@ -5,7 +5,7 @@ custom_edit_url: null
 
 # `shape3d`
 
-`3d` · `render` · 5 properties · 3D
+`3d` · `render` · 6 properties · 3D
 
 An untextured 3D primitive drawn at the node -- ball, cuboid, capsule, cylinder, cone or plane -- sized in world units and tinted by `color`.
 
@@ -19,7 +19,10 @@ In a scene, `shape3d` is the node key that applies it. A script reaches the same
 | `half_extents` | vec3 | `[0.5,0.5,0.5]` | Half-sizes of the cuboid, when kind is cuboid |
 | `height` | float | `1` | Length along y, for capsule, cylinder and cone At least 0.01. |
 | `kind` | enum | `cuboid` | Rendered 3D shape One of `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`. |
+| `material` | asset · [`material`](../assets/material.md) | — | The material this draws with; empty draws with the built-in one |
 | `radius` | float | `0.5` | Radius, for every kind but cuboid At least 0.01. |
+
+Asset types this component references: [`material`](../assets/material.md).
 
 ## Script functions
 

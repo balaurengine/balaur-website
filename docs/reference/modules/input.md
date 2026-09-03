@@ -7,7 +7,7 @@ custom_edit_url: null
 
 One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges — what went down or came up this frame. Nothing feeds it in a headless run, where every query answers neutrally rather than failing.
 
-19 functions, 190 constants. Scripts reach it as `input::`.
+27 functions, 190 constants. Scripts reach it as `input::`.
 
 ## Functions
 
@@ -15,6 +15,13 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
+| `action_just_pressed(string) -> bool` | — | Whether the action went down this frame. |
+| `action_just_released(string) -> bool` | — | Whether the action came up this frame. |
+| `action_pressed(string) -> bool` | — | Whether the action is held down now. |
+| `action_value(string) -> float` | — | How far the action is pushed, -1 to 1; a key answers 0 or 1, a stick or `keys:A,D` the whole range. |
+| `actions() -> any` | — | Every action `[input.actions]` declares, so a rebinding screen can list them. |
+| `bind(string, any)` | — | Rebind the action to one binding or a list of them, replacing what it had and saving to the user data directory. |
+| `bindings(string) -> any` | — | What the action is bound to now, whether from the project or from the player's own rebinding. |
 | `dropped_files() -> any` | — | The absolute paths of files dropped onto the window this frame, in drop order; desktop only. |
 | `gamepad_axis(int, string) -> float` | — | How far the pad's `AXIS_*` stick or trigger is pushed, -1 to 1; zero at rest and for an absent pad. |
 | `gamepad_down(int, string) -> bool` | — | Whether the pad's `PAD_*` button is held down right now, however many frames it has been down. |
@@ -30,6 +37,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `mouse_just_pressed(int) -> bool` | — | Whether the `MOUSE_*` button went down this frame; true for that one frame only. |
 | `mouse_just_released(int) -> bool` | — | Whether the `MOUSE_*` button came up this frame; true for that one frame only. |
 | `mouse_position() -> float, float` | — | The cursor's position in window pixels, with (0, 0) at the top-left corner. |
+| `reset_bindings()` | — | Drop every saved rebinding and go back to what the project declared. |
 | `scroll_delta() -> float, float` | — | How far the wheel turned this frame, as an (x, y) pair; zero when it did not turn. |
 | `touches() -> any` | — | Every finger on the screen as `{ id, x, y }`, oldest first, in the same pixels as `mouse_position`. |
 | `touches_ended() -> any` | — | The ids of the fingers that lifted or were cancelled this frame. |
