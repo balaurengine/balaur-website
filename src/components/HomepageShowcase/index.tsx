@@ -8,13 +8,13 @@ const Shots = [
   {
     title: 'Scripts, live',
     caption: 'The code editor with the hooks a file declares; save, and the running game picks it up.',
-    src: '/img/editor/persona_script.png',
-    to: '/docs/manual/editor',
+    src: '/img/manual/scripting_editor.png',
+    to: '/docs/manual/scripting',
   },
   {
     title: 'Skeletal animation',
     caption: 'A skinned leg on a clip, an arm on two-bone IK, keyed in the timeline.',
-    src: '/img/editor/persona_animate.png',
+    src: '/img/manual/animation_key.png',
     to: '/docs/manual/animation#skeletons-and-skins',
   },
 ];

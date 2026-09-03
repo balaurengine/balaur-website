@@ -135,11 +135,6 @@ already in the engine. Within each group the order is the one the
 
 <Roadmap items={[
   {
-    title: 'Rollback netcode',
-    text: 'Inputs on the wire, not state: peers predict, roll back on a late input and re-simulate, with the per-tick digest catching any desync.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
-  },
-  {
     title: 'WebTransport (QUIC)',
     text: 'One transport for everything: reliable streams and unreliable datagrams in one encrypted connection, native and in the browser. Datagrams do the job of raw UDP, so the engine never exposes a UDP socket.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',

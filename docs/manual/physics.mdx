@@ -2,6 +2,8 @@
 sidebar_position: 5
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Physics
 
 Physics is a plugin wrapping [Rapier](https://rapier.rs): rapier3d for the
@@ -9,6 +11,8 @@ Physics is a plugin wrapping [Rapier](https://rapier.rs): rapier3d for the
 worlds live side by side over the same scene tree, and both are built with
 Rapier's `enhanced-determinism` feature and stepped on a fixed 60 Hz
 accumulator.
+
+<Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
 
 ## Declaring bodies
 
@@ -67,7 +71,9 @@ this frame, for impact-driven gameplay such as destruction or damage.
 The `physics` module holds only what spans both worlds at once: `set_paused`,
 `is_paused`, `clear`, `set_sleeping_allowed`, `sleeping_allowed`, the debug
 draw, and the solver's tuning and counters. Tools can therefore treat
-"physics" as one simulation — the editor pauses it until play.
+"physics" as one simulation — the editor pauses it until play, and its
+Physics persona draws every body's collider and centre of mass over the
+scene, playing or not.
 
 The full function lists are in the
 [script modules reference](/docs/reference/modules).

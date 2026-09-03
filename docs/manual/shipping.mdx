@@ -76,10 +76,27 @@ updates to the newest release; a nightly build follows the rolling nightly;
 a source build refuses and points at git. `--check` only reports, `--tag`
 picks a specific release.
 
-## Saved data
+## Save games
 
-A shipped game writes saves and settings through `engine::user_data_dir()`,
-the per-platform user-data directory for the project — so game code never
+`save::write(slot, data)` stores a table per user under the platform's
+user-data directory, and `save::read(slot)` brings it back; `save::slots()`
+lists them and `save::remove(slot)` deletes one. A slot is a name — letters,
+digits, `-` and `_` — checked rather than trusted, and a file is written
+beside its target and renamed over it, so a crash mid-save cannot leave a
+truncated one.
+
+```toml
+[save]
+version = 3                     # what this build writes
+migrate = "scripts/saves.rn"    # brings an older file forward
+```
+
+Every file is stamped with the build's `version`. Reading an older one calls
+the migration script's `migrate_save(version, data)` once per version step —
+1 to 2, then 2 to 3 — so a migration only ever knows how the shape changed
+between two adjacent versions. A file written by a newer build is refused
+rather than misread. Anything else a game keeps per user — settings, key
+rebindings — goes through `engine::user_data_dir()` too, so game code never
 hardcodes an OS path.
 
 ## Embedding

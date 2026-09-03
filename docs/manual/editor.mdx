@@ -13,6 +13,8 @@ any project.
 cargo run -p balaur_cli --features window -- edit my-game
 ```
 
+![The editor on examples/angrynerds: the node tree, the viewport with its 2D grid and gizmo, the inspector, and the dock tabs](/img/manual/editor_overview.png)
+
 ## How it works
 
 `balaur edit <project>` runs the editor with the game's path in its
@@ -24,94 +26,59 @@ to the scene file as TOML, and every edit is undoable (`Ctrl+Z` /
 
 **Play-in-editor** attaches the game's scripts to the mirrored nodes and
 unpauses: the actual game code runs against the actual scene inside the
-editor. Stop rebuilds the mirror from the document.
+editor, and every run is recorded (see [Determinism](./determinism.mdx#in-the-editor)).
+Stop rebuilds the mirror from the document.
 
 ## Personas
 
 The top bar switches between five personas. Each arranges the same panels —
 node tree, viewport or code, docks, inspector — around one job.
 
-**Scene.** The tree, the viewport with its gizmos, and the inspector
-generated from the component registry: every registered component —
-third-party plugin components included — is addable and editable with no
-editor changes. A 2D scene is detected from its components and gets a 2D
-grid, a pan-and-zoom camera, a 2D gizmo, click-picking and collider overlays.
-
-![The Scene persona, editing examples/rig](/img/editor/persona_scene.png)
-
-**Script.** One buffer per file with Rune highlighting, the hooks the file
-declares, and the events the node receives. Save writes to the project and
-hot reloads the code — live, while playing. Click a line number in the
-gutter to set a breakpoint; the Debugger dock shows the call frames and
-their locals, with continue and step over / into / out on `F5`, `F10`,
-`F11` and `Shift+F11`.
-
-![The Script persona with the Debugger dock open](/img/editor/dock_debugger.png)
-
-A save that does not compile is reported rather than assumed: the Output
-dock gets the compiler's own diagnostic — file, line, column and caret —
-and the previously compiled code keeps running. Because Rune resolves
-module paths at compile time, a misspelled engine call (`input::just_pressd`
-below) is caught on save, not when the line finally runs.
-
-![A save that did not compile, reported in the Output dock](/img/editor/save_error.png)
-
-**Animate.** The timeline's lanes are the selected clip's tracks, the ruler
-scrubs the node's own player, and preview goes through the engine's parser,
-so what the editor shows is what ships. A clip lives inline in the scene or
-in its own file; *Save as file* and *Make inline* convert between the two
-exactly. Keying a bone writes a rotation track on its character's clip, and a
-skinned polygon deforms as the clip plays.
-
-![The Animate persona, a skinned leg mid-clip](/img/editor/persona_animate.png)
-
-**Physics** shows bodies and colliders with their overlays; **Interface**
-lays widgets out over the safe area.
-
-![The Physics persona](/img/editor/persona_physics.png)
-
-![The Interface persona](/img/editor/persona_interface.png)
+- **Scene.** The tree, the viewport with its gizmos, and the inspector
+  generated from the component registry: every registered component —
+  third-party plugin components included — is addable and editable with no
+  editor changes. A 2D scene is detected from its components and gets a 2D
+  grid, a pan-and-zoom camera, a 2D gizmo, click-picking and collider
+  overlays. See [Scenes and nodes](./scenes.mdx).
+- **Script.** One buffer per file with Rune highlighting, the hooks the file
+  declares, and the events the node receives. Save writes to the project and
+  hot reloads the code — live, while playing. Click a line number in the
+  gutter to set a breakpoint; the Debugger dock shows the call frames and
+  their locals, with continue and step over / into / out on `F5`, `F10`,
+  `F11` and `Shift+F11`. See [Scripting](./scripting.mdx#hot-reload).
+- **Animate.** The timeline over the selected clip's tracks. See
+  [Animation](./animation.mdx#the-animate-persona).
+- **Physics.** Bodies and colliders with their overlays. See
+  [Physics](./physics.mdx).
+- **Interface.** Widgets laid out over the safe area. See [UI](./ui.mdx).
 
 ## Tools
 
 The strip beside the viewport holds Select, Move, Rotate and Scale, then two
-rig tools.
-
-**Rig bone** draws bones as diamonds in 2D and octahedra in 3D. Click one to
-select it, drag to pose it, and *+ bone* grows a child from the selection.
-The inspector's Skeleton section has the two rest-pose verbs: *reset* returns
-the rig to its rest pose, *overwrite* makes the current pose the rest pose.
-
-![The bone tool on a 2D rig](/img/editor/tool_bone.png)
-
-![The bone tool on an imported 3D rig](/img/editor/view3d_bone_tool.png)
-
-**Polygon** edits a `polygon` component's mesh in four modes: *Points* places
-outline and internal vertices, *Polygons* draws the triangulation by hand,
-*UV* places the points over the texture, and *Weights* paints bone influence
-with a brush. The polygon stays skinned while you edit it.
-
-![Points mode](/img/editor/tool_polygon_points.png)
-
-![UV mode, over the texture](/img/editor/tool_polygon_uv.png)
-
-![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.png)
+rig tools: **Rig bone** grows and poses a skeleton, and **Polygon** edits a
+skinned polygon's points, triangulation, UVs and weights. Both are described
+under [Skeletons and skins](./animation.mdx#skeletons-and-skins).
 
 ## Docks, palette, themes
 
-Four docks sit under the viewport: **Output** over the engine's log ring
-buffer, with level filters; **Assets**; **Timeline**; **Debugger**. The
-command palette is the single overlay — nodes, commands and personas — and
-the editor has a dark and a light theme.
+Seven docks sit under the viewport. **Output** is the engine's log ring
+buffer, with level filters. **Problems** lists what the linter found in every
+script, and a shader that would not link. **Assets** browses the project's
+files. **Timeline** is the animation editor's. **Debugger** shows a paused
+script's frames and locals. **Session** lists the recordings play-in-editor
+made and replays one, with lanes for the input, network and log events it
+holds. **Profiler** draws the last frame as a bar per stage against the
+16.7 ms a 60 Hz frame has, from `engine::timings()`.
 
-![The command palette](/img/editor/palette.png)
-
-![The light theme](/img/editor/theme_light.png)
+The command palette (`⌘K`) is the single overlay — nodes, commands and
+personas — and the editor has a dark and a light theme. *Show input overlay*
+in the palette draws the keys, buttons and pointer the game is being fed;
+see [Input](./input.mdx#seeing-input).
 
 ## Driving it from the command line
 
 The editor starts in any state you name, which is how it is tested and how
-every screenshot on this page was taken:
+every picture in this manual was taken:
 
 ```bash
 balaur edit examples/rig --offscreen --frames 100 \
@@ -120,7 +87,17 @@ balaur edit examples/rig --offscreen --frames 100 \
 
 `--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
 `ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`, `palette`,
-`light`, `play`, and `shot=<file>` to capture a frame.
+`light`, `play`, `input`, `shot=<file>` to capture one frame, and
+`frames=<dir>` to capture every other frame into a numbered directory.
+`show:<name>` runs one of the scripted sequences behind this manual's clips,
+which feed the game input through `input::feed_key`, `feed_mouse` and
+`feed_mouse_button` — the same seam an automated test can use. Offscreen
+frames advance on the fixed 1/60 step, so frame 90 is the same picture every
+time it is asked for.
+
+The engine repository's `scripts/showcase.sh` takes every image and clip on
+this site that way and encodes the clips with ffmpeg, so a change to the
+editor re-takes them all.
 
 ## Extending the editor
 

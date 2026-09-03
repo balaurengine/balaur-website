@@ -1,0 +1,93 @@
+---
+sidebar_position: 3
+---
+
+import Clip from '@site/src/components/Clip';
+
+# Shaders and materials
+
+Shaders are written in [WESL](https://wesl-lang.dev) — WGSL plus imports,
+`@if` variants and dead-code elimination — and linked to WGSL at run time.
+A `material` asset names a shader and the values it draws with; `sprite`,
+`shape2d`, `shape3d` and `mesh` take one, and a node without one draws with
+the built-in material.
+
+<Clip name="shader_preview" alt="A material in the inspector, its shader in the code editor, three lines' values drawn in the viewport, a channel view, and a save that relinks the sprite" />
+
+## A material and its shader
+
+```toml
+# materials/glow.toml
+type = "material"
+shader = "shaders/glow.wesl"
+
+[params]
+speed = 2.0
+rings = 5.0
+tint = "#ffb347"
+```
+
+```wgsl
+// shaders/glow.wesl
+import package::sprite::{VertexInput, VertexOutput, vertex, sample_albedo, tint, time};
+
+struct Params { speed: f32, rings: f32, tint: vec4<f32> }
+@group(3) @binding(0) var<uniform> params: Params;
+
+@vertex fn vs_main(in: VertexInput) -> VertexOutput {
+    return vertex(in);
+}
+
+@fragment fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
+    let uv: vec2<f32> = in.uv;
+    let dist: f32 = length(uv - vec2<f32>(0.5, 0.5)) * 2.0;
+    let wave: f32 = 0.5 + 0.5 * sin(dist * params.rings * 6.2832 - time() * params.speed);
+    let ramp: vec4<f32> = params.tint * wave * wave;
+    let albedo: vec4<f32> = sample_albedo(uv) * tint(in);
+    return albedo + ramp * albedo.a;
+}
+```
+
+A 2D shader imports `package::sprite`, the contract the pipeline binds: the
+frame and object uniforms, the vertex inputs, `vertex` and `place` for the
+vertex stage, `sample_albedo`, `tint` and `time`. A 3D shader imports
+`package::mesh` and calls `shade(in)` for the scene's lights and fog. A
+shader is its own two entry points and nothing else.
+
+`[params]` are the fields of the shader's `Params` struct, read off the
+linked shader rather than declared twice: a number is an `f32`, an array a
+`vec2`/`vec3`/`vec4`, a `#rrggbb` string a `vec4`. A param the shader does
+not read warns; one it declares and the material omits is zero. `[features]`
+are the `@if` flags that pick a variant when the shader is linked. A plugin
+can register shader modules a project's shader imports.
+
+## In the editor
+
+The inspector lists a material's params off its linked shader, with an
+editor per type, and writes them back to the file. Its shader opens in the
+code editor, highlighted as WESL; save, and every material naming it relinks
+and every node drawing with it is rebuilt. A shader that will not link says
+so in the Problems dock with the file, line and column the author wrote, and
+the node draws with the built-in material meanwhile;
+`render::check_material(path)` is the same answer for a tool.
+
+Two ways to see what a shader is doing:
+
+- **A line's value.** Click a line's number in the shader's gutter and the
+  viewport draws what that line computes, for every pixel that reaches it —
+  a `vec2` as red and green, an `f32` as grey, a `vec4` as colour. The line
+  has to declare a value with its type written (`let dist: f32 = ...`) or a
+  constructor. Click it again to put the picture back.
+- **Channels.** `render::set_channel("normals")` draws the scene's normals
+  instead of its colour; `"uv"`, `"depth"` and `"albedo"` are the others, and
+  `""` is the picture. The command palette has one command per channel.
+
+## Determinism
+
+Rendering observes the simulation and feeds nothing back, so a shader is
+outside the digest; `time()` is render time, not the tick. The parts of a
+shader that *are* logic can still be tested: a function marked `@const` is
+run on the CPU by headless tests, and a call to a name nothing declares
+fails to link rather than reaching a GPU.
+
+`examples/shaders` is the material above on a sprite, beside a plain one.

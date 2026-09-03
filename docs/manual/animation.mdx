@@ -2,6 +2,8 @@
 sidebar_position: 4
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Animation
 
 Animation is a plugin (`balaur_anim`): one asset type (`animation_clip`), one
@@ -44,7 +46,7 @@ autoplay = "patrol"
 ```
 
 A track drives the transform or any registered component's property
-(`color/rgba`, `shape/radius`, `widget/x`) — third-party plugin components
+(`shape3d/color`, `shape2d/radius`, `widget/x`) — third-party plugin components
 animate the day they are registered, with no animation-plugin changes. A
 track with no `property` is a method track: its keys call a method on the
 node's script. Rotation keys are authored as euler radians and interpolated
@@ -76,7 +78,7 @@ run through the same sampler and the same fixed step:
 animation::tween(this.node, #{
     steps: [
         #{ property: "position",   to: [0.0, 3.0, 0.0],      duration: 0.5, ease: "out_back" },
-        #{ property: "color/rgba", to: [1.0, 0.0, 0.0, 1.0], duration: 0.5, parallel: true },
+        #{ property: "shape3d/color", to: [1.0, 0.0, 0.0, 1.0], duration: 0.5, parallel: true },
         #{ call: "on_landed" },
     ],
 });
@@ -90,6 +92,17 @@ and `interval` and `call` sequence among the property steps. The spec is
 data, so a tween is serialisable — the editor can author one and it hot
 reloads. Easing is twelve transitions in four modes with Godot's names and
 shapes, so ported curves behave.
+
+## The Animate persona
+
+<Clip name="animation_key" alt="The Animate persona: scrubbing the clip, posing the thigh bone, keying it, and playing" />
+
+The timeline's lanes are the selected clip's tracks, the ruler scrubs the
+node's own player, and preview goes through the engine's parser, so what the
+editor shows is what ships. A clip lives inline in the scene or in its own
+file; *Save as file* and *Make inline* convert between the two exactly.
+Keying a bone writes a rotation track on its character's clip, and a skinned
+polygon deforms as the clip plays.
 
 ## Skeletons and skins
 
@@ -128,6 +141,17 @@ The `skeleton` module has Godot's two rest-pose verbs and a query:
 `skeleton::apply_rest(node)` returns a rig to its rest pose,
 `skeleton::overwrite_rest(node)` makes the current pose the rest pose, and
 `skeleton::bones(node)` lists the bones under a node.
+
+In the editor, the **Rig bone** tool draws bones as diamonds in 2D and
+octahedra in 3D: click one to select it, drag to pose it, and *+ bone* grows
+a child from the selection. The inspector's Skeleton section has the two
+rest-pose verbs. The **Polygon** tool edits a `polygon` component's mesh in
+four modes — *Points* places outline and internal vertices, *Polygons* draws
+the triangulation by hand, *UV* places the points over the texture, and
+*Weights* paints bone influence with a brush — and the polygon stays skinned
+while you edit it.
+
+![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.png)
 
 ### Modifiers
 

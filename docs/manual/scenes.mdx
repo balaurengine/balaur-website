@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Scenes and nodes
 
 ## Nodes are entities
@@ -22,6 +24,8 @@ paths accept `..`, so `../Target` names a sibling. The full list is in the
 
 Structural changes requested by scripts (`queue_free`) are deferred to the
 end of the frame, so iteration is never invalidated mid-frame.
+
+![The node tree of examples/hello, with the Platform node's components in the inspector](/img/manual/scenes_tree.png)
 
 ## Scene files
 
@@ -45,6 +49,36 @@ Scene keys are applied in plugin registration order, which is deterministic.
 Scripts can instantiate scenes at run time with `scene::instantiate` and spawn
 nodes with `scene::spawn`.
 
+## Prefabs
+
+A prefab is a scene file; a node instantiates one with `instance`, and the
+file's roots become that node's children. The node keeps its own name,
+transform and components, so its position moves the whole prefab.
+
+```toml
+[[nodes]]
+id = "n_crate_b"
+name = "CrateB"
+instance = "scenes/crate.toml"
+position = [-0.5, 5, 1.5]
+
+[nodes.overrides."Crate/Lid"]
+color = [0.9, 0.3, 0.25]
+```
+
+`overrides` is keyed by path from the instance node and holds scene keys —
+components, the transform, and a `script` whose `props` merge over the
+prefab's. An override patches one property and leaves the rest of the
+component alone. Ids inside an instance are prefixed by the instance's own
+(`n_crate_b/n_lid`), so two instances of one file stay distinguishable in a
+replay's digest. A prefab that contains itself is an error naming the cycle.
+
+In the editor a prefab is placed from the command palette, one command per
+scene file. An instance's nodes appear in the tree in place, one shade
+quieter; editing one writes an override on the instance node, and an edit
+back to the prefab's own value removes it. Adding or deleting a node inside
+an instance is refused, with the prefab to open instead.
+
 ## Components
 
 Plugins declare named, schema-described components. A schema gives each
@@ -66,6 +100,8 @@ One registration buys three things at once:
 - **Editor support.** The editor's "Add component" palette and property
   inspectors are generated from the registry, so third-party plugin
   components are addable and editable with zero editor changes.
+
+<Clip name="scenes_inspect" alt="Selecting nodes in the tree; the inspector follows, a scale is dragged, and undone" />
 
 The components registered by the standard plugins:
 

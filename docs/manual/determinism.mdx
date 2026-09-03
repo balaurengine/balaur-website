@@ -2,6 +2,8 @@
 sidebar_position: 12
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Determinism
 
 Cross-platform determinism is a core feature: identical inputs must produce
@@ -79,6 +81,25 @@ Rollback works the same way in the other direction: a snapshot restores a
 tick and the deterministic simulation re-runs the same inputs forward. The
 engine's [determinism guide](https://github.com/balaurengine/balaur/blob/main/docs/DETERMINISM.md)
 has the rules of thumb and the hazards that remain your problem.
+
+## In the editor
+
+<Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse; the recording is scrubbed, paused and played on" />
+
+Every play-in-editor run records what the game was fed — keys, mouse,
+gamepads, network replies — and the Session dock lists the recordings, ten
+per game, kept under the editor's own data directory. Open one and the
+scene is rebuilt from the document, the recording is fed into it, and the
+game plays itself: lanes show the ticks keys and buttons went down, network
+requests came back, the log spoke and the debugger stopped; the rows under
+them are everything recorded at the tick the playhead is on. Drag the ruler
+to scrub — forward is the engine's, backward rebuilds the world and runs
+from the start — and *Pause* holds the simulation still.
+
+The *verify* toggle hashes the world every tick while recording, so a replay
+can say where it parted from what was recorded rather than merely running.
+A recording whose scripts have been edited since still plays; the dock says
+so, since it can no longer promise to reproduce what was seen.
 
 ## Verified, not asserted
 

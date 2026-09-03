@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Scripting
 
 Scripts are [Rune](https://rune-rs.github.io/) — `.rn` files attached to
@@ -38,6 +40,36 @@ belongs. See [Determinism](./determinism.mdx).
 
 `project.toml` names the language with `language`; it defaults to `"rune"`,
 and any other value is an error.
+
+![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.png)
+
+## Exported properties
+
+A script says which of its values a scene may tune by returning their
+defaults from `exports`:
+
+```rust
+pub fn exports() {
+    #{ speed: 2.0, clockwise: true }
+}
+```
+
+The node's `script` key then takes a table beside the string form, setting
+only what it overrides:
+
+```toml
+[nodes.script]
+source = "scripts/spinner.rn"
+
+[nodes.script.props]
+speed = 3.5
+```
+
+The defaults are written onto the instance, the node's `props` over them,
+and only then is `init` called. The inspector lists them per node and writes
+an override only where the value differs from the default, so changing a
+default in the file reaches every node that never overrode it.
+`node.attach_script(path, props)` is the same thing at run time.
 
 ## Modules
 
@@ -143,6 +175,8 @@ instance by name.
 
 ## Hot reload
 
+<Clip name="scripting_live" alt="A value changed and saved while the scene runs, then a breakpoint stepped in the Debugger dock" />
+
 The host watches the project directory. On save, the file is recompiled; a
 compile error keeps the previous unit running and is reported once. Rune
 compiles to an immutable unit, so there is nothing to patch: the new unit
@@ -150,6 +184,14 @@ replaces the old one, instances keep their state objects, and the next call
 resolves against the new code. Measured save-to-live latency is
 file-watcher latency, a few milliseconds. The optional `hot_reload(this)`
 hook lets a script migrate the shape of its state.
+
+A save that does not compile is reported rather than assumed: the editor's
+Output dock gets the compiler's own diagnostic — file, line, column and
+caret — and the previously compiled code keeps running. Because Rune
+resolves module paths at compile time, a misspelled engine call is caught
+on save, not when the line finally runs.
+
+![A save that did not compile, reported in the Output dock](/img/editor/save_error.png)
 
 ## Debugging
 

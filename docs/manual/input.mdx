@@ -2,12 +2,42 @@
 sidebar_position: 7
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Input
 
 Input is backend-agnostic: the windowed backend pumps OS events into one
 snapshot per frame, and scripts read that snapshot through the `input`
 module. Headless runs read neutral state. Because the whole frame's input is
 one snapshot, recording it per tick is all a replay system needs.
+
+<Clip name="input_overlay" alt="The editor's input overlay while examples/hello plays: key chips, the actions they drive, the pointer and a click ripple" />
+
+## Actions
+
+A game asks for `"jump"`, not for `Space`. Actions are declared in
+`project.toml`, each bound to any number of keys, buttons, sticks or key
+pairs:
+
+```toml
+[input.actions]
+jump = ["Space", "gamepad:South"]
+move_x = ["keys:A,D", "axis:LeftStickX"]
+fire = ["mouse:left"]
+```
+
+```rust
+if input::action_just_pressed("jump") { /* ... */ }
+let x = input::action_value("move_x");   // -1 to 1
+```
+
+`action_value` is -1 to 1 — a key answers 0 or 1, a stick or `keys:A,D` the
+whole range — and `action_pressed`, `action_just_pressed` and
+`action_just_released` are the edges. `input::bind(name, bindings)` rebinds
+an action and saves it to the user data directory; `reset_bindings` goes
+back to what the project declared. Actions are derived from the raw snapshot
+every frame, so a recording holds the keys that were pressed and a replay
+reproduces the actions from them.
 
 ## Keyboard and mouse
 
@@ -41,6 +71,15 @@ Buttons are `PAD_*` constants, axes `AXIS_*` (sticks, triggers, d-pad), and
 `input::touches_started()` and `input::touches_ended()` for the edges.
 `input::dropped_files()` returns the paths of files dropped onto the window
 this frame — which is how a tool accepts a drag-and-drop.
+
+## Seeing input
+
+The editor's input overlay draws what the game is being fed this frame: a
+chip per key and mouse button held down, the actions they drive, the pointer,
+and a ripple where a button went down. It reads the same snapshot the game
+reads, so during a replay it shows the recording's own input. Turn it on
+from the command palette (*Show input overlay*) or start the editor with
+`--state input`.
 
 ## The full surface
 
