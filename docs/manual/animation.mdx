@@ -53,7 +53,7 @@ an imported model's clips hold.
 
 ## The script module
 
-```rust
+```rune
 animation::play(this.node, "hop", #{ speed: 1.0 });
 animation::pause(this.node);   // resume continues; stop ends
 animation::queue(this.node, "wave");
@@ -72,7 +72,7 @@ separately, with `is_tween_running(handle)`.
 A tween is a clip generated on the spot, from the values the node has now,
 run through the same sampler and the same fixed step:
 
-```rust
+```rune
 animation::tween(this.node, #{
     steps: [
         #{ property: "position",   to: [0.0, 3.0, 0.0],      duration: 0.5, ease: "out_back" },

@@ -16,7 +16,7 @@ online session.
 
 ## The sequential shape
 
-```rust
+```rune
 pub async fn init(this) {
     gamend::configure("http://localhost:4000");
     let login = task::wait(gamend::login(#{ device_id: "player-1" })).await;

@@ -93,3 +93,11 @@
   border: 1px solid var(--balaur-card-border);
   --docusaurus-details-decoration-color: var(--ifm-color-primary);
 }
+
+/* Night Owl Light italicises every function call, which reads as emphasis
+   rather than syntax in a code sample. The theme sets it inline, so undoing
+   it needs the override. Comments keep their italics. */
+.theme-code-block .token.function,
+.theme-code-block .token.function-definition {
+  font-style: normal !important;
+}

@@ -179,6 +179,11 @@ const config: Config = {
     prism: {
       theme: prismThemes.nightOwlLight,
       darkTheme: prismThemes.nightOwl,
+      // Scene files are TOML, which prism-react-renderer does not bundle, so
+      // without this every scene snippet renders as plain text. Rune is added
+      // in src/theme/prism-include-languages.ts, which has no component to
+      // load.
+      additionalLanguages: ['toml'],
     },
   } satisfies Preset.ThemeConfig,
 };

@@ -17,7 +17,7 @@ hands it back on every call as `this`, and puts the owning node on
 `this.node`. An object handed into a Rune function is mutated in place, so
 what a script writes to `this` is what the host reads next frame.
 
-```rust
+```rune
 // scripts/spinner.rn
 pub fn init(this) {
     this.angle = 0.0;
@@ -50,7 +50,7 @@ and `script`. The complete surface — every function and constant — is in
 the [script modules reference](/docs/reference/modules), which is generated
 from a booted engine so it cannot drift.
 
-```rust
+```rune
 let t = engine::time();
 let ball = scene::get_node("World/Ball");
 physics3d::add_body(this.node, physics3d::BODY_DYNAMIC);
@@ -72,7 +72,7 @@ filled in: `this.node.body2d.apply_impulse(x, y)` is
 `set(table)`, `has()` and `remove()` too. The [component
 reference](/docs/reference/components) lists the methods per component.
 
-```rust
+```rune
 let body = this.node.body2d;
 body.apply_impulse(0.0, 12.0);
 if body.linear_velocity().0 > 5.0 {
@@ -90,7 +90,7 @@ as a float is written `0.0`.
 in a dev run, from the pack when shipped — and its items are reached as
 `name::item`:
 
-```rust
+```rune
 mod util;   // scripts/util.rn
 
 pub fn update(this, dt) {
@@ -108,7 +108,7 @@ A binding that fails raises an error and the call ends there. Wrap a call
 that may legitimately fail in `script::attempt`, which returns `(ok, value)`
 — the result, or the error message:
 
-```rust
+```rune
 let (ok, clip) = script::attempt(|| assets::load("animations/missing.toml"));
 if !ok {
     log::warn(format!("no clip: {}", clip));
@@ -128,7 +128,7 @@ An asynchronous operation can also be awaited in sequence. An entry point
 declared `async` suspends on `task::wait` and resumes when the result enters
 the simulation at the start of a later tick:
 
-```rust
+```rune
 pub async fn init(this) {
     let r = task::wait(http::request("https://example.com")).await;
     log::info(format!("{} {}", r["status"], r["body"]));
@@ -159,7 +159,7 @@ Debugger dock shows the call frames and their locals, with continue and
 step over / into / out on `F5` / `F10` / `F11` / `Shift+F11`. The same
 controls are the `debugger` script module, so a tool can drive them:
 
-```rust
+```rune
 debugger::set_breakpoints("scripts/ball.rn", [12, 30]);
 let pause = debugger::paused();         // (), or the pause: reason, line, frames
 debugger::resume(debugger::STEP_OVER);  // CONTINUE | STEP_OVER | STEP_INTO | STEP_OUT
@@ -169,7 +169,7 @@ A script that throws normally logs the error and the engine carries on.
 Turning on break on error stops at the line that threw instead, with the
 frames and locals still there to read:
 
-```rust
+```rune
 debugger::set_break_on_error(true);
 ```
 

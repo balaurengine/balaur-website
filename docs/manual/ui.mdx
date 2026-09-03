@@ -47,7 +47,7 @@ text = "Start"
 on_click = "start_pressed"
 ```
 
-```rust
+```rune
 pub fn start_pressed(this) {
     log::info("start");
 }
@@ -66,7 +66,7 @@ updatable from scripts through the component handle. `set` builds the
 component from your table over the schema's defaults rather than merging into
 what is there, so change one property by reading the table first:
 
-```rust
+```rune
 let w = this.node.widget.get();
 w.text = "Score 10";
 this.node.widget.set(w);
@@ -82,7 +82,7 @@ For tools and anything beyond a HUD, the `ui` module exposes immediate-mode
 [egui](https://github.com/emilk/egui) to scripts. A script implements a
 `draw_ui` lifecycle method, which runs once per frame inside the egui pass:
 
-```rust
+```rune
 pub fn draw_ui(this) {
     let k = this.theme;
     ui::left_panel("outline", #{ width: 260, fill: k.bg }, || {

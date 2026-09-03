@@ -23,7 +23,7 @@ Scripts never poll. There are two shapes:
 results, and results are dispatched as method calls — the same signal shape a
 widget's `on_click` or an animation method track uses:
 
-```rust
+```rune
 pub fn init(this) {
     this.request = http::request(this.node, "https://example.com");
 }
@@ -36,7 +36,7 @@ pub fn on_response(this, r) {
 **Sequential await.** A request made without a node is a token the script
 suspends on until the result arrives. The entry point is declared `async`:
 
-```rust
+```rune
 pub async fn init(this) {
     let r = task::wait(http::request(url)).await;
     log::info(format!("{} {}", r["status"], r["body"]));
@@ -54,7 +54,7 @@ A websocket takes options beside its handler: `compression` offers
 go on the upgrade request. An HTTP request takes `method`, `body`,
 `headers` and `timeout` the same way.
 
-```rust
+```rune
 this.socket = websocket::connect(this.node, "wss://game.example/play", #{
     on_event: "on_socket",
     compression: true,

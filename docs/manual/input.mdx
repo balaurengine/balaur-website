@@ -11,7 +11,7 @@ one snapshot, recording it per tick is all a replay system needs.
 
 ## Keyboard and mouse
 
-```rust
+```rune
 if input::just_pressed(input::KEY_SPACE) { /* ... */ }
 if input::is_mouse_down(input::MOUSE_LEFT) { /* ... */ }
 let (mx, my) = input::mouse_position();
@@ -25,7 +25,7 @@ the mouse adds position, per-frame delta, button edges, and scroll delta.
 `input::gamepads()` lists the connected pads; every query takes a pad id and
 a named constant:
 
-```rust
+```rune
 for pad in input::gamepads() {
     if input::gamepad_just_pressed(pad, input::PAD_SOUTH) { /* ... */ }
     let x = input::gamepad_axis(pad, input::AXIS_LEFT_STICK_X);
