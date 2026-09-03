@@ -99,7 +99,9 @@ from the start — and *Pause* holds the simulation still.
 The *verify* toggle hashes the world every tick while recording, so a replay
 can say where it parted from what was recorded rather than merely running.
 A recording whose scripts have been edited since still plays; the dock says
-so, since it can no longer promise to reproduce what was seen.
+so, since it can no longer promise to reproduce what was seen. *Export*
+copies one into the project, where `balaur replay --verify` reads the same
+file — so a session caught in the editor is what goes on a bug report.
 
 ## Verified, not asserted
 

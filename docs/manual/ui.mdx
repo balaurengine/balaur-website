@@ -75,9 +75,10 @@ pub fn on_restart(this) {
     this.node.get_node("../Game").call("restart");
 }
 ```
- `set` builds the
-component from your table over the schema's defaults rather than merging into
-what is there, so change one property by reading the table first:
+
+A component handle's `set` builds the component from your table over the
+schema's defaults rather than merging into what is there, so change one
+property by reading the table first:
 
 ```rune
 let w = this.node.widget.get();

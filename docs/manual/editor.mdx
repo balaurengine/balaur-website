@@ -86,9 +86,10 @@ balaur edit examples/rig --offscreen --frames 100 \
 ```
 
 `--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
-`ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`, `palette`,
-`light`, `play`, `input`, `shot=<file>` to capture one frame, and
-`frames=<dir>` to capture every other frame into a numbered directory.
+`ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`,
+`zoom:<percent>`, `palette`, `light`, `play`, `input`, `shot=<file>` to
+capture one frame, and `frames=<dir>` to capture every other frame into a
+numbered directory.
 `show:<name>` runs one of the scripted sequences behind this manual's clips,
 which feed the game input through `input::feed_key`, `feed_mouse` and
 `feed_mouse_button` — the same seam an automated test can use. Offscreen
