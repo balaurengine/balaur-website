@@ -36,6 +36,10 @@ release added. Within each group the order is the one the
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-scenes-and-assets.md#sprite-sheets',
   },
   {
+    title: 'Asset streaming',
+    text: 'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.',
+  },
+  {
     title: 'Extensions, tier two',
     text: 'Native extensions that add components and systems, and call back into scripts.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-c-api.md#what-tier-1-does-not-do',
@@ -55,6 +59,32 @@ release added. Within each group the order is the one the
     text: 'Blend trees and state machines that mix clips by weight, and IK in 3D.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md#6-blending-and-state-machines-planned',
   },
+  {
+    title: 'A sequencer',
+    text: 'Cutscenes and cameras on a timeline, with tracks that call something rather than only move it.',
+  },
+]} />
+
+## Gameplay and audio
+
+<Roadmap items={[
+  {
+    title: 'Navigation',
+    text: 'A navmesh baked from the scene, pathfinding over it or over a grid, and agents that avoid each other on the way.',
+  },
+  {
+    title: 'Positional audio',
+    text: 'Distance attenuation, stereo panning and doppler from a listener node, over the buses that already exist.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-batteries.md#phases',
+  },
+  {
+    title: 'Voice in a session',
+    text: 'Players heard as well as seen, mixed onto a bus like every other sound. The transport carries the datagrams already; the codec is what is missing.',
+  },
+  {
+    title: 'Haptics and motion',
+    text: 'Gamepad rumble, gyro and touchpad, on the pads the engine already polls.',
+  },
 ]} />
 
 ## Rendering
@@ -69,6 +99,26 @@ release added. Within each group the order is the one the
     title: 'GPU skinning in 3D',
     text: 'Imported meshes skinned in the vertex shader instead of on the CPU.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md#gpu-skinning-in-3d',
+  },
+  {
+    title: 'Culling and level of detail',
+    text: 'Nodes outside the camera skipped, meshes swapped for cheaper ones with distance, and repeated meshes drawn in one call.',
+  },
+  {
+    title: 'Shadows in 3D',
+    text: 'A shadow pass behind the directional, point and spot lights that already light a 3D scene, and lightmaps baked for the static half.',
+  },
+  {
+    title: 'Drawing terrain',
+    text: <>A mesher for the <code>heightfield</code> and <code>voxels</code> assets, and tools to paint them. Physics already collides with both; nothing draws either.</>,
+  },
+  {
+    title: 'More than one view',
+    text: 'Split screen, a camera rendered to a texture, picture-in-picture.',
+  },
+  {
+    title: 'Video playback',
+    text: 'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.',
   },
   {
     title: 'Shader debugging',
@@ -101,9 +151,42 @@ release added. Within each group the order is the one the
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
   },
   {
+    title: 'Client prediction and reconciliation',
+    text: 'Your own node moves the frame you press the key, and the server’s correction rewinds that node alone and replays what is still pending, smoothed out over a few frames. Everyone else is drawn a little behind and interpolated.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#hiding-latency',
+  },
+  {
+    title: 'Lag compensation and interest management',
+    text: 'The server rewinds to the tick the shooter saw before testing a hit, and sends each client only what it can see, at a send rate below the tick rate.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
+  },
+  {
+    title: 'A link you can make bad on purpose',
+    text: 'Latency, loss and reordering injected into a transport so a test asserts what 150 ms does, round-trip time and bandwidth per peer, and a networked session that replays from its recording.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
+  },
+  {
     title: 'WebRTC data channels',
     text: 'Browser peer-to-peer without a relay, behind the same transport trait. Built only once a game needs it.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
+  },
+]} />
+
+## Tools and services
+
+<Roadmap items={[
+  {
+    title: 'Accessibility',
+    text: 'A screen reader over the widget tree, text scaling, captions and colour-blind-safe defaults. Focus order, localization and rebindable actions are already there.',
+  },
+  {
+    title: 'A crash report that reproduces itself',
+    text: 'The recording, the log and the build id in one file, so a bug report re-runs the session that caused it bit for bit.',
+  },
+  {
+    title: 'Store and platform services',
+    text: 'Achievements, cloud saves, rich presence and in-app purchase — shipped as native extensions rather than engine code.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-c-api.md',
   },
 ]} />
 
@@ -119,6 +202,14 @@ release added. Within each group the order is the one the
     title: 'Web export',
     text: 'A game that runs in the browser: a wgpu canvas, a WebAssembly build and the pack fetched beside it.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mobile-export.md#web',
+  },
+  {
+    title: 'Console export',
+    text: 'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.',
+  },
+  {
+    title: 'XR',
+    text: 'OpenXR on desktop and standalone headsets, WebXR in the browser: stereo views, tracked poses, controller and hand input.',
   },
   {
     title: 'Published benchmarks',
