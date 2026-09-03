@@ -4,7 +4,7 @@
  * headings, Source Sans 3 for text.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
   --ifm-color-primary: #2f6a9e;
@@ -36,6 +36,9 @@
   --docusaurus-highlighted-code-line-bg: rgba(47, 106, 158, 0.12);
 
   --ifm-font-family-base: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* The same mono the editor sets, so a sample on the page and the same
+     code in the editor's pane are one typeface. */
+  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --balaur-display-font: 'Alegreya', 'Iowan Old Style', Georgia, serif;
   --ifm-heading-font-family: var(--balaur-display-font);
   --ifm-heading-font-weight: 600;
@@ -93,6 +96,9 @@
   border: 1px solid var(--balaur-card-border);
   --docusaurus-details-decoration-color: var(--ifm-color-primary);
 }
+
+/* Alegreya for headings, Source Sans 3 for text and JetBrains Mono for code
+   is the editor's type; `editor/themes/*.toml` is where it is set there. */
 
 /* Night Owl Light italicises every function call, which reads as emphasis
    rather than syntax in a code sample. The theme sets it inline, so undoing

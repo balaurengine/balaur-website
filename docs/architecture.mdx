@@ -97,7 +97,9 @@ time — see [Modules and extensions](./manual/extensions.mdx).
 | `balaur_anim` | Animation clips, the pure sampler, tweens, easing, rig modifiers; the `animation` module |
 | `balaur_audio` | rodio-backed `audio` module |
 | `balaur_input` | Backend-agnostic input snapshot + `input` module |
-| `balaur_net` | `http` and `websocket` for scripts, delivered into the simulation per tick |
+| `balaur_http` | `http` for scripts, delivered into the simulation per tick |
+| `balaur_websocket` | `websocket` for scripts, and a `Transport` for sessions |
+| `balaur_webtransport` | QUIC behind the same `Transport`, where a datagram is really a datagram |
 | `balaur_gamend` | The Gamend backend (`gamend` module): login, REST, realtime, server hooks |
 | `balaur_plugin` | The `Plugin` trait a module or run-time extension implements, plus the loader |
 | `balaur_ui` | Immediate-mode egui API (`ui` module): panels, widgets, script-defined themes |

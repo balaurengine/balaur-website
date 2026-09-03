@@ -4,10 +4,12 @@ sidebar_position: 8
 
 # Networking
 
-The `balaur_net` plugin gives scripts HTTP requests (`http::request`) and
-websocket connections (`websocket::connect` / `send` / `close`). It is on by
-default; building without the `net` feature drops the entire HTTP/TLS stack
-from the binary.
+One crate per protocol: `balaur_http` gives scripts HTTP requests
+(`http::request`), `balaur_websocket` gives them connections
+(`websocket::connect` / `send` / `close`), and `balaur_webtransport` adds
+QUIC for sessions. All three are on by default, each behind its own feature,
+so building without `http` drops the HTTP and TLS stack and building without
+`webtransport` drops QUIC and its runtime.
 
 ## The delivery model
 
@@ -62,14 +64,16 @@ this.socket = websocket::connect(this.node, "wss://game.example/play", #{
 });
 ```
 
-The defaults come from the `[net]` table of `project.toml`, so a project
+The defaults come from each protocol's table in `project.toml`, so a project
 can turn compression off everywhere, or shorten every request's timeout,
 without touching a script:
 
 ```toml
-[net]
-websocket_compression = true   # offer permessage-deflate on every connection
-http_timeout = 10.0            # seconds, for a request that names none
+[websocket]
+compression = true   # offer permessage-deflate on every connection
+
+[http]
+timeout = 10.0       # seconds, for a request that names none
 ```
 
 A call's own option wins over the table.
@@ -91,11 +95,12 @@ For a hosted game backend — auth, storage, realtime rooms — see
 
 Rollback works: two engines exchange only inputs, predict each other, roll
 back when a prediction was wrong, and compare a per-tick digest to catch a
-desync. What is missing is replication, RPC, and a transport that is not TCP
-— no UDP, QUIC, WebTransport or WebRTC yet, so a datagram is unreliable in
-name only. The rest of the plan, in order — WebTransport native, sessions
-from Gamend, replication, WebTransport in the browser, WebRTC for browser
-peer-to-peer — is
+desync. It runs over websockets or over QUIC, and on QUIC a datagram is a
+real one, so a lost input costs a misprediction rather than a stall. What is
+missing is replication, RPC, a browser WebTransport backend, and WebRTC. The
+rest of the plan, in order — recording a session, sessions from Gamend,
+replication, WebTransport in the browser, WebRTC for browser peer-to-peer —
+is
 [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md)
 in the engine repository; the [roadmap](../roadmap.mdx) has the short form.
 Raw UDP is not coming: QUIC datagrams cover it, with encryption and a
