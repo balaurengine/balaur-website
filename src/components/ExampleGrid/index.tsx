@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import Heading from '@theme/Heading';
 import Icon, {type IconName, type Tone} from '@site/src/components/Icon';
 import styles from './styles.module.css';
@@ -24,6 +25,12 @@ export type Example = {
 const REPO = 'https://github.com/balaurengine/balaur/tree/main/examples';
 
 export default function ExampleGrid({items}: {items: Example[]}): ReactNode {
+  // Each card is an anchor target (/examples#hello, and one per example, linked
+  // from the persona sections). The id below is on the <article>, which the
+  // broken-link checker does not scan, so the anchors are registered by hand.
+  const brokenLinks = useBrokenLinks();
+  items.forEach((e) => brokenLinks.collectAnchor(e.name));
+
   return (
     <div className={styles.grid}>
       {items.map((e) => (
