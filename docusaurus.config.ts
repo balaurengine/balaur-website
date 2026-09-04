@@ -18,7 +18,7 @@ const jsonLd = (data: object) => ({
 const config: Config = {
   title: 'Balaur',
   tagline: 'A 2D & 3D node-based game engine, fully deterministic, with scripts that reload in milliseconds.',
-  favicon: 'img/favicon-balaur.ico',
+  // Favicons are declared in headTags below, at stable root URLs.
 
   markdown: {
     // .md files (the synced reference docs) render as CommonMark; .mdx as MDX.
@@ -58,6 +58,16 @@ const config: Config = {
   },
 
   headTags: [
+    // Icons live at the site root under names that never change. Google
+    // refetches a favicon only when it recrawls the home page, and a new URL
+    // starts that discovery over. The ICO carries 16-64 px frames; the SVG
+    // and the 192 px PNG are the brand tile (a multiple of 48 px, which is
+    // what Google asks for); the 180 px PNG is what iOS looks for. `sizes`
+    // on the ICO keeps Chrome from preferring it over the SVG.
+    {tagName: 'link', attributes: {rel: 'icon', href: '/favicon.ico', sizes: '32x32'}},
+    {tagName: 'link', attributes: {rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml'}},
+    {tagName: 'link', attributes: {rel: 'icon', href: '/favicon-192.png', type: 'image/png', sizes: '192x192'}},
+    {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180'}},
     jsonLd({
       '@context': 'https://schema.org',
       '@type': 'Organization',
