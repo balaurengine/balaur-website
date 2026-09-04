@@ -6,7 +6,9 @@
   display: block;
   color: inherit;
   text-decoration: none;
-  margin: 0.5rem 0.25rem;
+  max-width: 1040px;
+  margin: 0.5rem auto;
+  text-align: center;
 }
 
 .shot:hover {

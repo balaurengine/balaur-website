@@ -1,51 +1,68 @@
 ---
 title: "Features"
-description: "Everything in the Balaur game engine today: TOML scenes, Rune scripts with hot reload, deterministic 2D and 3D physics, animation, networking and one-file shipping."
+description: "Everything in the Balaur game engine today: TOML scenes, Rune scripts with hot reload, deterministic 2D and 3D physics, animation, lights, networking and one-file shipping."
 image: "/img/social/features.png"
 ---
+
+import Mermaid from '@theme/Mermaid';
+import FeatureGroup, {Feature} from '@site/src/components/FeatureGroup';
 
 # Features
 
 What is in the engine today, one line each. The why is in [Principles](/docs/principles).
 
-## Nodes, scenes, scripts
+<FeatureGroup title="Nodes, scenes, scripts" clip="scenes_inspect" alt="Selecting a node in the tree and editing it in the inspector" to="/docs/manual/scenes" toLabel="Scenes and nodes">
+  <Feature icon="tree-structure" to="/docs/manual/scenes"><strong>Scene tree.</strong> Named nodes with scripts, over an ECS you never see.</Feature>
+  <Feature icon="file-text" to="/docs/manual/scenes"><strong>TOML scenes.</strong> Every component is a scene key, a script call and an inspector row at once.</Feature>
+  <Feature icon="code" to="/docs/manual/scripting"><strong>Rune.</strong> Rust's syntax, no build step, `async`/`await`.</Feature>
+  <Feature icon="lightning" to="/docs/manual/scripting#hot-reload"><strong>Hot reload.</strong> A saved script is live in milliseconds, state intact.</Feature>
+  <Feature icon="bug" to="/docs/manual/scripting#debugging"><strong>Debugger.</strong> Breakpoints, stepping, frames and locals, in the editor.</Feature>
+  <Feature icon="warning-circle" to="/docs/manual/editor#personas"><strong>Errors on save.</strong> A script that does not compile reports its file, line and caret in the editor; the running code stays up.</Feature>
+  <Feature icon="package" to="/docs/reference/assets"><strong>Assets.</strong> Content by reference or inline, one rule for every type.</Feature>
+</FeatureGroup>
 
-- **Scene tree.** Named nodes with scripts, over an ECS you never see. → [Scenes](/docs/manual/scenes)
-- **TOML scenes.** Every component is a scene key, a script call and an inspector row at once. → [Scenes](/docs/manual/scenes)
-- **Rune.** Rust's syntax, no build step, `async`/`await`. → [Scripting](/docs/manual/scripting)
-- **Hot reload.** A saved script is live in milliseconds, state intact. → [Scripting](/docs/manual/scripting#hot-reload)
-- **Debugger.** Breakpoints, stepping, frames and locals, in the editor. → [Scripting](/docs/manual/scripting#debugging)
-- **Errors on save.** A script that does not compile reports its file, line and caret in the editor; the running code stays up. → [The editor](/docs/manual/editor#personas)
-- **Assets.** Content by reference or inline, one rule for every type. → [Assets](/docs/reference/assets)
+<FeatureGroup title="Simulation" side="right" clip="determinism_replay" alt="Recording a session and replaying it to the same digests" to="/docs/manual/determinism" toLabel="Determinism">
+  <Feature icon="atom" tone="3d" to="/docs/manual/physics"><strong>Physics.</strong> 2D and 3D through Rapier, on a fixed 60 Hz step.</Feature>
+  <Feature icon="film-strip" tone="animation" to="/docs/manual/animation"><strong>Animation.</strong> Clips, tweens, twelve easings, method tracks.</Feature>
+  <Feature icon="bone" tone="animation" to="/docs/manual/animation#skeletons-and-skins"><strong>Skeletons.</strong> 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK.</Feature>
+  <Feature icon="arrows-clockwise" tone="physics" to="/docs/manual/determinism"><strong>Determinism.</strong> Same inputs, same bits everywhere; per-tick digests, record and replay, rollback.</Feature>
+</FeatureGroup>
 
-## Simulation
+<FeatureGroup title="Screen and sound" clip="shader_preview" alt="A material's shader edited and previewed in the editor" to="/docs/manual/rendering" toLabel="Rendering">
+  <Feature icon="image" tone="render"><strong>Rendering.</strong> 3D and 2D on wgpu — windowed, offscreen, or headless — with sprites, tile maps, particles and meshes.</Feature>
+  <Feature icon="sun" tone="render" to="/docs/manual/rendering"><strong>Lights.</strong> 2D lights and occluders build a light map the whole scene is lit by; post-processing on top.</Feature>
+  <Feature icon="paint-brush" tone="render" to="/docs/manual/shaders"><strong>Shaders.</strong> WESL — WGSL with imports and variants — in material assets, linked at run time.</Feature>
+  <Feature icon="layout" tone="ui" to="/docs/manual/ui"><strong>UI.</strong> Widgets for HUDs, an immediate-mode API for tools.</Feature>
+  <Feature icon="speaker-high" tone="audio" to="/docs/manual/input"><strong>Audio and input.</strong> rodio playback; keyboard, mouse, gamepads, touch.</Feature>
+</FeatureGroup>
 
-- **Physics.** 2D and 3D through Rapier, on a fixed 60 Hz step. → [Physics](/docs/manual/physics)
-- **Animation.** Clips, tweens, twelve easings, method tracks. → [Animation](/docs/manual/animation)
-- **Skeletons.** 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK. → [Animation](/docs/manual/animation#skeletons-and-skins)
-- **Determinism.** Same inputs, same bits everywhere; per-tick digests, record and replay, rollback. → [Determinism](/docs/manual/determinism)
+<FeatureGroup
+  title="Online"
+  side="right"
+  to="/docs/manual/networking"
+  toLabel="Networking"
+  media={
+    <Mermaid
+      value={`flowchart TB
+  S["script"] -->|"http::request · websocket::send"| W["worker threads"]
+  W -->|"completions, over a channel"| T["start of the next tick"]
+  T -->|"handler method, or an await wakes"| S
+  T -.->|"recorded in the tick's snapshot"| R["replay"]`}
+    />
+  }>
+  <Feature icon="globe" to="/docs/manual/networking"><strong>Networking.</strong> HTTP and websockets with compression, delivered once per tick and replayable.</Feature>
+  <Feature icon="cloud" to="/docs/manual/gamend"><strong>Gamend.</strong> Login, REST, realtime rooms, server hooks.</Feature>
+  <Feature icon="storefront" to="/docs/manual/stores"><strong>Stores.</strong> Sign-in, achievements, leaderboards, cloud saves and purchases through one module — Game Center, iCloud and StoreKit today.</Feature>
+</FeatureGroup>
 
-## Screen and sound
-
-- **Rendering.** 3D and 2D on wgpu — windowed, offscreen, or headless — with sprites, tile maps, particles and meshes.
-- **UI.** Widgets for HUDs, an immediate-mode API for tools. → [UI](/docs/manual/ui)
-- **Audio.** A tree of buses, named events with variations, and sound placed in the world — distance, stereo pan and doppler from a listener node. → [audio](/docs/reference/modules/audio)
-- **Input.** Keyboard, mouse, touch, and gamepads down to rumble, gyro and touchpad. → [Input](/docs/manual/input)
-
-## Online
-
-- **Networking.** HTTP and websockets with compression, delivered once per tick and replayable. → [Networking](/docs/manual/networking)
-- **Gamend.** Login, REST, realtime rooms, server hooks. → [Gamend](/docs/manual/gamend)
-- **Stores.** Sign-in, achievements, leaderboards and cloud saves over one module, whichever store is loaded — Game Center, iCloud and StoreKit purchases behind it on iOS and macOS. → [Stores](/docs/manual/stores)
-
-## Tools and shipping
-
-- **The editor.** A Balaur project itself: tree, inspector, gizmos, timeline, rig tools, play-in-editor, undo. → [The editor](/docs/manual/editor)
-- **Editor plugins.** Docks, tools, commands and inspector sections from a project's own Rune files. → [Extending the editor](/docs/manual/editor#extending-the-editor)
-- **Extensions.** Plugins linked in or loaded at run time. → [Extensions](/docs/manual/extensions)
-- **Packs.** Reproducible exports with bytecode, scenes and assets. → [Shipping](/docs/manual/shipping)
-- **One file to ship.** A pack fused onto a runtime: one self-contained binary per target, no compiler, no sources. → [Shipping](/docs/manual/shipping)
-- **Platforms.** Windows, macOS and Linux today; iOS, Android and WebAssembly compile in CI on every push.
-- **Built on Rust.** Safe code and the ecosystem as it is. → [Built on](/docs/built-on)
+<FeatureGroup title="Tools and shipping" image="editor_overview" alt="The editor: node tree, viewport, inspector and the Output dock" to="/docs/manual/editor" toLabel="The editor">
+  <Feature icon="app-window" to="/docs/manual/editor"><strong>The editor.</strong> A Balaur project itself: tree, inspector, gizmos, timeline, rig tools, play-in-editor, undo.</Feature>
+  <Feature icon="puzzle-piece" to="/docs/manual/editor#extending-the-editor"><strong>Editor plugins.</strong> Docks, tools, commands and inspector sections from a project's own Rune files.</Feature>
+  <Feature icon="plug" to="/docs/manual/extensions"><strong>Extensions.</strong> Plugins linked in or loaded at run time.</Feature>
+  <Feature icon="package" to="/docs/manual/shipping"><strong>Packs.</strong> Reproducible exports with bytecode, scenes and assets.</Feature>
+  <Feature icon="rocket-launch" to="/docs/manual/shipping"><strong>One file to ship.</strong> A pack fused onto a runtime: one self-contained binary per target, no compiler, no sources.</Feature>
+  <Feature icon="devices"><strong>Platforms.</strong> Windows, macOS and Linux today; iOS, Android and WebAssembly compile in CI on every push.</Feature>
+  <Feature icon="gear" to="/docs/built-on"><strong>Built on Rust.</strong> Safe code and the ecosystem as it is.</Feature>
+</FeatureGroup>
 
 MIT licensed, on [GitHub](https://github.com/balaurengine/balaur). No binary release yet — see [Getting started](/docs/getting-started).

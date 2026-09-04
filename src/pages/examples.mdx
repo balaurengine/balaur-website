@@ -1,0 +1,72 @@
+---
+title: "Examples — the projects that ship with the engine"
+description: "Seven example projects in the Balaur repository, from a spinning cube with a hot-reloading script to a 2D slingshot game, a skinned rig, a glTF rig, a WESL shader and two extensions — what each shows and how to open it."
+image: "/img/social/examples.png"
+---
+
+import ExampleGrid from '@site/src/components/ExampleGrid';
+
+# Examples
+
+Seven projects ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them, so what you see there is what opens here. Balaur builds from source for now — [Getting started](/docs/getting-started) has the toolchain — and each card carries the command that opens its project in the editor.
+
+<ExampleGrid items={[
+  {
+    name: 'hello',
+    title: 'Start here',
+    text: <>3D: a spinning cube, a bouncing ball, physics and a HUD label. Five short scripts. Open it, change <code>scripts/spinner.rn</code> while it runs, and watch the new code go live with the state intact.</>,
+    image: 'hello_open',
+    alt: 'examples/hello open in the editor: the World node selected and the Output dock showing the boot',
+    manual: {to: '/docs/manual/scripting', label: 'Scripting'},
+  },
+  {
+    name: 'angrynerds',
+    title: 'A 2D game',
+    text: <>A small slingshot game: 2D shapes, 2D physics on a fixed step, and a HUD of widgets — Score, Birds, Hint and a Restart button. The physics, UI and determinism pages are all filmed on it.</>,
+    image: 'persona_scene',
+    alt: 'examples/angrynerds in the Scene persona: the node tree, the 2D viewport with the Bird selected, and the inspector',
+    manual: {to: '/docs/manual/physics', label: 'Physics'},
+  },
+  {
+    name: 'rig',
+    title: 'A 2D skeleton',
+    text: <>One figure: a skinned leg swung by a clip, and an arm branching off its top bone that reaches on two-bone IK. The bone and polygon tools, painted weights, and the timeline, in one scene.</>,
+    image: 'persona_animate',
+    alt: 'examples/rig in the Animate persona: the bones in the tree, the Thigh selected, and the timeline with its keys',
+    manual: {to: '/docs/manual/animation', label: 'Animation'},
+  },
+  {
+    name: 'rig3d',
+    title: 'A 3D rig from glTF',
+    text: <>A column imported from a <code>.glb</code> with <code>balaur import</code>: three bones deforming the mesh, bent by its <code>sway</code> clip. The joints, the mesh and the animation land as TOML the editor edits.</>,
+    image: 'example_rig3d',
+    alt: 'examples/rig3d in the editor: the Column node with its three bones, the imported mesh bent by the sway clip',
+    manual: {to: '/docs/manual/animation#skeletons-and-skins', label: 'Skeletons and skins'},
+  },
+  {
+    name: 'shaders',
+    title: 'A material and its shader',
+    text: <>A glow material written in WESL — WGSL with imports and variants — on a sprite, beside a plain one, with the shader's parameters in the material file.</>,
+    image: 'shader_preview',
+    alt: 'examples/shaders in the editor: the glow material on a sprite next to a plain one',
+    manual: {to: '/docs/manual/shaders', label: 'Shaders and materials'},
+  },
+  {
+    name: 'extension_greeter',
+    title: 'A plugin as a shared library',
+    text: <>The complete working example of an extension: a Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module.</>,
+    icon: 'plug',
+    manual: {to: '/docs/manual/extensions', label: 'Modules and extensions'},
+    run: 'run',
+  },
+  {
+    name: 'extension_c_counter',
+    title: 'The same boundary, from C',
+    text: <>One file, <code>counter.c</code>, built into an extension the engine loads: the plugin boundary is C-compatible, so a plugin need not be Rust.</>,
+    icon: 'plug',
+    manual: {to: '/docs/manual/extensions#rust-or-c-at-the-boundary', label: 'Rust or C at the boundary'},
+    run: 'run',
+  },
+]} />
+
+Each example's scene is plain TOML and its scripts are Rune, so the fastest way to learn the engine is to open one and change something. What the editor's own personas look like on them is on [the editor](/docs/manual/editor) page.

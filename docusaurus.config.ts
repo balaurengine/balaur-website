@@ -25,7 +25,25 @@ const config: Config = {
     format: 'detect',
     mermaid: true,
   },
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      // Search over the docs, the reference, the pages and the devlog, built
+      // into the site at build time — no service, no account, works offline.
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        indexDocs: true,
+        indexBlog: true,
+        indexPages: true,
+        docsRouteBasePath: '/docs',
+        blogRouteBasePath: '/blog',
+        highlightSearchTermsOnTargetPage: true,
+        searchResultLimits: 8,
+        explicitSearchResultPath: true,
+      },
+    ],
+  ],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -137,8 +155,8 @@ const config: Config = {
           'game engine, rust game engine, deterministic game engine, 2d game engine, 3d game engine, open source game engine, hot reload scripting, rune scripting, skeletal animation, balaur engine',
       },
     ],
-    // Replace with your project's social card
-    image: 'img/social-card.png',
+    // The card a link to the site unfurls with; scripts/social-cards.mjs draws it.
+    image: 'img/social/home.png',
     colorMode: {
       // First visit follows the OS; the swizzled toggle (src/theme/
       // ColorModeToggle) then offers a plain light/dark switch that persists.
@@ -153,6 +171,7 @@ const config: Config = {
       },
       items: [
         {to: '/features', label: 'Features', position: 'left'},
+        {to: '/examples', label: 'Examples', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
@@ -225,8 +244,20 @@ const config: Config = {
               to: '/blog',
             },
             {
+              label: 'Compare',
+              to: '/compare',
+            },
+            {
+              label: 'FAQ',
+              to: '/faq',
+            },
+            {
               label: 'Branding',
               to: '/branding',
+            },
+            {
+              label: 'Devlog RSS',
+              href: 'pathname:///blog/rss.xml',
             },
             {
               label: 'Website repo',

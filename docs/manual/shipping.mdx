@@ -8,6 +8,16 @@ sidebar_position: 15
 
 # Shipping a game
 
+A game ships in two steps: `balaur export` turns the project into one pack,
+and a pack either runs on a runtime or is fused onto one.
+
+```mermaid
+flowchart LR
+  A["scripts · scenes · assets · manifest"] -->|"balaur export"| B[".bpak — bytecode, scenes, assets; sorted keys, so the same sources give the same bytes"]
+  B -->|"balaur play"| C["a runtime"]
+  B -->|"fuse onto a runtime"| D["one executable per platform — no compiler, no sources"]
+```
+
 ## Packs
 
 `balaur export` compiles every script to bytecode — with the same compiler

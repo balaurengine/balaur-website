@@ -69,7 +69,7 @@ release added. Within each group the order is the one the
   {
     title: 'Animation blending',
     text: 'Blend trees and state machines that mix clips by weight, and IK in 3D.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md#6-blending-and-state-machines-planned',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
   },
   {
     title: 'A sequencer',
@@ -124,14 +124,9 @@ release added. Within each group the order is the one the
     text: 'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.',
   },
   {
-    title: 'Shader debugging',
-    text: 'Channel views for normals, depth and UVs, and the value at the line your caret is on drawn for every pixel.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#value-preview-at-the-cursor',
-  },
-  {
-    title: 'Shader tests',
-    text: 'Shader functions asserted headless, with no GPU, so CI catches a broken one.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#shader-tests',
+    title: 'Post-process materials',
+    text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#post-process-materials',
   },
 ]} />
 
@@ -161,11 +156,6 @@ release added. Within each group the order is the one the
   {
     title: 'Lag compensation and interest management',
     text: 'The server rewinds to the tick the shooter saw before testing a hit, and sends each client only what it can see, at a send rate below the tick rate.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
-  },
-  {
-    title: 'A link you can make bad on purpose',
-    text: 'Latency, loss and reordering injected into a transport so a test asserts what 150 ms does, round-trip time and bandwidth per peer, and a networked session that replays from its recording.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
   },
   {

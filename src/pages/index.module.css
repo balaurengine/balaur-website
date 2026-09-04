@@ -115,3 +115,23 @@
   font-weight: 400;
   line-height: 1.5;
 }
+
+/* The closing band: one line and the two buttons, on the hero's ground. */
+.cta {
+  padding: 3rem 0 3.5rem;
+  text-align: center;
+  background: linear-gradient(180deg, transparent 0%, rgba(47, 106, 158, 0.06) 100%);
+}
+
+[data-theme='dark'] .cta {
+  background: linear-gradient(180deg, transparent 0%, rgba(111, 164, 216, 0.08) 100%);
+}
+
+.ctaText {
+  color: #5b6670;
+  margin: 0 0 1.25rem;
+}
+
+[data-theme='dark'] .ctaText {
+  color: #98a3ae;
+}

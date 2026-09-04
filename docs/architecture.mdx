@@ -14,24 +14,18 @@ This page is the condensed version.
 
 ## The layers
 
-```text
-┌────────────────────────────────────────────────────────────┐
-│  scripts (game code, and the editor itself): .rn files     │
-├────────────────────────────────────────────────────────────┤
-│  balaur_script_rune: host, hot reload, mod files, debugger │
-├────────────────────────────────────────────────────────────┤
-│  balaur_script: the seam — Bindings, ScriptHost, Value.    │
-│  Traits only. No language, no dependencies.                │
-├────────────────────────────────────────────────────────────┤
-│  modules declared once against the seam:                   │
-│  engine, scene, node, assets, animation, input, physics, ..│
-├──────────┬─────────┬────────┬────────┬───────┬─────────────┤
-│ physics  │ render  │ audio  │ input  │ anim  │ your plugin │
-│ (rapier) │ (kiss3d)│ (rodio)│ (winit)│ (clip)│             │
-├──────────┴─────────┴────────┴────────┴───────┴─────────────┤
-│  balaur_core: hecs ECS + scene tree + assets + scheduler.  │
-│  Names no scripting language.                              │
-└────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+  S["scripts — game code, and the editor itself: .rn files"]
+  R["balaur_script_rune — host, hot reload, mod files, debugger"]
+  M["balaur_script — the seam: Bindings, ScriptHost, Value. Traits only. No language, no dependencies."]
+  D["modules declared once against the seam — engine, scene, node, assets, animation, input, physics, …"]
+  subgraph P["plugins"]
+    direction LR
+    P1["physics (rapier)"] ~~~ P2["render (kiss3d)"] ~~~ P3["audio (rodio)"] ~~~ P4["input (winit)"] ~~~ P5["anim (clip)"] ~~~ P6["your plugin"]
+  end
+  C["balaur_core — hecs ECS + scene tree + assets + scheduler. Names no scripting language."]
+  S --> R --> M --> D --> P --> C
 ```
 
 Backends depend on core; core never depends on a backend. That direction is

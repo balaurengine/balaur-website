@@ -30,3 +30,7 @@ yarn-error.log*
 # Derived from the PNG screenshots by scripts/optimize-images.mjs
 /static/img/manual/*.webp
 /static/img/editor/*.webp
+
+# Derived from the docs by scripts/gen-llms.mjs
+/static/llms.txt
+/static/llms-full.txt

@@ -3,7 +3,7 @@
 // per component, asset type and script module, cross-linked. The engine
 // writes api.json with scripts/gen_docs.py; scripts/sync-docs.sh fetches it.
 // Everything under docs/reference/ is replaced on every run.
-import {mkdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -32,6 +32,48 @@ const groupOf = (name) =>
   (GROUPS.find(([tag]) => (tags[name] ?? []).includes(tag)) ?? [null, 'Other'])[1];
 
 const code = (s) => '`' + s + '`';
+
+// Icons: Phosphor Duotone, the set the editor's shell draws (editor/scripts/
+// icons.rn), inlined so the page colours them by what the thing belongs to —
+// 2D, 3D, UI, animation, audio, rendering — the rule Godot's tree follows.
+// A component without an entry gets its group's glyph, and a warning.
+const ICON_DIR = join(root, 'node_modules', '@phosphor-icons', 'core', 'assets', 'duotone');
+const COMPONENT_ICONS = {
+  sprite: 'image', shape2d: 'shapes', shape3d: 'shapes', polygon: 'polygon', tilemap: 'grid-four',
+  particles: 'sparkle', mesh: 'cube', camera: 'video-camera', body2d: 'atom', body3d: 'atom',
+  collider2d: 'selection', collider3d: 'selection', character2d: 'person-simple-run',
+  character3d: 'person-simple-run', joint2d: 'link', joint3d: 'link', vehicle3d: 'car',
+  wheel3d: 'tire', bone2d: 'bone', bone3d: 'bone', animation: 'film-strip',
+  modifier2d: 'sliders-horizontal', sound: 'speaker-high', widget: 'layout',
+  light2d: 'sun', occluder2d: 'moon', listener: 'ear',
+};
+const ASSET_ICONS = {animation_clip: 'film-strip', heightfield: 'mountains', material: 'paint-brush', mesh: 'cube', tileset: 'grid-nine', voxels: 'stack', widget_theme: 'palette'};
+const MODULE_ICONS = {
+  animation: 'film-strip', assets: 'package', audio: 'speaker-high', debugger: 'bug', engine: 'engine',
+  fs: 'folder-open', gamend: 'cloud', geometry3d: 'cube-transparent', http: 'globe', input: 'game-controller',
+  json: 'brackets-curly', log: 'note', math: 'math-operations', node: 'tree-structure', physics: 'atom',
+  physics2d: 'atom', physics3d: 'atom', platform: 'storefront', render: 'image', replay: 'record', rng: 'dice-five',
+  scene: 'tree-structure', script: 'code', skeleton: 'bone', task: 'hourglass', toml: 'file-text',
+  ui: 'layout', websocket: 'plugs', apple: 'apple-logo', rollback: 'arrow-counter-clockwise', save: 'floppy-disk', strings: 'translate',
+};
+// The colour a module's icon takes, where it clearly belongs to one world.
+const MODULE_GROUPS = {physics2d: '2d', physics3d: '3d', ui: 'ui', audio: 'audio', animation: 'animation', skeleton: 'animation', render: 'render'};
+const ASSET_GROUPS = {animation_clip: 'animation', heightfield: '3d', material: 'render', mesh: '3d', tileset: '2d', voxels: '3d', widget_theme: 'ui'};
+const GROUP_ICONS = {'2d': 'square', '3d': 'cube', physics: 'atom', render: 'image', animation: 'film-strip', audio: 'speaker-high', ui: 'layout', other: 'circle'};
+const GROUP_SLUG = {'2D': '2d', '3D': '3d', Physics: 'physics', Rendering: 'render', Animation: 'animation', Audio: 'audio', UI: 'ui', Other: 'other'};
+const missingIcons = [];
+function icon(name, group, table) {
+  const wanted = table[name];
+  const slug = GROUP_SLUG[group] ?? group ?? 'other';
+  let file = join(ICON_DIR, `${wanted}-duotone.svg`);
+  if (!wanted || !existsSync(file)) {
+    if (wanted) missingIcons.push(`${name} → ${wanted} (no such Phosphor icon)`);
+    else missingIcons.push(name);
+    file = join(ICON_DIR, `${GROUP_ICONS[slug] ?? 'circle'}-duotone.svg`);
+  }
+  const svg = readFileSync(file, 'utf8').replace(/\s*\n\s*/g, ' ').trim();
+  return `<span class="ref-icon ref-icon--${slug}" aria-hidden="true">${svg}</span>`;
+}
 const cell = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 const properties = (n) => `${n} ${n === 1 ? 'property' : 'properties'}`;
@@ -186,7 +228,7 @@ for (const name of Object.keys(components).sort()) {
         `The ${name} component of the Balaur game engine: its ${properties(props.length)}, and the functions a script calls on it.`,
       ),
     }),
-    `# ${code(name)}`,
+    `# ${icon(name, groupOf(name), COMPONENT_ICONS)}${code(name)}`,
     '',
     `${t.length ? t.map(code).join(' · ') : 'untagged'} · ${properties(props.length)} · ${groupOf(name)}`,
     '',
@@ -245,7 +287,7 @@ for (const type of Object.keys(assetTypes).sort()) {
         `The ${type} asset type of the Balaur game engine: the content an asset-typed property names, in a file or inline.`,
       ),
     }),
-    `# ${code(type)}`,
+    `# ${icon(type, ASSET_GROUPS[type] ?? 'other', ASSET_ICONS)}${code(type)}`,
     '',
     `${files} Used by ${used.length ? used.join(', ') : 'no component property yet'}.`,
     '',
@@ -263,7 +305,7 @@ for (const m of modules) {
         `The ${m.name} script module of the Balaur game engine: ${plural(m.functions.length, 'function')} and ${plural(m.constants.length, 'constant')} a Rune script reaches as ${m.name}::.`,
       ),
     }),
-    `# ${code(m.name)}`,
+    `# ${icon(m.name, MODULE_GROUPS[m.name] ?? 'other', MODULE_ICONS)}${code(m.name)}`,
     '',
   ];
   if (m.doc) lines.push(m.doc, '');
@@ -324,22 +366,23 @@ for (const label of [...GROUPS.map(([, l]) => l), 'Other']) {
   if (!grouped[label]) continue;
   index.push(`### ${label}`, '', '| component | properties | what it gives a node |', '| --- | ---: | --- |');
   for (const name of grouped[label]) {
-    index.push(`| [${code(name)}](./components/${name}.md) | ${Object.keys(components[name]).length} | ${cell(componentDocs[name])} |`);
+    index.push(`| <span class="ref-cell">${icon(name, label, COMPONENT_ICONS)}[${code(name)}](./components/${name}.md)</span> | ${Object.keys(components[name]).length} | ${cell(componentDocs[name])} |`);
   }
   index.push('');
 }
 index.push('## Asset types', '', '| type | files | used by |', '| --- | --- | --- |');
 for (const type of Object.keys(assetTypes).sort()) {
   const used = (users[type] ?? []).map(([c, p]) => code(c + '.' + p)).join(', ') || '—';
-  index.push(`| [${code(type)}](./assets/${type}.md) | ${assetTypes[type].directory ? code(assetTypes[type].directory + '/') : '—'} | ${used} |`);
+  index.push(`| <span class="ref-cell">${icon(type, ASSET_GROUPS[type] ?? 'other', ASSET_ICONS)}[${code(type)}](./assets/${type}.md)</span> | ${assetTypes[type].directory ? code(assetTypes[type].directory + '/') : '—'} | ${used} |`);
 }
 index.push('', '## Script modules', '', '| module | functions | what it is for |', '| --- | ---: | --- |');
-for (const m of modules) index.push(`| [${code(m.name)}](./modules/${m.name}.md) | ${m.functions.length} | ${cell(m.doc)} |`);
+for (const m of modules) index.push(`| <span class="ref-cell">${icon(m.name, MODULE_GROUPS[m.name] ?? 'other', MODULE_ICONS)}[${code(m.name)}](./modules/${m.name}.md)</span> | ${m.functions.length} | ${cell(m.doc)} |`);
 index.push('');
 write('index.md', index);
 
 const described = modules.reduce((n, m) => n + Object.keys(m.docs ?? {}).length, 0);
 const total = modules.reduce((n, m) => n + m.functions.length, 0);
+if (missingIcons.length) console.warn(`reference: no icon for ${[...new Set(missingIcons)].join(', ')} — using the group's glyph`);
 console.log(
   `reference: ${Object.keys(components).length} components, ${Object.keys(assetTypes).length} asset types, ` +
     `${modules.length} modules, ${described}/${total} functions described → docs/reference/`,

@@ -18,6 +18,19 @@ dispatched to handler methods or waking `await` tokens, in arrival order.
 Handlers never run from an I/O thread, so a recorded snapshot replays a whole
 online session.
 
+```mermaid
+sequenceDiagram
+  participant S as script
+  participant G as gamend module
+  participant B as Gamend backend
+  participant T as next tick
+  S->>G: gamend::login(…) → id
+  G->>B: request, on a worker thread
+  B-->>G: reply
+  G-->>T: queued for the start of the tick
+  T->>S: on_gamend_event, or the awaited id resolves
+```
+
 ## The sequential shape
 
 ```rune

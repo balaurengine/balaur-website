@@ -23,6 +23,17 @@ snapshot — the same model as input, which means recording the snapshot per
 tick is all a replay of a networked session needs. Nothing blocks the frame,
 and handlers never run from an I/O thread.
 
+```mermaid
+sequenceDiagram
+  participant S as script
+  participant W as worker threads
+  participant T as start of the next tick
+  S->>W: http::request / websocket::send
+  W-->>T: completion, over the channel
+  T->>T: recorded in the tick's snapshot
+  T->>S: handler method, or the awaited id resolves — in arrival order
+```
+
 Scripts never poll. There are two shapes:
 
 **Handler methods.** A request or connection names the node that handles its

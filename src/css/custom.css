@@ -107,3 +107,87 @@
 .theme-code-block .token.function-definition {
   font-style: normal !important;
 }
+
+/* Reference icons: Phosphor Duotone, inlined by scripts/gen-reference.mjs and
+   drawn by src/components/Icon.tsx, coloured by what the thing belongs to —
+   the rule the editor's node tree follows: 2D blue, 3D red, UI green. */
+:root {
+  --balaur-icon-2d: #3b82c4;
+  --balaur-icon-3d: #d9534f;
+  --balaur-icon-ui: #2e9e5b;
+  --balaur-icon-animation: #b8860b;
+  --balaur-icon-audio: #7c5cbf;
+  --balaur-icon-render: #d97a1e;
+  --balaur-icon-physics: #5b6670;
+  --balaur-icon-other: #5b6670;
+}
+
+[data-theme='dark'] {
+  --balaur-icon-2d: #7fb2e6;
+  --balaur-icon-3d: #f28b82;
+  --balaur-icon-ui: #7fd4a0;
+  --balaur-icon-animation: #f2c14e;
+  --balaur-icon-audio: #b39ddb;
+  --balaur-icon-render: #ffb86c;
+  --balaur-icon-physics: #98a3ae;
+  --balaur-icon-other: #98a3ae;
+}
+
+.ref-icon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.18em;
+  margin-right: 0.35em;
+  color: var(--balaur-icon-other);
+}
+
+.ref-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ref-icon--2d { color: var(--balaur-icon-2d); }
+.ref-icon--3d { color: var(--balaur-icon-3d); }
+.ref-icon--ui { color: var(--balaur-icon-ui); }
+.ref-icon--animation { color: var(--balaur-icon-animation); }
+.ref-icon--audio { color: var(--balaur-icon-audio); }
+.ref-icon--render { color: var(--balaur-icon-render); }
+.ref-icon--physics { color: var(--balaur-icon-physics); }
+
+.ref-cell {
+  white-space: nowrap;
+}
+
+/* In a heading the icon sits a little larger and the code span after it keeps its own box. */
+h1 .ref-icon { width: 1em; height: 1em; vertical-align: -0.12em; margin-right: 0.4em; }
+
+/* The editor page's five persona stills, two up. */
+.persona-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 0.9rem 1rem;
+  margin: 1.25rem 0 1.75rem;
+}
+
+.persona-gallery figure,
+.markdown figure {
+  margin: 0;
+}
+
+.persona-gallery img,
+.markdown figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--balaur-card-bg);
+}
+
+.persona-gallery figcaption {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-top: 0.35rem;
+}

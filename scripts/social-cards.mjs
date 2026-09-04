@@ -22,6 +22,10 @@ const out = join(root, 'static', 'img', 'social');
 // slug: [title, one line, path shown in the corner]. The title is the page's
 // own heading; the line is its pitch, shorter than its description.
 const CARDS = {
+  home: ['A 2D & 3D game engine in Rust', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
+  examples: ['Examples', 'Seven projects that ship with the engine: what each one shows, and the command that opens it.', '/examples'],
+  compare: ['Compare', 'Balaur next to Godot, Bevy and Fyrox — honestly, as of September 2026.', '/compare'],
+  faq: ['FAQ', 'Free? Which platforms? What language? Is it deterministic? The short answers.', '/faq'],
   features: ['Features', 'TOML scenes, Rune scripts with hot reload, deterministic 2D & 3D physics, animation, networking — and one file to ship.', '/features'],
   download: ['Download', 'One binary for macOS, Windows and Linux: the editor, the CLI and every game’s runtime.', '/download'],
   roadmap: ['Roadmap', 'What the engine does not do yet, and will.', '/docs/roadmap'],
@@ -46,6 +50,8 @@ const CARDS = {
   editor: ['The editor', 'A Balaur project that edits Balaur projects.', '/docs/manual/editor'],
   determinism: ['Determinism', 'Same inputs, same bits, on every platform.', '/docs/manual/determinism'],
   shipping: ['Shipping a game', 'A pack of bytecode and assets, fused onto a runtime: one file to ship.', '/docs/manual/shipping'],
+  rendering: ['Rendering', '2D lights, occluders and shadows, and post-processing the frame resolves through.', '/docs/manual/rendering'],
+  stores: ['Stores', 'Sign-in, achievements, leaderboards, cloud saves and purchases — one module over every store.', '/docs/manual/stores'],
 };
 
 const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

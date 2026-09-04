@@ -1,0 +1,89 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--balaur-card-bg);
+  overflow: hidden;
+  scroll-margin-top: 4.5rem;
+}
+
+.still,
+.placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-bottom: 1px solid var(--balaur-card-border);
+}
+
+.still {
+  height: auto;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.placeholderIcon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.subtitle {
+  font-family: var(--ifm-font-family-base);
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.text {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.cmd {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+  margin: 0.2rem 0 0;
+  font-weight: 600;
+}
+
+.links a {
+  text-decoration: none;
+}

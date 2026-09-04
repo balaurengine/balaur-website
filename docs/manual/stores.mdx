@@ -17,6 +17,15 @@ With no store loaded — the editor, a desktop run, a replay — every call
 answers `kind = "unsupported"` rather than failing, so a script written
 against `platform` runs everywhere.
 
+```mermaid
+flowchart LR
+  S["script"] --> P["platform — sign-in, achievements, leaderboards, cloud saves, purchases"]
+  P --> A["Game Center · iCloud · StoreKit — the apple module, today"]
+  P --> G["Play Games — planned"]
+  P --> ST["Steam — planned"]
+  P --> N["no store loaded — every call answers kind = unsupported"]
+```
+
 ```rune
 pub async fn init(this) {
     let me = task::wait(platform::sign_in(this.node)).await;
