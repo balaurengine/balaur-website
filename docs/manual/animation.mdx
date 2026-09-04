@@ -191,7 +191,9 @@ A node that names a `material` asset, or a frame drawn under a shader channel
 view, keeps the CPU path instead: those shaders draw against
 `package::mesh` and know nothing about a palette. Both compute the same
 blend — the shader's is `@const`, so a headless test holds it to the CPU
-reference without a GPU. `examples/rig` is one figure: a skinned body swung by a clip, with an arm
+reference without a GPU.
+
+![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp) `examples/rig` is one figure: a skinned body swung by a clip, with an arm
 branching off its top bone that reaches on two-bone IK;
 `examples/rig3d` is a column imported this way.
 
