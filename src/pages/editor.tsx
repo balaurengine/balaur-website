@@ -72,7 +72,7 @@ export default function EditorPage(): ReactNode {
     <Layout
       title="The editor, in your browser"
       description="The Balaur editor running in a browser tab: the same editor as the desktop build, on WebAssembly, with a project unpacked into memory. Open a scene, move a node, edit a script.">
-      <PageMetadata image="/img/social/editor.png" />
+      <PageMetadata image="/img/social/editor-web.png" />
       <main className={styles.main}>
         <Heading as="h1">The editor, in your browser</Heading>
         <p className={styles.lede}>

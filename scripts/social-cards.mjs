@@ -23,8 +23,7 @@ const out = join(root, 'static', 'img', 'social');
 // own heading; the line is its pitch, shorter than its description.
 const CARDS = {
   home: ['A 2D & 3D game engine in Rust', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
-  editor: ['The editor, in your browser', 'The same editor the desktop build ships, on WebAssembly. Open a scene, move a node, edit a script.', '/editor'],
-  play: ['Balaur in the browser', 'The engine itself, compiled to WebAssembly, running a game on a canvas through WebGPU.', '/play'],
+  'editor-web': ['The editor, in your browser', 'The same editor the desktop build ships, on WebAssembly. Open a scene, move a node, edit a script.', '/editor'],
   code: ['For game developers', 'Nodes and scenes you know, scripts live in milliseconds, TOML scenes, one binary to ship.', '/code'],
   animate: ['For animators', 'Bones, mesh skinning with painted weights, IK and a timeline — on the rig that ships in the game.', '/animate'],
   multiplayer: ['Multiplayer', 'Same inputs, same bits, on every machine: a fixed tick, digests, replay, rollback.', '/multiplayer'],
@@ -51,7 +50,6 @@ const CARDS = {
   input: ['Input', 'Actions over keyboard, mouse, gamepads and touch — one snapshot per frame.', '/docs/manual/input'],
   networking: ['Networking', 'HTTP, websockets and QUIC, delivered once per tick and replayable.', '/docs/manual/networking'],
   gamend: ['Gamend', 'Login, REST, realtime rooms and server hooks.', '/docs/manual/gamend'],
-  stores: ['Stores', 'Sign-in, achievements, cloud saves and purchases — one module over every store.', '/docs/manual/stores'],
   extensions: ['Modules and extensions', 'Modules linked in, extensions loaded at run time. One plugin trait.', '/docs/manual/extensions'],
   editor: ['The editor', 'A Balaur project that edits Balaur projects.', '/docs/manual/editor'],
   determinism: ['Determinism', 'Same inputs, same bits, on every platform.', '/docs/manual/determinism'],
