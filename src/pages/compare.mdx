@@ -1,0 +1,49 @@
+---
+title: "Compare — Balaur next to Godot, Bevy and Fyrox"
+description: "An honest comparison of Balaur with Godot, Bevy and Fyrox as of September 2026: language and scripting, editor, iteration speed, determinism, platforms, licence and maturity — and when to pick which."
+image: "/img/social/compare.png"
+---
+
+# Compare
+
+Balaur next to the three engines people will compare it with — Godot, because it is the node-and-scene model most game developers know; Bevy and Fyrox, because they are the Rust engines. This page is written to be fair, and it is dated: **September 2026**, Balaur at 0.1.0. Check each project's own site before deciding anything; they all move fast.
+
+The one-sentence version: **Balaur is weeks old and the others are years old.** If you need to ship a game this year, one of the other three is the safer choice today. What Balaur has that they do not is a specific set of promises — bit-exact determinism with replay and rollback, scripts that reload in milliseconds with state intact, scenes that are plain TOML — and an editor that is itself a project in the engine.
+
+## Side by side
+
+| | **Balaur** | **Godot 4** | **Bevy** | **Fyrox** |
+| --- | --- | --- | --- | --- |
+| Engine language | Rust | C++ | Rust | Rust |
+| Game code | Rune scripts (Rust-like, no build step); plugins in Rust or C | GDScript, C#; C++ via GDExtension | Rust, code only | Rust plugins and scripts |
+| Model | A scene tree of named nodes over an ECS you never see | A scene tree of nodes | ECS, data-driven | Scene graph |
+| Editor | Yes — itself a Balaur project. No binary release yet | Yes, mature | No official editor yet; prototypes in development | Yes (FyroxEd) |
+| Iterating on code | A saved script is live in milliseconds, state intact; a debugger in the editor | Scripts reload on save | Assets hot reload; code needs a recompile | Code hot reload exists, marked experimental and unsafe by its docs |
+| Determinism | Same inputs, same bits on every platform: fixed 60 Hz step, per-tick digests, record and replay, rollback | Not bit-exact across platforms | Not a stated goal | Not a stated goal |
+| 2D and 3D | Both | Both | Both | Both |
+| Platforms | Windows, macOS, Linux; iOS, Android and WebAssembly compile in CI, the browser runtime is not there yet | Desktop, mobile, web; consoles through partners | Desktop, mobile, web | Desktop and web at least |
+| Networking | HTTP, websockets and QUIC delivered once per tick and replayable; a Gamend backend for login, rooms and hooks | High-level multiplayer API | Community crates | Community crates |
+| Licence | MIT | MIT | MIT or Apache-2.0 | MIT |
+| Age and maturity | 0.1.0, first release September 2026; no binary yet | 4.x; more than a decade, huge community | 0.18; five years, large plugin ecosystem | 0.36; six years, calls itself production-ready |
+
+## When to pick which
+
+**Godot** if you want the most mature node-and-scene editor there is, a language designed to be easy, thousands of tutorials and a community that has shipped everything. It is the engine Balaur's scene model will feel most familiar from.
+
+**Bevy** if you want to write the whole game in Rust against an ECS, you are comfortable without an editor for now, and you want the largest Rust ecosystem to draw plugins from.
+
+**Fyrox** if you want Rust with an editor today and a codebase that describes itself as production-ready.
+
+**Balaur** if determinism is the product — lockstep or rollback multiplayer, replays, a simulation that must agree bit for bit across machines — or if the thing you value most is the loop: save a script, see it running, keep the state. And only if you are fine with 0.1: no binary release yet, no browser runtime yet, and a community that is, at the moment, mostly the people building it. The [roadmap](/docs/roadmap) is honest about what is missing; the [principles](/docs/principles) say why it is built this way.
+
+## What Balaur does not have yet
+
+- A binary release — it [builds from source](/docs/getting-started).
+- A game running in the browser; the WebAssembly build compiles, the canvas is on the [roadmap](/docs/roadmap).
+- Consoles.
+- An asset store, a tutorial library, a community of any size.
+- Years of bugs found by other people.
+
+## Sources
+
+The rows above come from each project's own site as of September 2026: [godotengine.org](https://godotengine.org/), [bevy.org](https://bevy.org/) and the [Bevy editor prototypes](https://bevyengine.github.io/bevy_editor_prototypes/roadmap.html), [fyrox.rs](https://fyrox.rs/) and the [Fyrox book on hot reloading](https://fyrox-book.github.io/beginning/hot_reloading.html). If a cell is wrong or out of date, [open an issue](https://github.com/balaurengine/balaur-website/issues) — this page should never flatter Balaur at another project's expense.

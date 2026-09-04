@@ -8,7 +8,7 @@ import ExampleGrid from '@site/src/components/ExampleGrid';
 
 # Examples
 
-Seven projects ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them, so what you see there is what opens here. Balaur builds from source for now — [Getting started](/docs/getting-started) has the toolchain — and each card carries the command that opens its project in the editor.
+Six projects — seven counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them, so what you see there is what opens here. Balaur builds from source for now — [Getting started](/docs/getting-started) has the toolchain — and each card carries the command that opens its project in the editor.
 
 <ExampleGrid items={[
   {
@@ -53,19 +53,12 @@ Seven projects ship in the [engine repository](https://github.com/balaurengine/b
   },
   {
     name: 'extension_greeter',
-    title: 'A plugin as a shared library',
-    text: <>The complete working example of an extension: a Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module.</>,
+    title: 'Plugins as shared libraries, from Rust and from C',
+    text: <>The complete working extension: a Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module. <code>extension_c_counter</code> does the same from C, in one file — the boundary is C-compatible, so a plugin need not be Rust.</>,
     icon: 'plug',
     manual: {to: '/docs/manual/extensions', label: 'Modules and extensions'},
     run: 'run',
-  },
-  {
-    name: 'extension_c_counter',
-    title: 'The same boundary, from C',
-    text: <>One file, <code>counter.c</code>, built into an extension the engine loads: the plugin boundary is C-compatible, so a plugin need not be Rust.</>,
-    icon: 'plug',
-    manual: {to: '/docs/manual/extensions#rust-or-c-at-the-boundary', label: 'Rust or C at the boundary'},
-    run: 'run',
+    also: 'extension_c_counter',
   },
 ]} />
 

@@ -1,0 +1,62 @@
+---
+title: "FAQ — free? which platforms? what language?"
+description: "Short answers about the Balaur game engine: the licence, the platforms, the scripting language, whether you need Rust, whether it is deterministic, whether it runs in the browser, and where the release is."
+image: "/img/social/faq.png"
+---
+
+import Faq from '@site/src/components/Faq';
+
+# Frequently asked questions
+
+<Faq items={[
+  {
+    q: 'Is Balaur free?',
+    a: 'Yes. The engine, the editor and the runtime are open source under the MIT licence: no fees, no revenue share, no registration. Games you make are yours.',
+    more: {to: 'https://github.com/balaurengine/balaur/blob/main/LICENSE', label: 'The licence'},
+  },
+  {
+    q: 'Which platforms does it run on?',
+    a: 'The editor and the games run on Windows, macOS and Linux today. iOS, Android and WebAssembly builds compile in CI on every push; a game running in the browser needs the canvas runtime that is on the roadmap.',
+    more: {to: '/docs/manual/shipping', label: 'Shipping a game'},
+  },
+  {
+    q: 'What language are the scripts?',
+    a: 'Rune, an embeddable language that reads like Rust without the types, with async/await and no build step. A saved script is live in the running game in milliseconds, with its state intact.',
+    more: {to: '/docs/manual/scripting', label: 'Scripting'},
+  },
+  {
+    q: 'Do I need to know Rust?',
+    a: 'Not to make a game: scenes are TOML and game code is Rune. Rust, or C, is for plugins and for the engine itself.',
+    more: {to: '/docs/manual/extensions', label: 'Modules and extensions'},
+  },
+  {
+    q: 'Is there a release I can download?',
+    a: 'Not yet. Balaur builds from source with a stable Rust toolchain, and the Download page will show the editor builds the moment a release is published.',
+    more: {to: '/docs/getting-started', label: 'Getting started'},
+  },
+  {
+    q: 'What does "deterministic" mean here?',
+    a: 'The same inputs produce the same bits on every platform: physics and animation step on a fixed 60 Hz tick, every tick has a digest, input and network arrivals are recorded so a whole session replays exactly, and that is what lockstep or rollback multiplayer needs.',
+    more: {to: '/docs/manual/determinism', label: 'Determinism'},
+  },
+  {
+    q: 'Is the editor a separate download?',
+    a: 'No. One binary is the editor, the command line and every game\'s runtime, and the editor is itself a Balaur project: editing an editor script hot reloads the editor.',
+    more: {to: '/docs/manual/editor', label: 'The editor'},
+  },
+  {
+    q: 'Can I ship a game as a single file?',
+    a: 'Yes. balaur export packs bytecode, scenes and assets into one .bpak, and a pack fused onto a runtime is one self-contained executable per platform, with no compiler and no sources in it.',
+    more: {to: '/docs/manual/shipping', label: 'Shipping a game'},
+  },
+  {
+    q: 'How is it different from Godot or Bevy?',
+    a: 'Godot is the mature node-and-scene editor; Bevy is Rust and ECS, code only. Balaur is a scene tree over an ECS with Rune scripts, an editor that is a Balaur project, and bit-exact determinism as a core feature. It is also far younger than either.',
+    more: {to: '/compare', label: 'The comparison'},
+  },
+  {
+    q: 'Where do I report a bug or ask a question?',
+    a: 'Issues and Discussions on the engine repository on GitHub. The principles page says how the project is run and how to help.',
+    more: {to: 'https://github.com/balaurengine/balaur/discussions', label: 'Discussions'},
+  },
+]} />

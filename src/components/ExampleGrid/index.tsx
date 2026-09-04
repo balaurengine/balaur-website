@@ -18,6 +18,7 @@ export type Example = {
   tone?: Tone;
   manual: {to: string; label: string};
   run?: 'run' | 'edit';
+  also?: string;
 };
 
 const REPO = 'https://github.com/balaurengine/balaur/tree/main/examples';
@@ -51,6 +52,7 @@ export default function ExampleGrid({items}: {items: Example[]}): ReactNode {
             </pre>
             <p className={styles.links}>
               <Link to={`${REPO}/${e.name}`}>Source →</Link>
+              {e.also && <Link to={`${REPO}/${e.also}`}>{e.also} source →</Link>}
               <Link to={e.manual.to}>{e.manual.label} →</Link>
             </p>
           </div>
