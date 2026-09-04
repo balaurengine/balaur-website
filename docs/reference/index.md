@@ -73,7 +73,7 @@ Every component, asset type and script module in the engine, read from a booted 
 
 | component | properties | what it gives a node |
 | --- | ---: | --- |
-| [`widget`](./components/widget.md) | 25 | A HUD element the widget layer draws every frame: a label, button or panel anchored to a screen corner or the center, offset in design pixels. A button records its click in `clicked` and calls the node's `on_click` method. |
+| [`widget`](./components/widget.md) | 23 | A HUD element the widget layer draws every frame: a label, button or panel anchored to a screen corner or the center, offset in design pixels. A button records its click in `clicked` and calls the node's `on_click` method. |
 
 ## Asset types
 
