@@ -1,5 +1,7 @@
 ---
-title: "body3d"
+title: "body3d component"
+sidebar_label: "body3d"
+description: "Makes the node a 3D rigid body rapier simulates: dynamic falls and responds to forces, static never moves, kinematic is moved by script or animation and…"
 custom_edit_url: null
 ---
 

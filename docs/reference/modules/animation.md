@@ -1,5 +1,7 @@
 ---
-title: "animation"
+title: "animation module"
+sidebar_label: "animation"
+description: "Clip playback on a node's animation component — starting, holding, seeking — and tweens, short clips generated from a table of steps and addressed by the…"
 custom_edit_url: null
 ---
 

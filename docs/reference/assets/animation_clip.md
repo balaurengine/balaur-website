@@ -1,5 +1,7 @@
 ---
-title: "animation_clip"
+title: "animation_clip asset type"
+sidebar_label: "animation_clip"
+description: "A clip keys node properties over time. length is in seconds and may be left out to end at the last key; loop is none (hold the last key), loop or…"
 custom_edit_url: null
 ---
 

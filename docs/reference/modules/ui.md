@@ -1,5 +1,7 @@
 ---
-title: "ui"
+title: "ui module"
+sidebar_label: "ui"
+description: "Immediate-mode UI, redrawn from a script's draw_ui every frame: panels, layout containers and the design system's widget shapes. HUD elements that live…"
 custom_edit_url: null
 ---
 

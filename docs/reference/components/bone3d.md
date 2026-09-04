@@ -1,5 +1,7 @@
 ---
-title: "bone3d"
+title: "bone3d component"
+sidebar_label: "bone3d"
+description: "Makes the node a 3D bone: the rest position, euler rotation and scale a rig returns to, plus the length its gizmo is drawn with. A skinned mesh names its…"
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "fs"
+title: "fs module"
+sidebar_label: "fs"
+description: "Files on disk, project-relative unless the path is absolute, so a script cannot wander the filesystem by accident. This is the disk itself: a packed…"
 custom_edit_url: null
 ---
 

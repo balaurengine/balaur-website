@@ -1,7 +1,9 @@
 ---
-title: "Reference"
+title: "Reference — components, asset types and script modules"
+sidebar_label: "Reference"
 sidebar_position: 0
-slug: /reference
+slug: "/reference"
+description: "Every component, asset type and script module in the Balaur game engine, read from a booted engine so nothing can drift from what a scene or a script sees."
 custom_edit_url: null
 ---
 

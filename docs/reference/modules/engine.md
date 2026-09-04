@@ -1,5 +1,7 @@
 ---
-title: "engine"
+title: "engine module"
+sidebar_label: "engine"
+description: "The running app itself: the clock a frame reads, the command line it was started with, the directory it may write to, and the way out."
 custom_edit_url: null
 ---
 

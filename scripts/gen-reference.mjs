@@ -91,11 +91,32 @@ const docOf = (m, f) => m.docs?.[f] ?? '';
 const modulesActingOn = (component) =>
   modules.filter((m) => Object.values(m.acts_on ?? {}).some((list) => list.includes(component)));
 
+// A page's description is its search snippet: the first paragraph of its
+// prose as plain text, cut at a word if it runs long, or the fallback when
+// the prose starts with a table or a heading.
+const plain = (s) =>
+  String(s ?? '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[`*]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+function snippet(text, fallback, max = 155) {
+  const first = String(text ?? '').trim().split(/\n\s*\n/)[0] ?? '';
+  let out = /^[|#<]/.test(first) ? '' : plain(first);
+  if (!out) out = plain(fallback);
+  if (out.length > max) {
+    const cut = out.slice(0, max - 1);
+    out = cut.slice(0, Math.max(cut.lastIndexOf(' '), 80)).replace(/[\s,;:—-]+$/, '') + '…';
+  }
+  return out;
+}
+
+// Strings are emitted as JSON, which is valid double-quoted YAML.
 const frontMatter = (title, extra = {}) =>
   [
     '---',
-    `title: "${title}"`,
-    ...Object.entries(extra).map(([k, v]) => `${k}: ${v}`),
+    `title: ${JSON.stringify(title)}`,
+    ...Object.entries(extra).map(([k, v]) => `${k}: ${typeof v === 'string' ? JSON.stringify(v) : v}`),
     'custom_edit_url: null',
     '---',
     '',
@@ -157,7 +178,13 @@ for (const name of Object.keys(components).sort()) {
   const t = tags[name] ?? [];
   const referenced = [...new Set(props.map((p) => schema[p]).filter((s) => s.type === 'asset').map((s) => s.asset))];
   const lines = [
-    frontMatter(name),
+    frontMatter(`${name} component`, {
+      sidebar_label: name,
+      description: snippet(
+        componentDocs[name],
+        `The ${name} component of the Balaur game engine: its ${properties(props.length)}, and the functions a script calls on it.`,
+      ),
+    }),
     `# ${code(name)}`,
     '',
     `${t.length ? t.map(code).join(' · ') : 'untagged'} · ${properties(props.length)} · ${groupOf(name)}`,
@@ -210,7 +237,13 @@ for (const type of Object.keys(assetTypes).sort()) {
     ? `Files live in ${code(info.directory + '/')}.`
     : 'This type declares no project directory, so an inline definition cannot be promoted to a file.';
   write(`assets/${type}.md`, [
-    frontMatter(type),
+    frontMatter(`${type} asset type`, {
+      sidebar_label: type,
+      description: snippet(
+        info.doc,
+        `The ${type} asset type of the Balaur game engine: the content an asset-typed property names, in a file or inline.`,
+      ),
+    }),
     `# ${code(type)}`,
     '',
     `${files} Used by ${used.length ? used.join(', ') : 'no component property yet'}.`,
@@ -221,7 +254,17 @@ for (const type of Object.keys(assetTypes).sort()) {
 }
 
 for (const m of modules) {
-  const lines = [frontMatter(m.name), `# ${code(m.name)}`, ''];
+  const lines = [
+    frontMatter(`${m.name} module`, {
+      sidebar_label: m.name,
+      description: snippet(
+        m.doc,
+        `The ${m.name} script module of the Balaur game engine: ${plural(m.functions.length, 'function')} and ${plural(m.constants.length, 'constant')} a Rune script reaches as ${m.name}::.`,
+      ),
+    }),
+    `# ${code(m.name)}`,
+    '',
+  ];
   if (m.doc) lines.push(m.doc, '');
   lines.push(
     `${plural(m.functions.length, 'function')}, ${plural(m.constants.length, 'constant')}. Scripts reach it as ${code(m.name + '::')}.`,
@@ -256,7 +299,13 @@ for (const m of modules) {
 }
 
 const index = [
-  frontMatter('Reference', {sidebar_position: 0, slug: '/reference'}),
+  frontMatter('Reference — components, asset types and script modules', {
+    sidebar_label: 'Reference',
+    sidebar_position: 0,
+    slug: '/reference',
+    description:
+      'Every component, asset type and script module in the Balaur game engine, read from a booted engine so nothing can drift from what a scene or a script sees.',
+  }),
   '# Reference',
   '',
   'Every component, asset type and script module in the engine, read from a booted engine rather than the source, so nothing here can drift from what a scene or a script actually sees.',

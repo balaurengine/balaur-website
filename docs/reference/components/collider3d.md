@@ -1,5 +1,7 @@
 ---
-title: "collider3d"
+title: "collider3d component"
+sidebar_label: "collider3d"
+description: "The shape the node collides with in 3D. On a node with a body3d it is that body's shape; on a node without one it is immovable world geometry. A collider…"
 custom_edit_url: null
 ---
 

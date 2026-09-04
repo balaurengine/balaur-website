@@ -1,5 +1,7 @@
 ---
-title: "physics"
+title: "physics module"
+sidebar_label: "physics"
+description: "What spans both physics worlds at once: pausing, sleeping and clearing. Bodies and colliders live in physics2d and physics3d."
 custom_edit_url: null
 ---
 

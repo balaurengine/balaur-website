@@ -1,7 +1,7 @@
 ---
 title: "Changelog"
 sidebar_label: "Changelog"
-description: "What each release of Balaur added."
+description: "What each release of the Balaur game engine added, release by release."
 custom_edit_url: null
 ---
 

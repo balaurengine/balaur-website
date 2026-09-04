@@ -1,5 +1,7 @@
 ---
-title: "gamend"
+title: "gamend module"
+sidebar_label: "gamend"
+description: "The Gamend backend: a session, its REST API, and a realtime socket carrying topics and server hooks. Every call returns an id to await, and each result…"
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "rng"
+title: "rng module"
+sidebar_label: "rng"
+description: "The engine's one deterministic PCG32 stream: the same seed draws the same numbers on every platform, and a replay reproduces every draw a recorded…"
 custom_edit_url: null
 ---
 

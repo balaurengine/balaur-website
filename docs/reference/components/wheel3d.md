@@ -1,5 +1,7 @@
 ---
-title: "wheel3d"
+title: "wheel3d component"
+sidebar_label: "wheel3d"
+description: "One wheel of the vehicle3d above it. Where the node sits on the chassis is where the wheel's ray starts; the rest is suspension tuning. Drive it with…"
 custom_edit_url: null
 ---
 

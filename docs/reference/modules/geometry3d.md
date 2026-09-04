@@ -1,5 +1,7 @@
 ---
-title: "geometry3d"
+title: "geometry3d module"
+sidebar_label: "geometry3d"
+description: "Mesh operations that stand outside the simulation: hulls, convex decomposition, voxelisation, cutting and boolean intersection. A mesh is an asset's name…"
 custom_edit_url: null
 ---
 

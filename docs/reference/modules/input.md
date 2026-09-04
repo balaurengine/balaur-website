@@ -1,5 +1,7 @@
 ---
-title: "input"
+title: "input module"
+sidebar_label: "input"
+description: "One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges — what went down or came up this frame. Nothing…"
 custom_edit_url: null
 ---
 

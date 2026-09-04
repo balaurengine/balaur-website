@@ -1,5 +1,7 @@
 ---
-title: "heightfield"
+title: "heightfield asset type"
+sidebar_label: "heightfield"
+description: "A grid of heights for terrain: rows by columns samples in heights, row-major, one value per grid point. The count has to match the grid."
 custom_edit_url: null
 ---
 

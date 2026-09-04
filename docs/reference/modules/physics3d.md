@@ -1,5 +1,7 @@
 ---
-title: "physics3d"
+title: "physics3d module"
+sidebar_label: "physics3d"
+description: "The 3D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. physics holds what spans both worlds."
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "collider2d"
+title: "collider2d component"
+sidebar_label: "collider2d"
+description: "The shape the node collides with in 2D. On a node with a body2d it is that body's shape; on a node without one it is immovable world geometry. A collider…"
 custom_edit_url: null
 ---
 

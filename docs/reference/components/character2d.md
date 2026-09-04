@@ -1,5 +1,7 @@
 ---
-title: "character2d"
+title: "character2d component"
+sidebar_label: "character2d"
+description: "Moves a node the way a 2D player expects: physics2d.move_character slides it along walls, steps it up ledges, keeps it off slopes that are too steep and…"
 custom_edit_url: null
 ---
 

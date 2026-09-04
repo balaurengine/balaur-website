@@ -1,5 +1,7 @@
 ---
-title: "shape3d"
+title: "shape3d component"
+sidebar_label: "shape3d"
+description: "An untextured 3D primitive drawn at the node -- ball, cuboid, capsule, cylinder, cone or plane -- sized in world units and tinted by color."
 custom_edit_url: null
 ---
 

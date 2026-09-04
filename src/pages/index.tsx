@@ -7,6 +7,7 @@ import ThemedImage from '@theme/ThemedImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageShowcase from '@site/src/components/HomepageShowcase';
+import SoftwareJsonLd from '@site/src/components/SoftwareJsonLd';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -24,15 +25,17 @@ function Header() {
             dark: useBaseUrl('/img/logo-dark.svg'),
           }}
         />
-        <Heading as="h1" className={clsx('hero__title', styles.heroTitle)}>
-          {siteConfig.title}
+        {/* One heading holds the wordmark and the tagline, so the page's h1
+            says what the engine is rather than only what it is called. The
+            tagline is the same sentence as siteConfig.tagline, in two halves. */}
+        <Heading as="h1" className={styles.heroHeading}>
+          <span className={clsx('hero__title', styles.heroTitle)}>{siteConfig.title}</span>{' '}
+          <span className={clsx('hero__subtitle', styles.heroSubtitle)}>
+            A 2D &amp; 3D node-based game engine, fully deterministic,{' '}
+            <br className={styles.heroBreak} />
+            with scripts that reload in milliseconds.
+          </span>
         </Heading>
-        {/* Same sentence as siteConfig.tagline, broken into its two halves. */}
-        <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
-          A 2D &amp; 3D node-based game engine, fully deterministic,{' '}
-          <br className={styles.heroBreak} />
-          with scripts that reload in milliseconds.
-        </p>
         <p className={styles.heroMission}>
           Written in Rust. Fast to run, fast to iterate, easy to use — and one
           file to ship.
@@ -63,11 +66,11 @@ function Header() {
 }
 
 export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title="A node-based, deterministic game engine"
+      title="A deterministic 2D & 3D game engine in Rust"
       description="Balaur is a node-based game engine in Rust: 2D and 3D, Rune scripting with hot reload, deterministic physics and replay, and an editor that is itself a Balaur project.">
+      <SoftwareJsonLd />
       <Header />
       <main>
         <HomepageFeatures />

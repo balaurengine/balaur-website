@@ -1,5 +1,7 @@
 ---
-title: "tilemap"
+title: "tilemap component"
+sidebar_label: "tilemap"
+description: "A grid of tiles cut from one tileset atlas and centred on the node, one character per cell, drawn at pixels_per_unit tile-texture pixels per world unit."
 custom_edit_url: null
 ---
 

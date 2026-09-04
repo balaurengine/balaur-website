@@ -1,5 +1,7 @@
 ---
-title: "websocket"
+title: "websocket module"
+sidebar_label: "websocket"
+description: "A long-lived connection carrying text or binary frames. Its events are a stream, not a result: each one reaches the connecting node's handler method…"
 custom_edit_url: null
 ---
 

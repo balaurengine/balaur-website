@@ -1,5 +1,7 @@
 ---
-title: "material"
+title: "material asset type"
+sidebar_label: "material"
+description: "A shader and the values it draws with. shader names a .wesl file (project-relative); [features] are the @if flags that pick a variant when it is linked…"
 custom_edit_url: null
 ---
 

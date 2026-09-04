@@ -2,6 +2,6 @@ dragos:
   name: Dragos
   title: Balaur
   url: https://github.com/Ughuuu
-  page: true
+  page: false
   socials:
     github: Ughuuu

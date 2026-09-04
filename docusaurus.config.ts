@@ -4,6 +4,17 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const url = 'https://balaurengine.org';
+
+// Site-wide structured data: who publishes the site and what it is. The
+// SoftwareApplication entry for the engine itself lives in
+// src/components/SoftwareJsonLd.tsx, on the pages that describe it.
+const jsonLd = (data: object) => ({
+  tagName: 'script',
+  attributes: {type: 'application/ld+json'},
+  innerHTML: JSON.stringify(data),
+});
+
 const config: Config = {
   title: 'Balaur',
   tagline: 'A 2D & 3D node-based game engine, fully deterministic, with scripts that reload in milliseconds.',
@@ -22,10 +33,14 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://balaurengine.org',
+  url,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+  // GitHub Pages serves every page as a directory with a trailing slash, so
+  // the sitemap, canonical URLs and internal links must carry it too — or
+  // every URL the site publishes is a redirect.
+  trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -42,6 +57,23 @@ const config: Config = {
     locales: ['en'],
   },
 
+  headTags: [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Balaur',
+      url: `${url}/`,
+      logo: `${url}/brand/balaur-mark-light-512.png`,
+      sameAs: ['https://github.com/balaurengine'],
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Balaur',
+      url: `${url}/`,
+    }),
+  ],
+
   presets: [
     [
       'classic',
@@ -54,6 +86,13 @@ const config: Config = {
             'https://github.com/balaurengine/balaur-website/tree/main/',
         },
         blog: {
+          blogTitle: 'Devlog',
+          blogDescription:
+            'The Balaur devlog: what shipped in the engine and the thinking behind it.',
+          // With a handful of posts the archive, tag and author pages are
+          // near-duplicates of the list; tags are off the posts and the
+          // author page is off in authors.yml for the same reason.
+          archiveBasePath: null,
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
@@ -71,11 +110,23 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        sitemap: {
+          // The authors list is generated whenever authors.yml exists; with
+          // one author it is a duplicate of /blog, so it is not advertised.
+          ignorePatterns: ['/blog/authors/**'],
+        },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: 'keywords',
+        content:
+          'game engine, rust game engine, deterministic game engine, 2d game engine, 3d game engine, open source game engine, hot reload scripting, rune scripting, skeletal animation, balaur engine',
+      },
+    ],
     // Replace with your project's social card
     image: 'img/social-card.png',
     colorMode: {

@@ -42,7 +42,7 @@ fetch api.json "$ROOT/reference/api.json" || true
 tmp="$(mktemp)"
 if fetch crates.md "$tmp"; then
   {
-    printf -- '---\ntitle: "Crates"\nsidebar_label: "Crates"\ncustom_edit_url: null\n---\n\n'
+    printf -- '---\ntitle: "Crates — the Rust workspace, crate by crate"\nsidebar_label: "Crates"\ndescription: "One section per crate in the Balaur game engine workspace: what each is for and what it depends on."\ncustom_edit_url: null\n---\n\n'
     cat "$tmp"
   } >"$ROOT/docs/crates.md"
 fi
@@ -59,7 +59,7 @@ else
 fi
 if [[ "$changelog" == 1 ]]; then
   {
-    printf -- '---\ntitle: "Changelog"\nsidebar_label: "Changelog"\ndescription: "What each release of Balaur added."\ncustom_edit_url: null\n---\n\n'
+    printf -- '---\ntitle: "Changelog"\nsidebar_label: "Changelog"\ndescription: "What each release of the Balaur game engine added, release by release."\ncustom_edit_url: null\n---\n\n'
     # Its own `# Changelog` heading would repeat the page title.
     sed '1{/^# Changelog$/d;}' "$tmp"
   } >"$ROOT/docs/changelog.md"

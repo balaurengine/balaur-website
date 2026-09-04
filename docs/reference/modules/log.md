@@ -1,5 +1,7 @@
 ---
-title: "log"
+title: "log module"
+sidebar_label: "log"
+description: "The three levels a script writes at, and the buffer behind them. Scripted lines go through the engine's own tracing stream, so they land beside engine…"
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "task"
+title: "task module"
+sidebar_label: "task"
+description: "Waiting inside an async handler: init and event handlers may await, update is deliberately synchronous."
 custom_edit_url: null
 ---
 

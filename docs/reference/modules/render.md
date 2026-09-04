@@ -1,5 +1,7 @@
 ---
-title: "render"
+title: "render module"
+sidebar_label: "render"
+description: "What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn…"
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "skeleton"
+title: "skeleton module"
+sidebar_label: "skeleton"
+description: "Bones under a rig node: the rest pose a rig returns to, and the tree order a skin numbers its joints in. A bone is any node carrying bone2d or bone3d…"
 custom_edit_url: null
 ---
 

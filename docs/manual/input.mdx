@@ -1,4 +1,7 @@
 ---
+title: "Input — actions, keyboard, mouse, gamepads, touch"
+sidebar_label: "Input"
+description: "Input in Balaur: actions declared in project.toml, bound to keyboard, mouse, gamepad and touch, read as one snapshot per frame so every session can be replayed."
 sidebar_position: 7
 ---
 
@@ -64,6 +67,28 @@ for pad in input::gamepads() {
 
 Buttons are `PAD_*` constants, axes `AXIS_*` (sticks, triggers, d-pad), and
 `input::gamepad_name(pad)` names the hardware.
+
+## Rumble, motion and the touchpad
+
+`input::gamepad_rumble(pad, #{ strong: 1.0, weak: 0.5, duration: 0.25 })` runs
+the pad's two motors at 0 to 1 for that many seconds and returns whether it
+started. `input::gamepad_stop_rumble(pad)` cuts one short, and
+`input::gamepad_can_rumble(pad)` says whether there are motors at all.
+
+A PlayStation pad also reports motion and a touchpad, decoded from its own HID
+reports over USB or Bluetooth:
+
+```rune
+let turn = input::gamepad_gyro(pad);          // radians per second
+let tilt = input::gamepad_acceleration(pad);  // g, with gravity in it
+for touch in input::gamepad_touches(pad) {
+    // touch.x and touch.y run 0 to 1 across the surface
+}
+```
+
+A pad with no gyroscope or touchpad reads zero and an empty list — the answer
+an absent pad gives. All of it lands in the recorded snapshot, so a replay
+reproduces a motion-controlled session exactly.
 
 ## Touch and dropped files
 

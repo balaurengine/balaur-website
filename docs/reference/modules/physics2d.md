@@ -1,5 +1,7 @@
 ---
-title: "physics2d"
+title: "physics2d module"
+sidebar_label: "physics2d"
+description: "The 2D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. physics holds what spans both worlds."
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "toml"
+title: "toml module"
+sidebar_label: "toml"
+description: "TOML text to and from script tables: the format scene files, asset definitions and component properties are all written in."
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "sound"
+title: "sound component"
+sidebar_label: "sound"
+description: "A sound of the node's own: which file, at what volume and pitch, looping or not. audio.play_on and audio.stop_on trigger it, and autoplay starts it when…"
 custom_edit_url: null
 ---
 

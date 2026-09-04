@@ -1,5 +1,7 @@
 ---
-title: "animation"
+title: "animation component"
+sidebar_label: "animation"
+description: "Plays animation clips on a node: the library to play them from, one to start when the scene loads, and the rate every clip on the node runs at. The…"
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "debugger"
+title: "debugger module"
+sidebar_label: "debugger"
+description: "Breakpoints, the pause a stopped script sits in, and the ways out of it. The same machinery the editor's Debugger dock and the Debug Adapter Protocol…"
 custom_edit_url: null
 ---
 

@@ -1,5 +1,7 @@
 ---
-title: "audio"
+title: "audio module"
+sidebar_label: "audio"
+description: "Sound playback: a file plays under an integer handle, with volume, pitch and loop options, and the sound component gives a node a sound of its own. With…"
 custom_edit_url: null
 ---
 
