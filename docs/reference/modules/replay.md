@@ -31,7 +31,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `record(path: string, options: any?)` | — | Start recording into a file; call it before the code whose session it records runs. |
 | `recording()` | — | The file being recorded into, or nil. |
 | `seek(tick: int)` | — | Run recorded ticks until playback reaches the given tick; forward only. |
-| `session_name` | — |  |
+| `session_name()` | — | A file-safe name for a session starting now, so a list of them sorts by when they ran. |
 | `state()` | — | What playback is doing: `STATE_STOPPED`, `STATE_PLAYING`, `STATE_PAUSED` or `STATE_SEEKING`. |
 | `stop(reason: string?)` | — | Close the recording, naming why it ended, and return the file it wrote. |
 | `unload()` | — | Drop the loaded session and let the game run live again. |

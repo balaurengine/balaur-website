@@ -1,0 +1,143 @@
+---
+title: "Stores — sign-in, achievements, cloud saves and purchases"
+sidebar_label: "Stores"
+description: "The platform module is one script API over every store, with Game Center, iCloud and StoreKit behind it on Apple platforms: sign-in, achievements, leaderboards, cloud saves and in-app purchases."
+image: "/img/social/stores.png"
+sidebar_position: 11
+---
+
+# Stores
+
+`platform` is one module over every store. A script that unlocks an
+achievement says the same thing on Game Center as it will on Play Games and
+on Steam, and what only one platform has stays in that platform's own module
+— `apple` today.
+
+With no store loaded — the editor, a desktop run, a replay — every call
+answers `kind = "unsupported"` rather than failing, so a script written
+against `platform` runs everywhere.
+
+```rune
+pub async fn init(this) {
+    let me = task::wait(platform::sign_in(this.node)).await;
+    log::info(`playing as ${me["alias"]}`);
+    platform::unlock(this.node, "first_blood");
+}
+
+pub fn on_platform(this, e) {
+    if e["kind"] == "signed_out" {
+        // The player signed out in the OS. The node that signed in hears it.
+    }
+}
+```
+
+Delivery is the contract [networking](./networking.mdx) and
+[Gamend](./gamend.mdx) already use: a call returns an id immediately, the
+store answers on a later tick, and the answer reaches the node's
+`on_platform` method and whoever awaits the id. Every event carries a `kind`
+— `signed_in`, `signed_out`, `done`, `scores`, `read`, `failed`,
+`unsupported` — so one handler takes them all.
+
+## What the portable module covers
+
+| Call | What it does |
+| --- | --- |
+| `sign_in`, `player`, `signed_in` | Who is playing. The node given to `sign_in` stays subscribed: a later sign-out reaches the same method |
+| `unlock`, `progress` | Award an achievement whole, or report how far along it is |
+| `submit_score`, `scores` | Post to a leaderboard, and read it back — `scope`, `period`, `count` and `start` in the options |
+| `cloud_read`, `cloud_write` | A value the store syncs between the player's devices |
+| `set_presence` | What the player is doing, where the store shows it |
+
+A store that has no answer for one of these says so. Game Center has no
+presence, so `platform::set_presence` answers `unsupported` there rather than
+pretending it worked.
+
+## Achievements and rollback
+
+An achievement cannot be un-awarded. A game running
+[rollback](./determinism.mdx) predicts, and a predicted tick can be re-run
+with different inputs — so a call that changes the store waits until the tick
+that made it can no longer be re-run, and only then goes out. Reads never
+wait: repeating one costs a round trip and nothing else. A game with no
+rollback session is unaffected, because there every tick is final the moment
+it happens.
+
+## Apple
+
+Building with the `apple` feature puts Game Center behind the portable verbs
+and adds the `apple` module beside it.
+
+| Portable call | On an Apple platform |
+| --- | --- |
+| `platform::sign_in` | Game Center, including its sign-in sheet |
+| `platform::unlock`, `progress` | `GKAchievement` |
+| `platform::submit_score`, `scores` | `GKLeaderboard` |
+| `platform::cloud_read`, `cloud_write` | The iCloud key-value store |
+
+What only Apple has:
+
+```rune
+pub async fn init(this) {
+    apple::watch(this.node);                              // arrivals nobody asked for
+    let proof = task::wait(apple::identity()).await;      // for the server to check
+    apple::show_dashboard(this.node, #{ state: "leaderboards" });
+    apple::access_point(true, #{ location: "top_trailing" });
+}
+```
+
+- **`apple::identity`** fetches the url, signature, salt and timestamp a
+  server needs to verify a Game Center player.
+- **`apple::sign_in`** is Sign in with Apple, a different account from Game
+  Center's, and answers with an identity token and authorization code. The
+  player's name comes once, on the authorization that first granted it, so a
+  game that wants it saves it then. `apple::credential_state` says whether a
+  saved account is still authorized, revoked or transferred.
+- **`apple::show_dashboard`** and **`apple::access_point`** are Game Center's
+  own screens.
+- **Purchases**: `apple::products`, `purchase`, `entitlements`,
+  `restore_purchases` and `finish_purchase`.
+- **Arrivals**: `apple::request_notifications`, `notify`,
+  `cancel_notification`, `register_for_push` and `watch_urls`. What arrives
+  unasked — a notification tapped, a URL opened, a push token, a purchase
+  that landed on another device — reaches the nodes registered through
+  `apple::watch`.
+
+The engine never decides who a player is or whether a purchase counts. It
+carries the proof: an identity signature, an identity token, or a
+transaction's signed `jws`. Checking one is a server's job, and
+[Gamend](./gamend.mdx) is where a game already has one.
+
+### Buying
+
+```rune
+pub async fn init(this) {
+    let found = task::wait(apple::products(["com.studio.game.coins"])).await;
+    this.purchase = apple::purchase(this.node, "com.studio.game.coins");
+}
+
+pub fn on_apple(this, e) {
+    if e["kind"] == "purchased" {
+        // Send e["jws"] to your server. Once it has granted the thing:
+        apple::finish_purchase(e["id"]);
+    }
+}
+```
+
+A purchase is not finished when it lands. StoreKit re-delivers an unfinished
+transaction on every launch — which is how it avoids losing one — so
+`finish_purchase` is a call of its own, made after the server that checked
+the `jws` has granted what was bought.
+
+Purchases need Swift: StoreKit 2 has no Objective-C interface, so the engine
+carries a small Swift shim compiled at build time. A machine with no Swift
+toolchain still builds the engine, and purchases there answer `unsupported`
+rather than failing to link.
+
+## What an export has to declare
+
+Apple resolves every one of these services against the bundle, so a game
+declares them in `project.toml` and `balaur export` writes the `Info.plist`
+and the entitlements file from it. See [Shipping](./shipping.mdx#apple).
+
+The full function list is in the
+[script modules reference](/docs/reference/modules).

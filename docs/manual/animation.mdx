@@ -3,7 +3,7 @@ title: "Animation — clips, tweens, skeletons and IK"
 sidebar_label: "Animation"
 description: "Animation in Balaur: clips with tracks and easings, tweens from scripts, 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK."
 image: "/img/social/animation.png"
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 import Clip from '@site/src/components/Clip';
@@ -183,7 +183,15 @@ copies the model under `models/`, writes its joint hierarchy as a scene with
 — all TOML the editor edits. A `.gltf` with its `.bin` and textures beside it
 works the same way. The mesh is skinned every frame from the same scene tree,
 so it animates through the same clips, and the same rest verbs and bone
-gizmos apply. `examples/rig` is one figure: a skinned body swung by a clip, with an arm
+gizmos apply.
+
+The joint palette is computed from that scene tree and handed to a vertex
+shader, so a 3D rig deforms on the GPU and the mesh's buffers are left alone.
+A node that names a `material` asset, or a frame drawn under a shader channel
+view, keeps the CPU path instead: those shaders draw against
+`package::mesh` and know nothing about a palette. Both compute the same
+blend — the shader's is `@const`, so a headless test holds it to the CPU
+reference without a GPU. `examples/rig` is one figure: a skinned body swung by a clip, with an arm
 branching off its top bone that reaches on two-bone IK;
 `examples/rig3d` is a column imported this way.
 

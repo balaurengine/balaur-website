@@ -1,0 +1,127 @@
+---
+title: "Rendering — 2D lights, shadows and post-processing"
+sidebar_label: "Rendering"
+description: "Lit 2D scenes in Balaur: light2d and occluder2d build a light map every sprite, polygon and tile is multiplied by, the camera carries the ambient it falls to, and post names the screen-space effects the frame resolves through."
+image: "/img/social/docs.png"
+sidebar_position: 4
+---
+
+# Rendering
+
+A 2D scene draws unlit until something lights it. Add one `light2d` and the
+whole frame changes meaning: the scene's lights accumulate into a light map
+at the camera's resolution, and everything already drawn is multiplied by
+that map plus the camera's `ambient`. Nothing else has to know about it —
+sprites, polygons and tile maps are lit without naming a material.
+
+![A warm point light and a cool fill light over a backdrop, a rect and a circle occluder each casting a shadow away from the warm light, and the rest of the frame fallen to a dark ambient](/img/manual/rendering_lights2d.webp)
+
+## A light
+
+```toml
+[[nodes]]
+id = "n_lamp"
+name = "Lamp"
+position = [0, 2.5, 0]
+
+[nodes.light2d]
+kind = "point"          # point | directional
+color = "#ffd28a"
+radius = 8.0            # world units; a point light fades to nothing here
+intensity = 1.6
+shadows = true
+```
+
+The node's position places a light and its rotation aims one: at rest a
+`light2d` shines along −y, and the node's z rotation turns it. A **point**
+light fades quadratically to exactly nothing at `radius`, so its edge has no
+seam. A **directional** light ignores `radius` and lights the whole view.
+
+`intensity` above 1 pushes past white, which is what
+[bloom](#post-processing) picks up.
+
+## The ambient it falls to
+
+A scene with no `light2d` draws exactly as it did before — no extra pass, no
+extra draw. The first light changes that: everywhere the lights do not reach
+now falls to the camera's `ambient`, which is black unless you set it.
+
+```toml
+[nodes.camera]
+kind = "2d"
+zoom = 60.0
+ambient = "#181c22"     # what an unlit surface is multiplied by
+```
+
+That is the knob for the mood of a lit scene. Black ambient is a cave; a
+dim blue is dusk; white ambient is the unlit look back again.
+
+## Occluders and shadows
+
+A `shadow`-casting light is blocked by any node carrying an `occluder2d`.
+Each occluder edge is extruded away from the light into a polygon, and the
+light is masked out wherever those polygons land.
+
+```toml
+[nodes.occluder2d]
+# mesh = "meshes/wall.toml"   # points in order; empty derives the outline
+# closed = true               # the last point joins the first
+```
+
+Left empty the outline follows the node's `collider2d`, and failing that its
+circle, capsule, rect or sprite shape — so the thing a player sees is the
+thing that casts the shadow, with nothing authored twice. Name a `mesh` when
+you want an outline of your own, or when the node draws a polyline or a
+polygon, whose points the engine will not guess at.
+
+Every edge casts, so **an occluder stands in its own shadow**. A crate that
+should stay lit wants a smaller outline than its sprite, or a light with
+`shadows = false`.
+
+A directional light's shadows are parallel, because its rays are:
+
+![Three occluders under one directional light, each casting a parallel shadow strip at the light's angle: a rect, a circle and a capsule, their outlines traced faithfully](/img/manual/rendering_directional.webp)
+
+### Tracing an outline
+
+The editor's **Polygon** tool traces an `occluder2d` the same way it traces a
+`polygon`, in Points mode — an outline has no triangles, no UVs and no
+weights, so those modes are not offered for one. The Lights chip in the Scene
+persona draws every light's reach and every occluder's *resolved* outline, so
+a derived one is visible without being written down.
+
+![The editor with an occluder node selected: only the Points mode chip, an Occluder section in the inspector, and the light gizmos over the lit scene](/img/manual/rendering_occluder_tool.webp)
+
+## Post-processing
+
+`post` on the camera names the screen-space effects the frame resolves
+through. `bloom` is the one a lit 2D scene wants — the light map already
+gives it bright pixels to bleed:
+
+```toml
+[nodes.camera]
+kind = "2d"
+post = ["bloom"]
+bloom_threshold = 0.9   # brightness a pixel has to pass
+bloom_intensity = 0.7   # how much is added back
+```
+
+`ssao`, `ssr` and `dof` are the other three, and they are 3D only. Unlike
+`ambient`, `post` is not per-dimension: the effects run over the whole film,
+so the last current camera of either kind sets them.
+
+## What the light map reaches
+
+The multiply lands on everything already drawn — sprites, polygons, tile
+maps, and a 3D scene sitting under a 2D one. Debug lines and particles draw
+*after* it and stay unlit, which is usually what you want from a debug
+overlay and worth knowing about a particle effect.
+
+Lights are an observer, like the rest of rendering: they never touch the
+simulation, so a lit game and a headless one tick identically.
+
+## Limits
+
+A frame draws at most 64 lights, and each shadow-casting light costs a pass
+of its own. A scene past that is told once in the log rather than quietly
+dropping frames.

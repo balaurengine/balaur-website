@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # `body2d`
 
-`2d` · `physics` · 17 properties · 2D
+`2d` · `physics` · 18 properties · 2D
 
 Makes the node a 2D rigid body rapier simulates, in the xy plane: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. Add a `collider2d` for it to collide with anything.
 
@@ -26,6 +26,7 @@ In a scene, `body2d` is the node key that applies it. A script reaches the same 
 | `enabled` | bool | `true` | Simulate this body at all; a disabled body keeps its state and costs nothing |
 | `fast_rotation` | bool | `false` | Allow a spin fast enough that rapier would otherwise clamp it |
 | `gravity_scale` | float | `1` | Multiplier on world gravity for this body: 0 hangs in the air, negative floats up |
+| `gyroscopic` | bool | `false` | Model the wobble a spinning body's own inertia gives it, as a thrown American football has |
 | `inertia` | float | `0` | Resistance to spin; 0 lets rapier derive it from the mass At least 0. |
 | `kind` | enum | `dynamic` | How 2D physics drives the node: simulated, immovable, moved by script, or moved by a velocity you set One of `dynamic`, `static`, `kinematic`, `kinematic_velocity`. Scene shorthand: `kind`'s value can be given as the component's whole value. |
 | `linear_damping` | float | `0` | Drag on travel: how fast the body loses speed with nothing touching it At least 0. |

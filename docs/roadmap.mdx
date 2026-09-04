@@ -99,16 +99,6 @@ release added. Within each group the order is the one the
 
 <Roadmap items={[
   {
-    title: '2D lights and shadows',
-    text: 'Light nodes, shadow occluders and post-processing for 2D scenes.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md#2d-lights-and-shadows',
-  },
-  {
-    title: 'GPU skinning in 3D',
-    text: 'Imported meshes skinned in the vertex shader instead of on the CPU.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md#gpu-skinning-in-3d',
-  },
-  {
     title: 'Culling and level of detail',
     text: 'Nodes outside the camera skipped, meshes swapped for cheaper ones with distance, and repeated meshes drawn in one call.',
   },
@@ -193,17 +183,12 @@ release added. Within each group the order is the one the
   },
   {
     title: 'Steam',
-    text: <>Sign-in, achievements, leaderboards, Cloud saves, rich presence, the overlay, Workshop, Steam Input and Steam networking — behind a portable <code>platform</code> module that resolves to nothing where there is no store, so one script runs everywhere.</>,
+    text: <>Sign-in, achievements, leaderboards, Cloud saves, rich presence, the overlay, Workshop, Steam Input and Steam networking — behind the <code>platform</code> module Apple's stores already speak, so one script runs everywhere.</>,
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-steam.md',
   },
   {
-    title: 'Apple',
-    text: 'Sign in with Apple, Game Center, iCloud saves and StoreKit on iOS and macOS, over the same portable module. A bundle identifier the developer owns comes first: every Apple service keys off one.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-apple.md',
-  },
-  {
-    title: 'Google',
-    text: 'Play Games Services, Sign in with Google, Play Billing, Play Integrity and Play Asset Delivery on Android, over the same portable module.',
+    title: 'Google Play',
+    text: 'Play Games Services, Sign in with Google, Play Billing, Play Integrity and Play Asset Delivery on Android, over the same module. An application id, an app bundle and 16 KB page alignment come first: without them Play refuses the upload, store or no store.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-google.md',
   },
 ]} />

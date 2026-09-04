@@ -74,10 +74,13 @@ From [`physics3d`](../modules/physics3d.md):
 | `add_cuboid_collider(float, float, float)` | Attach a box collider from its three half-extents. |
 | `collider_mass() -> float` | What this collider weighs, density and size together. |
 | `collider_mesh() -> any` | The collider's shape as points and triangles — including a voxel grid's — for drawing it or for spawning the pieces it broke into. |
+| `collider_volume() -> float` | How much space the shape encloses. |
 | `contacts() -> any` | Every contact point on this node's collider this step: `#{ node, point, normal, impulse }` each. Empty for a sensor, which has no contacts by definition. |
+| `handles() -> any` | The rapier handles behind this node — its body and its colliders — as `#{ body, colliders }` of index and generation pairs. For matching a log line against rapier's own output. |
 | `max_contact_impulse() -> float` | The hardest contact this node took in the last step, zero when nothing touched it: a damage threshold in one number. |
 | `overlaps() -> [node]` | The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor. |
 | `set_collider(any)` | Replace the node's collider from a `collider3d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary. |
 | `set_voxel(int, int, int, bool)` | Fill or empty one cell of a voxel collider: digging a hole, or building a wall, while the game runs. |
+| `swept_aabb() -> float, float, float, float, float, float` | The box the collider covers over the next step, its motion included: what the broad phase actually tests. |
 | `voxel(int, int, int) -> bool` | Whether one cell of a voxel collider is filled. |
 | `voxel_at(float, float, float) -> int, int, int` | The cell a world position falls in, as three whole numbers. |

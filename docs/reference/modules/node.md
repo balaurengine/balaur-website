@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).
 
-30 functions, 0 constants. Scripts reach it as `node::`.
+31 functions, 0 constants. Scripts reach it as `node::`.
 
 ## Functions
 
@@ -23,6 +23,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `call(method: string, args: any?)` | — | Call a method on the node's script and return what it gives back; nil when there is no such script or method. |
 | `children()` | — | The node's direct children, an empty list when it has none. |
 | `component_names()` | — | The names of every component on the node. |
+| `detach_script()` | — | Drop the script instance on this node, so no further lifecycle call reaches it; the node and its components stay. |
 | `get_component(component: string)` | — | The named component's properties as a table, nil when the node does not carry it. |
 | `get_node(path: string)` | — | The node at an `A/B/C` path relative to this one, `..` climbing to the parent; nil when nothing matches. |
 | `global_position()` | — | The node's position in world space, as of the last transform sync. |

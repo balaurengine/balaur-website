@@ -10,9 +10,9 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.
 
-39 functions, 0 constants. Scripts reach it as `render::`.
+42 functions, 0 constants. Scripts reach it as `render::`.
 
-Acts on [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md): those functions are also methods on the component's handle, without the node argument.
+Acts on [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md): those functions are also methods on the component's handle, without the node argument.
 
 ## Functions
 
@@ -32,6 +32,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `material_params(string) -> any` | — |  |
 | `mouse_ray() -> float, float, float, float, float, float` | — | The picking ray through the mouse position: its origin xyz then its direction xyz, in world units. |
 | `mouse_world_2d() -> float, float` | — | The mouse position in 2D world coordinates, for picking. |
+| `outline(node) -> [float]` | [`occluder2d`](../components/occluder2d.md) | The outline this node blocks 2D light with, in world space: x then y for each point in turn, with the first repeated at the end when the outline is closed. Empty on a node with no `occluder2d`. |
 | `pick_ray(float, float, float, float, float, float) -> node?` | — | The nearest node with a 3D shape that a world-space ray meets, from its origin xyz and direction xyz. |
 | `screenshot(string)` | — | Save the next rendered frame as a PNG at a project-relative path; a run with no renderer says so. |
 | `set_app_icon(string)` | — | Set the application icon (the dock or taskbar one) from a PNG in the project, named by its path. |
@@ -51,10 +52,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_grid_colors(float, float, float, float, float, float)` | — | Set the ground grid's minor line colour then its major line colour, as r, g, b channel floats. |
 | `set_rect(node, float, float)` | [`shape2d`](../components/shape2d.md) | Draw the node as a rectangle from its two half-extents, in world units, replacing any other 2D shape. |
 | `set_shader_preview(string, int)` | — |  |
+| `set_shader_probe(float, float)` | — |  |
 | `set_sprite(node, string)` | [`sprite`](../components/sprite.md) | Draw the node as a quad textured with a project image, sized from it at 100 texture pixels per world unit. |
 | `set_sprite_frame(node, int)` | [`sprite`](../components/sprite.md) | Show a sheet cell, numbered left to right then top to bottom; only the UVs move, so it is cheap per frame. |
 | `set_sprite_sheet(node, string, int, int)` | [`sprite`](../components/sprite.md) | Draw the node as one cell of a columns-by-rows sheet, sizing the quad to a single frame, not the whole image. |
 | `set_sprite_size(node, float, float)` | [`sprite`](../components/sprite.md) | Override the size the sprite took from its image, giving half-extents in world units instead. |
+| `shader_probe() -> any` | — |  |
 | `shape2d(node) -> string, float, float` | [`shape2d`](../components/shape2d.md) | The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape. |
 | `shape3d(node) -> string, float, float, float` | [`shape3d`](../components/shape3d.md) | The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape. |
 | `sprite(node) -> string, int, int, int` | [`sprite`](../components/sprite.md) | The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite. |

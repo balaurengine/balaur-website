@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # `mesh`
 
-Files live in `models/`. Used by [`collider2d`](../components/collider2d.md) · `mesh`, [`collider3d`](../components/collider3d.md) · `mesh`, [`mesh`](../components/mesh.md) · `source`, [`polygon`](../components/polygon.md) · `mesh`, [`shape2d`](../components/shape2d.md) · `mesh`.
+Files live in `models/`. Used by [`collider2d`](../components/collider2d.md) · `mesh`, [`collider3d`](../components/collider3d.md) · `mesh`, [`mesh`](../components/mesh.md) · `source`, [`occluder2d`](../components/occluder2d.md) · `mesh`, [`polygon`](../components/polygon.md) · `mesh`, [`shape2d`](../components/shape2d.md) · `mesh`.
 
 Geometry for `mesh`-typed properties. A definition either names a `source`
 model file to import or carries the vertices itself as `positions` and

@@ -3,7 +3,7 @@ title: "Shipping a game — packs and one-file executables"
 sidebar_label: "Shipping a game"
 description: "Ship a Balaur game as a .bpak of bytecode, scenes and assets, or fuse it onto a runtime for one self-contained executable per platform — no compiler, no sources."
 image: "/img/social/shipping.png"
-sidebar_position: 13
+sidebar_position: 15
 ---
 
 # Shipping a game
@@ -83,13 +83,45 @@ balaur export my-game --target android   # -> my-game-android/ (an APK layout)
 
 The pack rides inside the bundle as a resource — `game.bpak` beside the
 executable in an `.app`, `assets/game.bpak` in an APK — and the engine reads
-it from there instead of out of its own file. The project's name is written
-into the `.app`'s `Info.plist`, so the home screen does not say "Balaur" for
-every game exported from it.
+it from there instead of out of its own file.
 
 Both come out unsigned: signing needs a certificate or keystore that is
 yours, not the engine's. `scripts/assemble_apk.sh` in the engine repository
 shows the sequence that turns an Android layout into an installable APK.
+
+## Apple
+
+An `.app` — for iOS or for macOS with `--app` — is written from the `[apple]`
+table, because every Apple service resolves against the bundle rather than
+against the code:
+
+```toml
+[apple]
+bundle_id = "com.studio.game"    # the identifier registered in App Store Connect
+team = "AB12CD34EF"              # the ten-character team identifier
+version = "1.2"                  # CFBundleShortVersionString
+build = "7"                      # CFBundleVersion
+min_os = "15.0"                  # iOS; min_macos for the Mac
+capabilities = ["game-center", "icloud-kv", "in-app-purchase"]
+
+[apple.plist]                    # anything else the bundle needs, as written
+ITSAppUsesNonExemptEncryption = false
+```
+
+The exporter writes the whole `Info.plist` from that table, and a
+`<game>.entitlements` beside the bundle holding one key per capability. It
+refuses what it cannot make work: a capability with no `bundle_id`, an
+`icloud-kv` with no `team` — nothing expands `$(TeamIdentifierPrefix)`
+outside Xcode — or a deployment target below the version a capability's API
+needs. Signing stays yours:
+
+```bash
+codesign --entitlements my-game.entitlements --sign "Apple Distribution: …" my-game.app
+```
+
+A macOS `.app` is signed as it is exported, entitlements included, so
+`--sign` is the whole step there. What the capabilities are for is in
+[Stores](./stores.mdx).
 
 ## Keeping the install current
 

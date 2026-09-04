@@ -41,6 +41,7 @@ const CARDS = {
   input: ['Input', 'Actions over keyboard, mouse, gamepads and touch — one snapshot per frame.', '/docs/manual/input'],
   networking: ['Networking', 'HTTP, websockets and QUIC, delivered once per tick and replayable.', '/docs/manual/networking'],
   gamend: ['Gamend', 'Login, REST, realtime rooms and server hooks.', '/docs/manual/gamend'],
+  stores: ['Stores', 'Sign-in, achievements, cloud saves and purchases — one module over every store.', '/docs/manual/stores'],
   extensions: ['Modules and extensions', 'Modules linked in, extensions loaded at run time. One plugin trait.', '/docs/manual/extensions'],
   editor: ['The editor', 'A Balaur project that edits Balaur projects.', '/docs/manual/editor'],
   determinism: ['Determinism', 'Same inputs, same bits, on every platform.', '/docs/manual/determinism'],

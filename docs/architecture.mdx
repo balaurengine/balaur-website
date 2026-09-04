@@ -105,9 +105,12 @@ time — see [Modules and extensions](./manual/extensions.mdx).
 | `balaur_websocket` | `websocket` for scripts, and a `Transport` for sessions |
 | `balaur_webtransport` | QUIC behind the same `Transport`, where a datagram is really a datagram |
 | `balaur_gamend` | The Gamend backend (`gamend` module): login, REST, realtime, server hooks |
+| `balaur_platform` | The `platform` module and the seam a store plugs into: sign-in, achievements, leaderboards, cloud saves |
+| `balaur_apple` | Game Center, iCloud and Sign in with Apple behind that seam, plus `apple` for purchases, notifications and opened URLs |
 | `balaur_plugin` | The `Plugin` trait a module or run-time extension implements, plus the loader |
 | `balaur_ui` | Immediate-mode egui API (`ui` module): panels, widgets, script-defined themes |
 | `balaur` | Batteries-included facade: `standard_app`, `boot_project`, `boot_pack` |
+| `balaur_export` | Exporting as a library: packs, fused executables, and the Apple and Android bundles the editor and the CLI both write |
 | `balaur_cli` | The `balaur` binary: `new`, `run`, `export`, `play`, `edit`, `import`, `replay`, `api` |
 | `balaur_bench` | Headless benchmarks: where a frame's time goes, and what scripting costs |
 
