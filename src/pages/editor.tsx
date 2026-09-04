@@ -54,6 +54,17 @@ export default function EditorPage(): ReactNode {
     }
   };
 
+  // `/editor/?run` opens straight into the editor, and `?run=angrynerds`
+  // picks the project — a link someone can share.
+  useEffect(() => {
+    const asked = new URLSearchParams(window.location.search).get('run');
+    if (asked === null) return;
+    const id = PROJECTS.some((p) => p.id === asked) ? asked : project;
+    setProject(id);
+    void run(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // The browser owns ⌘S and ⌘Z until the canvas has focus and claims them.
   useEffect(() => {
     const claim = (e: KeyboardEvent) => {

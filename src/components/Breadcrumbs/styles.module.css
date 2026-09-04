@@ -1,0 +1,14 @@
+/* Matches the docs breadcrumbs (theme-classic DocBreadcrumbs) so a trail
+   reads the same wherever it appears. */
+.breadcrumbsContainer {
+  --ifm-breadcrumb-size-multiplier: 0.8;
+  margin-bottom: 0.8rem;
+}
+
+.homeIcon {
+  position: relative;
+  top: 1px;
+  vertical-align: top;
+  height: 1.1rem;
+  width: 1.1rem;
+}
