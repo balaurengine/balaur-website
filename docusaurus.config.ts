@@ -170,6 +170,15 @@ const config: Config = {
         srcDark: 'img/logo-dark.svg',
       },
       items: [
+        {
+          label: 'Made for',
+          position: 'left',
+          items: [
+            {to: '/code', label: 'Game developers'},
+            {to: '/animate', label: 'Animators'},
+            {to: '/multiplayer', label: 'Multiplayer and simulation'},
+          ],
+        },
         {to: '/features', label: 'Features', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
         {
@@ -191,6 +200,7 @@ const config: Config = {
           label: 'Roadmap',
         },
         {to: '/blog', label: 'Devlog', position: 'left'},
+        {to: '/editor', label: 'Editor', position: 'right'},
         {to: '/play', label: 'Play', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
         {
@@ -240,6 +250,18 @@ const config: Config = {
         {
           title: 'More',
           items: [
+            {
+              label: 'For game developers',
+              to: '/code',
+            },
+            {
+              label: 'For animators',
+              to: '/animate',
+            },
+            {
+              label: 'For multiplayer',
+              to: '/multiplayer',
+            },
             {
               label: 'Devlog',
               to: '/blog',

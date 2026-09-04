@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState, type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
-import Heading from '@theme/Heading';
 import {PageMetadata} from '@docusaurus/theme-common';
+import Heading from '@theme/Heading';
 import styles from './play.module.css';
 
 // The engine in the browser: the web template (scripts/package_template.sh
@@ -57,6 +57,7 @@ export default function Play(): ReactNode {
       title="Play — the engine running in your browser"
       description="Balaur running in the browser: the same engine, built to WebAssembly, drawing on a canvas through WebGPU. examples/hello, fetched as a pack and booted in the page.">
       <PageMetadata image="/img/social/play.png" />
+      <PageMetadata image="/img/social/play.png" />
       <main className={styles.main}>
         <Heading as="h1">Balaur in the browser</Heading>
         <p className={styles.lede}>
@@ -102,10 +103,10 @@ export default function Play(): ReactNode {
           web runtime.
         </p>
         <p>
-          It is not the editor. The editor reads and writes a project's files, and a browser has no project directory:
-          giving it one — a file system behind the same script API, the editor's own project fetched beside the wasm —
-          is the next step on the <Link to="/docs/roadmap">roadmap</Link>. The <Link to="/examples">examples</Link> and{' '}
-          <Link to="/docs/getting-started">getting started</Link> pages are the way to the editor today.
+          It is the engine alone, without the editor around it. The editor runs in a browser too, on the same module and
+          a filesystem that lives in the tab: that is <Link to="/editor">/editor</Link>. To edit a project on your own
+          machine, <Link to="/docs/getting-started">build it from source</Link>; the{' '}
+          <Link to="/examples">examples</Link> are what both pages open.
         </p>
       </main>
     </Layout>

@@ -1,0 +1,91 @@
+---
+title: "A game engine for developers coming from Godot, Unity or Unreal"
+description: "Nodes and scenes you already know, scripts that go live in milliseconds with the state intact, TOML scenes that diff in git, and one binary to ship. Free, MIT, 2D and 3D, written in Rust."
+image: "/img/social/code.png"
+---
+
+import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartBand} from '@site/src/components/PersonaPage';
+
+<PersonaHero
+  who="For game developers"
+  persona="Script persona"
+  title="A scene tree you already know, and a save-and-see loop instead of a build."
+  image="persona_script"
+  alt="The Script persona on examples/hello: the script open beside the node tree, with the Output dock below"
+  primary={{to: '/examples#hello', label: 'Open examples/hello'}}
+  secondary={{to: '/docs/manual/scripting', label: 'Scripting manual'}}>
+  Nodes and scenes like the ones you already work in, scripts that go live in milliseconds without losing the state, scenes as TOML you can read and review, and one self-contained binary to ship. Written in Rust, MIT, 2D and 3D.
+</PersonaHero>
+
+<Section title="What you get">
+  <Features items={[
+    {icon: 'tree-structure', title: 'A tree of nodes, not an ECS to learn', text: <>A game is named nodes with scripts attached. Every node is an ECS entity underneath, and you never have to see it — that layer is for plugin authors.</>},
+    {icon: 'lightning', title: 'Save the script, it is already running', text: <>Hot reload in milliseconds with the state intact: the ball keeps its position, the score keeps its value. A script that does not compile reports its file, line and caret, and the running code stays up.</>},
+    {icon: 'file-text', title: 'Scenes are TOML', text: <>Readable, diffable, reviewable in a pull request, editable by hand or by the editor. One component is a scene key, a script call and an inspector row at the same time.</>},
+    {icon: 'rocket-launch', title: 'One file to ship', text: <>A pack fused onto a runtime: one self-contained binary per target, with no compiler, no sources and no runtime to install alongside it.</>},
+  ]} />
+</Section>
+
+<Section title="How it works" sub="A scene is a file you can read. A component comes from a plugin and shows up in three places at once.">
+  <HowItWorks file="scenes/main.toml" code={`[[nodes]]
+name = "Ball"
+position = [0.0, 6.0, 0.0]
+script = "scripts/ball.rn"
+body3d = "dynamic"
+collider3d = { kind = "ball", radius = 0.5 }
+shape3d = { kind = "ball", radius = 0.5 }`}>
+
+`body3d`, `collider3d` and `shape3d` are components the physics and render plugins registered. Registering them made them scene keys, script calls and inspector rows together — there is no separate binding step and no generated glue to keep in sync.
+
+Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, no build step, `async`/`await`. A script is a file attached to a node, with `init`, `update` and whatever methods the scene calls.
+
+  </HowItWorks>
+</Section>
+
+<Section title="In the editor" sub="The Script persona puts the code, the tree and the output on one screen.">
+  <EditorCards items={[
+    {icon: 'code', title: 'Script editor', text: 'Edit a script beside the running scene. Save and the change is live; a compile error names the file, the line and the column, and the old code keeps running.'},
+    {icon: 'bug', title: 'Debugger', text: 'Breakpoints in the gutter, stepping, frames and locals in a dock. The game freezes while the editor stays live.'},
+    {icon: 'app-window', title: 'Play in editor', text: 'Run the scene in the viewport, keep the inspector, stop and be back where you were. The editor is itself a Balaur project, so it runs on what it edits.'},
+  ]} />
+</Section>
+
+<Section title="Next to Godot, Unity and Unreal" sub="Where Balaur stands against the engines most games are made in, as of September 2026. It is 0.1 and they are not — the maturity row is the one to read first.">
+
+  <Compare rival="Godot 4" rows={[
+    ['Game code', 'GDScript and C#; C++ through GDExtension', 'Rune scripts with no build step; plugins in Rust or C'],
+    ['Iterating on code', 'Scripts reload on save', 'A saved script is live in milliseconds, with the state intact'],
+    ['Scene files', 'Text .tscn files that diff', 'TOML, with one rule for every component'],
+    ['Determinism', 'Not bit-exact across platforms', 'Same bits everywhere: per-tick digests, record and replay, rollback'],
+    ['Licence and cost', 'Free, MIT', 'Free, MIT'],
+    ['Maturity', 'More than a decade, a huge community, consoles through partners', 'Weeks old, no binary release yet, no consoles'],
+  ]} />
+
+  <Compare rival="Unity 6" rows={[
+    ['Game code', 'C#', 'Rune scripts with no build step; plugins in Rust or C'],
+    ['Iterating on code', 'A script change recompiles and reloads the domain; entering play mode starts over', 'A saved script is live in milliseconds, with the state intact'],
+    ['Determinism', 'Not bit-exact across platforms; deterministic multiplayer usually means Photon Quantum or a fixed-point simulation of your own', 'An engine guarantee: fixed tick, digests, replay and a rollback module'],
+    ['Licence and cost', 'Proprietary; a free tier below a revenue threshold, per-seat subscriptions above it', 'Free, MIT, no threshold and no seats'],
+    ['Maturity', 'Two decades, the largest asset store there is, every platform', 'Weeks old, no asset store, desktop only for now'],
+  ]} />
+
+  <Compare rival="Unreal 5" rows={[
+    ['Game code', 'C++ and Blueprints', 'Rune scripts with no build step; plugins in Rust or C'],
+    ['Iterating on code', 'Live Coding patches C++ into a running editor; otherwise a rebuild', 'A saved script is live in milliseconds, with the state intact'],
+    ['Determinism', 'Not bit-exact across platforms', 'Same bits everywhere, verified tick by tick'],
+    ['What you ship', 'A packaged build carrying the engine runtime', 'One self-contained binary: no compiler, no sources'],
+    ['Licence and cost', 'Free until $1M lifetime gross per product, then a 5% royalty', 'Free, MIT, no royalty'],
+    ['Maturity', 'AAA-proven, consoles, the deepest tooling there is', 'Weeks old, desktop only for now'],
+  ]} />
+
+Each rival's column comes from its own site and licence terms as of September 2026; check them before deciding anything, because they all move. If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues) — this page should never flatter Balaur at another project's expense.
+
+Balaur next to the other Rust engines, Bevy and Fyrox, is on [Compare](/compare). What the engine does not do yet is on the [roadmap](/docs/roadmap), and it is a long list.
+
+</Section>
+
+<StartBand
+  title="Change a script while the game runs."
+  text="examples/hello is a spinning cube, a bouncing ball and a HUD label in five short scripts. Open it, edit scripts/spinner.rn, and watch the new code take over with the state kept."
+  primary={{to: '/examples#hello', label: 'Open examples/hello'}}
+  secondary={{to: '/docs/getting-started', label: 'Getting started'}} />

@@ -56,6 +56,7 @@ const PERSONAS: Persona[] = [
     clip: 'scripting_live',
     alt: 'Editing a script while the game runs; on save the new code is live and the state survives',
     links: [
+      {to: '/code', label: 'Balaur for game developers'},
       {to: '/docs/manual/scripting', label: 'Scripting'},
       {to: '/docs/manual/extensions', label: 'Extensions'},
       {to: '/examples#hello', label: 'Open examples/hello'},

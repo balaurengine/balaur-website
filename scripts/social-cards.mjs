@@ -23,6 +23,10 @@ const out = join(root, 'static', 'img', 'social');
 // own heading; the line is its pitch, shorter than its description.
 const CARDS = {
   home: ['A 2D & 3D game engine in Rust', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
+  editor: ['The editor, in your browser', 'The same editor the desktop build ships, on WebAssembly. Open a scene, move a node, edit a script.', '/editor'],
+  play: ['Balaur in the browser', 'The engine itself, compiled to WebAssembly, running a game on a canvas through WebGPU.', '/play'],
+  code: ['For game developers', 'Nodes and scenes you know, scripts live in milliseconds, TOML scenes, one binary to ship.', '/code'],
+  animate: ['For animators', 'Bones, mesh skinning with painted weights, IK and a timeline — on the rig that ships in the game.', '/animate'],
   multiplayer: ['Multiplayer', 'Same inputs, same bits, on every machine: a fixed tick, digests, replay, rollback.', '/multiplayer'],
   play: ['Play', 'The engine running in your browser: examples/hello on a canvas, through WebGPU.', '/play'],
   examples: ['Examples', 'Seven projects that ship with the engine: what each one shows, and the command that opens it.', '/examples'],

@@ -15,6 +15,12 @@ QUIC for sessions. All three are on by default, each behind its own feature,
 so building without `http` drops the HTTP and TLS stack and building without
 `webtransport` drops QUIC and its runtime.
 
+:::tip[For multiplayer and simulation]
+
+[Balaur for multiplayer](/multiplayer) puts this delivery model beside the fixed tick, rollback and replay it exists for.
+
+:::
+
 ## The delivery model
 
 All I/O runs on background threads. Completions cross back over a channel and

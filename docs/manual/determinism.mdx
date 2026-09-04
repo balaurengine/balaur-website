@@ -14,6 +14,12 @@ Cross-platform determinism is a core feature: identical inputs must produce
 bit-for-bit identical simulation on every platform. This is what makes
 replays, lockstep networking, and "did the content change?" checks possible.
 
+:::tip[For multiplayer and simulation]
+
+[Balaur for multiplayer](/multiplayer) is the same guarantees from the game's side: lockstep, rollback, and a replay you can attach to a bug report.
+
+:::
+
 ## Engine measures
 
 - Rapier's `enhanced-determinism` feature is enabled workspace-wide, for both
