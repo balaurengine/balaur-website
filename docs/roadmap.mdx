@@ -99,6 +99,11 @@ release added. Within each group the order is the one the
 
 <Roadmap items={[
   {
+    title: 'Tile-map occluders and lit normal-mapped sprites',
+    text: <>2D lights and shadows are built. What the plan deferred: a <code>tileset</code> marking tiles as occluders, so a wall drawn as fifty tiles casts one merged shadow rather than fifty; and a normal map on <code>sprite</code>, which needs the light map to carry a direction as well as a colour.</>,
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md',
+  },
+  {
     title: 'Culling and level of detail',
     text: 'Nodes outside the camera skipped, meshes swapped for cheaper ones with distance, and repeated meshes drawn in one call.',
   },
