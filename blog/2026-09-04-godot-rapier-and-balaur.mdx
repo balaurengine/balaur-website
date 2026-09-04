@@ -1,0 +1,44 @@
+---
+description: "Godot Rapier Physics is deterministic, but only the physics server is. Balaur makes the whole tick deterministic, with the same Rapier underneath and its author on the project."
+slug: godot-rapier-and-balaur
+title: From Godot Rapier to Balaur
+authors: [dragos]
+image: /img/social/determinism.png
+---
+
+import Clip from '@site/src/components/Clip';
+
+I also maintain [**Godot Rapier Physics**](https://github.com/appsinacup/godot-rapier-physics) — Rapier's 2D and 3D physics as a drop-in replacement for Godot's. Balaur started there.
+
+{/* truncate */}
+
+## What the addon does
+
+- **Rapier 2D and 3D** in Godot, from the asset store.
+- **Deterministic**, and cross platform deterministic.
+- Physics state **serializes and reloads** exactly.
+- Fluids, IK, no ghost collisions, better stacking.
+
+## Where it stops
+
+Only the **physics server** is deterministic. The scene tree, rendering, input and scripting are not — they sit outside the physics state, and keeping them in step is the game's job. It is written down on the addon's own [determinism page](https://godot.rapier.rs/docs/documentation/determinism).
+
+Two reasons for a new engine:
+
+- I wanted the **whole game** deterministic, not one server inside it.
+- Fixing bugs in Godot, a fix waits on review, a merge and the next release. I wanted to fix something and ship it the same day.
+
+## What Balaur does instead
+
+- The **whole tick** is deterministic. Fixed **60 Hz** step, a **digest per tick**, `run --record` and `replay --verify`, rollback.
+- Network replies queue and land at the **start of a tick** — a replay covers logins and retries with no network.
+- **Rapier** is still the physics, 2D and 3D. Built with **Sébastien Crozet**, who writes it.
+- Scenes are **TOML**. Scripts are **Rune** and hot reload in milliseconds, state intact:
+
+<Clip name="scripting_live" alt="A script changed and saved while the scene runs, the new code live with the state kept" />
+
+## Where it is
+
+`0.1`, builds from source, no binary release yet. [Compare](/compare) says when to pick Godot, Bevy or Fyrox instead.
+
+The addon is a separate project and still maintained — same Rapier, same releases. There is a post on its blog too: [We are building a game engine](https://godot.rapier.rs/blog/balaur-engine/).
