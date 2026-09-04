@@ -24,6 +24,7 @@ const out = join(root, 'static', 'img', 'social');
 const CARDS = {
   home: ['A 2D & 3D game engine in Rust', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
   multiplayer: ['Multiplayer', 'Same inputs, same bits, on every machine: a fixed tick, digests, replay, rollback.', '/multiplayer'],
+  play: ['Play', 'The engine running in your browser: examples/hello on a canvas, through WebGPU.', '/play'],
   examples: ['Examples', 'Seven projects that ship with the engine: what each one shows, and the command that opens it.', '/examples'],
   compare: ['Compare', 'Balaur next to Godot, Bevy and Fyrox — honestly, as of September 2026.', '/compare'],
   faq: ['FAQ', 'Free? Which platforms? What language? Is it deterministic? The short answers.', '/faq'],

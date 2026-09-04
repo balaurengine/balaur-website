@@ -1,7 +1,8 @@
-import {useRef, useState, type ReactNode} from 'react';
+import {useEffect, useRef, useState, type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import {PageMetadata} from '@docusaurus/theme-common';
 import styles from './play.module.css';
 
 // The engine in the browser: the web template (scripts/package_template.sh
@@ -45,10 +46,17 @@ export default function Play(): ReactNode {
     }
   };
 
+  // `/play/?run` starts without the button — a link that opens on the game.
+  useEffect(() => {
+    if (window.location.search.includes('run')) void run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Layout
       title="Play — the engine running in your browser"
       description="Balaur running in the browser: the same engine, built to WebAssembly, drawing on a canvas through WebGPU. examples/hello, fetched as a pack and booted in the page.">
+      <PageMetadata image="/img/social/play.png" />
       <main className={styles.main}>
         <Heading as="h1">Balaur in the browser</Heading>
         <p className={styles.lede}>
@@ -83,15 +91,21 @@ export default function Play(): ReactNode {
         <p className={styles.note}>
           {status.kind === 'done'
             ? 'The game quit. Reload the page to run it again.'
-            : 'Needs WebGPU. The download is the engine plus the pack; nothing is fetched until you press the button.'}
+            : 'Needs WebGPU. The engine is about 4.5 MB compressed and nothing is fetched until you press the button; click the canvas to give it the keyboard.'}
         </p>
         <Heading as="h2">What this is, and is not</Heading>
         <p>
           It is the web template the engine builds on every push — <code>wasm32-unknown-unknown</code>, wasm-bindgen, a
-          wgpu surface on a canvas — running a pack the way a fused executable runs one on desktop. It is not the editor:
-          the editor reads and writes a project's files, and a browser has no project directory yet. That is the next
-          step on the <Link to="/docs/roadmap">roadmap</Link>, and the <Link to="/examples">examples</Link> and{' '}
-          <Link to="/docs/getting-started">getting started</Link> pages are the way to the real thing today.
+          wgpu surface on a canvas — running a pack the way a fused executable runs one on desktop, with the same
+          scripts, the same physics and the same fixed tick. Sound is off in the browser for now, and the pack carries
+          its scripts as source, because compiled bytecode is not yet portable between a 64-bit machine and the 32-bit
+          web runtime.
+        </p>
+        <p>
+          It is not the editor. The editor reads and writes a project's files, and a browser has no project directory:
+          giving it one — a file system behind the same script API, the editor's own project fetched beside the wasm —
+          is the next step on the <Link to="/docs/roadmap">roadmap</Link>. The <Link to="/examples">examples</Link> and{' '}
+          <Link to="/docs/getting-started">getting started</Link> pages are the way to the editor today.
         </p>
       </main>
     </Layout>

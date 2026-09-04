@@ -191,6 +191,7 @@ const config: Config = {
           label: 'Roadmap',
         },
         {to: '/blog', label: 'Devlog', position: 'left'},
+        {to: '/play', label: 'Play', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
         {
           href: 'https://github.com/balaurengine/balaur',
