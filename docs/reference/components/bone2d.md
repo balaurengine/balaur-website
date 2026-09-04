@@ -1,5 +1,6 @@
 ---
 title: "bone2d component"
+image: "/img/social/reference.png"
 sidebar_label: "bone2d"
 description: "Makes the node a 2D bone: the rest position and rotation about z a rig returns to, plus the length and angle its gizmo is drawn with. A skin names its…"
 custom_edit_url: null

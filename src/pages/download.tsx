@@ -2,6 +2,7 @@ import {useEffect, useState, type ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import {PageMetadata} from '@docusaurus/theme-common';
 import SoftwareJsonLd from '@site/src/components/SoftwareJsonLd';
 import styles from './download.module.css';
 
@@ -247,6 +248,7 @@ export default function Download(): ReactNode {
       title="Download"
       description="Download the Balaur editor: one binary that is also the CLI and every game's runtime.">
       <SoftwareJsonLd />
+      <PageMetadata image="/img/social/download.png" />
       <main className="container margin-vert--lg">
         <Heading as="h1">Download</Heading>
         <p>

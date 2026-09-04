@@ -1,5 +1,6 @@
 ---
 title: "widget component"
+image: "/img/social/reference.png"
 sidebar_label: "widget"
 description: "A HUD element the widget layer draws every frame: a label, button or panel anchored to a screen corner or the center, offset in design pixels. A button…"
 custom_edit_url: null

@@ -1,5 +1,6 @@
 ---
 title: "joint2d component"
+image: "/img/social/reference.png"
 sidebar_label: "joint2d"
 description: "Holds this node's body to another one in 2D: a hinge, a slider, a rope, a spring, or a generic joint you lock axis by axis. Both ends need a body2d."
 custom_edit_url: null

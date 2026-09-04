@@ -1,5 +1,6 @@
 ---
 title: "voxels asset type"
+image: "/img/social/reference.png"
 sidebar_label: "voxels"
 description: "A voxel grid for a collider: size is one cell in world units, cells the filled coordinates. Coordinates are signed, so a grid has no origin corner, and…"
 custom_edit_url: null

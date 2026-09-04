@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "node scripts/gen-reference.mjs && docusaurus start",
-    "build": "node scripts/gen-reference.mjs && docusaurus build",
+    "start": "node scripts/gen-reference.mjs && node scripts/optimize-images.mjs && docusaurus start",
+    "build": "node scripts/gen-reference.mjs && node scripts/optimize-images.mjs && docusaurus build",
     "gen-reference": "node scripts/gen-reference.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -14,7 +14,9 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "sync-docs": "bash scripts/sync-docs.sh"
+    "sync-docs": "bash scripts/sync-docs.sh",
+    "optimize-images": "node scripts/optimize-images.mjs",
+    "social-cards": "node scripts/social-cards.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",
@@ -32,6 +34,7 @@
     "@docusaurus/tsconfig": "3.10.2",
     "@docusaurus/types": "3.10.2",
     "@types/react": "^19.0.0",
+    "sharp": "^0.35.4",
     "typescript": "~6.0.2"
   },
   "browserslist": {

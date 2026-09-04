@@ -1,5 +1,6 @@
 ---
 title: "joint3d component"
+image: "/img/social/reference.png"
 sidebar_label: "joint3d"
 description: "Holds this node's body to another one: a hinge, a slider, a rope, a spring, a ball socket, or a generic joint you lock axis by axis. Both ends need a…"
 custom_edit_url: null

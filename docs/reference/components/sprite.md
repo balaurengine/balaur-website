@@ -1,5 +1,6 @@
 ---
 title: "sprite component"
+image: "/img/social/reference.png"
 sidebar_label: "sprite"
 description: "A textured 2D quad at the node, sized from its image at pixels_per_unit texture pixels per world unit. A columns x rows sheet makes it a flipbook frame…"
 custom_edit_url: null

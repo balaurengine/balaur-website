@@ -2,6 +2,7 @@
 title: "Scenes and nodes — TOML scenes over an ECS"
 sidebar_label: "Scenes and nodes"
 description: "How Balaur scenes work: nodes are ECS entities, scenes are plain TOML, and every component is a scene key, a script call and an inspector row at once."
+image: "/img/social/scenes.png"
 sidebar_position: 1
 ---
 
@@ -28,7 +29,7 @@ paths accept `..`, so `../Target` names a sibling. The full list is in the
 Structural changes requested by scripts (`queue_free`) are deferred to the
 end of the frame, so iteration is never invalidated mid-frame.
 
-![The node tree of examples/hello, with the Platform node's components in the inspector](/img/manual/scenes_tree.png)
+![The node tree of examples/hello, with the Platform node's components in the inspector](/img/manual/scenes_tree.webp)
 
 ## Scene files
 

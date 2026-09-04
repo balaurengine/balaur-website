@@ -1,5 +1,6 @@
 ---
 title: "vehicle3d component"
+image: "/img/social/reference.png"
 sidebar_label: "vehicle3d"
 description: "Makes this node's body a car chassis, driven by the wheel3d children under it. Rapier casts a ray down from each wheel and pushes the chassis along a…"
 custom_edit_url: null

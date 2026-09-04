@@ -1,5 +1,6 @@
 ---
 title: "particles component"
+image: "/img/social/reference.png"
 sidebar_label: "particles"
 description: "A purely visual 2D emitter at the node: rate, lifetime, speed, cone and gravity. The live particles and the randomness scattering them are backend state…"
 custom_edit_url: null

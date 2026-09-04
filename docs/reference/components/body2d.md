@@ -1,5 +1,6 @@
 ---
 title: "body2d component"
+image: "/img/social/reference.png"
 sidebar_label: "body2d"
 description: "Makes the node a 2D rigid body rapier simulates, in the xy plane: dynamic falls and responds to forces, static never moves, kinematic is moved by script…"
 custom_edit_url: null

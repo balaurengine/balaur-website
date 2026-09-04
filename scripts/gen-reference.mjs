@@ -116,6 +116,7 @@ const frontMatter = (title, extra = {}) =>
   [
     '---',
     `title: ${JSON.stringify(title)}`,
+    'image: "/img/social/reference.png"',
     ...Object.entries(extra).map(([k, v]) => `${k}: ${typeof v === 'string' ? JSON.stringify(v) : v}`),
     'custom_edit_url: null',
     '---',

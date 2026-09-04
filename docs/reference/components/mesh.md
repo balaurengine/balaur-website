@@ -1,5 +1,6 @@
 ---
 title: "mesh component"
+image: "/img/social/reference.png"
 sidebar_label: "mesh"
 description: "Authored 3D geometry from a mesh asset, drawn at the node and deformed by the rig skeleton names when the asset carries a skin."
 custom_edit_url: null

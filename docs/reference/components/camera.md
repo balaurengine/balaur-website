@@ -1,5 +1,6 @@
 ---
 title: "camera component"
+image: "/img/social/reference.png"
 sidebar_label: "camera"
 description: "The view the scene is drawn from, following the node's global pose: look_at aims the 3D camera, zoom scales the 2D one in logical pixels per world unit.…"
 custom_edit_url: null

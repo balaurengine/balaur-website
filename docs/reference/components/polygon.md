@@ -1,5 +1,6 @@
 ---
 title: "polygon component"
+image: "/img/social/reference.png"
 sidebar_label: "polygon"
 description: "A filled, textured 2D polygon from a mesh asset's points and triangles, deformed by the rig skeleton names when the mesh carries skin weights."
 custom_edit_url: null

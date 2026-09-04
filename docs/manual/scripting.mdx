@@ -2,6 +2,7 @@
 title: "Scripting in Rune — hot reload and a debugger"
 sidebar_label: "Scripting"
 description: "Scripting Balaur in Rune: lifecycle hooks, exported properties, async/await, hot reload that keeps state, and a debugger with breakpoints in the editor."
+image: "/img/social/scripting.png"
 sidebar_position: 2
 ---
 
@@ -44,7 +45,7 @@ belongs. See [Determinism](./determinism.mdx).
 `project.toml` names the language with `language`; it defaults to `"rune"`,
 and any other value is an error.
 
-![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.png)
+![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.webp)
 
 ## Exported properties
 
@@ -194,7 +195,7 @@ caret — and the previously compiled code keeps running. Because Rune
 resolves module paths at compile time, a misspelled engine call is caught
 on save, not when the line finally runs.
 
-![A save that did not compile, reported in the Output dock](/img/editor/save_error.png)
+![A save that did not compile, reported in the Output dock](/img/editor/save_error.webp)
 
 ## Debugging
 

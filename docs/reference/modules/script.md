@@ -1,5 +1,6 @@
 ---
 title: "script module"
+image: "/img/social/reference.png"
 sidebar_label: "script"
 description: "Loading other scripts, inspecting what they declare, and calling into them without a failure taking the frame down."
 custom_edit_url: null

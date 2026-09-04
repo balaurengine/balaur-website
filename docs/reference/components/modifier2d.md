@@ -1,5 +1,6 @@
 ---
 title: "modifier2d component"
+image: "/img/social/reference.png"
 sidebar_label: "modifier2d"
 description: "Aims a 2D bone at a target node every frame, after the clip has posed the rig: look_at turns one bone toward the target, two_bone_ik bends a root, middle…"
 custom_edit_url: null

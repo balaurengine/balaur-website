@@ -1,5 +1,6 @@
 ---
 title: "Reference — components, asset types and script modules"
+image: "/img/social/reference.png"
 sidebar_label: "Reference"
 sidebar_position: 0
 slug: "/reference"

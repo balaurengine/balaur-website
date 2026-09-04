@@ -36,7 +36,7 @@ export default function Clip({name, alt}: {name: string; alt?: string}) {
       playsInline
       controls
       preload="none"
-      poster={`/img/manual/${name}.png`}
+      poster={`/img/manual/${name}.webp`}
       aria-label={alt}
       style={{width: '100%', height: 'auto', display: 'block', margin: '1rem 0'}}>
       <source src={`/video/${name}.webm`} type="video/webm" />

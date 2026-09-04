@@ -1,5 +1,6 @@
 ---
 title: "json module"
+image: "/img/social/reference.png"
 sidebar_label: "json"
 description: "JSON text to and from script values, for talking to anything outside the engine. Unlike TOML it has null, so nil survives a round trip."
 custom_edit_url: null

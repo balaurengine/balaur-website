@@ -1,5 +1,6 @@
 ---
 title: "assets module"
+image: "/img/social/reference.png"
 sidebar_label: "assets"
 description: "Asset definitions by reference: a project-relative file path, file#entry for one entry inside it, or #id for a block the scene declares. A script gets…"
 custom_edit_url: null

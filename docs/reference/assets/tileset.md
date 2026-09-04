@@ -1,5 +1,6 @@
 ---
 title: "tileset asset type"
+image: "/img/social/reference.png"
 sidebar_label: "tileset"
 description: "An image cut into equal tiles for the tilemap component: texture names the image, tile_size is the pixel length of one tile edge and columns is how many…"
 custom_edit_url: null

@@ -1,5 +1,6 @@
 ---
 title: "shape2d component"
+image: "/img/social/reference.png"
 sidebar_label: "shape2d"
 description: "An untextured 2D primitive drawn at the node -- circle, rect, capsule or a polyline traced through a mesh asset's points -- sized in world units."
 custom_edit_url: null

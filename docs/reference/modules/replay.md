@@ -1,5 +1,6 @@
 ---
 title: "replay module"
+image: "/img/social/reference.png"
 sidebar_label: "replay"
 description: "Record what a running game is fed and play it back. A recording holds each tick's input, network arrivals and events, not the world they produced, so a…"
 custom_edit_url: null

@@ -1,5 +1,6 @@
 ---
 title: "node module"
+image: "/img/social/reference.png"
 sidebar_label: "node"
 description: "What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the…"
 custom_edit_url: null

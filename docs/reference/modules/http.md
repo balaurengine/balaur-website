@@ -1,5 +1,6 @@
 ---
 title: "http module"
+image: "/img/social/reference.png"
 sidebar_label: "http"
 description: "HTTP calls, off the frame: the reply arrives on a later tick as a map with status, headers and body, or with error, both to the node's on_response method…"
 custom_edit_url: null

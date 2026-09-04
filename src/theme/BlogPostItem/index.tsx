@@ -14,7 +14,10 @@ type Props = WrapperProps<typeof BlogPostItemType>;
 export default function BlogPostItemWrapper(props: Props): ReactNode {
   const {metadata, isBlogPostPage} = useBlogPost();
   const image = metadata.frontMatter.image;
-  const src = useBaseUrl(image ?? '');
+  // The front matter names the PNG, which stays the og:image for link
+  // unfurlers; on the page itself the screenshot dirs have a lossless WebP
+  // beside every PNG (scripts/optimize-images.mjs), a third of the bytes.
+  const src = useBaseUrl((image ?? '').replace(/^(\/img\/(?:manual|editor)\/[^/]+)\.png$/, '$1.webp'));
   return (
     <>
       {image && (

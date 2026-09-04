@@ -26,3 +26,7 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/versions
 .pnp.*
+
+# Derived from the PNG screenshots by scripts/optimize-images.mjs
+/static/img/manual/*.webp
+/static/img/editor/*.webp

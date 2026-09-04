@@ -13,8 +13,8 @@ export default function prismIncludeLanguages(
 ): void {
   const {
     themeConfig: {prism},
-  } = siteConfig as {themeConfig: {prism: {additionalLanguages: string[]}}};
-  const {additionalLanguages} = prism;
+  } = siteConfig;
+  const {additionalLanguages} = prism as {additionalLanguages: string[]};
 
   const PrismBefore = globalThis.Prism;
   globalThis.Prism = PrismObject;

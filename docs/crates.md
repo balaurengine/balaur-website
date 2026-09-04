@@ -1,6 +1,7 @@
 ---
 title: "Crates — the Rust workspace, crate by crate"
 sidebar_label: "Crates"
+image: "/img/social/crates.png"
 description: "One section per crate in the Balaur game engine workspace: what each is for and what it depends on."
 custom_edit_url: null
 ---

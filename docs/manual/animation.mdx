@@ -2,6 +2,7 @@
 title: "Animation — clips, tweens, skeletons and IK"
 sidebar_label: "Animation"
 description: "Animation in Balaur: clips with tracks and easings, tweens from scripts, 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK."
+image: "/img/social/animation.png"
 sidebar_position: 4
 ---
 
@@ -138,7 +139,7 @@ node at `pixels_per_unit`. Skinning runs on the GPU from a joint palette the
 engine computes from the scene tree — a headless run computes the same
 palette, so bones are part of the determinism digest.
 
-![A polygon's inspector: vertices, drawn polygons, bones and brush](/img/editor/component_limb.png)
+![A polygon's inspector: vertices, drawn polygons, bones and brush](/img/editor/component_limb.webp)
 
 The `skeleton` module has Godot's two rest-pose verbs and a query:
 `skeleton::apply_rest(node)` returns a rig to its rest pose,
@@ -154,7 +155,7 @@ the triangulation by hand, *UV* places the points over the texture, and
 *Weights* paints bone influence with a brush — and the polygon stays skinned
 while you edit it.
 
-![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.png)
+![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.webp)
 
 ### Modifiers
 

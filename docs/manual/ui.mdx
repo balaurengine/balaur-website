@@ -2,6 +2,7 @@
 title: "UI — HUD widgets and immediate-mode tools"
 sidebar_label: "UI"
 description: "Two UI layers in Balaur: widget components for game HUDs, saved in the scene and edited in the inspector, and an immediate-mode ui module for tools."
+image: "/img/social/ui.png"
 sidebar_position: 6
 ---
 
@@ -67,7 +68,7 @@ Widgets live in the scene tree like any node, so they are saved with the
 scene, editable in the editor (which previews them in its viewport), and
 updatable from scripts through the component handle.
 
-![The Interface persona: examples/angrynerds' Score, Birds, Hint and Restart widgets in the tree, the HUD over the safe area, and the Restart button in the inspector](/img/manual/ui_widgets.png)
+![The Interface persona: examples/angrynerds' Score, Birds, Hint and Restart widgets in the tree, the HUD over the safe area, and the Restart button in the inspector](/img/manual/ui_widgets.webp)
 
 A button's `on_click` names a method on the button's own node, so a button
 that acts on another node's script forwards the call:

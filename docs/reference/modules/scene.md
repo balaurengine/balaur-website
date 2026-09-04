@@ -1,5 +1,6 @@
 ---
 title: "scene module"
+image: "/img/social/reference.png"
 sidebar_label: "scene"
 description: "The node tree: its root, lookup by path, spawning and instancing. Also the component and preset vocabulary an editor builds its palette from."
 custom_edit_url: null

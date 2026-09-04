@@ -1,5 +1,6 @@
 ---
 title: "character3d component"
+image: "/img/social/reference.png"
 sidebar_label: "character3d"
 description: "Moves a node the way a player expects rather than the way physics would: physics3d.move_character slides it along walls, steps it up ledges, keeps it off…"
 custom_edit_url: null

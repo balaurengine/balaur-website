@@ -1,5 +1,6 @@
 ---
 title: "mesh asset type"
+image: "/img/social/reference.png"
 sidebar_label: "mesh"
 description: "Geometry for mesh-typed properties. A definition either names a source model file to import or carries the vertices itself as positions and indices…"
 custom_edit_url: null
