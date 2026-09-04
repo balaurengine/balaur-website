@@ -1,0 +1,76 @@
+---
+title: "2D & 3D skeletal animation for games, in the engine"
+description: "Bones, mesh skinning with painted weights, two-bone IK and look-at, a timeline with keys — on the rig that ships in the game. Free, MIT, 2D and 3D."
+image: "/img/social/animate.png"
+---
+
+import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartBand} from '@site/src/components/PersonaPage';
+
+<PersonaHero
+  who="For animators"
+  persona="Animate persona"
+  title="Skeletal animation, 2D and 3D, inside the engine you ship with."
+  image="persona_animate"
+  alt="The Animate persona on examples/rig: bones in the tree, the Thigh selected, the timeline with its keys"
+  primary={{to: '/examples#rig', label: 'Open examples/rig'}}
+  secondary={{to: '/docs/manual/animation', label: 'Animation manual'}}>
+  Bones and mesh skinning with painted weights, two-bone IK and look-at, keys in a timeline — on the rig that runs in the game, so there is no export step and no runtime to integrate.
+</PersonaHero>
+
+<Section title="What you get">
+  <Features items={[
+    {icon: 'bone', tone: 'animation', title: 'Bones and skins', text: <>A bone is a node with a rest pose; a skin is a textured polygon with painted weights. Bend and deform images with mesh skinning, and paint the weights in the polygon tool's Weights mode.</>},
+    {icon: 'magic-wand', tone: 'animation', title: 'Pose with inverse kinematics', text: <>Two-bone IK and look-at run as modifiers after the clip: drag a target and the limb follows. Key the target, not the joints.</>},
+    {icon: 'film-strip', tone: 'animation', title: 'A timeline with keys', text: <>Clips are tracks over time — position, rotation, scale, any component property — with twelve easings, step, linear and cubic interpolation, and method tracks that call your script at a time.</>},
+    {icon: 'cube', tone: '3d', title: '3D rigs from glTF', text: <><code>balaur import model.glb</code> writes the joints, the mesh and the animations as TOML the editor edits; GPU skinning draws the result.</>},
+  ]} />
+</Section>
+
+<Section title="How it works" sub="A clip is a file, or lives in the scene. Either way it is TOML you can read, diff and review.">
+  <HowItWorks file="animations/platform.toml" code={`type = "animation_clip"
+
+[clips.patrol]
+length = 4.0
+loop = "pingpong"
+
+[[clips.patrol.tracks]]
+property = "position"      # position | rotation_euler | rotation | scale | <component>/<property>
+interp = "linear"          # step | linear | cubic
+keys = [
+  { t = 0.0, value = [-2.5, 0.25, -2.0] },
+  { t = 4.0, value = [-2.5, 0.25, 2.0], ease = "in_out_sine" },
+]
+
+[[clips.patrol.tracks]]
+keys = [{ t = 4.0, call = "on_reached_end" }]   # a method track`}>
+
+A clip is a length, what to do with time past it — none, loop or pingpong — and a list of tracks. Each track addresses a property by path and keys it; a method track calls a script function at a time. Clips live in their own file or inline in the node, and a library file holds several under `[clips.<name>]`.
+
+Skeletons are nodes: a bone is any node carrying `bone2d` or `bone3d`, so the tree is the rig and the same clip keys bones by path.
+
+  </HowItWorks>
+</Section>
+
+<Section title="In the editor" sub="The Animate persona arranges the tree, the viewport and the timeline around one job.">
+  <EditorCards items={[
+    {icon: 'bone', tone: 'animation', title: 'Bone tool', text: 'Place bones in the viewport; each is a node in the tree with a rest pose to return to.'},
+    {icon: 'polygon', tone: '2d', title: 'Polygon tool', text: 'Points, Polygons, UV and Weights modes: draw the skin, then paint how much each bone moves each vertex.'},
+    {icon: 'film-strip', tone: 'animation', title: 'Timeline dock', text: 'Scrub, pose, key. Keys show per track; play the clip in the editor without leaving the scene.'},
+  ]} />
+</Section>
+
+<Section title="Next to Spine" sub="Spine is the standard 2D skeletal animator; this is where Balaur stands next to it, honestly.">
+  <Compare rival="Spine" rows={[
+    ['Where the rig lives', 'In Spine; exported to a runtime in your engine', 'In the game project, as TOML; the editor and the game are one binary'],
+    ['Mesh deformation', 'Mesh skinning with weights', 'Skinned polygons with painted weights'],
+    ['Posing', 'Full IK, transform and path constraints', 'Two-bone IK and look-at; more on the roadmap'],
+    ['Price and licence', 'Per-seat licence', 'Free, MIT'],
+    ['Maturity', 'A decade of shipped games', 'Weeks old, no binary release yet'],
+  ]} />
+</Section>
+
+<StartBand
+  title="Rig something."
+  text="examples/rig is one figure — a skinned leg on a clip, an arm on two-bone IK. Open it and move the target."
+  primary={{to: '/examples#rig', label: 'Open examples/rig'}}
+  secondary={{to: '/docs/manual/animation', label: 'Animation manual'}} />

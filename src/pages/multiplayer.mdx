@@ -1,0 +1,65 @@
+---
+title: "A deterministic game engine for lockstep and rollback multiplayer"
+description: "Same inputs, same bits on every machine: a fixed 60 Hz tick, a digest per tick, input-only recording with the network included, replay, rollback. Free, MIT."
+image: "/img/social/multiplayer.png"
+---
+
+import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartBand} from '@site/src/components/PersonaPage';
+
+<PersonaHero
+  who="For multiplayer and simulation"
+  persona="Physics persona"
+  title="Same inputs, same bits, on every machine."
+  image="persona_physics"
+  alt="The Physics persona on examples/angrynerds: collider overlays over the scene, the Bird's body2d in the inspector"
+  primary={{to: '/docs/manual/determinism', label: 'Determinism manual'}}
+  secondary={{to: '/examples#angrynerds', label: 'Open examples/angrynerds'}}>
+  A fixed 60 Hz tick, a digest per tick, recording of inputs only with the network included, replay and rollback — determinism as an engine guarantee you can verify, not a discipline you have to enforce.
+</PersonaHero>
+
+<Section title="What you get">
+  <Features items={[
+    {icon: 'timer', tone: 'physics', title: 'A fixed tick, and proof', text: <>Physics and animation step on one 60 Hz accumulator, never the frame delta. Every tick has a digest, and <code>balaur replay --verify</code> stops at the first tick two runs disagree on.</>},
+    {icon: 'record', tone: 'physics', title: 'Record inputs only', text: <>A session is each tick's input, network arrivals and events — not the world they produced — so it is small, and it replays by re-running the game against the same input.</>},
+    {icon: 'arrows-clockwise', tone: 'physics', title: 'Rollback', text: <>The <code>rollback</code> module decides each tick's inputs before the tick runs: the real one where it has arrived, a prediction where it has not, and re-simulates when the truth lands.</>},
+    {icon: 'broadcast', title: 'Networking that replays', text: <>HTTP, websockets and QUIC complete on worker threads and enter the simulation once per tick, at its start, recorded in the snapshot; a Gamend backend adds login, rooms and server hooks.</>},
+  ]} />
+</Section>
+
+<Section title="How it works" sub="Three commands: trace, record, verify.">
+  <HowItWorks file="the command line" code={`balaur run my-game --fixed-tick --trace-digest run-a.txt
+
+balaur run my-game --fixed-tick --record session.blr
+balaur replay session.blr --verify          # stops at the first tick that disagrees
+balaur replay session.blr --entries-at 25   # that tick, one digest per node and component`}>
+
+The engine measures its own determinism rather than asserting it: Rapier's enhanced-determinism feature in both worlds, transcendentals on the libm crate instead of the platform's math library, a fixed step, and a per-tick digest of every node and component.
+
+Record a session on one machine, replay it on another, and the digests either match or the replay names the tick and the node that differ.
+
+  </HowItWorks>
+</Section>
+
+<Section title="In the editor" sub="The Physics persona draws what the simulation sees; the Session dock records it.">
+  <EditorCards items={[
+    {icon: 'timer', tone: 'physics', title: 'Physics persona', text: "Every body's collider and centre of mass drawn over the scene; show colliders, sleep bodies, step."},
+    {icon: 'record', tone: 'physics', title: 'Session dock', text: 'Record and replay from the editor; its own recordings listed, replayable with the network included.'},
+    {icon: 'broadcast', title: 'Once per tick', text: 'Input and network are one snapshot per tick; the Input overlay shows what the tick saw.'},
+  ]} />
+</Section>
+
+<Section title="Next to Photon Quantum" sub="Quantum is the deterministic multiplayer engine people know; Balaur makes the same promise at the engine level, without the platform around it.">
+  <Compare rival="Photon Quantum" rows={[
+    ['Determinism', '100% deterministic, predict/rollback', 'Bit-exact across platforms, verified by digest; a rollback module'],
+    ['Bandwidth', 'Input only', 'Input only — sessions are inputs, not state'],
+    ['Where it runs', "A Unity SDK and Photon's cloud", 'The engine itself; any backend, Gamend included'],
+    ['Cost', 'Licensed, per CCU', 'Free, MIT'],
+    ['Maturity', 'Shipped e-sport titles', 'Weeks old; rollback is new'],
+  ]} />
+</Section>
+
+<StartBand
+  title="Record a session, replay it, watch the digests agree."
+  text="angrynerds records itself from the Session dock; balaur replay --verify does the rest."
+  primary={{to: '/docs/manual/determinism', label: 'Determinism manual'}}
+  secondary={{to: '/examples#angrynerds', label: 'Open examples/angrynerds'}} />

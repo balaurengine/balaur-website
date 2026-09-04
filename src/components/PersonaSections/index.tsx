@@ -40,6 +40,7 @@ const PERSONAS: Persona[] = [
     links: [
       {to: '/docs/manual/scenes', label: 'Scenes and nodes'},
       {to: '/docs/manual/ui', label: 'UI'},
+      {to: '/examples#angrynerds', label: 'Open examples/angrynerds'},
     ],
   },
   {
@@ -57,6 +58,7 @@ const PERSONAS: Persona[] = [
     links: [
       {to: '/docs/manual/scripting', label: 'Scripting'},
       {to: '/docs/manual/extensions', label: 'Extensions'},
+      {to: '/examples#hello', label: 'Open examples/hello'},
     ],
   },
   {
@@ -72,8 +74,9 @@ const PERSONAS: Persona[] = [
     clip: 'animation_key',
     alt: 'Scrubbing a clip, posing a bone, keying it, and playing it back',
     links: [
-      {to: '/docs/manual/animation', label: 'Animation'},
-      {to: '/docs/manual/animation#skeletons-and-skins', label: 'Skeletons and skins'},
+      {to: '/animate', label: 'Balaur for animators'},
+      {to: '/docs/manual/animation', label: 'Animation manual'},
+      {to: '/examples#rig', label: 'Open examples/rig'},
     ],
   },
   {
@@ -89,8 +92,9 @@ const PERSONAS: Persona[] = [
     clip: 'determinism_replay',
     alt: 'A recorded session replayed to the same per-tick digests',
     links: [
-      {to: '/docs/manual/determinism', label: 'Determinism'},
-      {to: '/docs/manual/networking', label: 'Networking'},
+      {to: '/multiplayer', label: 'Balaur for multiplayer'},
+      {to: '/docs/manual/determinism', label: 'Determinism manual'},
+      {to: '/examples#angrynerds', label: 'Open examples/angrynerds'},
     ],
   },
   {
@@ -108,6 +112,7 @@ const PERSONAS: Persona[] = [
     links: [
       {to: '/docs/manual/rendering', label: 'Rendering'},
       {to: '/docs/manual/shaders', label: 'Shaders and materials'},
+      {to: '/examples#shaders', label: 'Open examples/shaders'},
     ],
   },
 ];

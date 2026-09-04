@@ -6,7 +6,6 @@ import Layout from '@theme/Layout';
 import ThemedImage from '@theme/ThemedImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import HomepageShowcase from '@site/src/components/HomepageShowcase';
 import PersonaSections from '@site/src/components/PersonaSections';
 import SoftwareJsonLd from '@site/src/components/SoftwareJsonLd';
 import Heading from '@theme/Heading';
@@ -74,10 +73,9 @@ export default function Home(): ReactNode {
       <SoftwareJsonLd />
       <Header />
       <main>
-        {/* Who it is for, one section each, then the catalogue and the editor. */}
+        {/* Who it is for, one section each, then the catalogue. */}
         <PersonaSections />
         <HomepageFeatures />
-        <HomepageShowcase />
         <section className={styles.cta}>
           <div className="container">
             <p className={styles.ctaText}>Free and open source, MIT. Windows, macOS and Linux.</p>

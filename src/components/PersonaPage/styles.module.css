@@ -1,0 +1,255 @@
+.hero {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem 3rem;
+  align-items: center;
+  padding: 3rem 0 3.5rem;
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  align-items: baseline;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary);
+}
+
+.persona {
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.h1 {
+  font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
+  line-height: 1.08;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.sub {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.sub p {
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--balaur-card-bg);
+}
+
+.section {
+  padding: 2.75rem 0;
+  border-top: 1px solid var(--balaur-card-border);
+}
+
+.h2 {
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem;
+}
+
+.sectionSub {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 1.05rem;
+  max-width: 44em;
+  margin: 0 0 1.75rem;
+}
+
+.h3 {
+  font-size: 1.2rem;
+  margin: 0 0 0.35rem;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.feature {
+  display: grid;
+  grid-template-columns: 1.9rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.featureIcon {
+  width: 1.9rem;
+  height: 1.9rem;
+  margin: 0.1rem 0 0;
+}
+
+.featureText {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.55;
+}
+
+.how {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 2rem 2.5rem;
+  align-items: start;
+}
+
+.howText p {
+  font-size: 1.05rem;
+}
+
+.howText p:last-child {
+  margin-bottom: 0;
+}
+
+.code {
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--ifm-code-background);
+  overflow: hidden;
+}
+
+.codeFile {
+  padding: 0.5rem 1rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-600);
+  border-bottom: 1px solid var(--balaur-card-border);
+}
+
+.codePre {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  background: transparent;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--balaur-card-bg);
+}
+
+.cardIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0;
+}
+
+.cardText {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.5;
+}
+
+.compare {
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  background: var(--balaur-card-bg);
+  overflow: hidden;
+}
+
+.compareHead,
+.compareRow {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr 1.4fr;
+  gap: 1rem;
+  padding: 0.75rem 1.1rem;
+}
+
+.compareHead {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-600);
+  border-bottom: 1px solid var(--balaur-card-border);
+}
+
+.compareUs {
+  color: var(--ifm-color-primary);
+}
+
+.compareRow {
+  border-bottom: 1px solid var(--ifm-color-emphasis-100);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.compareRow:last-child {
+  border-bottom: 0;
+}
+
+.compareWhat {
+  font-weight: 600;
+}
+
+.compareThem {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.start {
+  padding: 3rem 0 1rem;
+  text-align: center;
+  border-top: 1px solid var(--balaur-card-border);
+}
+
+.startText {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 1.05rem;
+  margin: 0 0 1.25rem;
+}
+
+@media screen and (max-width: 996px) {
+  .hero,
+  .features,
+  .how,
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .compareHead,
+  .compareRow {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+  }
+}
