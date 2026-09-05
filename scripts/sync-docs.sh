@@ -59,6 +59,30 @@ if fetch features.md "$tmp"; then
 fi
 rm -f "$tmp"
 
+# The benchmark report, from the engine's docs/ rather than docs/generated:
+# `scripts/bench_compare.py` there writes it from a real run on a real
+# machine, and it is committed rather than generated in CI.
+tmp="$(mktemp)"
+if [[ -n "${BALAUR_REPO:-}" ]]; then
+  cp "$BALAUR_REPO/docs/BENCHMARKS.md" "$tmp" && benchmarks=1 || benchmarks=0
+elif curl -fsSL "$ROOT_URL/docs/BENCHMARKS.md" -o "$tmp"; then
+  benchmarks=1
+else
+  benchmarks=0
+fi
+if [[ "$benchmarks" == 1 ]]; then
+  {
+    printf -- '---\ntitle: "Benchmarks — Balaur beside Godot, case for case"\nsidebar_label: "Benchmarks"\nimage: "/img/social/benchmarks.png"\ndescription: "The Balaur game engine measured on the same physics and scene-tree scenes the Godot benchmark suites publish: what a tick costs, what rapier costs inside it, and what the engine adds."\ncustom_edit_url: null\n---\n\n'
+    # The generator banner and its own `# Benchmarks` heading would repeat
+    # the page title.
+    sed -e '/^<!-- Written by scripts/d' -e '1,4{/^# Benchmarks$/d;}' "$tmp"
+  } >"$ROOT/docs/benchmarks.md"
+  echo "synced BENCHMARKS.md"
+else
+  echo "warning: could not fetch BENCHMARKS.md; keeping the committed copy" >&2
+fi
+rm -f "$tmp"
+
 # The changelog, from the engine's root rather than docs/generated.
 tmp="$(mktemp)"
 if [[ -n "${BALAUR_REPO:-}" ]]; then

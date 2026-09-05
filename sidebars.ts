@@ -18,6 +18,7 @@ const sidebars: SidebarsConfig = {
     },
     'architecture',
     'crates',
+    'benchmarks',
     'changelog',
     'built-on',
   ],

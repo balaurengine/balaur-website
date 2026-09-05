@@ -20,7 +20,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PLAY="$ROOT/static/play"
 TAG="${ENGINE_TAG:-nightly}"
 BASE="https://github.com/balaurengine/balaur/releases/download/$TAG"
-FILES=(balaur.js balaur_bg.wasm editor.bpak hello.bpak angrynerds.bpak rig.bpak)
+FILES=(balaur.js balaur_bg.wasm editor.bpak hello.bpak angrynerds.bpak rig.bpak benchmark.bpak)
 
 warn() { echo "warning: $*; keeping the committed copy" >&2; }
 
