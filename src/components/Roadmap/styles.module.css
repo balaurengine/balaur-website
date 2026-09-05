@@ -13,6 +13,27 @@
   background: var(--balaur-card-bg);
 }
 
+/* Later tiers keep the card but lighten the rule down its side. */
+.tier2 {
+  border-left-color: var(--ifm-color-emphasis-500);
+}
+
+.tier3 {
+  border-left-color: var(--ifm-color-emphasis-300);
+}
+
+.tier {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0 0 0.5rem;
+}
+
+.tier1 .tier {
+  color: var(--ifm-color-primary);
+}
+
 .title {
   font-family: var(--balaur-display-font);
   font-size: 1.5rem;
@@ -26,4 +47,3 @@
   color: var(--ifm-color-emphasis-800);
   margin: 0;
 }
-

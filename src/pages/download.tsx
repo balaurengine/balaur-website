@@ -7,8 +7,12 @@ import SoftwareJsonLd from '@site/src/components/SoftwareJsonLd';
 import styles from './download.module.css';
 
 const REPO = 'balaurengine/balaur';
-const RELEASES_API = `https://api.github.com/repos/${REPO}/releases?per_page=5`;
+// The build the page offers. `nightly` is the prerelease every merge to the
+// engine's main branch replaces; a version tag here pins the page to it.
+const RELEASE_TAG = 'nightly';
+const RELEASE_API = `https://api.github.com/repos/${REPO}/releases/tags/${RELEASE_TAG}`;
 const RELEASES_URL = `https://github.com/${REPO}/releases`;
+const COMMIT_URL = `https://github.com/${REPO}/commit`;
 
 type Asset = {
   name: string;
@@ -23,6 +27,8 @@ type Release = {
   html_url: string;
   published_at: string;
   prerelease: boolean;
+  // The full commit sha for the nightly, a branch name otherwise.
+  target_commitish: string;
   assets: Asset[];
 };
 
@@ -151,16 +157,28 @@ function ReleaseView({release}: {release: Release}) {
     (a) => !a.name.startsWith('balaur-editor-'),
   );
   const date = new Date(release.published_at).toISOString().slice(0, 10);
+  const nightly = release.tag_name === 'nightly';
+  const commit = /^[0-9a-f]{40}$/.test(release.target_commitish) ? release.target_commitish : null;
 
   return (
     <>
       <Heading as="h2">
         {release.name || release.tag_name}
-        {release.prerelease && <span className={styles.badge}>pre-release</span>}
+        {nightly ? (
+          <span className={styles.badge}>nightly</span>
+        ) : (
+          release.prerelease && <span className={styles.badge}>pre-release</span>
+        )}
       </Heading>
       <p className={styles.meta}>
-        {release.tag_name} · published {date} ·{' '}
-        <a href={release.html_url}>view on GitHub</a>
+        {nightly ? 'built' : release.tag_name + ' · published'} {date}
+        {commit && (
+          <>
+            {' '}
+            from <a href={`${COMMIT_URL}/${commit}`}>{commit.slice(0, 7)}</a>
+          </>
+        )}{' '}
+        · <a href={release.html_url}>view on GitHub</a>
       </p>
 
       <div className={styles.grid}>
@@ -224,16 +242,15 @@ export default function Download(): ReactNode {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(RELEASES_API, {headers: {Accept: 'application/vnd.github+json'}})
+    fetch(RELEASE_API, {headers: {Accept: 'application/vnd.github+json'}})
       .then((res) => {
-        if (res.status === 404) return [];
+        if (res.status === 404) return null;
         if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
         return res.json();
       })
-      .then((releases: Release[]) => {
+      .then((release: Release | null) => {
         if (cancelled) return;
-        const latest = Array.isArray(releases) ? releases[0] : undefined;
-        setState(latest ? {kind: 'release', release: latest} : {kind: 'none'});
+        setState(release?.tag_name ? {kind: 'release', release} : {kind: 'none'});
       })
       .catch(() => {
         if (!cancelled) setState({kind: 'error'});
@@ -260,22 +277,27 @@ export default function Download(): ReactNode {
           <code>include/balaur_extension.h</code>, the header C extensions are
           built against.
         </p>
+        <p>
+          There is no numbered release yet. What is offered here is the
+          nightly: the engine as of the last merge to <code>main</code>,
+          rebuilt on every merge. The <Link to="/editor">web editor</Link> runs
+          a recent nightly.
+        </p>
 
         {state.kind === 'loading' && (
           <div className={styles.stateCard}>
-            <p style={{margin: 0}}>Checking the latest release…</p>
+            <p style={{margin: 0}}>Checking the nightly…</p>
           </div>
         )}
 
         {state.kind === 'none' && (
           <div className={styles.stateCard}>
-            <Heading as="h2">No release yet</Heading>
+            <Heading as="h2">No nightly yet</Heading>
             <p>
-              Balaur has no published release at the moment; CI drafts one on
-              every push, and the first published build will appear here
-              automatically. Until then, the engine builds from source in a few
-              minutes with a Rust toolchain — see{' '}
-              <Link to="/docs/getting-started">Getting started</Link>.
+              The nightly has not been published; CI publishes one on every
+              push to <code>main</code>, and it appears here on its own. Until
+              then, the engine builds from source in a few minutes with a Rust
+              toolchain — see <Link to="/docs/getting-started">Getting started</Link>.
             </p>
             <p style={{marginBottom: 0}}>
               <a href={RELEASES_URL}>Releases on GitHub</a>
@@ -287,7 +309,7 @@ export default function Download(): ReactNode {
           <div className={styles.stateCard}>
             <Heading as="h2">Could not reach GitHub</Heading>
             <p style={{marginBottom: 0}}>
-              The release list could not be fetched just now. See the{' '}
+              The nightly could not be fetched just now. See the{' '}
               <a href={RELEASES_URL}>releases page on GitHub</a> directly.
             </p>
           </div>

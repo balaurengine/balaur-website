@@ -22,9 +22,10 @@ from.
 They follow the engine on their own: the engine's CI packs all of them into
 `balaur-play.tar.gz` on every release (`scripts/package_play.sh` there), and
 `scripts/sync-play.sh` here fetches that bundle from the `nightly` prerelease,
-verified against the release's `SHA256SUMS`. The deploy workflow runs it daily
-and on every push, commits a change as `engine nightly-<sha>`, and deploys
-in the same run. To pin the site to a release, set `ENGINE_TAG` in
+verified against the release's `SHA256SUMS`. To pull a newer nightly, run the
+deploy workflow by hand (Actions → Deploy to GitHub Pages → Run workflow): it
+commits the change as `engine nightly-<sha>` and deploys in the same run. To
+pin the site to a release, set `ENGINE_TAG` in
 `.github/workflows/deploy.yml` to its tag; to refresh by hand, run the script
 (`FORCE=1` re-downloads the same build), or point it at a local engine build:
 

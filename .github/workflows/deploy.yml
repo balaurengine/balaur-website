@@ -5,11 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Run by hand to pull the engine's nightly into static/play (see below).
   workflow_dispatch:
-  schedule:
-    # Daily: the synced reference docs track the engine's main branch, and
-    # the web build in static/play follows its nightly (scripts/sync-play.sh).
-    - cron: '0 6 * * *'
 
 env:
   # Which engine release static/play follows. A version tag (`v0.2.0`) pins
@@ -17,7 +14,7 @@ env:
   ENGINE_TAG: nightly
 
 permissions:
-  # write: the daily run commits an engine update (see below).
+  # write: a manual run commits an engine update (see below).
   contents: write
   pages: write
   id-token: write
@@ -33,21 +30,22 @@ jobs:
       - uses: actions/checkout@v7
       - name: Sync reference docs from the engine repo
         run: ./scripts/sync-docs.sh
+      # A manual run pulls the engine's nightly and lands it as a commit, so
+      # the history says which build the site ran and a bad one is reverted
+      # like any change. A push with the workflow's own token starts no run,
+      # so the deploy is this run's.
       - name: Sync the web build from the engine release
+        if: github.event_name == 'workflow_dispatch'
         run: ./scripts/sync-play.sh
-      # A newer engine lands as a commit, so the history says which build the
-      # site ran and a bad one is reverted like any change. A push made with
-      # the workflow's own token starts no workflow: the deploy is this run's.
       - name: Commit an engine update
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'workflow_dispatch'
         run: |
-          if [ -n "$(git status --porcelain static/play)" ]; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add static/play
-            git commit -m "engine $(cat static/play/VERSION)"
-            git push
-          fi
+          [ -n "$(git status --porcelain static/play)" ] || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add static/play
+          git commit -m "engine $(cat static/play/VERSION)"
+          git push
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc

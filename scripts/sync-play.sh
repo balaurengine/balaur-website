@@ -5,8 +5,8 @@
 # `nightly` prerelease by default; ENGINE_TAG names a version instead.
 #
 # The bundle's VERSION names the engine build. When it matches
-# static/play/VERSION there is nothing to do; FORCE=1 syncs anyway. CI runs
-# this daily and commits what changed (.github/workflows/deploy.yml).
+# static/play/VERSION there is nothing to do; FORCE=1 syncs anyway. A manual
+# run of the deploy workflow runs this and commits what changed.
 #
 # Set BALAUR_REPO to a local checkout to copy its dist/play/ instead, the
 # output of `scripts/package_template.sh web && scripts/package_play.sh`:
