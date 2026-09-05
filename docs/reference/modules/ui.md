@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
 
-53 functions, 31 constants. Scripts reach it as `ui::`.
+53 functions, 37 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -25,7 +25,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `bottom_panel(string, any?, fn) -> float` | — | Dock a strip across the bottom of the window and draw the callback inside it; `height` is in design pixels. Answers the height it ended up with. |
 | `central_panel(any?, fn)` | — | Draw the callback into whatever room the docked panels left over. |
 | `central_rect() -> float, float, float, float` | — | The x, y, width and height of the surface being drawn into, in design pixels. |
-| `circle_button(string, any?) -> bool` | — | Draw a round button holding one glyph, `d` design pixels across; true on the frame it was clicked. |
+| `circle_button(string, any?) -> bool` | — | Draw a round button holding one glyph, `d` design pixels across; true on the frame it was clicked. `disabled` greys it out and swallows the click. |
 | `clipboard() -> string` | — | The text pasted this frame, empty otherwise: the platform clipboard is not readable on demand. |
 | `code_editor(string, string, any?) -> string, bool, int?` | — | Draw an editable, highlighted buffer with a gutter; returns the text, whether it changed, and any line clicked. |
 | `code_line(string, any, any?)` | — | Draw one read-only code row from a list of `{ text, color, strong }` spans, with a gutter label on the left. |
@@ -45,7 +45,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `menu_item(string, any?) -> bool` | — | Draw a row inside a context menu; true on the frame it was clicked, which also closes the menu. |
 | `modal(string, any?, fn) -> bool` | — | Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked. `width`, `height` and `top` size and place it, `fill`, `stroke` and `scrim` colour it; height follows the content when it is not given. |
 | `overlay(string, any?, fn)` | — | Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer. `w`/`h` fix its size, and `fill`, `stroke`, `radius` and padding make it a sheet. |
-| `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. |
+| `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. `disabled` greys it out and swallows the click. |
 | `rect_stroke(float, float, float, float, any?)` | — | Outline a rectangle at x/y/w/h design pixels from the current panel's corner, `dashed` when asked. |
 | `right(fn)` | — | Lay the callback's widgets out against the right edge, still declared left to right. |
 | `right_panel(string, any?, fn) -> float` | — | Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
@@ -76,6 +76,10 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | name | value |
 | --- | --- |
+| `ALIGN_CENTER` | `center` |
+| `ALIGN_END` | `end` |
+| `ALIGN_LEFT` | `left` |
+| `ALIGN_START` | `start` |
 | `ANCHOR_BOTTOM_LEFT` | `bottom_left` |
 | `ANCHOR_BOTTOM_RIGHT` | `bottom_right` |
 | `ANCHOR_CENTER` | `center` |
@@ -84,6 +88,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `ANCHOR_TOP_RIGHT` | `top_right` |
 | `FONT_HEADING` | `heading` |
 | `FONT_MONO` | `mono` |
+| `FONT_STYLE_ITALIC` | `italic` |
+| `FONT_STYLE_NORMAL` | `normal` |
 | `MOD_ALT` | `alt` |
 | `MOD_CMD` | `cmd` |
 | `MOD_CTRL` | `ctrl` |

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges — what went down or came up this frame. Nothing feeds it in a headless run, where every query answers neutrally rather than failing.
 
-40 functions, 190 constants. Scripts reach it as `input::`.
+41 functions, 190 constants. Scripts reach it as `input::`.
 
 ## Functions
 
@@ -25,6 +25,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `actions() -> any` | — | Every action `[input.actions]` declares, so a rebinding screen can list them. |
 | `bind(string, any)` | — | Rebind the action to one binding or a list of them, replacing what it had and saving to the user data directory. |
 | `bindings(string) -> any` | — | What the action is bound to now, whether from the project or from the player's own rebinding. |
+| `composing() -> any` | — | The text an input method is still composing, for a field to show under its caret; empty once it commits into `typed`, and always empty without an input method. |
 | `declare_actions(any)` | — | Declare the actions a project's `[input.actions]` would, from a table of name to binding list; for a host running a project other than its own, such as the editor. |
 | `dropped_files() -> any` | — | The absolute paths of files dropped onto the window this frame, in drop order; desktop only. |
 | `feed_key(string, bool)` | — | Press or release a `KEY_*` key as if the window had reported it; the edge lasts this frame, the state until the opposite feed. |

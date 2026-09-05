@@ -24,6 +24,7 @@ is under Unreleased; a release is a `v*` tag whose notes become that version's s
 
 ### Scenes and assets
 
+- A frame's queued frees run as one pass per parent, so freeing a whole container is linear.
 - Prefabs with per-path overrides.
 - Component tags and presets.
 - Binary asset packs, sha256-verified.
@@ -34,6 +35,7 @@ is under Unreleased; a release is a `v*` tag whose notes become that version's s
 
 ### Rendering
 
+- The 2D camera zooms out to a hundredth of a pixel per unit, enough to frame a pixel-scale level whole.
 - WESL shaders and material assets; screen-reading materials.
 - Sprites, atlas regions, tilemaps and GPU-skinned 2D polygons.
 - 2D lights and shadows.
@@ -63,6 +65,8 @@ is under Unreleased; a release is a `v*` tag whose notes become that version's s
 - Physics debug draw and tuning.
 - A joint on a node with no body ties the nearest body above it.
 - `physics3d/step` and `physics2d/step` profiler spans.
+- `raycast` stops at the nearest hit rather than visiting every collider along the ray.
+- Creating a body composes the node's pose from its ancestors rather than propagating the whole tree.
 
 ### Determinism and networking
 
@@ -142,6 +146,7 @@ is under Unreleased; a release is a `v*` tag whose notes become that version's s
 - Shell built from engine widgets, themed.
 - Bundled fonts and icons; project branding.
 - Narrow-window layout; `--state scale`.
+- One top bar with closable document tabs; docks minimise to a handle; script rename, pick and detach.
 
 ### Breaking
 

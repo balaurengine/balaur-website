@@ -25,4 +25,4 @@ In a scene, `camera` is the node key that applies it. A script reaches the same 
 | `kind` | enum | `3d` | Which camera this node drives One of `3d`, `2d`. |
 | `look_at` | vec3 | `[0,0,0]` | World point the 3D camera looks at |
 | `post` | flags | `[]` | Screen-space effects the frame resolves through; `ssao`, `ssr` and `dof` are 3D only One of `bloom`, `ssao`, `ssr`, `dof`. |
-| `zoom` | float | `60` | 2D zoom in logical pixels per world unit At least 1. |
+| `zoom` | float | `60` | 2D zoom in logical pixels per world unit At least 0.01. |

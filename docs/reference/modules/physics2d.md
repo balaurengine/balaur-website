@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The 2D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. `physics` holds what spans both worlds.
 
-62 functions, 6 constants. Scripts reach it as `physics2d::`.
+62 functions, 47 constants. Scripts reach it as `physics2d::`.
 
 Acts on [`body2d`](../components/body2d.md), [`character2d`](../components/character2d.md), [`collider2d`](../components/collider2d.md), [`joint2d`](../components/joint2d.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -87,9 +87,50 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | name | value |
 | --- | --- |
+| `AXIS_ANG_X` | `ang_x` |
+| `AXIS_X` | `x` |
+| `AXIS_Y` | `y` |
 | `BODY_DYNAMIC` | `dynamic` |
 | `BODY_KINEMATIC` | `kinematic` |
 | `BODY_KINEMATIC_VELOCITY` | `kinematic_velocity` |
 | `BODY_STATIC` | `static` |
+| `COLLIDE_DYNAMIC_DYNAMIC` | `dynamic_dynamic` |
+| `COLLIDE_DYNAMIC_KINEMATIC` | `dynamic_kinematic` |
+| `COLLIDE_DYNAMIC_STATIC` | `dynamic_static` |
+| `COLLIDE_KINEMATIC_KINEMATIC` | `kinematic_kinematic` |
+| `COLLIDE_KINEMATIC_STATIC` | `kinematic_static` |
+| `COLLIDE_STATIC_STATIC` | `static_static` |
+| `COMBINE_AVERAGE` | `average` |
+| `COMBINE_CLAMPED_SUM` | `clamped_sum` |
+| `COMBINE_GEOMETRIC_MEAN` | `geometric_mean` |
+| `COMBINE_MAX` | `max` |
+| `COMBINE_MIN` | `min` |
+| `COMBINE_MULTIPLY` | `multiply` |
+| `EVENT_COLLISION` | `collision` |
+| `EVENT_CONTACT_FORCE` | `contact_force` |
+| `JOINT_FIXED` | `fixed` |
+| `JOINT_GENERIC` | `generic` |
+| `JOINT_PIN_SLOT` | `pin_slot` |
+| `JOINT_PRISMATIC` | `prismatic` |
+| `JOINT_REVOLUTE` | `revolute` |
+| `JOINT_ROPE` | `rope` |
+| `JOINT_SPRING` | `spring` |
+| `LENGTHS_ABSOLUTE` | `absolute` |
+| `LENGTHS_RELATIVE` | `relative` |
+| `MOTOR_MODEL_ACCELERATION` | `acceleration` |
+| `MOTOR_MODEL_FORCE` | `force` |
+| `MOTOR_OFF` | `off` |
+| `MOTOR_POSITION` | `position` |
+| `MOTOR_VELOCITY` | `velocity` |
+| `SHAPE_CAPSULE` | `capsule` |
 | `SHAPE_CIRCLE` | `circle` |
+| `SHAPE_CONVEX_HULL` | `convex_hull` |
+| `SHAPE_HALFSPACE` | `halfspace` |
+| `SHAPE_HEIGHTFIELD` | `heightfield` |
+| `SHAPE_POLYLINE` | `polyline` |
 | `SHAPE_RECT` | `rect` |
+| `SHAPE_SEGMENT` | `segment` |
+| `SHAPE_TRIANGLE` | `triangle` |
+| `SHAPE_TRIMESH` | `trimesh` |
+| `SOLVER_IMPULSE` | `impulse` |
+| `SOLVER_REDUCED` | `reduced` |

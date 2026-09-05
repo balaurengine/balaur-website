@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The 3D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. `physics` holds what spans both worlds.
 
-88 functions, 6 constants. Scripts reach it as `physics3d::`.
+88 functions, 62 constants. Scripts reach it as `physics3d::`.
 
 Acts on [`body3d`](../components/body3d.md), [`character3d`](../components/character3d.md), [`collider3d`](../components/collider3d.md), [`joint3d`](../components/joint3d.md), [`vehicle3d`](../components/vehicle3d.md), [`wheel3d`](../components/wheel3d.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -113,9 +113,65 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | name | value |
 | --- | --- |
+| `AXIS_ANG_X` | `ang_x` |
+| `AXIS_ANG_Y` | `ang_y` |
+| `AXIS_ANG_Z` | `ang_z` |
+| `AXIS_X` | `x` |
+| `AXIS_Y` | `y` |
+| `AXIS_Z` | `z` |
 | `BODY_DYNAMIC` | `dynamic` |
 | `BODY_KINEMATIC` | `kinematic` |
 | `BODY_KINEMATIC_VELOCITY` | `kinematic_velocity` |
 | `BODY_STATIC` | `static` |
+| `COLLIDE_DYNAMIC_DYNAMIC` | `dynamic_dynamic` |
+| `COLLIDE_DYNAMIC_KINEMATIC` | `dynamic_kinematic` |
+| `COLLIDE_DYNAMIC_STATIC` | `dynamic_static` |
+| `COLLIDE_KINEMATIC_KINEMATIC` | `kinematic_kinematic` |
+| `COLLIDE_KINEMATIC_STATIC` | `kinematic_static` |
+| `COLLIDE_STATIC_STATIC` | `static_static` |
+| `COMBINE_AVERAGE` | `average` |
+| `COMBINE_CLAMPED_SUM` | `clamped_sum` |
+| `COMBINE_GEOMETRIC_MEAN` | `geometric_mean` |
+| `COMBINE_MAX` | `max` |
+| `COMBINE_MIN` | `min` |
+| `COMBINE_MULTIPLY` | `multiply` |
+| `EVENT_COLLISION` | `collision` |
+| `EVENT_CONTACT_FORCE` | `contact_force` |
+| `FILL_SOLID` | `solid` |
+| `FILL_SURFACE` | `surface` |
+| `FIT_AABB` | `aabb` |
+| `FIT_CONVEX_DECOMPOSITION` | `convex_decomposition` |
+| `FIT_CONVEX_HULL` | `convex_hull` |
+| `FIT_OBB` | `obb` |
+| `JOINT_FIXED` | `fixed` |
+| `JOINT_GENERIC` | `generic` |
+| `JOINT_PRISMATIC` | `prismatic` |
+| `JOINT_REVOLUTE` | `revolute` |
+| `JOINT_ROPE` | `rope` |
+| `JOINT_SPHERICAL` | `spherical` |
+| `JOINT_SPRING` | `spring` |
+| `LENGTHS_ABSOLUTE` | `absolute` |
+| `LENGTHS_RELATIVE` | `relative` |
+| `MOTOR_MODEL_ACCELERATION` | `acceleration` |
+| `MOTOR_MODEL_FORCE` | `force` |
+| `MOTOR_OFF` | `off` |
+| `MOTOR_POSITION` | `position` |
+| `MOTOR_VELOCITY` | `velocity` |
 | `SHAPE_BALL` | `ball` |
+| `SHAPE_CAPSULE` | `capsule` |
+| `SHAPE_CONE` | `cone` |
+| `SHAPE_CONVEX_DECOMPOSITION` | `convex_decomposition` |
+| `SHAPE_CONVEX_HULL` | `convex_hull` |
 | `SHAPE_CUBOID` | `cuboid` |
+| `SHAPE_CYLINDER` | `cylinder` |
+| `SHAPE_FIT` | `fit` |
+| `SHAPE_HALFSPACE` | `halfspace` |
+| `SHAPE_HEIGHTFIELD` | `heightfield` |
+| `SHAPE_POLYLINE` | `polyline` |
+| `SHAPE_SEGMENT` | `segment` |
+| `SHAPE_TRIANGLE` | `triangle` |
+| `SHAPE_TRIMESH` | `trimesh` |
+| `SHAPE_VOXELIZED_MESH` | `voxelized_mesh` |
+| `SHAPE_VOXELS` | `voxels` |
+| `SOLVER_IMPULSE` | `impulse` |
+| `SOLVER_REDUCED` | `reduced` |

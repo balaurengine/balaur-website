@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `physics` · 18 properties · 3D
 
-Holds this node's body to another one: a hinge, a slider, a rope, a spring, a ball socket, or a generic joint you lock axis by axis. Both ends need a `body3d`.
+Holds this node's body to another one: a hinge, a slider, a rope, a spring, a ball socket, or a generic joint you lock axis by axis. Both ends need a `body3d`; a node without one stands for the nearest body above it, which is how one body carries several joints on child nodes.
 
 In a scene, `joint3d` is the node key that applies it. A script reaches the same properties through `node.joint3d.get()` and `node.joint3d.set(table)`.
 

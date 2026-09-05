@@ -2,7 +2,7 @@
 title: "joint2d component"
 image: "/img/social/reference.png"
 sidebar_label: "joint2d"
-description: "Holds this node's body to another one in 2D: a hinge, a slider, a rope, a spring, or a generic joint you lock axis by axis. Both ends need a body2d."
+description: "Holds this node's body to another one in 2D: a hinge, a slider, a rope, a spring, or a generic joint you lock axis by axis. Both ends need a body2d; a…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `physics` · 18 properties · 2D
 
-Holds this node's body to another one in 2D: a hinge, a slider, a rope, a spring, or a generic joint you lock axis by axis. Both ends need a `body2d`.
+Holds this node's body to another one in 2D: a hinge, a slider, a rope, a spring, or a generic joint you lock axis by axis. Both ends need a `body2d`; a node without one stands for the nearest body above it, which is how one body carries several joints on child nodes.
 
 In a scene, `joint2d` is the node key that applies it. A script reaches the same properties through `node.joint2d.get()` and `node.joint2d.set(table)`.
 

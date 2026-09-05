@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The running app itself: the clock a frame reads, the command line it was started with, the directory it may write to, and the way out.
 
-16 functions, 0 constants. Scripts reach it as `engine::`.
+18 functions, 0 constants. Scripts reach it as `engine::`.
 
 ## Functions
 
@@ -24,11 +24,13 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `device_id()` | — | One id per install, made on first use and kept in the user directory: what a device login sends. Recorded with the session. |
 | `focused()` | — | Whether the window is in front of the player this tick; every script's `on_focus_changed(bool)` is called when it changes. True with no window. |
 | `has_plugin(name: string)` | — | Whether one plugin loaded, so a game shipped without `http` can say so rather than call into a module that is not there. |
+| `open_url(url: string)` | — | Open an http, https or mailto URL in whatever the player browses with. An effect on the world outside the game: never recorded, and it does nothing while a recording plays. |
 | `platform()` | — | Where this runs: `{ os, web, mobile, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
 | `plugin_version(name: string)` | — | The version of one loaded plugin, or nil when it did not load. |
 | `plugins()` | — | Every plugin this build loaded, named, in load order. |
 | `quit()` | — | Ask the app to shut down; the frame in flight still finishes. |
 | `reload_script(key: string)` | — | Recompile one script by its project-relative key, for a tool editing files outside the watched root. |
+| `reveal(path: string)` | — | Show a file or directory in the system file manager, selected where the platform can. Never recorded, like `open_url`. |
 | `tick()` | — | Which frame this is, counted whole — what simulation code branches on instead of `time`. |
 | `time()` | — | Seconds of engine time since the app started, accumulated as a float. |
 | `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only — branching a `fixed_update` on wall time desyncs, and nothing records it. |

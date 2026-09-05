@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.
 
-52 functions, 0 constants. Scripts reach it as `render::`.
+52 functions, 13 constants. Scripts reach it as `render::`.
 
 Acts on [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -72,3 +72,21 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `shape3d(node) -> string, float, float, float` | [`shape3d`](../components/shape3d.md) | The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape. |
 | `sprite(node) -> string, int, int, int` | [`sprite`](../components/sprite.md) | The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite. |
 | `texture_size(string) -> int, int` | — | An image's width and height in pixels, read from the file's own header. |
+
+## Constants
+
+| name | value |
+| --- | --- |
+| `CAMERA_2D` | `2d` |
+| `CAMERA_3D` | `3d` |
+| `LIGHT_DIRECTIONAL` | `directional` |
+| `LIGHT_POINT` | `point` |
+| `SHAPE_BALL` | `ball` |
+| `SHAPE_CAPSULE` | `capsule` |
+| `SHAPE_CIRCLE` | `circle` |
+| `SHAPE_CONE` | `cone` |
+| `SHAPE_CUBOID` | `cuboid` |
+| `SHAPE_CYLINDER` | `cylinder` |
+| `SHAPE_PLANE` | `plane` |
+| `SHAPE_POLYLINE` | `polyline` |
+| `SHAPE_RECT` | `rect` |
