@@ -42,6 +42,7 @@ const CARDS = {
   reference: ['Reference', 'Every component, asset type and script module, read from a booted engine.', '/docs/reference'],
   changelog: ['Changelog', 'What each release of the engine added.', '/docs/changelog'],
   crates: ['Crates', 'The Rust workspace, crate by crate.', '/docs/crates'],
+  benchmarks: ['Benchmarks', 'Balaur beside Godot on the same scenes: what a tick costs, and what the engine adds over rapier.', '/docs/benchmarks'],
   scenes: ['Scenes and nodes', 'Nodes are entities. Scenes are plain TOML.', '/docs/manual/scenes'],
   scripting: ['Scripting', 'Rune scripts, hot reload in milliseconds, and a debugger in the editor.', '/docs/manual/scripting'],
   shaders: ['Shaders and materials', 'WESL shaders and material assets on wgpu.', '/docs/manual/shaders'],
