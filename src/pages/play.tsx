@@ -3,7 +3,11 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import {PageMetadata} from '@docusaurus/theme-common';
 import Heading from '@theme/Heading';
+import playVersion from '@site/src/play-version.json';
 import styles from './play.module.css';
+
+// One stamp for the glue, the module and the packs: see scripts/gen-play-version.mjs.
+const PLAY_VERSION: string = playVersion.v;
 
 // The engine in the browser: the web template (scripts/package_template.sh
 // web in the engine repository) and a pack of examples/hello, served from
@@ -18,7 +22,10 @@ type Status =
   | {kind: 'unsupported'}
   | {kind: 'error'; text: string};
 
-type Module = {default: () => Promise<unknown>; start: (canvas: string, pack: string) => Promise<void>};
+type Module = {
+  default: (init?: {module_or_path?: string}) => Promise<unknown>;
+  start: (canvas: string, pack: string) => Promise<void>;
+};
 
 export default function Play(): ReactNode {
   const [status, setStatus] = useState<Status>({kind: 'idle'});
@@ -35,11 +42,11 @@ export default function Play(): ReactNode {
       setStatus({kind: 'loading', text: 'Loading the engine…'});
       // A runtime URL, not a source module: through a variable so neither
       // TypeScript nor webpack tries to resolve it at build time.
-      const url = '/play/balaur.js';
+      const url = `/play/balaur.js?v=${PLAY_VERSION}`;
       const mod = (await import(/* webpackIgnore: true */ url)) as Module;
-      await mod.default();
+      await mod.default({module_or_path: `/play/balaur_bg.wasm?v=${PLAY_VERSION}`});
       setStatus({kind: 'running'});
-      await mod.start('balaur-canvas', '/play/hello.bpak');
+      await mod.start('balaur-canvas', `/play/hello.bpak?v=${PLAY_VERSION}`);
       setStatus({kind: 'done'});
     } catch (e) {
       setStatus({kind: 'error', text: e instanceof Error ? e.message : String(e)});

@@ -23,6 +23,11 @@ one. To refresh after an engine change:
         --output "../balaur-website/static/play/$(basename $p).bpak"
     done
 
+`scripts/gen-play-version.mjs` (run by `npm start`/`npm run build`) hashes
+these files into `src/play-version.json`; the pages load the glue, the module
+and the packs with that stamp as a query so the CDN's different cache ages for
+`.js` and `.wasm` can never pair an old glue with a new module.
+
 The module is 17 MB raw and about 4.5 MB over the wire once the host
 compresses it. It lives in git until the engine publishes releases the site
 can fetch from instead.

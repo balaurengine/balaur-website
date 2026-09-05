@@ -33,14 +33,45 @@
   color: var(--ifm-color-emphasis-600);
 }
 
+/* The tools row and the stage together fill the viewport under the navbar,
+   which is where `scrollIntoView` puts them once the editor runs. */
+.frame {
+  --tools-h: 2.5rem;
+  margin: 1rem 0 0.75rem;
+  scroll-margin-top: var(--ifm-navbar-height);
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--tools-h);
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
 .stage {
   position: relative;
-  margin: 1rem 0 0.75rem;
   border: 1px solid var(--balaur-card-border);
   border-radius: 10px;
   overflow: hidden;
   background: #0b0e12;
-  aspect-ratio: 16 / 10;
+  /* An editor wants height: as tall as the viewport allows, never so short
+     that its docks fold away. */
+  height: calc(100vh - var(--ifm-navbar-height) - var(--tools-h) - 1.5rem);
+  height: calc(100dvh - var(--ifm-navbar-height) - var(--tools-h) - 1.5rem);
+  min-height: 28rem;
+}
+
+.stage:fullscreen {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
 }
 
 .canvas {

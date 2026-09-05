@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "node scripts/gen-reference.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus start",
-    "build": "node scripts/gen-reference.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus build",
+    "start": "node scripts/gen-play-version.mjs && node scripts/gen-reference.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus start",
+    "build": "node scripts/gen-play-version.mjs && node scripts/gen-reference.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus build",
     "gen-reference": "node scripts/gen-reference.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
