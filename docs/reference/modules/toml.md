@@ -10,7 +10,7 @@ custom_edit_url: null
 
 TOML text to and from script tables: the format scene files, asset definitions and component properties are all written in.
 
-2 functions, 0 constants. Scripts reach it as `toml::`.
+3 functions, 0 constants. Scripts reach it as `toml::`.
 
 ## Functions
 
@@ -20,3 +20,4 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `encode(value: any)` | — | A table written back out as TOML text; a node or callback in it is not data and is an error. |
 | `parse(text: string)` | — | The table a TOML document describes; an error on text that does not parse. |
+| `patch(existing: string, table: any)` | — | The document's text with this table's keys written into it, keeping every comment, the key order and any table the value does not name. What a tool saving a hand-written file uses instead of `encode`. |

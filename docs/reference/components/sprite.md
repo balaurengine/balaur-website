@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # <span class="ref-icon ref-icon--2d" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,56V178.06l-39.72-39.72a8,8,0,0,0-11.31,0L147.31,164,97.66,114.34a8,8,0,0,0-11.32,0L32,168.69V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z"/></svg></span>`sprite`
 
-`2d` · `render` · 10 properties · 2D
+`2d` · `render` · 12 properties · 2D
 
 A textured 2D quad at the node, sized from its image at `pixels_per_unit` texture pixels per world unit. A `columns` x `rows` sheet makes it a flipbook `frame` steps through.
 
@@ -26,6 +26,8 @@ In a scene, `sprite` is the node key that applies it. A script reaches the same 
 | `half_extents` | vec2 | `[0,0]` | Size override in world units; [0, 0] sizes from the texture |
 | `material` | asset · [`material`](../assets/material.md) | — | The material this draws with; empty draws with the built-in one |
 | `pixels_per_unit` | float | `100` | Texture pixels per world unit At least 0.01. |
+| `region_origin` | vec2 | `[0,0]` | Top-left corner of the atlas cell to draw, in texture pixels; used with `region_size` |
+| `region_size` | vec2 | `[0,0]` | Size of the atlas cell to draw, in texture pixels; [0, 0] draws the whole image and sizes the quad from the cell |
 | `rows` | float | `0` | Sheet grid rows for flipbook sprites; 0 means a single image At least 0. |
 | `texture` | string | — | Image file, project-relative; required |
 

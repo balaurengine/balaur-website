@@ -75,7 +75,7 @@ if [[ "$benchmarks" == 1 ]]; then
     printf -- '---\ntitle: "Benchmarks — Balaur beside Godot, case for case"\nsidebar_label: "Benchmarks"\nimage: "/img/social/benchmarks.png"\ndescription: "The Balaur game engine measured on the same physics and scene-tree scenes the Godot benchmark suites publish: what a tick costs, what rapier costs inside it, and what the engine adds."\ncustom_edit_url: null\n---\n\n'
     # The generator banner and its own `# Benchmarks` heading would repeat
     # the page title.
-    sed -e '/^<!-- Written by scripts/d' -e '1,4{/^# Benchmarks$/d;}' "$tmp"
+    awk 'NR<=4 && (/^<!-- Written by scripts/ || /^# Benchmarks$/) {next} {print}' "$tmp"
   } >"$ROOT/docs/benchmarks.md"
   echo "synced BENCHMARKS.md"
 else

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Waiting inside an async handler: `init` and event handlers may await, `update` is deliberately synchronous.
 
-1 function, 0 constants. Scripts reach it as `task::`.
+3 functions, 0 constants. Scripts reach it as `task::`.
 
 ## Functions
 
@@ -18,4 +18,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
+| `frames(count: int)` | — | Park an async handler for a number of fixed steps; counted on the tick, so a replay waits exactly as long. |
+| `seconds(seconds: float)` | — | Park an async handler for a span of simulation time, in fixed steps; the wall clock never enters it. |
 | `wait(token: int)` | — | Park an async handler until the engine wakes the token it was given. |

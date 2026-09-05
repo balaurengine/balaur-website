@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # <span class="ref-icon ref-icon--3d" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40V216H40V40Z" opacity="0.2"/><path d="M152,40a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,40Zm-8,168H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM208,32H184a8,8,0,0,0,0,16h24V72a8,8,0,0,0,16,0V48A16,16,0,0,0,208,32Zm8,72a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V112A8,8,0,0,0,216,104Zm0,72a8,8,0,0,0-8,8v24H184a8,8,0,0,0,0,16h24a16,16,0,0,0,16-16V184A8,8,0,0,0,216,176ZM40,152a8,8,0,0,0,8-8V112a8,8,0,0,0-16,0v32A8,8,0,0,0,40,152Zm32,56H48V184a8,8,0,0,0-16,0v24a16,16,0,0,0,16,16H72a8,8,0,0,0,0-16ZM72,32H48A16,16,0,0,0,32,48V72a8,8,0,0,0,16,0V48H72a8,8,0,0,0,0-16Z"/></svg></span>`collider3d`
 
-`3d` · `physics` · 40 properties · 3D
+`3d` · `physics` · 39 properties · 3D
 
 The shape the node collides with in 3D. On a node with a `body3d` it is that body's shape; on a node without one it is immovable world geometry. A collider on a child node belongs to the nearest body above it, which is how one body carries several shapes.
 
@@ -37,7 +37,6 @@ In a scene, `collider3d` is the node key that applies it. A script reaches the s
 | `half_extents` | vec3 | `[0.5,0.5,0.5]` | Half-sizes of the cuboid, when kind is cuboid |
 | `height` | float | `1` | Length along y of the straight part, for capsule, cylinder and cone At least 0.01. |
 | `heightfield` | asset · [`heightfield`](../assets/heightfield.md) | — | Terrain grid, when kind is heightfield |
-| `hooks` | flags | `[]` | Mid-step questions this collider asks its node's script; each costs a call per candidate pair per step One of `filter_contact`, `filter_overlap`, `modify_contacts`. |
 | `kind` | enum | `cuboid` | Collision shape One of `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `triangle`, `segment`, `halfspace`, `trimesh`, `convex_hull`, `convex_decomposition`, `polyline`, `heightfield`, `voxels`, `voxelized_mesh`, `fit`. |
 | `layers` | flags | `["0"]` | The layers this collider is on One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
 | `mask` | flags | `[]` | The layers it collides with; empty means every layer One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |

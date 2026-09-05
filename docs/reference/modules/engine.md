@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The running app itself: the clock a frame reads, the command line it was started with, the directory it may write to, and the way out.
 
-8 functions, 0 constants. Scripts reach it as `engine::`.
+16 functions, 0 constants. Scripts reach it as `engine::`.
 
 ## Functions
 
@@ -19,10 +19,18 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | function | acts on | what it does |
 | --- | --- | --- |
 | `args()` | — | The command-line arguments the app was started with, empty when it was given none. |
+| `dark_mode()` | — | Whether the system is in dark mode this tick; every script's `on_dark_mode(bool)` is called when it changes. False where nothing says. |
 | `delta()` | — | Seconds the frame in progress covers, the same number a system is handed. |
+| `device_id()` | — | One id per install, made on first use and kept in the user directory: what a device login sends. Recorded with the session. |
+| `focused()` | — | Whether the window is in front of the player this tick; every script's `on_focus_changed(bool)` is called when it changes. True with no window. |
+| `has_plugin(name: string)` | — | Whether one plugin loaded, so a game shipped without `http` can say so rather than call into a module that is not there. |
+| `platform()` | — | Where this runs: `{ os, web, mobile, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
+| `plugin_version(name: string)` | — | The version of one loaded plugin, or nil when it did not load. |
+| `plugins()` | — | Every plugin this build loaded, named, in load order. |
 | `quit()` | — | Ask the app to shut down; the frame in flight still finishes. |
 | `reload_script(key: string)` | — | Recompile one script by its project-relative key, for a tool editing files outside the watched root. |
 | `tick()` | — | Which frame this is, counted whole — what simulation code branches on instead of `time`. |
 | `time()` | — | Seconds of engine time since the app started, accumulated as a float. |
 | `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only — branching a `fixed_update` on wall time desyncs, and nothing records it. |
+| `unix_time()` | — | The wall clock at the top of this tick, in seconds since 1970. Read once per frame and recorded, so a replay sees the time the recording saw. |
 | `user_data_dir()` | — | A writable per-user directory for saves and settings, created on first call and named after the project. |

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
 
-50 functions, 17 constants. Scripts reach it as `ui::`.
+53 functions, 31 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -43,7 +43,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `label(string, any?)` | — | Draw a line of text; `size`, `font`, `color`, `strong`, `wrap` and `truncate` style it. |
 | `left_panel(string, any?, fn) -> float` | — | Dock a column down the left of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
 | `menu_item(string, any?) -> bool` | — | Draw a row inside a context menu; true on the frame it was clicked, which also closes the menu. |
-| `modal(string, any?, fn) -> bool` | — | Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked. |
+| `modal(string, any?, fn) -> bool` | — | Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked. `width`, `height` and `top` size and place it, `fill`, `stroke` and `scrim` colour it; height follows the content when it is not given. |
 | `overlay(string, any?, fn)` | — | Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer. `w`/`h` fix its size, and `fill`, `stroke`, `radius` and padding make it a sheet. |
 | `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. |
 | `rect_stroke(float, float, float, float, any?)` | — | Outline a rectangle at x/y/w/h design pixels from the current panel's corner, `dashed` when asked. |
@@ -55,10 +55,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `separator(string?)` | — | Draw a one-pixel rule across the container, in the given `#rrggbb` colour when one is passed. |
 | `set_clipboard(string)` | — | Copy text to the system clipboard. |
 | `set_focus(node)` | — | Put focus on a widget node. A node focus cannot activate is refused at the next draw. |
-| `set_scale(float)` | — | Set the global UI scale, clamped to between 0.5 and 3.0 real pixels per design pixel. |
+| `set_keyboard_focus(bool)` | — | Let the arrows, Tab, Enter and Space move and activate the focused widget. Off unless asked for, so a game that moves with the arrows does not click its own HUD; `standard_app` turns it on for a project declaring the `ui_*` actions. |
+| `set_scale(float)` | — | Set the global UI scale, clamped to between 0.25 and 3.0 real pixels per design pixel; a design resolution is `screen_size` divided by it. |
 | `set_text(string, string)` | — | Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone. |
 | `set_theme(any)` | — | Replace the theme: `name = "#rrggbb"` colour tokens, `dark = true\|false`, and a `roles` table of named looks a widget takes with `role:`. |
 | `set_widget_layer(bool, float?, float?, float?, float?)` | — | Turn drawing of the scene's `widget` nodes on or off, and confine it to an x/y/w/h rect in design pixels. |
+| `set_widget_surface(string, bool, float?, float?, float?, float?)` | — | The same for one named surface: roots whose `layer` is this name draw here instead. A name nothing has set takes the default surface. |
 | `shortcut(string, string) -> bool` | — | Whether this chord was pressed this frame, consuming it; `mods` is `"cmd+shift"`, from the `MOD_*` constants. |
 | `slider(float, float, float, any?) -> float, bool` | — | Draw a horizontal slider between `min` and `max`; returns the value after this frame and whether it moved. |
 | `spacing(float, float)` | — | Set the gap between the current container's widgets, in design pixels. |
@@ -67,6 +69,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `top_panel(string, any?, fn) -> float` | — | Dock a strip across the top of the window and draw the callback inside it; `height` is in design pixels. Answers the height it ended up with. |
 | `vertical(fn)` | — | Lay the callback's widgets out in a column. |
 | `wants_keyboard() -> bool` | — | Whether a UI widget holds keyboard focus, so the game should leave this frame's key presses alone. |
+| `widget_rect(node) -> any` | — | Where a `widget` node was last drawn, as `#{ x, y, w, h }` in design pixels; empty until it has drawn once. |
 | `window(string, any?, fn) -> bool` | — | Draw the callback in a floating window the user drags and resizes; false once its close button is used. |
 
 ## Constants
@@ -76,6 +79,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `ANCHOR_BOTTOM_LEFT` | `bottom_left` |
 | `ANCHOR_BOTTOM_RIGHT` | `bottom_right` |
 | `ANCHOR_CENTER` | `center` |
+| `ANCHOR_FILL` | `fill` |
 | `ANCHOR_TOP_LEFT` | `top_left` |
 | `ANCHOR_TOP_RIGHT` | `top_right` |
 | `FONT_HEADING` | `heading` |
@@ -85,8 +89,21 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `MOD_CTRL` | `ctrl` |
 | `MOD_SHIFT` | `shift` |
 | `WIDGET_BUTTON` | `button` |
+| `WIDGET_CHECK` | `check` |
 | `WIDGET_COLUMN` | `column` |
+| `WIDGET_DIALOG` | `dialog` |
 | `WIDGET_DRAW` | `draw` |
+| `WIDGET_DROPDOWN` | `dropdown` |
+| `WIDGET_FIELD` | `field` |
+| `WIDGET_FLOW` | `flow` |
+| `WIDGET_FOLD` | `fold` |
+| `WIDGET_GRID` | `grid` |
+| `WIDGET_IMAGE` | `image` |
 | `WIDGET_LABEL` | `label` |
 | `WIDGET_PANEL` | `panel` |
+| `WIDGET_PROGRESS` | `progress` |
 | `WIDGET_ROW` | `row` |
+| `WIDGET_SCROLL` | `scroll` |
+| `WIDGET_SEPARATOR` | `separator` |
+| `WIDGET_SLIDER` | `slider` |
+| `WIDGET_TAB` | `tab` |

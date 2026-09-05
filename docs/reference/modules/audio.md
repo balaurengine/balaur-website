@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Sound playback: a file plays under an integer handle, with `volume`, `pitch` and `loop` options, and the `sound` component gives a node a sound of its own. Give a `play` a `position` and it is heard from where the `listener` is. With no output device every call still works and nothing is heard.
 
-19 functions, 0 constants. Scripts reach it as `audio::`.
+20 functions, 0 constants. Scripts reach it as `audio::`.
 
 Acts on [`sound`](../components/sound.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -31,6 +31,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `play(string, any?) -> int` | — | Start the audio file at a path and return the handle `stop`, `set_volume`, `set_pitch` and `is_playing` take. The options table takes `volume`, `pitch`, `loop`, `bus`, and a `position` with `min_distance`, `max_distance` and `doppler`. |
 | `play_event(string, any?) -> any` | — | Play a named sound: the next of its variations in turn, at its own volume and pitch, through its own bus. A `position` in the options table places it. Nil for a name nothing declared. |
 | `play_on(node) -> int` | [`sound`](../components/sound.md) | Start the node's own `sound` from the top, replacing what it had going, and return the new handle. |
+| `ready() -> bool` | — | Whether an output device is open. False on a page until the first gesture, and false for good with no sound card; playing before then hands out handles that make no sound. |
 | `set_bus_volume(string, float)` | — | Set one bus's gain and re-apply it to everything already playing on it — which is what a volume slider is. |
 | `set_emitter_position(int, any, any?, any?)` | — | Move what a handle plays from, so a sound follows something the script is driving; the frame takes its doppler from how far it moved. |
 | `set_listener(any, any?, any?)` | — | Put the ears at a point by hand, for a game whose view is not a node; a `listener` node in the scene takes it back on the next frame. |

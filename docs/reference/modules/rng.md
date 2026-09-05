@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The engine's one deterministic PCG32 stream: the same seed draws the same numbers on every platform, and a replay reproduces every draw a recorded session made.
 
-4 functions, 0 constants. Scripts reach it as `rng::`.
+5 functions, 0 constants. Scripts reach it as `rng::`.
 
 ## Functions
 
@@ -22,3 +22,4 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `random()` | — | A float from the deterministic engine stream, uniform in `[0, 1)`. |
 | `range(low: float, high: float)` | — | A float from the deterministic engine stream, uniform in `[low, high)` — the two arguments. |
 | `seed(seed: int)` | — | Restart the deterministic engine stream at the given seed, so every draw after it repeats. |
+| `uuid()` | — | A version-4 UUID drawn from the deterministic engine stream, so a replay makes the same ids; not for anything that must be unique across machines. |

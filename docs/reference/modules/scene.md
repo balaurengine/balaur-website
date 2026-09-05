@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The node tree: its root, lookup by path, spawning and instancing. Also the component and preset vocabulary an editor builds its palette from.
 
-13 functions, 0 constants. Scripts reach it as `scene::`.
+16 functions, 0 constants. Scripts reach it as `scene::`.
 
 ## Functions
 
@@ -25,9 +25,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `component_types()` | — | The names of every registered component type, not the components on any node. |
 | `get_node(path: string)` | — | The node at an `A/B/C` path from the root, where `..` climbs to the parent; nil when nothing matches. |
 | `instantiate(source: string, parent: node?, opts: any?)` | — | Build a scene document — TOML text, not a path — under a parent; `{ scripts: false }` leaves scripts unattached. |
+| `node_by_id(id: string, under: node?)` | — | The node carrying a stable id, which survives the rename and the reparent a path does not; nil when nothing carries it. `under` bounds the search to one subtree, for a tool holding more than one tree. |
 | `preset_info(name: string)` | — | A preset's description, tags and the components it adds; nil for a name nothing registered. |
 | `presets()` | — | The names of every registered preset. |
 | `root()` | — | The tree's root node. |
 | `source(path: string)` | — | A scene file's raw TOML text, project-relative and found inside the pack in a packed run; nil when missing. |
 | `spawn(name: string, parent: node?)` | — | Create one empty named node under the given parent, or under the root when none is given. |
+| `tagged(tag: string)` | — | Every node filed under a tag, in tree order; what a scene's `tags` key and `node.add_tag` feed. |
 | `unmet_expectations(node: node)` | — | Components on the node whose expectations nothing satisfies, as `{ component, expects }`; advisory only. |
+| `with_component(component: string)` | — | Every node carrying the named component, in tree order. What a script asks instead of walking the tree itself. |

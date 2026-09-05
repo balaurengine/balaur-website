@@ -10,7 +10,7 @@ custom_edit_url: null
 
 One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges — what went down or came up this frame. Nothing feeds it in a headless run, where every query answers neutrally rather than failing.
 
-38 functions, 190 constants. Scripts reach it as `input::`.
+40 functions, 190 constants. Scripts reach it as `input::`.
 
 ## Functions
 
@@ -46,6 +46,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `is_mouse_down(int) -> bool` | — | Whether the `MOUSE_*` button is held down right now, however many frames it has been down. |
 | `just_pressed(string) -> bool` | — | Whether the `KEY_*` key went down this frame; true for that one frame only. |
 | `just_released(string) -> bool` | — | Whether the `KEY_*` key came up this frame; true for that one frame only. |
+| `keyboard_height() -> any` | — | How much of the window the on-screen keyboard covers, in pixels from the bottom: what a form moves up by. Zero with no keyboard up, and always zero on a desktop. |
 | `mouse_delta() -> float, float` | — | How far the cursor moved this frame, in pixels; movement, not a position. |
 | `mouse_just_pressed(int) -> bool` | — | Whether the `MOUSE_*` button went down this frame; true for that one frame only. |
 | `mouse_just_released(int) -> bool` | — | Whether the `MOUSE_*` button came up this frame; true for that one frame only. |
@@ -56,6 +57,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `touches_ended() -> any` | — | The ids of the fingers that lifted or were cancelled this frame. |
 | `touches_started() -> any` | — | The ids of the fingers that touched down this frame. |
 | `typed() -> any` | — | The characters typed this frame, in order: what a text field appends, where `just_pressed` says which key went down. |
+| `vibrate(int)` | — | Buzz the device for that long: a phone's motor, or a page's `navigator.vibrate`. Nothing on a desktop, and never recorded, like rumble. |
 
 ## Constants
 

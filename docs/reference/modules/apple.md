@@ -18,7 +18,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
-| `access_point(any, any?) -> any` | — |  |
+| `access_point(any, any?) -> any` | — | Show or hide Game Center's floating access point, and answer whether it is showing; `location` is a corner — top_leading, top_trailing, bottom_leading or bottom_trailing. |
 | `authenticated() -> any` | — | Whether Game Center has a signed-in player right now. |
 | `available() -> any` | — | Whether this build has Apple's frameworks behind it. |
 | `cancel_notification(any) -> any` | — | Drop a scheduled notification, and take a delivered one out of the shade. |
@@ -32,7 +32,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `register_for_push() -> any` | — | Ask the OS for a push token. It arrives at everything watching, not at the caller, because the OS hands it over whenever it likes. |
 | `request_notifications(any?, any?) -> any` | — | Ask the player to allow notifications, and answer with what they said. |
 | `restore_purchases(any?, any?) -> any` | — | Ask the App Store to hand this device's purchases back — the button a review expects a game to have. |
-| `show_dashboard(any?, any?) -> any` | — |  |
+| `show_dashboard(any?, any?) -> any` | — | Open Game Center's dashboard over the game; `state` picks the page — default, leaderboards, achievements, challenges, profile, dashboard or friends. |
 | `sign_in(any?, any?) -> any` | — | Sign in with Apple, and return the id the identity token comes back on. Game Center's own sign-in is `platform.sign_in`. |
 | `watch(any, any?) -> any` | — | Subscribe a node's method to everything that arrives unasked: a notification tapped, a URL opened, a push token, a transaction that landed elsewhere. |
 | `watch_urls() -> any` | — | Hear about URLs the game is asked to open while it runs. A URL the game was launched with arrives before the engine boots and is not one of them. |
