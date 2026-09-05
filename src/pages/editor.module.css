@@ -10,11 +10,85 @@
   max-width: 62ch;
 }
 
+.section {
+  margin: 2rem 0 0;
+}
+
+.sectionTitle {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+/* The projects this browser holds: one row each, the name opening it and a
+   second control forgetting it. */
+.kept {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 46rem;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.keptRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem 0 0;
+  border-bottom: 1px solid var(--balaur-card-border);
+}
+
+.keptRow:last-child {
+  border-bottom: 0;
+}
+
+.keptOpen {
+  flex: 1;
+  text-align: left;
+  padding: 0.6rem 0.9rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.keptOpen:hover {
+  background: var(--ifm-hover-overlay);
+}
+
+.forget {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-600);
+  padding: 0.35rem 0.5rem;
+}
+
+.forget:hover {
+  color: var(--ifm-color-primary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.hiddenInput {
+  display: none;
+}
+
 .picker {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 1.75rem;
-  margin: 1.25rem 0 0.25rem;
+  margin: 0.75rem 0 0.25rem;
 }
 
 .choice {
