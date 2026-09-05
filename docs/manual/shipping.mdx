@@ -94,9 +94,12 @@ The pack rides inside the bundle as a resource — `game.bpak` beside the
 executable in an `.app`, `assets/game.bpak` in an APK — and the engine reads
 it from there instead of out of its own file.
 
-Both come out unsigned: signing needs a certificate or keystore that is
-yours, not the engine's. `scripts/assemble_apk.sh` in the engine repository
-shows the sequence that turns an Android layout into an installable APK.
+Signing is `balaur export`'s own, with a certificate or keystore that is
+yours: `--sign <identity>` and `--profile <file>` for iOS, plus `--ipa` for
+the shape App Store Connect takes; `--apk` on Android assembles and signs the
+layout with the keystore `[export] android_keystore` names, or with Android's
+debug identity when the project names none. Without those flags a build comes
+out unsigned, which installs on no device.
 
 ## Web
 
@@ -142,7 +145,8 @@ codesign --entitlements my-game.entitlements --sign "Apple Distribution: …" my
 
 A macOS `.app` is signed as it is exported, entitlements included, so
 `--sign` is the whole step there. What the capabilities are for is in
-[Stores](./stores.mdx).
+[Stores](./stores.mdx), and running all of this on a runner rather than your
+own machine is [Continuous integration](./ci.mdx).
 
 ## Keeping the install current
 
