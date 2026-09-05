@@ -3,13 +3,13 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import {PageMetadata} from '@docusaurus/theme-common';
 import Heading from '@theme/Heading';
-import playVersion from '@site/src/play-version.json';
-import styles from './play.module.css';
+import {hasWebGpu, loadEngine, playUrl} from '@site/src/play';
+import styles from './benchmark.module.css';
 
 // The benchmark project in the browser: the same pack `balaur run
-// examples/benchmark` runs on a desktop, on the same web template /play uses.
-// Nothing loads until the visitor asks; the module and the pack are megabytes.
-const PLAY_VERSION: string = playVersion.v;
+// examples/benchmark` runs on a desktop, on the web template /editor and the
+// examples use. Nothing loads until the visitor asks; the module and the
+// pack are megabytes.
 
 type Status =
   | {kind: 'idle'}
@@ -19,11 +19,6 @@ type Status =
   | {kind: 'unsupported'}
   | {kind: 'error'; text: string};
 
-type Module = {
-  default: (init?: {module_or_path?: string}) => Promise<unknown>;
-  start: (canvas: string, pack: string) => Promise<void>;
-};
-
 export default function Benchmark(): ReactNode {
   const [status, setStatus] = useState<Status>({kind: 'idle'});
   const started = useRef(false);
@@ -31,17 +26,15 @@ export default function Benchmark(): ReactNode {
   const run = async () => {
     if (started.current) return;
     started.current = true;
-    if (!('gpu' in navigator)) {
+    if (!hasWebGpu()) {
       setStatus({kind: 'unsupported'});
       return;
     }
     try {
       setStatus({kind: 'loading', text: 'Loading the engine…'});
-      const url = `/play/balaur.js?v=${PLAY_VERSION}`;
-      const mod = (await import(/* webpackIgnore: true */ url)) as Module;
-      await mod.default({module_or_path: `/play/balaur_bg.wasm?v=${PLAY_VERSION}`});
+      const engine = await loadEngine();
       setStatus({kind: 'running'});
-      await mod.start('balaur-canvas', `/play/benchmark.bpak?v=${PLAY_VERSION}`);
+      await engine.start('balaur-canvas', playUrl('benchmark.bpak'));
       setStatus({kind: 'done'});
     } catch (e) {
       setStatus({kind: 'error', text: e instanceof Error ? e.message : String(e)});
@@ -57,7 +50,7 @@ export default function Benchmark(): ReactNode {
     <Layout
       title="Benchmark — run the suite in your browser"
       description="The Balaur benchmark project running in the browser: pick a physics or scene-tree case, watch it build, and read what the engine's own profiler measured.">
-      <PageMetadata image="/img/social/play.png" />
+      <PageMetadata image="/img/social/benchmark.png" />
       <main className={styles.main}>
         <Heading as="h1">Run the benchmarks</Heading>
         <p className={styles.lede}>

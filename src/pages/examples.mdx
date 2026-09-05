@@ -1,6 +1,6 @@
 ---
 title: "Examples — the projects that ship with the engine"
-description: "Seven example projects in the Balaur repository, from a spinning cube with a hot-reloading script to a 2D slingshot game, a skinned rig, a glTF rig, a WESL shader and two extensions — what each shows and how to open it."
+description: "Seven example projects in the Balaur repository, from a spinning cube with a hot-reloading script to a 2D slingshot game, a skinned rig, a glTF rig, a WESL shader and two extensions — what each shows, how to open it, and three that run in the browser."
 image: "/img/social/examples.png"
 ---
 
@@ -8,7 +8,7 @@ import ExampleGrid from '@site/src/components/ExampleGrid';
 
 # Examples
 
-Six projects — seven counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them, so what you see there is what opens here. Balaur builds from source for now — [Getting started](/docs/getting-started) has the toolchain — and each card carries the command that opens its project in the editor.
+Six projects — seven counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them, so what you see there is what opens here. Balaur builds from source for now — [Getting started](/docs/getting-started) has the toolchain — and each card carries the command that opens its project in the editor. Three of them — `hello`, `angrynerds` and `rig` — also run in the browser: press **Play** on the card and the game takes the screen, the same engine built to WebAssembly and drawing through WebGPU, with nothing to install.
 
 <ExampleGrid items={[
   {
@@ -18,6 +18,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
     image: 'hello_open',
     alt: 'examples/hello open in the editor: the World node selected and the Output dock showing the boot',
     manual: {to: '/docs/manual/scripting', label: 'Scripting'},
+    play: true,
   },
   {
     name: 'angrynerds',
@@ -26,6 +27,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
     image: 'persona_scene',
     alt: 'examples/angrynerds in the Scene persona: the node tree, the 2D viewport with the Bird selected, and the inspector',
     manual: {to: '/docs/manual/physics', label: 'Physics'},
+    play: true,
   },
   {
     name: 'rig',
@@ -34,6 +36,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
     image: 'persona_animate',
     alt: 'examples/rig in the Animate persona: the bones in the tree, the Thigh selected, and the timeline with its keys',
     manual: {to: '/docs/manual/animation', label: 'Animation'},
+    play: true,
   },
   {
     name: 'rig3d',
@@ -62,4 +65,4 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   },
 ]} />
 
-Each example's scene is plain TOML and its scripts are Rune, so the fastest way to learn the engine is to open one and change something. What the editor's own personas look like on them is on [the editor](/docs/manual/editor) page.
+Each example's scene is plain TOML and its scripts are Rune, so the fastest way to learn the engine is to open one and change something. What the editor's own personas look like on them is on [the editor](/docs/manual/editor) page, and [the editor in the browser](/editor) opens the same three projects for editing.

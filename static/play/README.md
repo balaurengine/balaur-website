@@ -13,8 +13,11 @@ for these examples the sources are the smaller form anyway.
 fonts — which `/editor` unpacks into a virtual filesystem beside the project
 it opens.
 
-`src/pages/play.tsx` runs a game; `src/pages/editor.tsx` runs the editor over
-one. `VERSION` names the engine build these came from.
+`src/components/Player` runs a game — the Play button on an /examples card —
+and `src/pages/benchmark.tsx` the benchmark pack; `src/pages/editor.tsx` runs
+the editor over one. `src/play.ts` is the loader they share. `index.html` sends
+the old /play page to /examples. `VERSION` names the engine build these came
+from.
 
 They follow the engine on their own: the engine's CI packs all of them into
 `balaur-play.tar.gz` on every release (`scripts/package_play.sh` there), and

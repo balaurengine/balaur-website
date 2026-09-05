@@ -3,13 +3,10 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import {PageMetadata} from '@docusaurus/theme-common';
 import Heading from '@theme/Heading';
-import playVersion from '@site/src/play-version.json';
+import {hasWebGpu, loadEngine, playUrl} from '@site/src/play';
 import styles from './editor.module.css';
 
-// One stamp for the glue, the module and the packs: see scripts/gen-play-version.mjs.
-const PLAY_VERSION: string = playVersion.v;
-
-// The editor itself, in the browser: the same wasm module /play uses, booted
+// The editor itself, in the browser: the wasm module the examples run on, booted
 // on the editor's own project pack with a game project unpacked into a
 // virtual filesystem. Nothing loads until the visitor asks — between them the
 // two packs and the module are several megabytes.
@@ -27,11 +24,6 @@ type Status =
   | {kind: 'unsupported'}
   | {kind: 'error'; text: string};
 
-type Module = {
-  default: (init?: {module_or_path?: string}) => Promise<unknown>;
-  start_editor: (canvas: string, editorPack: string, projectPack: string) => Promise<void>;
-};
-
 export default function EditorPage(): ReactNode {
   const [status, setStatus] = useState<Status>({kind: 'idle'});
   const [project, setProject] = useState('hello');
@@ -43,22 +35,16 @@ export default function EditorPage(): ReactNode {
   const run = async (id: string) => {
     if (started.current) return;
     started.current = true;
-    if (!('gpu' in navigator)) {
+    if (!hasWebGpu()) {
       setStatus({kind: 'unsupported'});
       return;
     }
     try {
       setStatus({kind: 'loading', text: 'Loading the engine…'});
-      const url = `/play/balaur.js?v=${PLAY_VERSION}`;
-      const mod = (await import(/* webpackIgnore: true */ url)) as Module;
-      await mod.default({module_or_path: `/play/balaur_bg.wasm?v=${PLAY_VERSION}`});
+      const engine = await loadEngine();
       setStatus({kind: 'loading', text: 'Opening the editor…'});
       setStatus({kind: 'running'});
-      await mod.start_editor(
-        'balaur-editor-canvas',
-        `/play/editor.bpak?v=${PLAY_VERSION}`,
-        `/play/${id}.bpak?v=${PLAY_VERSION}`,
-      );
+      await engine.start_editor('balaur-editor-canvas', playUrl('editor.bpak'), playUrl(`${id}.bpak`));
       setStatus({kind: 'done'});
     } catch (e) {
       setStatus({kind: 'error', text: e instanceof Error ? e.message : String(e)});
@@ -198,8 +184,8 @@ export default function EditorPage(): ReactNode {
           Not yet: sound, which is stubbed on WebAssembly; a project that outlives the tab, which wants somewhere to
           keep it; loading a project of your own; and exporting a native build, which needs a linker the browser has
           not got. The <Link to="/docs/roadmap">roadmap</Link> tracks those. To edit a real project today,{' '}
-          <Link to="/docs/getting-started">build the editor</Link> — and <Link to="/play">/play</Link> is the engine
-          alone, running a game without the editor around it.
+          <Link to="/docs/getting-started">build the editor</Link> — and the <Link to="/examples">examples</Link> run
+          the same three projects as games, without the editor around them.
         </p>
       </main>
     </Layout>

@@ -87,3 +87,16 @@
 .links a {
   text-decoration: none;
 }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  margin: 0.1rem 0 0;
+}
+
+.actionNote {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+}

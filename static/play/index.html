@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Balaur — the games moved to the examples page</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://balaurengine.org/examples/">
+<meta http-equiv="refresh" content="0; url=/examples/">
+<!-- The old /play page ran examples/hello; `/play/?run` opened straight on it. -->
+<script>
+  location.replace('/examples/' + (/[?&]run\b/.test(location.search) ? '?play=hello' : ''));
+</script>
+<p>The games moved to <a href="/examples/">the examples page</a>: each card has a Play button.</p>

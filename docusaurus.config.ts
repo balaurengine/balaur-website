@@ -201,7 +201,6 @@ const config: Config = {
         },
         {to: '/blog', label: 'Devlog', position: 'left'},
         {to: '/editor', label: 'Editor', position: 'right'},
-        {to: '/play', label: 'Play', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
         {
           href: 'https://github.com/balaurengine/balaur',
