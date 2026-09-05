@@ -14,20 +14,26 @@ fonts — which `/editor` unpacks into a virtual filesystem beside the project
 it opens.
 
 `src/pages/play.tsx` runs a game; `src/pages/editor.tsx` runs the editor over
-one. To refresh after an engine change:
+one. `VERSION` names the engine build these came from.
 
-    (cd ../balaur && ./scripts/package_template.sh web)
-    cp ../balaur/dist/balaur.js ../balaur/dist/balaur_bg.wasm static/play/
-    cd ../balaur && for p in editor examples/hello examples/angrynerds examples/rig; do
-      target/release/balaur export "$p" --keep-sources \
-        --output "../balaur-website/static/play/$(basename $p).bpak"
-    done
+They follow the engine on their own: the engine's CI packs all of them into
+`balaur-play.tar.gz` on every release (`scripts/package_play.sh` there), and
+`scripts/sync-play.sh` here fetches that bundle from the `nightly` prerelease,
+verified against the release's `SHA256SUMS`. The deploy workflow runs it daily
+and on every push, commits a change as `engine nightly-<sha>`, and deploys
+in the same run. To pin the site to a release, set `ENGINE_TAG` in
+`.github/workflows/deploy.yml` to its tag; to refresh by hand, run the script
+(`FORCE=1` re-downloads the same build), or point it at a local engine build:
+
+    (cd ../balaur && ./scripts/package_template.sh web && ./scripts/package_play.sh)
+    BALAUR_REPO=../balaur ./scripts/sync-play.sh
 
 `scripts/gen-play-version.mjs` (run by `npm start`/`npm run build`) hashes
 these files into `src/play-version.json`; the pages load the glue, the module
 and the packs with that stamp as a query so the CDN's different cache ages for
 `.js` and `.wasm` can never pair an old glue with a new module.
 
-The module is 17 MB raw and about 4.5 MB over the wire once the host
-compresses it. It lives in git until the engine publishes releases the site
-can fetch from instead.
+The module is about 19 MB raw and 5 MB over the wire once the host compresses
+it. It is committed rather than fetched at build time on purpose: the site
+builds from a checkout alone, so a pull request preview and a deploy never
+depend on the engine's releases being reachable.
