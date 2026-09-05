@@ -44,8 +44,8 @@
 <rect x="150" y="382" width="460.0" height="14" fill="#b9bec7" rx="2"/>
 <text x="616.0" y="393" fill="#222">99.98 ms · Godot Physics 3D</text>
 <text x="142" y="424" fill="#222" text-anchor="end" font-weight="600">query_storm</text>
-<rect x="150" y="413" width="22.5" height="14" fill="#2f6fed" rx="2"/>
-<text x="178.5" y="424" fill="#222">4.90 ms · Balaur</text>
+<rect x="150" y="413" width="21.5" height="14" fill="#2f6fed" rx="2"/>
+<text x="177.5" y="424" fill="#222">4.68 ms · Balaur</text>
 <rect x="150" y="430" width="27.3" height="14" fill="#b9bec7" rx="2"/>
 <text x="183.3" y="441" fill="#222">5.93 ms · Godot Rapier 3D</text>
 <rect x="150" y="447" width="121.7" height="14" fill="#b9bec7" rx="2"/>
