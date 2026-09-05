@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="525" viewBox="0 0 940 525" font-family="system-ui, sans-serif" font-size="12">
+<rect width="940" height="525" fill="#ffffff"/>
+<text x="150" y="20" fill="#222" font-size="13" font-weight="600">2D: median physics tick, milliseconds, lower is better</text>
+<text x="142" y="45" fill="#222" text-anchor="end" font-weight="600">pyramid</text>
+<rect x="150" y="34" width="22.2" height="14" fill="#2f6fed" rx="2"/>
+<text x="178.2" y="45" fill="#222">7.10 ms · Balaur</text>
+<rect x="150" y="51" width="62.6" height="14" fill="#b9bec7" rx="2"/>
+<text x="218.6" y="62" fill="#222">20.03 ms · Godot Rapier 2D</text>
+<rect x="150" y="68" width="66.6" height="14" fill="#b9bec7" rx="2"/>
+<text x="222.6" y="79" fill="#222">21.33 ms · Godot Box2D v3</text>
+<rect x="150" y="85" width="460.0" height="14" fill="#b9bec7" rx="2"/>
+<text x="616.0" y="96" fill="#222">147.26 ms · Godot Physics 2D</text>
+<text x="142" y="127" fill="#222" text-anchor="end" font-weight="600">mixed_pile</text>
+<rect x="150" y="116" width="8.9" height="14" fill="#2f6fed" rx="2"/>
+<text x="164.9" y="127" fill="#222">2.86 ms · Balaur</text>
+<rect x="150" y="133" width="28.9" height="14" fill="#b9bec7" rx="2"/>
+<text x="184.9" y="144" fill="#222">9.25 ms · Godot Rapier 2D</text>
+<rect x="150" y="150" width="21.0" height="14" fill="#b9bec7" rx="2"/>
+<text x="177.0" y="161" fill="#222">6.71 ms · Godot Box2D v3</text>
+<rect x="150" y="167" width="222.2" height="14" fill="#b9bec7" rx="2"/>
+<text x="378.2" y="178" fill="#222">71.12 ms · Godot Physics 2D</text>
+<text x="142" y="209" fill="#222" text-anchor="end" font-weight="600">joint_grid</text>
+<rect x="150" y="198" width="6.8" height="14" fill="#2f6fed" rx="2"/>
+<text x="162.8" y="209" fill="#222">2.17 ms · Balaur</text>
+<rect x="150" y="215" width="31.7" height="14" fill="#b9bec7" rx="2"/>
+<text x="187.7" y="226" fill="#222">10.16 ms · Godot Rapier 2D</text>
+<rect x="150" y="232" width="15.4" height="14" fill="#b9bec7" rx="2"/>
+<text x="171.4" y="243" fill="#222">4.93 ms · Godot Box2D v3</text>
+<text x="142" y="274" fill="#222" text-anchor="end" font-weight="600">smash</text>
+<rect x="150" y="263" width="10.9" height="14" fill="#2f6fed" rx="2"/>
+<text x="166.9" y="274" fill="#222">3.50 ms · Balaur</text>
+<rect x="150" y="280" width="37.0" height="14" fill="#b9bec7" rx="2"/>
+<text x="193.0" y="291" fill="#222">11.86 ms · Godot Rapier 2D</text>
+<rect x="150" y="297" width="36.2" height="14" fill="#b9bec7" rx="2"/>
+<text x="192.2" y="308" fill="#222">11.57 ms · Godot Box2D v3</text>
+<rect x="150" y="314" width="172.1" height="14" fill="#b9bec7" rx="2"/>
+<text x="328.1" y="325" fill="#222">55.09 ms · Godot Physics 2D</text>
+<text x="142" y="356" fill="#222" text-anchor="end" font-weight="600">query_storm</text>
+<rect x="150" y="345" width="38.9" height="14" fill="#2f6fed" rx="2"/>
+<text x="194.9" y="356" fill="#222">12.45 ms · Balaur</text>
+<rect x="150" y="362" width="19.5" height="14" fill="#b9bec7" rx="2"/>
+<text x="175.5" y="373" fill="#222">6.25 ms · Godot Rapier 2D</text>
+<rect x="150" y="379" width="14.2" height="14" fill="#b9bec7" rx="2"/>
+<text x="170.2" y="390" fill="#222">4.56 ms · Godot Box2D v3</text>
+<rect x="150" y="396" width="178.8" height="14" fill="#b9bec7" rx="2"/>
+<text x="334.8" y="407" fill="#222">57.24 ms · Godot Physics 2D</text>
+<text x="142" y="438" fill="#222" text-anchor="end" font-weight="600">drop</text>
+<rect x="150" y="427" width="19.0" height="14" fill="#2f6fed" rx="2"/>
+<text x="175.0" y="438" fill="#222">6.07 ms · Balaur</text>
+<rect x="150" y="444" width="51.7" height="14" fill="#b9bec7" rx="2"/>
+<text x="207.7" y="455" fill="#222">16.54 ms · Godot Rapier 2D</text>
+<rect x="150" y="461" width="70.8" height="14" fill="#b9bec7" rx="2"/>
+<text x="226.8" y="472" fill="#222">22.66 ms · Godot Box2D v3</text>
+<rect x="150" y="478" width="322.8" height="14" fill="#b9bec7" rx="2"/>
+<text x="478.8" y="489" fill="#222">103.34 ms · Godot Physics 2D</text>
+</svg>
