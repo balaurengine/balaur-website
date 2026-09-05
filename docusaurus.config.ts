@@ -5,6 +5,10 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const url = 'https://balaurengine.org';
+const repoUrl = 'https://github.com/balaurengine/balaur';
+// The community server; the footer's social row (src/theme/Footer/Copyright)
+// reads it from customFields so there is one copy of the invite.
+const discordUrl = 'https://discord.gg/v649emcpAu';
 
 // Site-wide structured data: who publishes the site and what it is. The
 // SoftwareApplication entry for the engine itself lives in
@@ -67,6 +71,8 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
+  customFields: {discordUrl, repoUrl},
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -92,7 +98,7 @@ const config: Config = {
       name: 'Balaur',
       url: `${url}/`,
       logo: `${url}/brand/balaur-mark-light-512.png`,
-      sameAs: ['https://github.com/balaurengine'],
+      sameAs: ['https://github.com/balaurengine', discordUrl],
     }),
     jsonLd({
       '@context': 'https://schema.org',
@@ -232,6 +238,10 @@ const config: Config = {
         {
           title: 'Community',
           items: [
+            {
+              label: 'Discord',
+              href: discordUrl,
+            },
             {
               label: 'Discussions',
               href: 'https://github.com/balaurengine/balaur/discussions',
