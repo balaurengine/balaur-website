@@ -37,6 +37,7 @@ const CARDS = {
   docs: ['Documentation', 'A node-based game engine in Rust, deterministic, with scripts that reload in milliseconds. The manual and the reference.', '/docs'],
   principles: ['Principles', 'Fast to run, fast to iterate, easy to use — and how the project is run.', '/docs/principles'],
   architecture: ['Architecture', 'Scripts, the language-neutral seam, the ECS core, and the plugins every subsystem is built as.', '/docs/architecture'],
+  quality: ['Quality', 'Every check a change passes: lints, tests, determinism traces, generated docs.', '/docs/quality'],
   'built-on': ['Built on', 'The Rust libraries under the engine, and what each one does for it.', '/docs/built-on'],
   reference: ['Reference', 'Every component, asset type and script module, read from a booted engine.', '/docs/reference'],
   changelog: ['Changelog', 'What each release of the engine added.', '/docs/changelog'],

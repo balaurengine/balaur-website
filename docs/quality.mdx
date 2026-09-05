@@ -1,0 +1,191 @@
+---
+title: "Quality — the checks every change passes"
+sidebar_label: "Quality"
+description: "What keeps the Balaur game engine honest: rustfmt and clippy on three platforms, house and naming lints, ~1,200 tests, every example run twenty ways, cross-platform determinism traces, and generated docs that cannot drift."
+image: "/img/social/quality.png"
+sidebar_position: 6
+---
+
+# Quality
+
+Every promise on the [principles](./principles.mdx) page has something that
+holds it. This page is that list.
+
+Nothing here depends on remembering. Each rule is a script that fails, and
+every script runs on every push and every pull request.
+[docs/QUALITY.md](https://github.com/balaurengine/balaur/blob/main/docs/QUALITY.md)
+is the same list with the file paths.
+
+## One entry point
+
+A single workflow owns the triggers and calls four reusable ones, so a red X
+names itself before you open it.
+
+| Workflow | What it covers |
+| --- | --- |
+| `lint` | everything that reads the code without running it |
+| `docs` | both kinds of documentation |
+| `test` | everything that runs the engine |
+| `build` | everything that produces a download |
+
+A pull request runs all four. Only the one job that publishes a release is
+skipped, so a PR still proves that every platform builds and every export
+works.
+
+## The compiler, per platform and per feature
+
+The Rust toolchain is pinned, so every machine runs the same linter version.
+Formatting is checked, and Clippy runs with warnings denied — on Linux, macOS
+and Windows, because platform code is compiled nowhere else.
+
+Then once more per feature that is off by default, because code behind an off
+feature is not compiled at all: the windowed backend (wgpu, egui, the macOS
+dock-icon path), extensions (the dlopen path and the cdylib), and the Apple
+stores. Plus one example extension deliberately kept outside the workspace —
+the only thing proving an extension builds without the engine's build tree.
+
+## Rules no compiler enforces
+
+Three lint scripts cover what Clippy cannot see. Each has two severities:
+**error** fails CI and is mechanical; **report** prints only, for heuristics
+that will false-positive. Failing a build on a heuristic teaches people to
+game the heuristic.
+
+**House rules**, over every Rust and Rune file:
+
+| Rule | Fails on |
+| --- | --- |
+| platform float math | `.sin()`, `.powf()` and the rest of the list that differs between operating systems; `sqrt`, `abs`, `floor` and friends are exact everywhere and deliberately allowed |
+| nondeterministic iteration | iterating a hash map or set, which leaks hash order into behaviour |
+| channels outside the recorded seam | anything that could reach the outside world during a replay |
+| unjustified `unwrap` | `unwrap` or `expect` outside tests with no justification |
+| `allow` without a reason | an `#[allow(..)]` that does not say why |
+| TODO without an issue | a TODO with nothing behind it |
+| function and file length | 120 lines, 1200 lines |
+| naming | the mechanical half of the naming rules, a dozen separate checks |
+| two Rune traps | shapes that compile and then misbehave |
+
+A **ratchet** keeps it honest without a flag day: a baseline file records how
+many violations predate each rule, per file, and anything above that count
+fails. Deleting a line from the baseline is progress; nothing may be added to
+it by hand.
+
+**Comments**, in every language in the tree — Rust, Rune, Python, shell, YAML
+and TOML alike. A comment block longer than three lines is an essay, and a
+comment that only restates the line under it fails too. A comment is one or
+two lines stating a constraint; the rationale belongs in `ARCHITECTURE.md`.
+
+**Names.** Names are the part of an engine that cannot be refactored later
+without breaking someone's project, so they are decided once, written down
+with the cost of getting each one wrong, and checked mechanically. The script
+API's half is checked by **booting the engine** and reading what it says it
+offers, rather than by parsing source — a name a script cannot actually reach
+is not API. That check also requires a doc line on every module and every
+function in it, which is why the [reference](./reference/index.md) has no
+blank entries.
+
+## Determinism is a gate, not a test
+
+[Determinism](./manual/determinism.mdx) is a feature, so the two ways it
+breaks — wall-clock time and entropy reaching gameplay — are compile errors.
+`Instant::now`, `SystemTime::now` and unseeded randomness are banned outright;
+a call genuinely outside the simulation has to carry a written reason. Line
+endings are pinned in the index, because a Windows checkout would otherwise
+export different bytes from the same sources.
+
+Then CI checks it four ways:
+
+1. **Two exports agree.** Every example is exported twice, in two separate
+   processes, and the two files must be byte-identical.
+2. **Every platform exports the same bytes.** Linux, macOS and Windows upload
+   their pack digests, and the digests are diffed.
+3. **Every platform steps the same simulation.** Each platform records one
+   digest per tick for 600 frames across five projects, and the traces are
+   diffed. The first differing line is the tick they parted on.
+4. **The same sources build the same binary.** Built twice on one runner and
+   compared — otherwise "same binary, same simulation" is not testable and a
+   divergence cannot be bisected.
+
+A change that alters a recorded digest has to say why.
+
+## Tests
+
+Around 1,200 tests across 22 crates, run on all three desktop platforms. On
+top of the plain run:
+
+- the extension path, which is off by default and so is never otherwise built;
+- a build with the optional subsystems switched off, which is the point of
+  having them;
+- suites where a full app boots and talks over real sockets.
+
+A test's name is a sentence about behaviour —
+`freeing_a_node_frees_its_children`, not `test_free`. A test that asserts from
+inside a script carries one control proving the script ran at all, or its
+assertions hold vacuously when it does not.
+
+## Every example, twenty ways
+
+The six example projects are each put through twenty passes, on each of the
+three platforms:
+
+- **run** — dev mode, straight from the sources.
+- **export**, twice — the two packs must match.
+- **play** — the exported pack, with no sources and no compiler present.
+- **edit**, sixteen times — the editor is itself a Balaur project, so it is
+  booted headless against every example and driven through undo, layout,
+  rigging, the polygon tool, plugins, the clipboard, the assets dock, picking,
+  script properties, prefab instances, placement, the profiler, session
+  recording and the theme switch.
+
+Every pass is held to two bars: **a clean exit and a clean log.** A logged
+error fails the run, and so does an editor scene node the editor cannot
+resolve — an invariant that, when it broke, silently cost the inspector, the
+gizmos and every transform read while nothing else failed.
+
+Headless covers loading, mirroring and asset rebinding, not drawing. Drawing
+is covered separately: one screenshot per editor screen, rendered offscreen
+against a committed catalogue, regenerated and diffed before any change to the
+editor's shell.
+
+## Documentation that cannot drift
+
+Hand-written docs go stale silently, so the ones that can be derived are.
+Rustdoc builds with warnings denied, mostly to catch dead intra-doc links. The
+generated docs — the script API, components, assets, crates, behaviour — are
+regenerated from a booted engine on every push and the build fails on any
+diff. The third-party notices file is regenerated and diffed the same way.
+
+This site builds its [reference](./reference/index.md) from that same data, so
+the published docs cannot describe an engine that does not exist.
+
+## Performance
+
+Feature tests and performance tests stay apart. Budgets assert orders of
+magnitude, never percentages: a CI runner is shared and throttled, and a gate
+that cries wolf gets ignored, which is worse than no gate. Every ceiling is
+ten times a measured run and is written down in exactly one place. They catch
+an accidental O(n²), a lock held across a frame, or a compile moved into the
+hot path — not a five percent regression, which is what the
+[benchmarks](./benchmarks.md) are for.
+
+## Supply chain and releases
+
+Dependency advisories, bans and sources are checked on every push, with all
+features on so the audit reaches the windowed dependency tree a headless build
+never compiles. Yanked crates are denied, and so are unknown registries and
+git sources — the two forks the engine uses are allowlisted by name, with the
+reason recorded.
+
+Releases carry `SHA256SUMS` and build-provenance attestations, verifiable with
+`gh attestation verify`. And every push exports a game using the same
+published actions a player's own repository calls, against the engine that run
+just built: an action that stopped working fails here rather than on the day
+someone else runs it.
+
+## What review is left to do
+
+All of the above is mechanical, which is the point. Review spends its
+attention on what a script cannot check: whether the change serves the
+[principles](./principles.mdx), whether the name is the right name, whether
+the test asserts on behaviour a caller can see. One concern per pull request,
+with code, tests, docs and a changelog line landing together.

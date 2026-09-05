@@ -38,8 +38,8 @@ says how the project is run, for anyone who wants to help build it.
    an error message, not a crash.
 8. **Verified, not asserted.** Each promise above has a test that holds it:
    digests compared across three operating systems in CI, every example run
-   four ways, reference docs generated from a booted engine so they cannot
-   drift.
+   twenty ways, reference docs generated from a booted engine so they cannot
+   drift. [Quality](./quality.mdx) is the whole list.
 9. **Ship as one file, anywhere.** Reproducible packs fused onto a runtime;
    desktop, mobile and the web from the same sources.
 
@@ -61,7 +61,7 @@ When two of these conflict, the lower number wins.
    change comes with its tests and its docs.
 4. **Every change is complete.** Code, tests, documentation and a changelog
    line land together. Generated docs are regenerated. Lints, naming rules
-   and the comment style are enforced by CI, not by review.
+   and the comment style are enforced by [CI](./quality.mdx), not by review.
 5. **Determinism is a hard gate.** A change that alters a recorded digest
    without explaining why does not merge.
 6. **Small and reviewed.** One concern per pull request, reviewed by a
