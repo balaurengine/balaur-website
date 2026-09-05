@@ -41,8 +41,7 @@ the same pack, each verified against its SHA-256 when loaded.
 
 Because packed execution is pure interpretation of precompiled bytecode, it
 ships on platforms with JIT/codegen restrictions; CI cross-compiles the
-headless engine to iOS, Android, and WebAssembly (Emscripten) on every push
-to keep that true.
+engine to iOS, Android and WebAssembly on every push to keep that true.
 
 ## Fused executables
 
@@ -98,6 +97,18 @@ it from there instead of out of its own file.
 Both come out unsigned: signing needs a certificate or keystore that is
 yours, not the engine's. `scripts/assemble_apk.sh` in the engine repository
 shows the sequence that turns an Android layout into an installable APK.
+
+## Web
+
+```bash
+balaur export my-game --target web       # -> my-game-web/
+```
+
+The output is a directory for a static host: the wasm-bindgen glue, the
+engine module, the pack, and a page that loads them. A `web/index.html` in
+the project replaces the page. The module is the same for every game, and
+it is most of what a player downloads; what is in it and how to build a
+smaller one is in [Build size](./build-size.mdx).
 
 ## Apple
 

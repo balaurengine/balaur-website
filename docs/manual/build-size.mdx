@@ -1,0 +1,106 @@
+---
+title: "Build size — what a web build carries, and how to make it smaller"
+sidebar_label: "Build size"
+description: "What is in the Balaur web module, which cargo features and dependencies decide its size, and how to build a smaller runtime template for your own game."
+sidebar_position: 16
+---
+
+import PlaySize from '@site/src/components/PlaySize';
+import Features from './_features.mdx';
+
+# Build size
+
+A web game is a download before it is a game, and the engine module is most
+of that download. This is the module the site serves on [/play](/play),
+measured on every deploy:
+
+<PlaySize />
+
+Which number a player waits for depends on the host: brotli when it
+compresses `.wasm` (check the `content-encoding` header it sends), gzip when
+it only does that, raw when it does neither. The raw size is what the browser
+compiles either way. The pack is on top, and it is the game's own bytes.
+
+## Where the bytes go
+
+One module carries the whole engine, and nothing in it loads lazily: the
+renderer (wgpu with both its WebGPU and WebGL2 backends, naga, winit), the UI
+(egui and its four default fonts, plus a second text shaper for marked-up
+text), physics in 2D and in 3D (rapier and parry, both dimensions), the Rune
+compiler and VM, every audio codec rodio turns on, and every image format
+kiss3d turns on.
+
+Code is about three quarters of the module. The rest is data, and half the
+data is assets that dependencies bake in:
+
+| Baked in by a dependency | Raw | Brotli |
+| --- | --- | --- |
+| egui's default fonts: Hack, Ubuntu Light, Noto Emoji, emoji-icon | 1.4 MB | 0.7 MB |
+| kiss3d's tonemapping lookup table, `tony_mc_mapface.bin` | 0.9 MB | 0.2 MB |
+| kiss3d's debug-text font, Work Sans | 0.1 MB | 0.05 MB |
+
+The other half is tables: Unicode data for two text shapers, codec tables,
+shader sources. The figures are from the nightly of 2026-09-05 and move with
+the dependency versions.
+
+## Building a smaller template
+
+`balaur export --target web` copies a *template*, the glue and module that
+`scripts/package_template.sh web` in the engine repository builds, and puts
+the pack and a page beside them. Build a template with fewer features and
+hand it to the exporter:
+
+```bash
+WEB_FEATURES=window,web scripts/package_template.sh web
+balaur export my-game --target web --template dist/balaur-template-web
+```
+
+The script wants the `wasm32-unknown-unknown` target, the `wasm-bindgen`
+CLI at the version in `Cargo.lock` (it checks), `wasm-opt` from binaryen
+and, for the size line it prints, `brotli`. It refuses a module under 5 MB,
+which is what a build whose entry point was optimised away looks like.
+
+On a browser build only two features weigh anything: `audio` and `window`,
+and a game without a window is not a game. Everything else keeps its native
+stack off the wasm target and costs the plugin's own code.
+
+## Features
+
+<Features />
+
+## What is not a feature yet
+
+The levers below are dependency lines in the engine, not switches. Each is
+named so a fork can flip it, with a size where one has been measured.
+
+- **egui's default fonts.** `egui` is built with `default_fonts` on, by
+  `balaur_ui` and by kiss3d, and the UI plugin falls back to them when a
+  project ships no `fonts/*.ttf`. A game that ships its own fonts carries both
+  sets: 1.4 MB raw, 0.7 MB brotli, for nothing.
+- **The WebGL2 fallback.** `egui-wgpu`'s default features turn on
+  `wgpu/webgl`, which links the GLES backend (`glow`) and naga's GLSL writer
+  beside WebGPU. Current browsers ship WebGPU; the fallback is for older ones.
+  Unmeasured.
+- **Image formats.** kiss3d enables every format `image` has, so the module
+  links decoders for EXR, TIFF, GIF, QOI and more that no pack uses: a pack's
+  textures are PNG, JPEG or WebP. Unmeasured; EXR alone is a large decoder.
+- **Audio codecs.** rodio's defaults are FLAC, MP3, MP4/AAC, Vorbis and WAV,
+  plus dithering noise and a recording path. One feature per codec would let a
+  game that ships Ogg Vorbis drop the rest. Unmeasured.
+- **Physics in one dimension.** `balaur_physics` links rapier2d and rapier3d
+  both, so a 2D game carries the 3D solver and parry3d. The crate is written
+  3D-first with `dim2` as a module, which makes a split a refactor rather than
+  a flag. parry's `parallel` feature is on too, and rayon has no threads to
+  use in a browser.
+- **The tonemapping table.** 0.9 MB raw, 0.2 MB brotli, for HDR tonemapping
+  in kiss3d. An analytic curve costs no bytes.
+- **Two text shapers.** epaint shapes with `harfrust` 0.12; `cosmic-text`,
+  which `balaur_ui` uses for marked-up text, with `harfrust` 0.5. Two copies
+  of the shaping tables, and of `read-fonts` and `skrifa`, are linked until
+  the two agree on a version.
+
+What is already done leaves no knob on stable Rust: the `web` profile in the
+engine's `Cargo.toml` sets `opt-level = "z"`, fat LTO, one codegen unit,
+`panic = "abort"` and stripped symbols, and the script runs `wasm-opt -Oz`
+after bindgen. A `-Zbuild-std` with `panic_immediate_abort` would take a
+further slice and needs nightly, which the pinned toolchain rules out.

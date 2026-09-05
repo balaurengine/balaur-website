@@ -13,7 +13,7 @@ const site = 'https://balaurengine.org';
 function walk(dir) {
   return readdirSync(dir).flatMap((f) => {
     const p = join(dir, f);
-    return statSync(p).isDirectory() ? walk(p) : /\.mdx?$/.test(f) ? [p] : [];
+    return statSync(p).isDirectory() ? walk(p) : /\.mdx?$/.test(f) && !f.startsWith('_') ? [p] : [];
   });
 }
 function frontMatter(text) {

@@ -6,6 +6,10 @@
 # engine generates both with scripts/gen_docs.py and CI fails on drift, so
 # they are always current on its main branch.
 #
+# `features.md` lands in docs/manual/_features.mdx, the partial the Build size
+# page imports: the banner and the title go, since MDX has no HTML comments
+# and the page has its own heading.
+#
 # `CHANGELOG.md` comes from the engine's root rather than docs/generated — it
 # is hand written, one line per feature, and it is the "what shipped" that the
 # roadmap's "what has not" points at.
@@ -45,6 +49,13 @@ if fetch crates.md "$tmp"; then
     printf -- '---\ntitle: "Crates — the Rust workspace, crate by crate"\nsidebar_label: "Crates"\nimage: "/img/social/crates.png"\ndescription: "One section per crate in the Balaur game engine workspace: what each is for and what it depends on."\ncustom_edit_url: null\n---\n\n'
     cat "$tmp"
   } >"$ROOT/docs/crates.md"
+fi
+rm -f "$tmp"
+
+tmp="$(mktemp)"
+if fetch features.md "$tmp"; then
+  awk 'started || (!/^<!--/ && !/^# / && !/^$/) {started=1; print}' "$tmp" \
+    >"$ROOT/docs/manual/_features.mdx"
 fi
 rm -f "$tmp"
 
