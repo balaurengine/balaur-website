@@ -191,3 +191,57 @@ h1 .ref-icon { width: 1em; height: 1em; vertical-align: -0.12em; margin-right: 0
   color: var(--ifm-color-emphasis-700);
   margin-top: 0.35rem;
 }
+
+/* Donate is the one navbar item that asks for something rather than offering
+   it, so it reads as a control and not a sixth link. */
+.navbar__link--donate {
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 999px;
+  padding: 0.2rem 0.85rem;
+  margin-left: 0.4rem;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.navbar__link--donate:hover {
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+
+/* GitHub as its mark: the word costs a button's worth of room in a bar that
+   already has four. The mask keeps it on the navbar's own colour. */
+.header-github-link::before {
+  content: '';
+  display: flex;
+  width: 22px;
+  height: 22px;
+  background-color: var(--ifm-navbar-link-color);
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.3v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.header-github-link:hover::before {
+  background-color: var(--ifm-navbar-link-hover-color);
+}
+
+/* Between the hamburger breakpoint and about 1250px the bar is tight enough
+   that a dropdown's caret wraps onto a second line; the items are short, so
+   let the bar be the thing that scrolls its own row instead. */
+.navbar__item,
+.navbar__link {
+  white-space: nowrap;
+}
+
+/* Just above the hamburger breakpoint the bar has to hold nine items, the
+   search box and the theme toggle. Tighten the gaps and drop the wordmark —
+   the logo still goes home — rather than hiding a destination. */
+@media (min-width: 997px) and (max-width: 1180px) {
+  .navbar__title {
+    display: none;
+  }
+
+  .navbar {
+    --ifm-navbar-item-padding-horizontal: 0.45rem;
+  }
+}

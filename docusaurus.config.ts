@@ -191,41 +191,47 @@ const config: Config = {
         },
         {to: '/features', label: 'Features', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
+        // Everything there is to read, under one heading: the manual and the
+        // reference are each a sidebar, and the roadmap, changelog and devlog
+        // are the three pages people come back for.
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
           label: 'Docs',
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'referenceSidebar',
           position: 'left',
-          label: 'Reference',
+          items: [
+            {type: 'docSidebar', sidebarId: 'docsSidebar', label: 'Documentation'},
+            {to: '/docs/getting-started', label: 'Getting started'},
+            {type: 'docSidebar', sidebarId: 'referenceSidebar', label: 'Reference'},
+            {type: 'doc', docId: 'roadmap', label: 'Roadmap'},
+            {type: 'doc', docId: 'changelog', label: 'Changelog'},
+            {to: '/blog', label: 'Devlog'},
+          ],
         },
+        {to: '/editor', label: 'Editor', position: 'right'},
+        {to: '/download', label: 'Download', position: 'right'},
+        // The one item that asks for something rather than offering it, so it
+        // is a pill rather than a sixth link (see custom.css).
         {
-          type: 'doc',
-          docId: 'roadmap',
-          position: 'left',
-          label: 'Roadmap',
+          to: '/donate',
+          label: 'Donate',
+          position: 'right',
+          className: 'navbar__link--donate',
         },
-        {to: '/blog', label: 'Devlog', position: 'left'},
         {
           label: 'Community',
           position: 'right',
           items: [
             {to: '/community', label: 'Community'},
             {to: '/about', label: 'About'},
-            {to: '/donate', label: 'Support Balaur'},
             {href: discordUrl, label: 'Discord'},
           ],
         },
-        {to: '/editor', label: 'Editor', position: 'right'},
-        {to: '/download', label: 'Download', position: 'right'},
+        // An icon, because the word costs a button's worth of room and the
+        // mark is the more recognisable of the two.
         {
           href: 'https://github.com/balaurengine/balaur',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'Balaur on GitHub',
         },
       ],
     },
