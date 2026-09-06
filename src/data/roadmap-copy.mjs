@@ -40,7 +40,7 @@ group are ordered by it.
 
   items: {
     'Tile maps':
-      `<>Collision from the tileset. Autotiling as an ordered rule table — first match wins, one rule covering eight orientations, variation picked by hash so a stroke resolves the same twice — with templates for the sheet layouts people ship, and the bitmask terrains Godot and Tiled use as sugar over it. Animated and occluding tiles, custom data per tile, chunked cells, isometric and hexagonal layouts. A Tiles dock with seven brushes, a tileset document, and <code>balaur import</code> for Tiled and LDtk projects.</>`,
+      `<>What is left of tile maps: quarter-tile sheets, where a cell is four half-tiles picked by its corners; <code>balaur import</code> for LDtk projects; cells kept in their own chunked file, for a level too big to read in a scene; and a multi-tile stamp in the Tiles tool. Collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the fill, line, pick and terrain brushes, the Set panel and Tiled import all landed.</>`,
     'Script completion and hover':
       `<>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>`,
     'Curve editor and onion skin':

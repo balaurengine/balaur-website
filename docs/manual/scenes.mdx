@@ -112,7 +112,7 @@ The components registered by the standard plugins:
 | `body3d`, `collider3d` | physics | 3D rigid body and collider (rapier3d) |
 | `body2d`, `collider2d` | physics | 2D rigid body and collider (rapier2d) |
 | `shape3d`, `shape2d` | render | Renderable 3D / 2D shape, with a `color` |
-| `sprite`, `tilemap`, `particles` | render | Textured 2D quad (with sheets), a tile grid over a tileset, a particle emitter |
+| `sprite`, `tilemap`, `tile_collision`, `particles` | render, physics | Textured 2D quad (with sheets); a tile grid over a tileset, which autotiles from the terrain you paint and collides as one voxel shape; a particle emitter |
 | `mesh` | render | An OBJ or glTF mesh, optionally skinned to a `skeleton` |
 | `boolean3d`, `boolean2d` | render | The node's children joined, cut out of one another, or overlapped |
 | `cloner` | render | The node's subtree drawn many times over, in one call per mesh |
