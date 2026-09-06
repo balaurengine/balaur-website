@@ -208,14 +208,15 @@ const config: Config = {
         },
         {to: '/editor', label: 'Editor', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
-        // The one item that asks for something rather than offering it, so it
-        // is a pill rather than a sixth link (see custom.css).
-        {
-          to: '/donate',
-          label: 'Donate',
-          position: 'right',
-          className: 'navbar__link--donate',
-        },
+        // Hidden until the donation page is ready. The one item that asks for
+        // something rather than offering it, so it is a pill rather than a
+        // sixth link (see custom.css).
+        // {
+        //   to: '/donate',
+        //   label: 'Donate',
+        //   position: 'right',
+        //   className: 'navbar__link--donate',
+        // },
         {
           label: 'Community',
           position: 'right',
@@ -320,10 +321,11 @@ const config: Config = {
               label: 'About',
               to: '/about',
             },
-            {
-              label: 'Support Balaur',
-              to: '/donate',
-            },
+            // Hidden until the donation page is ready.
+            // {
+            //   label: 'Support Balaur',
+            //   to: '/donate',
+            // },
             {
               label: 'Devlog',
               to: '/blog',

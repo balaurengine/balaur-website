@@ -48,6 +48,7 @@ import Sparkle from '@phosphor-icons/core/assets/duotone/sparkle-duotone.svg';
 import SpeakerHigh from '@phosphor-icons/core/assets/duotone/speaker-high-duotone.svg';
 import Storefront from '@phosphor-icons/core/assets/duotone/storefront-duotone.svg';
 import Sun from '@phosphor-icons/core/assets/duotone/sun-duotone.svg';
+import TextAa from '@phosphor-icons/core/assets/duotone/text-aa-duotone.svg';
 import Timer from '@phosphor-icons/core/assets/duotone/timer-duotone.svg';
 import TreeStructure from '@phosphor-icons/core/assets/duotone/tree-structure-duotone.svg';
 import UsersThree from '@phosphor-icons/core/assets/duotone/users-three-duotone.svg';
@@ -97,6 +98,7 @@ const ICONS = {
   'speaker-high': SpeakerHigh,
   storefront: Storefront,
   sun: Sun,
+  'text-aa': TextAa,
   timer: Timer,
   'tree-structure': TreeStructure,
   'users-three': UsersThree,

@@ -81,7 +81,8 @@ Subsystems declare their bindings once against a language-neutral seam
 (`balaur_script`), and scripts reach them as modules with `::`: `engine`,
 `scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`, `physics3d`,
 `render`, `audio`, `ui`, `animation`, `skeleton`, `assets`, `http`,
-`websocket`, `gamend`, `task`, `debugger`, `fs`, `toml`, `json` and `script`.
+`websocket`, `gamend`, `events`, `task`, `debugger`, `fs`, `toml`, `json` and
+`script`.
 Every function and constant is in the
 [script modules reference](/docs/reference/modules), generated from a booted
 engine so it cannot drift.
@@ -174,7 +175,25 @@ See [Networking](./networking.mdx) for the delivery model.
 
 Scripts invoke each other the same way the engine does:
 `node.call("method", args...)` calls a method on another node's script
-instance by name.
+instance by name — one target, now, when you hold the node.
+
+For the other shape — something happened and the emitter does not know who
+cares — there is `events`:
+
+```rune
+this.node.emit("hit", #{ damage: 3 });          // from this node
+
+events::subscribe(this.node, "hit", enemy);     // only that enemy's
+events::subscribe(this.node, "hit");            // every emitter's
+pub fn on_hit(this, payload) {}                 // on_<name>, whichever it was
+```
+
+Delivery is the top of the next frame's update, in emission then subscription
+order, so a handler never runs inside the call that emitted. Naming the
+emitter is also what keeps a hundred emitters of `hit` from waking a hundred
+handlers each: it is part of the key, so delivery is a lookup. `events::emit`
+is the same without an emitter, and `events::emitted(name)` /
+`events::emitted_from(node, name)` are the polling twins.
 
 ## Hot reload
 

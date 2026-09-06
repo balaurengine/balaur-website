@@ -65,8 +65,9 @@ make it, and a collider sits on the same node as its body, not on a child.
 | `$Path/To/Node`, `get_node("..")` | `this.node.get_node("Path/To/Node")`, `"../Sibling"` |
 | `queue_free()` | `node.queue_free()` — deferred to end of frame, as in Godot |
 | `apply_impulse(v)` | `this.node.body2d.apply_impulse(x, y)` |
-| `signal hit`, `hit.connect(_on_hit)` | `events::subscribe(this.node, "hit")`, then `pub fn on_hit(this, payload)` ([events](/docs/reference/modules/events)) |
-| `hit.emit(payload)` | `events::emit("hit", payload)` — delivered at the top of the next frame |
+| `signal hit` on a node, `enemy.hit.connect(_on_hit)` | `events::subscribe(this.node, "hit", enemy)`, then `pub fn on_hit(this, payload)` ([events](/docs/reference/modules/events)) |
+| `hit.emit(payload)` from that node | `this.node.emit("hit", payload)` — delivered at the top of the next frame |
+| Connecting to every emitter of a signal | `events::subscribe(this.node, "hit")` — omit the node, hear them all |
 | Engine signals: `pressed`, `animation_finished`, `request_completed` | Methods by name: `on_click`, `on_animation_finished(name)`, `on_response(r)` |
 | Calling a method on another node | `node.call("method", args)` |
 | `Input.is_action_just_pressed("jump")` | `input::action_just_pressed("jump")` |

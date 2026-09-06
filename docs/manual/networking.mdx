@@ -102,7 +102,9 @@ A call's own option wins over the table.
 
 A script cannot register a persistent callback and be handed a payload three
 frames later — that would need an id space with explicit release. Events go the
-other way: the engine calls a method the script declares by name. Most also
+other way: the engine calls a method the script declares by name, and a script's
+own events work the same, scoped to an emitting node or to all of them
+([scripting](./scripting.mdx#events)). Most also
 have a polling twin (`input::just_pressed`, `animation::just_finished`) for
 scripts that would rather ask than declare a method. An event is a frame-scoped
 snapshot, not a subscription.
