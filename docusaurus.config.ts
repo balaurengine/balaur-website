@@ -82,6 +82,13 @@ const config: Config = {
   },
 
   headTags: [
+    // The two faces that draw the first screen, fetched in parallel with the
+    // stylesheet rather than after it. Only the latin subsets: latin-ext and
+    // the mono are left to the @font-face rules to pull when a page needs
+    // them. crossOrigin is required on font preloads even same-origin, or
+    // the browser fetches the file a second time.
+    {tagName: 'link', attributes: {rel: 'preload', href: '/fonts/alegreya-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous'}},
+    {tagName: 'link', attributes: {rel: 'preload', href: '/fonts/source-sans-3-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous'}},
     // Icons live at the site root under names that never change. Google
     // refetches a favicon only when it recrawls the home page, and a new URL
     // starts that discovery over. The ICO carries 16-64 px frames; the SVG
@@ -151,7 +158,10 @@ const config: Config = {
         sitemap: {
           // The authors list is generated whenever authors.yml exists; with
           // one author it is a duplicate of /blog, so it is not advertised.
-          ignorePatterns: ['/blog/authors/**'],
+          // /search is a form with no content of its own and is noindexed in
+          // src/theme/SearchPage; the paginated devlog pages are the same
+          // posts as /blog, which is the page that should rank.
+          ignorePatterns: ['/blog/authors/**', '/search/', '/blog/page/**'],
         },
       } satisfies Preset.Options,
     ],
@@ -175,9 +185,12 @@ const config: Config = {
     navbar: {
       title: 'Balaur',
       logo: {
-        alt: 'Balaur Logo',
+        alt: 'Balaur logo',
         src: 'img/logo-light.svg',
         srcDark: 'img/logo-dark.svg',
+        // The intrinsic box, so the navbar does not reflow when the SVG lands.
+        width: 32,
+        height: 32,
       },
       items: [
         {

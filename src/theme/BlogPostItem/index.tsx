@@ -43,7 +43,12 @@ export default function BlogPostItemWrapper(props: Props): ReactNode {
         <img
           className={clsx(styles.cover, isBlogPostPage && styles.coverFull)}
           src={src}
-          alt=""
+          // The cover is a screenshot of the thing the post is about, not
+          // decoration, so it carries the post's title: that is the text
+          // Google Images indexes it under.
+          alt={metadata.title}
+          width={1600}
+          height={1000}
         />
       )}
       <BlogPostItem {...props} />

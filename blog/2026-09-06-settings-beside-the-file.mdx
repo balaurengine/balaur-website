@@ -1,0 +1,62 @@
+---
+description: "Balaur devlog: import settings as a TOML sidecar next to the asset, project-wide defaults per kind, and nearest-neighbour filtering so a pixel-art sprite finally draws with hard edges."
+slug: settings-beside-the-file
+title: Settings beside the file
+authors: [dragos]
+image: /img/manual/import_settings.png
+keywords: [import settings, pixel art, nearest neighbour filtering, texture import, godot import]
+---
+
+A pixel-art sprite had no way to ask for hard edges. Now it does, in one line
+next to the picture.
+
+{/* truncate */}
+
+![The same 32-pixel sprite at ten times its size, filtered linearly and with nearest](/img/manual/import_settings.webp)
+
+## What landed
+
+- **A sidecar states how a file is read.** `art/hero.png.toml` settles
+  `art/hero.png`. The double extension is deliberate: it sorts beside its
+  image in a listing, and `hero.toml` would collide with a scene or a clip of
+  the same name.
+
+  ```toml
+  # art/hero.png.toml
+  filter = "nearest"
+  srgb = true
+  ```
+
+- **A project sets its own default.** Most projects want one answer for all
+  their art, so `[import.texture]` in `project.toml` sets it and a sidecar
+  overrides that key by key.
+
+- **Every kind of asset, not only textures.** A file's kind comes from its
+  extension: texture, audio, font or model. The resolver is one module, so the
+  day audio or model settings have something to say, they are already read the
+  same way.
+
+- **Two keys reach the renderer today.** `filter` picks nearest or linear
+  sampling, and `srgb = false` marks an image as data rather than colour,
+  which is what a normal map or a mask wants.
+
+- **Changing a setting re-uploads one image.** The resolved settings are part
+  of the name a texture is uploaded under, alongside the file's modification
+  time, so editing one sidecar does not re-decode the rest of the project.
+
+## What it deliberately does not do
+
+Settings change pixels, never sizes. A sprite takes its extent from the image
+header, so a headless run resolves the sidecar for nothing and computes exactly
+the same world as a windowed one. That rule is what keeps import settings out
+of the determinism digest, and it is also why downscaling art for a phone is an
+export key rather than an import one.
+
+## What is next
+
+`repeat`, `mipmaps`, `anisotropy` and premultiplied alpha are written but not
+wired: the renderer's texture manager takes a filter or a colour space, not a
+whole sampler, so the fork gains one call before those keys mean anything. The
+editor has no Import section yet either, so today a sidecar is typed by hand or
+set once for the project. Both are on the
+[roadmap](/docs/roadmap).

@@ -54,7 +54,7 @@ group are ordered by it.
     'The editor in a browser':
       `'Shipped: the canvas, play and hot reload as on the desktop, a project the browser keeps across a refresh, a folder opened from your machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.'`,
     'Texture import settings':
-      `<>Nearest or linear filtering, repeat, mipmaps, anisotropy and sRGB per image, with project defaults and a settings file the editor writes beside the picture; GPU compression at export. A pixel-art sprite cannot ask for hard edges today.</>`,
+      `<>A pixel-art sprite can ask for hard edges today: a settings file sits beside the picture, <code>[import.texture]</code> sets the project's default, and filtering and colour space reach the upload. Still to come: repeat, mipmaps, anisotropy and premultiplied alpha, which wait on the renderer exposing a whole sampler; an Import section in the editor; and GPU-compressed textures at export.</>`,
     'Asset streaming':
       `'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.'`,
     'Extensions, tier two':
@@ -139,8 +139,6 @@ group are ordered by it.
       `<>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>`,
     'Sealed packs and stripped binaries':
       `'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.'`,
-    'Export size':
-      `'A shipped game weighs what the source tree weighs: every file with an asset extension, named by a scene or not, as the bytes the author saved. Planned: a size report from the export, files nothing names dropped, PNGs recompressed or written as lossless WebP, fonts subset to the strings the game shows, WAV written as FLAC. Atlases and GPU-compressed textures are not size levers and stay with texture import settings.'`,
     'Console export':
       `'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.'`,
     'XR':

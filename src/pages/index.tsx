@@ -25,20 +25,20 @@ function Header() {
             dark: useBaseUrl('/img/logo-dark.svg'),
           }}
         />
-        {/* One heading holds the wordmark and the tagline, so the page's h1
-            says what the engine is rather than only what it is called. The
-            tagline is the same sentence as siteConfig.tagline, in two halves. */}
+        {/* One heading holds the wordmark and what the engine is, so the h1
+            says more than the name. It is kept near 50 characters: past about
+            60 Google truncates it, and the h1 is the line most often quoted
+            back as the page's name. The rest of the tagline follows in the
+            mission line, where length costs nothing. */}
         <Heading as="h1" className={styles.heroHeading}>
           <span className={clsx('hero__title', styles.heroTitle)}>{siteConfig.title}</span>{' '}
           <span className={clsx('hero__subtitle', styles.heroSubtitle)}>
-            A 2D &amp; 3D node-based game engine, fully deterministic,{' '}
-            <br className={styles.heroBreak} />
-            with scripts that reload in milliseconds.
+            A deterministic 2D &amp; 3D game engine in Rust.
           </span>
         </Heading>
         <p className={styles.heroMission}>
-          Written in Rust. Fast to run, fast to iterate, easy to use — and one
-          file to ship.
+          Node-based, with scripts that reload in milliseconds. Fast to run,
+          fast to iterate, easy to use — and one file to ship.
         </p>
         <div className={styles.buttons}>
           <Link className="button button--primary button--lg" to="/docs/intro">
@@ -69,7 +69,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title="A deterministic 2D & 3D game engine in Rust"
-      description="Balaur is a node-based game engine in Rust: 2D and 3D, Rune scripting with hot reload, deterministic physics and replay, and an editor that is itself a Balaur project.">
+      description="Balaur is a node-based game engine in Rust: 2D and 3D, Rune scripts with hot reload, deterministic physics and replay, and an editor built in Balaur.">
       <SoftwareJsonLd />
       <Header />
       <main>
