@@ -30,7 +30,7 @@ says how much a game needs the thing, ranked the way the
   {
     title: 'Tile maps',
     tier: 1,
-    text: <>Collision from the tileset, terrains and autotile, animated and occluding tiles, isometric and hexagonal layouts, a Tiles tool that paints in the viewport, and <code>balaur import</code> for Tiled and LDtk projects.</>,
+    text: <>Collision from the tileset. Autotiling as an ordered rule table — first match wins, one rule covering eight orientations, variation picked by hash so a stroke resolves the same twice — with templates for the sheet layouts people actually ship, and the bitmask terrains Godot and Tiled use as sugar over it. Animated and occluding tiles, custom data per tile, chunked cells, isometric and hexagonal layouts. A Tiles dock with seven brushes, a tileset document that edits collision, terrains, rules and animation, and <code>balaur import</code> for Tiled and LDtk projects.</>,
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
   },
   {
@@ -190,9 +190,10 @@ says how much a game needs the thing, ranked the way the
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
   },
   {
-    title: 'Drawing terrain',
+    title: 'Voxels and terrain',
     tier: 3,
-    text: <>A mesher for the <code>heightfield</code> and <code>voxels</code> assets, and tools to paint them. Physics already collides with both; nothing draws either.</>,
+    text: <>Block types in a <code>voxel_set</code>, a greedy chunk mesher with baked ambient occlusion, a grid file that scales past a hand-written one, and a Voxels tool that paints in the viewport with a plane lock and a slice view — plus <code>balaur import</code> for MagicaVoxel files and for a model turned into voxels, and the same mesher over <code>heightfield</code>. Physics is already there: rapier's voxel shape collides without the seam-catching every hand-rolled voxel collider has, and a script can dig into one today. Nothing draws either asset.</>,
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voxels.md',
   },
   {
     title: 'More than one view',
