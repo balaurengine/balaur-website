@@ -42,6 +42,45 @@ The other half is tables: Unicode data for two text shapers, codec tables,
 shader sources. Figures are from the nightly of 2026-09-05 and move with the
 dependency versions.
 
+## What your own game weighs
+
+The engine module is one download; the pack beside it is the other. Every
+export prints what it built, so the decision comes with a number attached:
+
+```text
+pack       2059 KB
+  scenes      9 KB   3 entries
+  scripts   443 KB   35 entries
+  assets   1604 KB   6 entries
+    .ttf   1582 KB   4 files
+    .png     23 KB   2 files
+  nothing names 2 files (31 KB)
+```
+
+Fonts outweigh images in most projects, and the engine outweighs both. Four
+keys in `[export]` act on what the report shows, and each is off until you
+turn it on:
+
+```toml
+[export]
+strip = true            # drop an asset no scene, script or keep glob names
+keep = ["sfx/**"]       # ...except paths a script builds at run time
+images = "smallest"     # recompress PNG, or write lossless WebP, whichever wins
+fonts = "subset"        # cut a face to the characters the project actually shows
+audio = "flac"          # write uncompressed WAV as lossless FLAC
+```
+
+Every mode here is lossless, and none of them changes a pixel count: a sprite
+is sized from its image header, so a re-encoded texture is the same sprite and
+the game computes the same world. `balaur export --report` prints the table and
+writes nothing, so you can see the saving before taking it.
+
+Two things the report will not do for you. Packing textures into an atlas is
+not a size lever: it saves each file's header and little else, and the renderer
+draws one call per node either way. GPU-compressed textures (BC, ETC2, ASTC)
+cut video memory and upload time, not the download, since a block-compressed
+image on disk is larger than the PNG it came from.
+
 ## Building a smaller template
 
 `balaur export --target web` copies a *template*: the glue and module

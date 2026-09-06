@@ -171,12 +171,6 @@ group are ordered by it.
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md',
   },
   {
-    title: 'Text in the world',
-    tier: 1,
-    text: <>A name over a character and a score on a sign: <code>text2d</code> and <code>text3d</code> shaped by the same engine the widgets use, outline and shadow, bitmap fonts, and an immediate <code>draw_text_2d</code> for tools.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-text.md',
-  },
-  {
     title: 'Particles in 3D',
     tier: 2,
     text: <>A <code>particles3d</code> emitter, and in both dimensions: emission from a sphere, box, cone, ring or mesh, randomness, animated sheets, attractors, colliders, trails and sub-emitters, with a compute stepper where the GPU has one.</>,
@@ -368,6 +362,12 @@ Server work lives in the [Gamend repository](https://github.com/appsinacup/gamen
     tier: 2,
     text: 'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-protection.md',
+  },
+  {
+    title: 'Export size',
+    tier: 2,
+    text: 'A shipped game weighs what the source tree weighs: every file with an asset extension, named by a scene or not, as the bytes the author saved. Planned: a size report from the export, files nothing names dropped, PNGs recompressed or written as lossless WebP, fonts subset to the strings the game shows, WAV written as FLAC. Atlases and GPU-compressed textures are not size levers and stay with texture import settings.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-export-size.md',
   },
   {
     title: 'Console export',

@@ -203,3 +203,33 @@ features = { vertex_color = true }
 ```
 
 `examples/objects` shows all of it, one row per category.
+
+## Import settings
+
+How a file is read is stated beside the file. `art/hero.png.toml` settles
+`art/hero.png`, the way Godot writes an `.import`:
+
+```toml
+# art/hero.png.toml
+filter = "nearest"   # pixel art, drawn crisp instead of blurred
+srgb = true          # false for a normal map or a mask, which carry data
+```
+
+The double extension is deliberate: the sidecar sorts beside its image in a
+file listing, and `hero.toml` would collide with a scene or a clip of the same
+name.
+
+A whole project usually wants one answer, so `project.toml` sets the default
+for every file of a kind, and a sidecar overrides it key by key:
+
+```toml
+[import.texture]
+filter = "nearest"
+```
+
+A file's kind comes from its extension: `texture`, `audio`, `font` or `model`.
+
+Settings change pixels, never sizes. A sprite takes its extent from the image
+header, so a headless run resolves settings for nothing and computes the same
+world as a windowed one. That is why downscaling art for a phone is an
+[export](/docs/manual/build-size) key rather than an import one.
