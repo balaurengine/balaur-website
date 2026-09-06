@@ -18,19 +18,19 @@ label in a panel and a sign in a scene come from one bitmap.
 
 ## What landed
 
-- **`text2d` and `text3d`.** One component for both passes, with the keys a
+- `text2d` and `text3d`. One component for both passes, with the keys a
   label takes plus `pixels_per_unit` to size it like a sprite. In 3D:
   `billboard`, `double_sided`, `depth_test`, `alpha_cut`.
-- **Outline and shadow.** The same quads offset and tinted, each layer a
+- Outline and shadow. The same quads offset and tinted, each layer a
   thousandth of a unit in front of the last: coplanar, the depth test picks
   between them at random.
-- **Markup in the world.** `[b]`, `[i]`, `[color=…]`, `[wave]`. A block is one
+- Markup in the world. `[b]`, `[i]`, `[color=…]`, `[wave]`. A block is one
   mesh per colour, so a coloured word keeps its colour.
-- **Bitmap fonts.** An AngelCode `.fnt` ships a pixel face as drawn. No
+- Bitmap fonts. An AngelCode `.fnt` ships a pixel face as drawn. No
   shaping, one glyph per character, and its page goes in the same atlas.
-- **Immediate calls.** `render.draw_text` and `draw_text_2d` for one frame,
+- Immediate calls. `render.draw_text` and `draw_text_2d` for one frame,
   like a debug line. The Rig tool names bones in the viewport with them.
-- **`render.text_size`**, and double-click a text node to edit it in place.
+- `render.text_size`, and double-click a text node to edit it in place.
 
 ## A promise the code was not keeping
 
@@ -44,12 +44,12 @@ keeps the system's. The same leak reached the glyph mesher, which is worse:
 a `kind = "text"` mesh has colliders fitted to it, so the host's fonts were
 in the simulation.
 
-- **Crisp at any distance.** A block is rasterised at the size it covers on
+- Crisp at any distance. A block is rasterised at the size it covers on
   screen, quantised to buckets 8.7% apart, so walking towards a sign re-shapes
   it a few times rather than magnifying a bitmap. Browsers bucket the same way;
   geometric rather than linear, because a camera's distance spans orders of
   magnitude.
-- **Emoji.** A colour face per platform joins the fallback chain; the atlas
+- Emoji. A colour face per platform joins the fallback chain; the atlas
   already took colour bitmaps.
 
 ## What is not done

@@ -1,5 +1,5 @@
 ---
-title: "Continuous integration — building and signing a game on GitHub"
+title: "Continuous integration: building and signing a game on GitHub"
 sidebar_label: "Continuous integration"
 description: "Three reusable GitHub Actions build a Balaur game on every push: setup installs the engine, export-game signs and uploads a build per platform, and build-engine compiles a custom runtime."
 sidebar_position: 17
@@ -64,8 +64,8 @@ identity's *name*.
           notary-issuer: ${{ secrets.ASC_ISSUER_ID }}
 ```
 
-Every file-shaped secret — a `.p12`, a `.p8`, a `.mobileprovision`, a `.jks`, a
-`.pfx` — is stored base64-encoded, because a GitHub secret holds text:
+Every file-shaped secret: a `.p12`, a `.p8`, a `.mobileprovision`, a `.jks`, a
+`.pfx`: is stored base64-encoded, because a GitHub secret holds text:
 
 ```bash
 base64 -i certificate.p12 | pbcopy      # macOS
@@ -107,8 +107,8 @@ your own. The job needs two extra permissions:
 ## A custom engine
 
 The published templates carry `window` and `extensions`, plus `apple` on macOS.
-A game needing a different set — a smaller web build, or one without the
-networking stack — builds the engine itself:
+A game needing a different set: a smaller web build, or one without the
+networking stack: builds the engine itself:
 
 ```yaml
       - uses: actions/checkout@v7

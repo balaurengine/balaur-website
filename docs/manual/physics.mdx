@@ -1,5 +1,5 @@
 ---
-title: "Physics — deterministic 2D and 3D with Rapier"
+title: "Physics: deterministic 2D and 3D with Rapier"
 sidebar_label: "Physics"
 description: "2D and 3D physics in Balaur through Rapier, stepped on a fixed 60 Hz tick with enhanced determinism: bodies, colliders, joints, characters and vehicles."
 image: "/img/social/physics.png"
@@ -55,7 +55,7 @@ this.node.body2d.apply_impulse(1.0, 0.0);
 dimension stops being something you repeat: the same `apply_impulse` on a
 `body3d` handle reaches `physics3d`. Handles also carry `get()`, `set(table)`,
 `has()` and `remove()`. A method no module declared for that component is an
-error naming it — `node.sprite.apply_impulse` does not silently do nothing.
+error naming it: `node.sprite.apply_impulse` does not silently do nothing.
 
 Each component's methods are on its reference page, for example
 [`body2d`](/docs/reference/components/body2d).
@@ -63,14 +63,14 @@ Each component's methods are on its reference page, for example
 ## Driving the simulation
 
 Bodies, colliders, joints, velocities and queries live in `physics3d` and
-`physics2d` — one module per world, mirroring the `body3d` / `body2d` split.
+`physics2d`: one module per world, mirroring the `body3d` / `body2d` split.
 `physics2d` adds `max_contact_impulse(node)`, the strongest impact a body took
 this frame, for impact-driven gameplay such as destruction or damage.
 
 The `physics` module holds only what spans both worlds: `set_paused`,
 `is_paused`, `clear`, `set_sleeping_allowed`, `sleeping_allowed`, the debug
 draw, and the solver's tuning and counters. So a tool can treat "physics" as
-one simulation — the editor pauses it until play, and its Physics persona draws
+one simulation: the editor pauses it until play, and its Physics persona draws
 every body's collider and centre of mass over the scene, playing or not.
 
 <figure><img src="/img/manual/physics_overlays.webp" alt="The Physics persona's collider and centre-of-mass overlays over examples/angrynerds, the Bird selected" width="1600" height="1000" loading="lazy" /></figure>

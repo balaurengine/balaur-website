@@ -15,15 +15,15 @@ so a crash cannot truncate it, and migrated when the game moves on.
 
 ## What landed
 
-- **Slots.** A slot is a name — letters, digits, `-` and `_` — checked
+- Slots. A slot is a name (letters, digits, `-` and `_`) checked
   rather than trusted. `save::slots()` lists them and `save::remove(slot)`
   deletes one. Files live under the platform's user-data directory, so game
   code never hardcodes an OS path.
-- **Atomic.** A file is written beside its target and renamed over it, so a
+- Atomic. A file is written beside its target and renamed over it, so a
   crash mid-save leaves the previous file whole.
-- **Versioned.** Every file carries the build's `[save] version`. Reading an
+- Versioned. Every file carries the build's `[save] version`. Reading an
   older one calls the migration script's `migrate_save(version, data)` once
-  per version step — 1 to 2, then 2 to 3 — so a migration only knows how the
+  per version step (1 to 2, then 2 to 3) so a migration only knows how the
   shape changed between two adjacent versions. A file from a newer build is
   refused rather than misread.
 

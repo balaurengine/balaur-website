@@ -17,15 +17,15 @@ the editor, and a slingshot game to prove it.
 
 ## What landed
 
-- **A rapier2d world.** `body2d` and `collider2d` beside `body3d` and
+- A rapier2d world. `body2d` and `collider2d` beside `body3d` and
   `collider3d`, over the same scene tree. Both worlds step on the fixed
   60 Hz tick with Rapier's `enhanced-determinism` on, and the 2D world has
   the same bit-for-bit test the 3D one had.
-- **2D drawing.** Shapes draw in z order, so the glasses sit on the pig
+- 2D drawing. Shapes draw in z order, so the glasses sit on the pig
   rather than under it.
-- **The editor knows.** A scene with 2D components gets a 2D grid, a
+- The editor knows. A scene with 2D components gets a 2D grid, a
   pan-and-zoom camera and a 2D gizmo: drag an axis, a plane, or the ring.
-- **examples/angrynerds.** A slingshot, towers, and pigs with glasses, in
+- examples/angrynerds. A slingshot, towers, and pigs with glasses, in
   one scene and one script.
 
 ```toml

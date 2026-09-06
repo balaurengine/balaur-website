@@ -1,5 +1,5 @@
 ---
-title: "Networking — HTTP, websockets and QUIC, replayable"
+title: "Networking: HTTP, websockets and QUIC, replayable"
 sidebar_label: "Networking"
 description: "HTTP, websockets and QUIC for Balaur scripts, delivered once per tick at the start of the frame, so a recorded session replays with the network included."
 image: "/img/social/networking.png"
@@ -11,7 +11,7 @@ sidebar_position: 9
 One crate per protocol: `balaur_http` for requests (`http::request`),
 `balaur_websocket` for connections (`websocket::connect` / `send` / `close`),
 `balaur_webtransport` for QUIC. All three are on by default, each behind its
-own feature — building without `http` drops the HTTP and TLS stack, without
+own feature: building without `http` drops the HTTP and TLS stack, without
 `webtransport` drops QUIC and its runtime.
 
 :::tip[For multiplayer and simulation]
@@ -24,7 +24,7 @@ own feature — building without `http` drops the HTTP and TLS stack, without
 
 All I/O runs on background threads. Completions cross back over a channel and
 enter the simulation once per tick, at the start of the frame, recorded in a
-snapshot — the same model as input, so recording the snapshot per tick is all a
+snapshot: the same model as input, so recording the snapshot per tick is all a
 replay of a networked session needs. Nothing blocks the frame, and handlers
 never run from an I/O thread.
 
@@ -36,13 +36,13 @@ sequenceDiagram
   S->>W: http::request / websocket::send
   W-->>T: completion, over the channel
   T->>T: recorded in the tick's snapshot
-  T->>S: handler method, or the awaited id resolves — in arrival order
+  T->>S: handler method, or the awaited id resolves, in arrival order
 ```
 
 Scripts never poll. There are two shapes:
 
-**Handler methods.** A request or connection names the node that handles its
-results, dispatched as method calls — the same shape a widget's `on_click` or
+Handler methods. A request or connection names the node that handles its
+results, dispatched as method calls: the same shape a widget's `on_click` or
 an animation method track uses:
 
 ```rune
@@ -55,7 +55,7 @@ pub fn on_response(this, r) {
 }
 ```
 
-**Sequential await.** A request made without a node returns a token the script
+Sequential await. A request made without a node returns a token the script
 suspends on until the result arrives, from an `async` entry point:
 
 ```rune
@@ -65,8 +65,7 @@ pub async fn init(this) {
 }
 ```
 
-The script resumes at the start of a later tick, in arrival order —
-deterministic given the same recorded arrivals. One limit: an async entry point
+The script resumes at the start of a later tick, in arrival order: deterministic given the same recorded arrivals. One limit: an async entry point
 cannot be paused by the [debugger](./scripting.mdx#debugging).
 
 ## Options and configuration
@@ -101,7 +100,7 @@ A call's own option wins over the table.
 ## Why there are no signals
 
 A script cannot register a persistent callback and be handed a payload three
-frames later — that would need an id space with explicit release. Events go the
+frames later. That would need an id space with explicit release. Events go the
 other way: the engine calls a method the script declares by name, and a script's
 own events work the same, scoped to an emitting node or to all of them
 ([scripting](./scripting.mdx#events)). Most also
@@ -109,7 +108,7 @@ have a polling twin (`input::just_pressed`, `animation::just_finished`) for
 scripts that would rather ask than declare a method. An event is a frame-scoped
 snapshot, not a subscription.
 
-For a hosted game backend — auth, storage, realtime rooms — see
+For a hosted game backend (auth, storage, realtime rooms) see
 [Gamend](./gamend.mdx), built on the same delivery contract.
 
 ## What is not there yet

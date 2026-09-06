@@ -1,5 +1,5 @@
 ---
-title: "Architecture — layers, the script seam and plugins"
+title: "Architecture: layers, the script seam and plugins"
 sidebar_label: "Architecture"
 description: "The layers of the Balaur engine: Rune scripts, the language-neutral script seam, the ECS core, and the plugins every subsystem is built as."
 image: "/img/social/architecture.png"
@@ -16,15 +16,15 @@ in the engine repository.
 
 ```mermaid
 flowchart TB
-  S["scripts — game code, and the editor itself: .rn files"]
-  R["balaur_script_rune — host, hot reload, mod files, debugger"]
-  M["balaur_script — the seam: Bindings, ScriptHost, Value. Traits only. No language, no dependencies."]
-  D["modules declared once against the seam — engine, scene, node, assets, animation, input, physics, …"]
+  S["scripts: game code, and the editor itself, in .rn files"]
+  R["balaur_script_rune: host, hot reload, mod files, debugger"]
+  M["balaur_script, the seam: Bindings, ScriptHost, Value. Traits only. No language, no dependencies."]
+  D["modules declared once against the seam: engine, scene, node, assets, animation, input, physics, …"]
   subgraph P["plugins"]
     direction LR
     P1["physics (rapier)"] ~~~ P2["render (kiss3d)"] ~~~ P3["audio (rodio)"] ~~~ P4["input (winit)"] ~~~ P5["anim (clip)"] ~~~ P6["your plugin"]
   end
-  C["balaur_core — hecs ECS + scene tree + assets + scheduler. Names no scripting language."]
+  C["balaur_core: hecs ECS + scene tree + assets + scheduler. Names no scripting language."]
   S --> R --> M --> D --> P --> C
 ```
 
@@ -34,29 +34,29 @@ what keeps core language-free, and the compiler enforces it. The
 
 ## Key decisions
 
-**ECS: hecs.** Minimal, archetype-based, out of the way. Balaur adds its own
+ECS: hecs. Minimal, archetype-based, out of the way. Balaur adds its own
 scheduling, hierarchy and resources on top rather than adopting a framework's
 opinions.
 
-**One math crate.** All crates share `glamx` — glam plus pose and rotation
-types, re-exporting the rest — the same math rapier and kiss3d use, so there
+One math crate. All crates share `glamx`: glam plus pose and rotation
+types, re-exporting the rest: the same math rapier and kiss3d use, so there
 are no conversion layers between core, physics and rendering. It is pinned to
 `libm` and `scalar-math`, so every build gets the deterministic math, not only
 the ones with physics in the graph.
 
-**The `Engine` handle.** A cheaply clonable handle over the world, resources,
+The `Engine` handle. A cheaply clonable handle over the world, resources,
 command queue and script host, with interior mutability and short borrows.
 Rust systems receive it every frame and script binding closures capture it, so
 both sides of the FFI see the same state with no marshalling. The engine is
 single-threaded by design for now; parallelism can later live inside systems
 without changing this facade.
 
-**Scene tree over ECS.** A node is an entity with `Name`, `Parent`,
+Scene tree over ECS. A node is an entity with `Name`, `Parent`,
 `Children`, `Transform`, `GlobalTransform`. Node paths, transform propagation
 and recursive free are core systems; plugins hang their components off the
 same entities.
 
-**Fixed frame schedule.** `First → PreUpdate (reload pump) → Update (scripts,
+Fixed frame schedule. `First → PreUpdate (reload pump) → Update (scripts,
 animation) → FixedUpdate (fixed_update, physics) → PostUpdate (audio) →
 SceneSync (transform propagation) → Render → Last (deferred destruction)`.
 `FixedUpdate` drains one app-owned accumulator into whole 60 Hz steps, zero
@@ -64,20 +64,20 @@ to four per frame, so simulation never sees the measured frame time.
 Structural changes requested by scripts are deferred to `Last`, so iteration
 is never invalidated mid-frame.
 
-**The scripting seam.** `balaur_script` is traits and a neutral `Value` type,
+The scripting seam. `balaur_script` is traits and a neutral `Value` type,
 with no language in it. A subsystem declares its bindings once against the
 seam and never names a language; a backend implements the host trait and
 consumes those declarations. Rune is the one language this build ships, and
 the seam keeps a second one to a single crate: adding a backend changes
 nothing in physics, input, render, audio or ui.
 
-**Plugins.** Wrapping a Rust crate for scripting is one call per entry point;
+Plugins. Wrapping a Rust crate for scripting is one call per entry point;
 argument and return conversions are inferred. A plugin can also register
-schema-described components, scene-file keys and asset types — one
+schema-described components, scene-file keys and asset types: one
 registration buys the scene vocabulary, the runtime component API and full
 editor support. `balaur_physics` is the reference implementation. One `Plugin`
 trait covers both shipping modes: linked in behind a cargo feature (`audio`,
-`net`, `gamend`), or built as a shared library and loaded at run time — see
+`net`, `gamend`), or built as a shared library and loaded at run time: see
 [Modules and extensions](./manual/extensions.mdx).
 
 ## The workspace

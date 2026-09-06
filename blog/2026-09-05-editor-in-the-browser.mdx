@@ -16,14 +16,14 @@ on, with a canvas under it and somewhere to keep the files.
 
 ## What landed
 
-- **Play.** The examples run in the tab — WebGPU, nothing to install.
-- **The editor.** [balaurengine.org/editor](/editor) opens on one of them,
+- Play. The examples run in the tab: WebGPU, nothing to install.
+- The editor. [balaurengine.org/editor](/editor) opens on one of them,
   or on a folder from your machine, and gives the project back as a zip.
-- **Projects that survive a refresh.** Kept in IndexedDB, textures and
+- Projects that survive a refresh. Kept in IndexedDB, textures and
   sounds included, rather than filling a `localStorage` quota.
-- **Export in a tab.** A `.bpak`, and a web bundle zipped beside the module
+- Export in a tab. A `.bpak`, and a web bundle zipped beside the module
   the page is already running. Native targets still need a linker.
-- **A lazy shell.** The browser editor spent 7.2 ms of every frame
+- A lazy shell. The browser editor spent 7.2 ms of every frame
   rebuilding a shell nobody had touched. `ui::set_lazy` runs the pass only
   when input, a log line, a reload or an animation asks; an idle frame is
   4.8 ms now.
@@ -31,7 +31,7 @@ on, with a canvas under it and somewhere to keep the files.
 ## What is not in the tab
 
 An account and a project kept on Gamend rather than in one browser, native
-export — a linker and a signing toolchain — and the debugger.
+export, a linker and a signing toolchain, and the debugger.
 [PLAN-web-editor.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-web-editor.md)
 has the order. [Build size](/docs/manual/build-size) is what the module
 weighs and how to make a smaller one.

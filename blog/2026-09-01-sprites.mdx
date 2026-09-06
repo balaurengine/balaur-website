@@ -1,5 +1,5 @@
 ---
-description: "Balaur devlog: a sprite component — a textured 2D quad sized in pixels per unit, with flipbook sheets, atlas regions, flips, a tint and a material."
+description: "Balaur devlog: a sprite component, a textured 2D quad sized in pixels per unit, with flipbook sheets, atlas regions, flips, a tint and a material."
 slug: sprites
 title: Sprites
 authors: [dragos]
@@ -15,14 +15,14 @@ per unit, and the sheet or atlas cell it draws.
 
 ## What landed
 
-- **The component.** `texture` and `pixels_per_unit` size the quad from
+- The component. `texture` and `pixels_per_unit` size the quad from
   the image; `half_extents` overrides the size in world units.
-- **Flipbooks.** `columns` and `rows` cut a sheet into a grid, and `frame`
-  picks a cell, left to right then top to bottom — so an animation clip
+- Flipbooks. `columns` and `rows` cut a sheet into a grid, and `frame`
+  picks a cell, left to right then top to bottom, so an animation clip
   keys `frame` like any other property.
-- **Atlas cells.** `region_origin` and `region_size`, in texture pixels,
+- Atlas cells. `region_origin` and `region_size`, in texture pixels,
   draw one rectangle of a larger image and size the quad from it.
-- **The rest.** `flip_x`, `flip_y`, a `color` tint, and a `material` for a
+- The rest. `flip_x`, `flip_y`, a `color` tint, and a `material` for a
   sprite that wants a shader of its own.
 
 ```toml

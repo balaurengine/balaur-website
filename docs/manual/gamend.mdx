@@ -1,15 +1,15 @@
 ---
-title: "Gamend — login, REST, rooms and server hooks"
+title: "Gamend: login, REST, rooms and server hooks"
 sidebar_label: "Gamend"
-description: "The gamend module connects Balaur scripts to a Gamend backend — login, REST endpoints, realtime rooms and server hooks — with replies delivered once per tick."
+description: "The gamend module connects Balaur scripts to a Gamend backend (login, REST endpoints, realtime rooms and server hooks) with replies delivered once per tick."
 image: "/img/social/gamend.png"
 sidebar_position: 10
 ---
 
 # Gamend
 
-The `balaur_gamend` plugin connects scripts to a Gamend backend — login, REST
-endpoints, realtime rooms and server hooks — through the `gamend` module. It is
+The `balaur_gamend` plugin connects scripts to a Gamend backend: login, REST
+endpoints, realtime rooms and server hooks: through the `gamend` module. It is
 on by default; building without the `gamend` feature drops it.
 
 Delivery is the same contract as [networking](./networking.mdx): all I/O on
@@ -46,8 +46,7 @@ pub fn on_gamend_event(this, e) {
 }
 ```
 
-One-shot operations — `login`, `rest`, `call_hook`, `join`, `push`, `leave` —
-wake their returned id and, when a node is given, also dispatch to its handler.
+One-shot operations (`login`, `rest`, `call_hook`, `join`, `push`, `leave`)wake their returned id and, when a node is given, also dispatch to its handler.
 Socket events are a stream, so they only dispatch. Every event map carries a
 `kind` (`login`, `rest`, `reply`, `error`, `open`, `message`, `closed`), so one
 handler takes them all.

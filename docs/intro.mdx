@@ -1,5 +1,5 @@
 ---
-title: "Introduction — a deterministic game engine in Rust"
+title: "Introduction: a deterministic game engine in Rust"
 sidebar_label: "Introduction"
 description: "Balaur is a node-based 2D and 3D game engine in Rust with Rune scripts that hot reload in milliseconds, always-on determinism with replay, and a built-in editor."
 image: "/img/social/docs.png"
@@ -13,23 +13,23 @@ animation, networking, and an editor. Fast to run, fast to iterate, easy to
 use.
 
 A game is a scene tree of named nodes with scripts attached. Underneath,
-every node is an ECS entity and every subsystem is a plugin — a layer only
+every node is an ECS entity and every subsystem is a plugin: a layer only
 plugin authors see. The editor is itself a Balaur project.
 
 ![The editor: scene tree, viewport, inspector](/img/manual/editor_overview.webp)
 
 :::warning
 
-No published release yet. Balaur builds from source — see
+No published release yet. Balaur builds from source: see
 [Getting started](./getting-started.mdx).
 
 :::
 
 ## Two things it will not compromise on
 
-- **Instant hot reload.** Save a script while the game runs; the new code is
+- Instant hot reload. Save a script while the game runs; the new code is
   live in milliseconds and the state survives.
-- **Determinism, always on.** Same inputs, same bits on every platform, and
+- Determinism, always on. Same inputs, same bits on every platform, and
   the engine can prove it: a fixed 60 Hz step, a digest per tick, record and
   replay. Network replies land at the start of a tick in arrival order, so a
   replay covers logins and retries without touching the network.
@@ -63,12 +63,12 @@ plugins registered them, which also made them script calls and inspector rows.
 
 ## Where to go next
 
-- [Principles](./principles.mdx) — what the engine optimises for, and how it is run.
-- [Getting started](./getting-started.mdx) — build the engine, run the examples.
-- [Manual](./manual/scenes.mdx) — scenes, scripting, physics, animation, the editor, determinism, shipping.
-- [Features](/features) — everything in the engine, one line each.
-- [Architecture](./architecture.mdx) and [Built on](./built-on.mdx) — how it is put together, and from what.
-- [Reference](./reference/index.md) — generated from the engine: components, asset types, script modules.
+- [Principles](./principles.mdx): what the engine optimises for, and how it is run.
+- [Getting started](./getting-started.mdx): build the engine, run the examples.
+- [Manual](./manual/scenes.mdx): scenes, scripting, physics, animation, the editor, determinism, shipping.
+- [Features](/features): everything in the engine, one line each.
+- [Architecture](./architecture.mdx) and [Built on](./built-on.mdx): how it is put together, and from what.
+- [Reference](./reference/index.md): generated from the engine: components, asset types, script modules.
 
 ## Who and how
 

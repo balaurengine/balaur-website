@@ -26,18 +26,18 @@ change?" checks possible.
   the 3D and 2D worlds.
 - Physics and animation step on one app-owned fixed 60 Hz accumulator
   (`FixedUpdate`), never the variable frame delta.
-- Transcendentals on a simulation path — animation easing, euler↔quaternion
-  conversion, slerp — are computed on `libm` rather than the platform's math
+- Transcendentals on a simulation path: animation easing, euler↔quaternion
+  conversion, slerp: are computed on `libm` rather than the platform's math
   library, which differs across OSes. `glamx` is pinned to `libm` and
   `scalar-math` workspace-wide, so glam's own `Quat::from_euler` and
   `Vec3::normalize` land on that same libm and take no SIMD path.
 - A house lint fails the build on a bare `.sin()` or `f32::sin(x)` in Rust.
 - Rune's `f64::powf` and `f64::powi` called the platform `pow`, and its stdlib
-  installs wholesale with no way to override a function from outside — so
+  installs wholesale with no way to override a function from outside, so
   Balaur ships a small fork putting both on `libm`. They were the only two
   platform float calls in the whole Rune stdlib.
 - Network completions enter the simulation once per tick, at the start of the
-  frame, in arrival order — never from an I/O thread — so a recorded session
+  frame, in arrival order, never from an I/O thread, so a recorded session
   replays without touching the network, logins and retries included.
 - Order-sensitive Rust iteration uses an insertion-ordered map type, never
   bare `HashMap` iteration.
@@ -74,10 +74,10 @@ balaur run my-game --fixed-tick --trace-digest run-a.txt
 ```
 
 Two runs that differ parted at the first differing line. Run it on two
-machines and `diff` the files — that is the whole cross-platform check, and CI
+machines and `diff` the files. That is the whole cross-platform check, and CI
 does it for every example on Linux, macOS and Windows.
 
-A recorded session stores input, not state — minutes of play is kilobytes — and
+A recorded session stores input, not state, minutes of play is kilobytes, and
 replaying it re-checks every tick:
 
 ```bash
@@ -96,26 +96,26 @@ has the rules of thumb and the hazards that remain your problem.
 
 <Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse; the recording is scrubbed, paused and played on" />
 
-Every play-in-editor run records what the game was fed — keys, mouse,
-gamepads, network replies — and the Session dock lists them, ten per game,
+Every play-in-editor run records what the game was fed: keys, mouse,
+gamepads, network replies, and the Session dock lists them, ten per game,
 under the editor's own data directory. Open one and the scene is rebuilt from
 the document, the recording is fed into it, and the game plays itself: lanes
 show the ticks keys and buttons went down, network requests came back, the log
 spoke and the debugger stopped, with everything recorded at the playhead's tick
-in the rows below. Drag the ruler to scrub — forward is the engine's, backward
-rebuilds the world and runs from the start — and *Pause* holds the simulation
+in the rows below. Drag the ruler to scrub: forward is the engine's, backward
+rebuilds the world and runs from the start, and *Pause* holds the simulation
 still.
 
 The *verify* toggle hashes the world every tick while recording, so a replay
 can say where it parted from what was recorded rather than merely running. A
 recording whose scripts have been edited still plays, and the dock says so
 since it can no longer promise to reproduce what was seen. *Export* copies one
-into the project, where `balaur replay --verify` reads the same file — so a
+into the project, where `balaur replay --verify` reads the same file, so a
 session caught in the editor is what goes on a bug report.
 
 ## Verified, not asserted
 
 The demo project's ball touches down at the same simulation time in headless
 and windowed runs, and from the exported pack. Pack export writes in sorted key
-order, so the same sources give the same bytes on any machine — CI exports every
+order, so the same sources give the same bytes on any machine: CI exports every
 example twice per platform and compares digests across the matrix.

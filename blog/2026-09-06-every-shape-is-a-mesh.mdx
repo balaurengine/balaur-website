@@ -16,38 +16,38 @@ dimensions, a cloner, and a word as a mesh.
 
 ## What landed
 
-- **Primitives.** Torus, pyramid, prism, tube, rounded cuboid; ellipse, star
+- Primitives. Torus, pyramid, prism, tube, rounded cuboid; ellipse, star
   and ngon in 2D. `segments`, `rings`, `sides`, `corner_radius` on all of them.
 
   ![The primitives row](/img/manual/objects_primitives.webp)
 
-- **Paths.** `path2d` and `path3d` assets. Extrude with a bevel, lathe, sweep
+- Paths. `path2d` and `path3d` assets. Extrude with a bevel, lathe, sweep
   along a rail, stroke.
 
   ![An arch extruded, a goblet revolved, a rail swept](/img/manual/objects_paths.webp)
 
-- **Booleans.** `boolean3d` and `boolean2d` over a node's children: union,
+- Booleans. `boolean3d` and `boolean2d` over a node's children: union,
   difference, intersection. Operands stay editable; moving one recomputes.
   Booleans nest.
 
   ![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
 
-- **In 2D.** `shape2d` gained `ellipse`, `star` and `ngon`, and `boolean2d`
+- In 2D. `shape2d` gained `ellipse`, `star` and `ngon`, and `boolean2d`
   joins, cuts and intersects filled outlines the same way. The 2D booleans
   run on `i_overlay`, which works in fixed-point integers and so lands on
   the same vertices on every platform.
 
   ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
 
-- **Cloner.** Linear, radial, grid. `seed` and `random` scatter the copies. A
+- Cloner. Linear, radial, grid. `seed` and `random` scatter the copies. A
   thousand copies are one draw call, custom materials included.
 
   ![A row, a ring and a scattered grid](/img/manual/objects_cloner.webp)
 
-- **Text.** `kind = "text"` on a `mesh` asset: a word as geometry, counters
+- Text. `kind = "text"` on a `mesh` asset: a word as geometry, counters
   kept as holes, sized in world units, sitting on its baseline.
 
-- **Colours and morph targets.** Both survive a glTF import now. A morph
+- Colours and morph targets. Both survive a glTF import now. A morph
   weight is a property, so a clip drives it as `mesh/morph.<name>`. Vertex
   colours reach a material that asks: `features = { vertex_color = true }`.
 

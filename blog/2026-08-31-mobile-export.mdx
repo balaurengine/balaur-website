@@ -16,20 +16,20 @@ signed macOS bundle.
 
 ## What landed
 
-- **Mobile targets.** `--target ios` writes a `.app` with `game.bpak`
+- Mobile targets. `--target ios` writes a `.app` with `game.bpak`
   beside the executable; `--target android` an APK layout with it under
   `assets/`. The engine reads the pack from the bundle instead of from its
   own file.
-- **A signed Mac.** A flat fused binary cannot be validly signed —
-  appending bytes is exactly what a signature cannot cover — so `--app`
+- A signed Mac. A flat fused binary cannot be validly signed: appending
+  bytes is exactly what a signature cannot cover, so `--app`
   builds a `.app` with the pack as a sealed resource and signs it, ad hoc
   or with `--sign "Developer ID Application: …"`.
-- **Templates on demand.** Exporting for a platform you are not on offers to
+- Templates on demand. Exporting for a platform you are not on offers to
   download that platform's runtime from the engine's own release tag,
   checked against `SHA256SUMS`, into a per-user cache. `--no-download`
   for CI.
-- **`balaur update`.** Replaces the whole install — binary, bundled editor,
-  runtime template — with the latest published build, verified against the
+- `balaur update`. Replaces the whole install: binary, bundled editor,
+  runtime template, with the latest published build, verified against the
   release's checksums. `--check` only reports.
 
 ```bash

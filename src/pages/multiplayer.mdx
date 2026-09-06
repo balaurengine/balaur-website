@@ -20,8 +20,8 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
 <Section title="What you get">
   <Features items={[
     {icon: 'timer', tone: 'physics', title: 'A fixed tick, and proof', text: <>Physics and animation step on one 60 Hz accumulator, never the frame delta. Every tick has a digest, and <code>balaur replay --verify</code> stops at the first tick two runs disagree on.</>},
-    {icon: 'record', tone: 'physics', title: 'Record inputs only', text: <>A session is each tick's input, network arrivals and events — not the world they produced. Minutes of play is kilobytes, and it replays by re-running the game against the same input.</>},
-    {icon: 'arrows-clockwise', tone: 'physics', title: 'Rollback', text: <>The <code>rollback</code> module decides each tick's inputs before the tick runs — the real one where it has arrived, a prediction where it has not — and re-simulates when the truth lands.</>},
+    {icon: 'record', tone: 'physics', title: 'Record inputs only', text: <>A session is each tick's input, network arrivals and events: not the world they produced. Minutes of play is kilobytes, and it replays by re-running the game against the same input.</>},
+    {icon: 'arrows-clockwise', tone: 'physics', title: 'Rollback', text: <>The <code>rollback</code> module decides each tick's inputs before the tick runs (the real one where it has arrived, a prediction where it has not) and re-simulates when the truth lands.</>},
     {icon: 'broadcast', title: 'Networking that replays', text: <>HTTP, websockets and QUIC complete on worker threads and enter the simulation once per tick, recorded in the snapshot. A Gamend backend adds login, rooms and server hooks.</>},
   ]} />
 </Section>
@@ -51,7 +51,7 @@ Record on one machine, replay on another: the digests either match or the replay
 <Section title="Next to Photon Quantum" sub="Quantum is the deterministic multiplayer engine people know. Balaur makes the same promise at the engine level, without the platform around it.">
   <Compare rival="Photon Quantum" rows={[
     ['Determinism', '100% deterministic, predict/rollback', 'Bit-exact across platforms, verified by digest; a rollback module'],
-    ['Bandwidth', 'Input only', 'Input only — sessions are inputs, not state'],
+    ['Bandwidth', 'Input only', 'Input only: sessions are inputs, not state'],
     ['Where it runs', "A Unity SDK and Photon's cloud", 'The engine itself; any backend, Gamend included'],
     ['Cost', 'Licensed, per CCU', 'Free, MIT'],
     ['Maturity', 'Shipped e-sport titles', 'Weeks old; rollback is new'],

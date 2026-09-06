@@ -19,19 +19,19 @@ desync.
 
 ## What landed
 
-- **Rollback.** A snapshot restores a tick and the deterministic simulation
+- Rollback. A snapshot restores a tick and the deterministic simulation
   re-runs the same inputs forward. Node ids are stable across spawns, so a
   node created in a predicted tick is the same node after the re-run.
   Scripts see `rollback::input` and `rollback::is_resimulating`.
-- **A digest per tick, exchanged.** A peer publishes the hash of a tick
+- A digest per tick, exchanged. A peer publishes the hash of a tick
   only once every player's input for it has arrived, and a desync names the
   tick. Windows CI caught the first version comparing a prediction against
   a prediction on any link slower than the confirm lag.
-- **One `Transport`.** Websockets, and QUIC through `balaur_webtransport`,
+- One `Transport`. Websockets, and QUIC through `balaur_webtransport`,
   where a datagram is a real one: a lost input costs a misprediction, not a
   stall. `balaur_http`, `balaur_websocket` and `balaur_webtransport` are
   one crate each, behind their own features.
-- **A link that misbehaves.** Delay, jitter and datagram loss on every
+- A link that misbehaves. Delay, jitter and datagram loss on every
   session link, from the editor's settings, so rollback is tested against
   the link a player actually has.
 

@@ -342,7 +342,7 @@ for (const m of modules) {
 }
 
 const index = [
-  frontMatter('Reference — components, asset types and script modules', {
+  frontMatter('Reference: components, asset types and script modules', {
     sidebar_label: 'Reference',
     sidebar_position: 0,
     slug: '/reference',

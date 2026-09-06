@@ -19,10 +19,10 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
 
 <Section title="What you get">
   <Features items={[
-    {icon: 'tree-structure', title: 'A tree of nodes, not an ECS to learn', text: <>A game is named nodes with scripts attached. Each is an ECS entity underneath — a layer only plugin authors see.</>},
+    {icon: 'tree-structure', title: 'A tree of nodes, not an ECS to learn', text: <>A game is named nodes with scripts attached. Each is an ECS entity underneath: a layer only plugin authors see.</>},
     {icon: 'lightning', title: 'Save the script, it is already running', text: <>Hot reload in milliseconds, state intact: the ball keeps its position, the score its value. A script that does not compile reports file, line and caret, and the running code stays up.</>},
     {icon: 'file-text', title: 'Scenes are TOML', text: <>Readable, diffable, reviewable in a pull request, editable by hand or by the editor. A component is a scene key, a script call and an inspector row at once.</>},
-    {icon: 'rocket-launch', title: 'One file to ship', text: <>A pack fused onto a runtime: one self-contained binary per target. No compiler, no sources, no runtime to install beside it.</>},
+    {icon: 'rocket-launch', title: 'One file to ship', text: <>A pack fused onto a runtime: one self-contained binary per target, with no compiler, sources or runtime to install beside it.</>},
   ]} />
 </Section>
 
@@ -35,7 +35,7 @@ body3d = "dynamic"
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }`}>
 
-`body3d`, `collider3d` and `shape3d` are components the physics and render plugins registered. That one registration makes them scene keys, script calls and inspector rows together — no binding step, no generated glue to keep in sync.
+`body3d`, `collider3d` and `shape3d` are components the physics and render plugins registered. That one registration makes them scene keys, script calls and inspector rows together: no binding step, no generated glue to keep in sync.
 
 Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, no build step, `async`/`await`. A script is a file attached to a node, with `init`, `update` and whatever methods the scene calls.
 
@@ -50,7 +50,7 @@ Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, no build step, `as
   ]} />
 </Section>
 
-<Section title="Next to Godot, Unity and Unreal" sub="As of September 2026. Balaur is 0.1 and they are not — read the maturity row first.">
+<Section title="Next to Godot, Unity and Unreal" sub="As of September 2026. Balaur is 0.1 and they are not: read the maturity row first.">
 
   <Compare rival="Godot 4" rows={[
     ['Game code', 'GDScript and C#; C++ through GDExtension', 'Rune scripts with no build step; plugins in Rust or C'],
@@ -78,7 +78,7 @@ Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, no build step, `as
     ['Maturity', 'AAA-proven, consoles, the deepest tooling there is', 'Weeks old, no consoles'],
   ]} />
 
-Each rival's column comes from its own site and licence terms; they all move, so check before deciding anything. If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues) — this page should never flatter Balaur at another project's expense.
+Each rival's column comes from its own site and licence terms; they all move, so check before deciding anything. If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues). This page should never flatter Balaur at another project's expense.
 
 Bevy and Fyrox are on [Compare](/compare). What the engine does not do yet is on the [roadmap](/docs/roadmap), and it is a long list.
 

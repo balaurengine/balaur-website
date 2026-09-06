@@ -1,5 +1,5 @@
 ---
-description: "Balaur devlog: a platform module over every store — sign-in, achievements, leaderboards, cloud saves — with Game Center, iCloud, Sign in with Apple and StoreKit behind it, and an export that writes the Info.plist."
+description: "Balaur devlog: a platform module over every store (sign-in, achievements, leaderboards, cloud saves) with Game Center, iCloud, Sign in with Apple and StoreKit behind it, and an export that writes the Info.plist."
 slug: game-center-icloud-and-purchases
 title: Game Center, iCloud and in-app purchases
 authors: [dragos]
@@ -15,32 +15,33 @@ and on Steam. Today the store behind it is Apple's.
 
 ```mermaid
 flowchart LR
-  S["script"] --> P["platform — sign-in, achievements, leaderboards, cloud saves, purchases"]
-  P --> A["Game Center · iCloud · StoreKit — the apple module, today"]
-  P --> G["Play Games — planned"]
-  P --> ST["Steam — planned"]
-  P --> N["no store loaded — every call answers unsupported"]
+  S["script"] --> P["platform: sign-in, achievements, leaderboards, cloud saves, purchases"]
+  P --> A["Game Center · iCloud · StoreKit: the apple module, today"]
+  P --> G["Play Games (planned)"]
+  P --> ST["Steam (planned)"]
+  P --> N["no store loaded: every call answers unsupported"]
 ```
 
 ## What landed
 
-- **`platform`.** `sign_in`, `unlock`, `progress`, `submit_score`,
+- `platform`. `sign_in`, `unlock`, `progress`, `submit_score`,
   `scores`, `cloud_read`, `cloud_write`, `set_presence`. With no store
-  loaded — the editor, a desktop run, a replay — every call answers
+  loaded (the editor, a desktop run, a replay) every call answers
   `unsupported` rather than failing, so a script written against it runs
   everywhere.
-- **`apple`.** Game Center behind the portable verbs; the iCloud key-value
+- `apple`. Game Center behind the portable verbs; the iCloud key-value
   store behind `cloud_read`. What only Apple has stays in its own module:
   Sign in with Apple, `identity` for a server to verify, the Game Center
   dashboard and access point.
-- **Purchases.** `products`, `purchase`, `entitlements`,
+- Purchases. `products`, `purchase`, `entitlements`,
   `restore_purchases` and `finish_purchase`. StoreKit 2 has no Objective-C
   interface, so a small Swift shim is compiled at build time; a machine
   without Swift still builds, and purchases there answer `unsupported`.
-- **Arrivals.** Notifications, push tokens, URLs opened, a purchase that
-  landed on another device: `apple::watch(node)`, and they reach that node.
-- **The export writes the plist.** `[apple]` in `project.toml` — bundle id,
-  team, version, capabilities — becomes the `Info.plist` and an
+- Arrivals. Notifications, push tokens, URLs opened, a purchase that
+  landed on another device. Call `apple::watch(node)`, and they reach that
+  node.
+- The export writes the plist. `[apple]` in `project.toml` (bundle id,
+  team, version, capabilities) becomes the `Info.plist` and an
   entitlements file. It refuses what it cannot make work.
 
 ```rune
@@ -53,6 +54,6 @@ pub async fn init(this) {
 
 An achievement cannot be un-awarded, and a rollback session re-runs
 predicted ticks, so a call that changes the store waits until its tick can
-no longer be re-run. The engine carries the proof — an identity signature,
-a transaction's signed `jws` — and checking it is a server's job.
+no longer be re-run. The engine carries the proof: an identity signature,
+a transaction's signed `jws`, and checking it is a server's job.
 [Stores](/docs/manual/stores) · [Shipping: Apple](/docs/manual/shipping#apple)

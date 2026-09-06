@@ -8,28 +8,28 @@ keywords: [2d lighting, 2d shadows, light map, bloom, occluders]
 ---
 
 A 2D scene draws unlit until something lights it. Add one `light2d` and
-everything already drawn is multiplied by a light map — sprites, polygons,
-tile maps — with nothing else having to know.
+everything already drawn is multiplied by a light map: sprites, polygons,
+tile maps, with nothing else having to know.
 
 {/* truncate */}
 
 
 ## What landed
 
-- **`light2d`.** Point or directional, with `color`, `radius`, `intensity`
+- `light2d`. Point or directional, with `color`, `radius`, `intensity`
   and `shadows`. A point light fades quadratically to exactly nothing at
   `radius`, so its edge has no seam. The camera's `ambient` is what the
   unlit parts fall to: black is a cave, a dim blue is dusk.
-- **`occluder2d`.** Left empty, the outline follows the node's
-  `collider2d`, or its circle, capsule, rect or sprite — the thing a player
+- `occluder2d`. Left empty, the outline follows the node's
+  `collider2d`, or its circle, capsule, rect or sprite: the thing a player
   sees casts the shadow, authored once. A directional light's shadows are
   parallel because its rays are.
 
   ![Three occluders under one directional light, each casting a parallel strip](/img/manual/rendering_directional.webp)
 
-- **Bloom.** `post = ["bloom"]` on the camera; an `intensity` past 1 is
+- Bloom. `post = ["bloom"]` on the camera; an `intensity` past 1 is
   what it picks up. `ssao`, `ssr` and `dof` are the 3D three.
-- **In the editor.** A Lights chip draws every light's reach and every
+- In the editor. A Lights chip draws every light's reach and every
   occluder's resolved outline, and the Polygon tool traces an occluder in
   Points mode.
 

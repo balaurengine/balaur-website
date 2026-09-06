@@ -1,5 +1,5 @@
 ---
-title: "Modules and extensions — writing a plugin"
+title: "Modules and extensions: writing a plugin"
 sidebar_label: "Modules and extensions"
 description: "Everything above the Balaur core is a plugin: a module linked in behind a cargo feature, or an extension loaded at run time as a shared library. How to write one."
 image: "/img/social/extensions.png"
@@ -20,7 +20,7 @@ from the same source:
 
 ## Writing a plugin
 
-A plugin declares a manifest and registers what it needs — resources, script
+A plugin declares a manifest and registers what it needs: resources, script
 modules, functions, constants, components, asset types:
 
 ```rust
@@ -66,9 +66,9 @@ header is asserted against the Rust layout from both sides. It covers script
 modules of functions and constants today.
 
 Extensions load sorted by name and declared requirements, never by directory
-iteration, because load order decides registration order — which decides the
+iteration, because load order decides registration order: which decides the
 simulation.
 
-For the binding API itself — declaring functions, registering components and
-scene keys — see [Architecture](../architecture.mdx). `balaur_physics` is the
+For the binding API itself: declaring functions, registering components and
+scene keys: see [Architecture](../architecture.mdx). `balaur_physics` is the
 reference implementation of a full plugin.

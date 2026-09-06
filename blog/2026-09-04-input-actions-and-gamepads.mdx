@@ -19,18 +19,18 @@ per frame.
 
 ## What landed
 
-- **Actions.** `action_value` is −1 to 1 — a key answers 0 or 1, a stick or
-  a key pair the whole range — and `action_pressed`, `action_just_pressed`
+- Actions. `action_value` is −1 to 1: a key answers 0 or 1, a stick or
+  a key pair the whole range, and `action_pressed`, `action_just_pressed`
   and `action_just_released` are the edges. `input::bind` rebinds an
   action and saves it to the user data directory; `reset_bindings` goes
   back to what the project declared.
-- **Gamepads.** `input::gamepads()` lists the pads; every query takes a pad
+- Gamepads. `input::gamepads()` lists the pads; every query takes a pad
   id and a named constant, `PAD_SOUTH`, `AXIS_LEFT_STICK_X`.
-- **Rumble, gyro, touchpad.** `gamepad_rumble(pad, #{ strong, weak,
+- Rumble, gyro, touchpad. `gamepad_rumble(pad, #{ strong, weak,
   duration })` runs the two motors. A PlayStation pad also reports
   `gamepad_gyro`, `gamepad_acceleration` and `gamepad_touches`, decoded from
   its own HID reports over USB or Bluetooth.
-- **The overlay.** A chip per key and button held, the actions they drive,
+- The overlay. A chip per key and button held, the actions they drive,
   and a ring from every press. It reads the same snapshot the game reads,
   so during a replay the cursor follows the recording.
 

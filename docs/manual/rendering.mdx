@@ -1,5 +1,5 @@
 ---
-title: "Rendering — 2D lights, shadows and post-processing"
+title: "Rendering: 2D lights, shadows and post-processing"
 sidebar_label: "Rendering"
 description: "Lit 2D scenes in Balaur: light2d and occluder2d build a light map every sprite, polygon and tile is multiplied by, the camera carries the ambient it falls to, and post names the screen-space effects the frame resolves through."
 image: "/img/social/rendering.png"
@@ -67,12 +67,12 @@ light is masked out wherever those polygons land.
 ```
 
 Left empty the outline follows the node's `collider2d`, failing that its
-circle, capsule, rect or sprite shape — so what a player sees is what casts the
+circle, capsule, rect or sprite shape, so what a player sees is what casts the
 shadow, with nothing authored twice. Name a `mesh` for an outline of your own,
 or when the node draws a polyline or polygon, whose points the engine will not
 guess at.
 
-Every edge casts, so **an occluder stands in its own shadow**. A crate that
+Every edge casts, so an occluder stands in its own shadow. A crate that
 should stay lit wants a smaller outline than its sprite, or a light with
 `shadows = false`.
 
@@ -83,7 +83,7 @@ A directional light's shadows are parallel, because its rays are:
 ### Tracing an outline
 
 The **Polygon** tool traces an `occluder2d` the way it traces a `polygon`, in
-Points mode — an outline has no triangles, UVs or weights, so those modes are
+Points mode: an outline has no triangles, UVs or weights, so those modes are
 not offered. The Lights chip in the Scene persona draws every light's reach and
 every occluder's *resolved* outline, so a derived one is visible without being
 written down.
@@ -93,7 +93,7 @@ written down.
 ## Post-processing
 
 `post` on the camera names the screen-space effects the frame resolves
-through. `bloom` is the one a lit 2D scene wants — the light map already
+through. `bloom` is the one a lit 2D scene wants: the light map already
 gives it bright pixels to bleed:
 
 ```toml
@@ -110,7 +110,7 @@ camera of either kind sets them.
 
 ## What the light map reaches
 
-The multiply lands on everything already drawn — sprites, polygons, tile maps,
+The multiply lands on everything already drawn: sprites, polygons, tile maps,
 and a 3D scene sitting under a 2D one. Debug lines and particles draw *after*
 it and stay unlit: usually what you want from a debug overlay, and worth
 knowing about a particle effect.

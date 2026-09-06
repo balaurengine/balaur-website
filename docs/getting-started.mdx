@@ -1,5 +1,5 @@
 ---
-title: "Getting started — build the engine and run a game"
+title: "Getting started: build the engine and run a game"
 sidebar_label: "Getting started"
 description: "Build the Balaur game engine from source with a Rust toolchain, learn the balaur CLI and the project layout, and run and edit your first scene."
 image: "/img/social/docs.png"
@@ -79,7 +79,7 @@ The example projects ship in the repository:
 cargo run -p balaur_cli -- run examples/hello --headless
 cargo run -p balaur_cli --features window -- run examples/hello
 
-# 2D: a small slingshot game — 2D shapes, 2D physics, widgets
+# 2D: a small slingshot game, with 2D shapes, 2D physics and widgets
 cargo run -p balaur_cli --features window -- run examples/angrynerds
 cargo run -p balaur_cli --features window -- edit examples/angrynerds
 
@@ -95,7 +95,7 @@ the change applies the moment you save, without losing state.
 
 ## Benchmarks
 
-The benchmark suite is headless — no window, no GPU — so what it measures is
+The benchmark suite is headless (no window, no GPU) so what it measures is
 the engine:
 
 ```bash

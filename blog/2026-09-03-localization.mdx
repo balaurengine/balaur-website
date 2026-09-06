@@ -15,14 +15,14 @@ one with the right plural form.
 
 ## What landed
 
-- **Files.** A key maps to a string, or to the plural forms of one.
+- Files. A key maps to a string, or to the plural forms of one.
   `{name}` in a string is replaced by the argument called `name`, and an
   `n` argument also picks the plural form the locale's language calls for.
-- **Fallback.** A key missing from the current locale is looked for in the
+- Fallback. A key missing from the current locale is looked for in the
   project's fallback locale, one step, not a chain. Missing from both, the
-  key itself comes back — visible in the game rather than blank, because a
+  key itself comes back: visible in the game rather than blank, because a
   missing string is a bug to notice and an empty label is a bug to miss.
-- **Switching.** `strings::set_locale`, `strings::locales` for what the
+- Switching. `strings::set_locale`, `strings::locales` for what the
   project ships, and `strings::system_locale` for what the OS says.
 
 ```toml

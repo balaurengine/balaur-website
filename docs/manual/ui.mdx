@@ -1,5 +1,5 @@
 ---
-title: "UI — HUD widgets and immediate-mode tools"
+title: "UI: HUD widgets and immediate-mode tools"
 sidebar_label: "UI"
 description: "Two UI layers in Balaur: widget components for game HUDs, saved in the scene and edited in the inspector, and an immediate-mode ui module for tools."
 image: "/img/social/ui.png"
@@ -11,16 +11,15 @@ sidebar_position: 7
 Two UI layers, both script-facing. Which one you want depends on whether the
 interface belongs to the game or to a tool:
 
-- **`widget`**, a component on a scene node. Retained: saved with the scene,
-  edited in the inspector, previewed in the editor viewport. This is game HUD —
-  a score readout, a menu button.
-- **the `ui` module**, immediate-mode egui redrawn every frame from a script's
+- `widget`, a component on a scene node. Retained: saved with the scene,
+  edited in the inspector, previewed in the editor viewport. This is game HUD: a score readout, a menu button.
+- the `ui` module, immediate-mode egui redrawn every frame from a script's
   `draw_ui`. This is what tools and the editor itself are built from.
 
 ## Widgets: game HUDs as scene nodes
 
 There is one `widget` component, not one per kind of element. What it draws is
-its `kind` — `label`, `button` or `panel` — the engine's convention throughout:
+its `kind` (`label`, `button` or `panel`) the engine's convention throughout:
 a component that comes in variants selects them with `kind`. A button is a
 widget anchored to a screen corner or the centre:
 
@@ -112,7 +111,7 @@ pub fn draw_ui(this) {
 
 Panel and container calls take a closure and push their child UI around it, so
 a script composes layouts exactly like Rust egui code. Widgets that change
-return a tuple — `let (text, changed) = ui::text_field(...)`. The set includes
+return a tuple: `let (text, changed) = ui::text_field(...)`. The set includes
 panels, labels, pills, toggles, sliders, drag values, dropdowns, text fields,
 modals, scroll areas, menus, shortcuts, and `ui::code_editor`, an editable
 Rune-highlighted buffer.

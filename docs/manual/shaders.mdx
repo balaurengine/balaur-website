@@ -1,5 +1,5 @@
 ---
-title: "Shaders and materials — WESL on wgpu"
+title: "Shaders and materials: WESL on wgpu"
 sidebar_label: "Shaders and materials"
 description: "Shaders in Balaur are WESL (WGSL with imports and variants), linked at run time. A material asset names a shader and its values; sprites, shapes and meshes take one."
 image: "/img/social/shaders.png"
@@ -10,8 +10,8 @@ import Clip from '@site/src/components/Clip';
 
 # Shaders and materials
 
-Shaders are [WESL](https://wesl-lang.dev) — WGSL plus imports, `@if` variants
-and dead-code elimination — linked to WGSL at run time. A `material` asset
+Shaders are [WESL](https://wesl-lang.dev): WGSL plus imports, `@if` variants
+and dead-code elimination: linked to WGSL at run time. A `material` asset
 names a shader and the values it draws with; `sprite`, `shape2d`, `shape3d` and
 `mesh` take one, and a node without one draws with the built-in material.
 
@@ -76,12 +76,12 @@ answer for a tool.
 
 Two ways to see what a shader is doing:
 
-- **A line's value.** Click a line number in the shader's gutter and the
-  viewport draws what that line computes for every pixel that reaches it — a
+- A line's value. Click a line number in the shader's gutter and the
+  viewport draws what that line computes for every pixel that reaches it: a
   `vec2` as red and green, an `f32` as grey, a `vec4` as colour. The line has
   to declare a value with its type written (`let dist: f32 = ...`) or a
   constructor. Click again to put the picture back.
-- **Channels.** `render::set_channel("normals")` draws the scene's normals
+- Channels. `render::set_channel("normals")` draws the scene's normals
   instead of its colour; `"uv"`, `"depth"` and `"albedo"` are the others, and
   `""` is the picture. The command palette has one command per channel.
 

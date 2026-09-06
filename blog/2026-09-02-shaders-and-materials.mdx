@@ -18,19 +18,19 @@ shader is saved.
 
 ## What landed
 
-- **Shaders.** WESL — WGSL plus imports, `@if` variants and dead-code
-  elimination — linked to WGSL at run time. A 2D shader imports
+- Shaders. WESL: WGSL plus imports, `@if` variants and dead-code
+  elimination: linked to WGSL at run time. A 2D shader imports
   `package::sprite`; a 3D one imports `package::mesh` and calls `shade(in)`
   for the scene's lights.
-- **Materials.** A `material` asset names a shader and its `[params]`, read
+- Materials. A `material` asset names a shader and its `[params]`, read
   off the linked shader rather than declared twice. `sprite`, `shape2d`,
   `shape3d` and `mesh` take one; a node without one draws with the
   built-in material.
-- **Relink on save.** Save the shader and every material naming it relinks
+- Relink on save. Save the shader and every material naming it relinks
   and every node drawing with it is rebuilt. One that will not link is
   reported with the line the author wrote, and the node keeps the built-in
   material meanwhile.
-- **Channels.** `render::set_channel("uv")` draws the scene's UVs instead
+- Channels. `render::set_channel("uv")` draws the scene's UVs instead
   of its colour; `normals`, `depth` and `albedo` are the others.
 
 ```toml

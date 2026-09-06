@@ -1,5 +1,5 @@
 ---
-title: "Animation — clips, tweens, skeletons and IK"
+title: "Animation: clips, tweens, skeletons and IK"
 sidebar_label: "Animation"
 description: "Animation in Balaur: clips with tracks and easings, tweens from scripts, 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK."
 image: "/img/social/animation.png"
@@ -24,8 +24,8 @@ address properties through the component registry.
 ## Clips
 
 A clip is a length, what to do with time past it (`none | loop | pingpong`),
-and a list of tracks. A clip lives in its own file — referenced from the
-scene — or inline in the scene node; a library file holds several clips under
+and a list of tracks. A clip lives in its own file: referenced from the
+scene, or inline in the scene node; a library file holds several clips under
 `[clips.<name>]`, addressed `file.toml#name`:
 
 ```toml
@@ -86,7 +86,7 @@ run through the same sampler and the same fixed step:
 ```rune
 animation::tween(this.node, #{
     steps: [
-        #{ property: "position",   to: [0.0, 3.0, 0.0],      duration: 0.5, ease: "out_back" },
+        #{ property: "position", to: [0.0, 3.0, 0.0], duration: 0.5, ease: "out_back" },
         #{ property: "shape3d/color", to: [1.0, 0.0, 0.0, 1.0], duration: 0.5, parallel: true },
         #{ call: "on_landed" },
     ],
@@ -98,7 +98,7 @@ animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "linear");   //
 Steps run in order; `parallel: true` joins a step to the one before it. `to`
 is absolute, `by` relative, `from` explicit, `target` tweens another node, and
 `interval` and `call` sequence among the property steps. The spec is data, so a
-tween is serialisable — the editor can author one and it hot reloads. Easing is
+tween is serialisable: the editor can author one and it hot reloads. Easing is
 twelve transitions in four modes with Godot's names and shapes, so ported
 curves behave.
 
@@ -107,7 +107,7 @@ curves behave.
 <Clip name="animation_key" alt="The Animate persona: scrubbing the clip, posing the thigh bone, keying it, and playing" />
 
 The timeline's lanes are the selected clip's tracks, the ruler scrubs the
-node's own player, and preview goes through the engine's parser — so what the
+node's own player, and preview goes through the engine's parser, so what the
 editor shows is what ships. *Save as file* and *Make inline* convert a clip
 between its two homes exactly. Keying a bone writes a rotation track on its
 character's clip, and a skinned polygon deforms as the clip plays.
@@ -116,7 +116,7 @@ character's clip, and a skinned polygon deforms as the clip plays.
 
 A bone is a node with a rest pose (`bone2d` in 2D, `bone3d` in 3D); a skin is
 a `polygon`, a textured 2D polygon whose mesh carries bone weights. A rig needs
-no new animation machinery — a clip on the character keys its bones by path.
+no new animation machinery: a clip on the character keys its bones by path.
 
 ```toml
 [[nodes]]
@@ -139,7 +139,7 @@ weights = [0, 0, 1, 1]
 The outline is ear-clipped; `internal` vertices and hand-drawn `polygons`
 control the triangulation, and UVs default to the texture centred on the node
 at `pixels_per_unit`. Skinning runs on the GPU from a joint palette computed
-off the scene tree — a headless run computes the same palette, so bones are
+off the scene tree: a headless run computes the same palette, so bones are
 part of the determinism digest.
 
 ![A polygon's inspector: vertices, drawn polygons, bones and brush](/img/editor/component_limb.webp)
@@ -152,9 +152,9 @@ The `skeleton` module has Godot's two rest-pose verbs and a query:
 The **Rig bone** tool draws bones as diamonds in 2D and octahedra in 3D: click
 to select, drag to pose, and *+ bone* grows a child from the selection. The
 inspector's Skeleton section has the two rest-pose verbs. The **Polygon** tool
-edits a `polygon` component's mesh in four modes — *Points* places outline and
+edits a `polygon` component's mesh in four modes: *Points* places outline and
 internal vertices, *Polygons* draws the triangulation by hand, *UV* places the
-points over the texture, *Weights* paints bone influence with a brush — and the
+points over the texture, *Weights* paints bone influence with a brush, and the
 polygon stays skinned while you edit it.
 
 ![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.webp)
@@ -181,8 +181,7 @@ balaur import model.glb --project my-game
 ```
 
 copies the model under `models/`, writes its joint hierarchy as a scene with
-`bone3d` rest poses and one `mesh` node, and its animations as a clip library —
-all TOML the editor edits. A `.gltf` with its `.bin` and textures beside it
+`bone3d` rest poses and one `mesh` node, and its animations as a clip library: all TOML the editor edits. A `.gltf` with its `.bin` and textures beside it
 works the same way. The mesh is skinned every frame from the same scene tree,
 so the same clips, rest verbs and bone gizmos apply.
 
@@ -190,7 +189,7 @@ The joint palette goes to a vertex shader, so a 3D rig deforms on the GPU with
 the mesh's buffers left alone. A node naming a `material` asset, or a frame
 drawn under a shader channel view, keeps the CPU path instead: those shaders
 draw against `package::mesh` and know nothing about a palette. Both compute the
-same blend — the shader's is `@const`, so a headless test holds it to the CPU
+same blend: the shader's is `@const`, so a headless test holds it to the CPU
 reference without a GPU.
 
 ![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp) `examples/rig` is one figure: a skinned body swung by a clip, with an arm
@@ -199,8 +198,8 @@ branching off its top bone that reaches on two-bone IK;
 
 ## Deterministic, and scheduled deliberately
 
-Playback advances on its own fixed 1/60 accumulator — the sampler never sees a
-variable dt — and every transcendental (easing, euler↔quaternion, slerp) is
+Playback advances on its own fixed 1/60 accumulator: the sampler never sees a
+variable dt, and every transcendental (easing, euler↔quaternion, slerp) is
 computed on `libm`, so an animation is the same on every platform.
 
 The system runs after the script tick, so `animation::play()` takes effect the

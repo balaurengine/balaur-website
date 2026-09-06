@@ -15,20 +15,20 @@ with no language in it, so a second language cost the engine nothing.
 
 ## What landed
 
-- **The seam.** `balaur_script` is the neutral contract: a binding is a
+- The seam. `balaur_script` is the neutral contract: a binding is a
   name, typed values and a function. A backend implements `ScriptHost`
   against it. Physics, input, render, audio and UI declare their bindings
   there and know no language.
-- **Rune.** `balaur_script_rune` is the host, picked by `language` in
+- Rune. `balaur_script_rune` is the host, picked by `language` in
   `project.toml`. One object per node, `pub fn update(this, dt)`, and what
   a script writes to `this` is what the host reads next frame. Rune reads
   like Rust without types.
-- **The node API, once.** Twenty-seven node operations are one list of
+- The node API, once. Twenty-seven node operations are one list of
   neutral functions taking the node first. A backend adds only its call
   sugar; a third language would cost the sugar, not the operations.
-- **Exported properties.** `pub fn exports()` returns defaults; the scene
+- Exported properties. `pub fn exports()` returns defaults; the scene
   overrides only what it changes; the inspector lists them per node.
-- **Component handles.** Each component a node carries is a field on the
+- Component handles. Each component a node carries is a field on the
   node, and the field's methods are the driving module's functions with the
   node filled in. `get()`, `set(table)`, `has()` and `remove()` on all of
   them.

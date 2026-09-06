@@ -1,23 +1,23 @@
 ---
-title: "Compare — Balaur next to Godot, Bevy and Fyrox"
-description: "An honest comparison of Balaur with Godot, Bevy and Fyrox as of September 2026: language and scripting, editor, iteration speed, determinism, platforms, licence and maturity — and when to pick which."
+title: "Compare: Balaur next to Godot, Bevy and Fyrox"
+description: "An honest comparison of Balaur with Godot, Bevy and Fyrox as of September 2026: language and scripting, editor, iteration speed, determinism, platforms, licence and maturity, and when to pick which."
 image: "/img/social/compare.png"
 ---
 
 # Compare
 
-Godot, because it is the node-and-scene model most game developers know; Bevy and Fyrox, because they are the Rust engines. Dated **September 2026**, Balaur at 0.1.0 — check each project's own site before deciding anything, because they all move fast.
+Godot, because it is the node-and-scene model most game developers know; Bevy and Fyrox, because they are the Rust engines. Dated September 2026, Balaur at 0.1.0: check each project's own site before deciding anything, because they all move fast.
 
-The short version: **Balaur is weeks old and the others are years old.** To ship a game this year, one of the other three is the safer choice. What Balaur has that they do not is bit-exact determinism with replay and rollback, scripts that reload in milliseconds with state intact, scenes that are plain TOML, and an editor that is itself a project in the engine.
+The short version: Balaur is weeks old and the others are years old. To ship a game this year, one of the other three is the safer choice. What Balaur has that they do not is bit-exact determinism with replay and rollback, scripts that reload in milliseconds with state intact, scenes that are plain TOML, and an editor that is itself a project in the engine.
 
 ## Side by side
 
-| | **Balaur** | **Godot 4** | **Bevy** | **Fyrox** |
+| | Balaur | Godot 4 | Bevy | Fyrox |
 | --- | --- | --- | --- | --- |
 | Engine language | Rust | C++ | Rust | Rust |
 | Game code | Rune scripts (Rust-like, no build step); plugins in Rust or C | GDScript, C#; C++ via GDExtension | Rust, code only | Rust plugins and scripts |
 | Model | A scene tree of named nodes over an ECS you never see | A scene tree of nodes | ECS, data-driven | Scene graph |
-| Editor | Yes — itself a Balaur project. No binary release yet | Yes, mature | No official editor yet; prototypes in development | Yes (FyroxEd) |
+| Editor | Yes: itself a Balaur project. No binary release yet | Yes, mature | No official editor yet; prototypes in development | Yes (FyroxEd) |
 | Iterating on code | A saved script is live in milliseconds, state intact; a debugger in the editor | Scripts reload on save | Assets hot reload; code needs a recompile | Code hot reload exists, marked experimental and unsafe by its docs |
 | Determinism | Same inputs, same bits on every platform: fixed 60 Hz step, per-tick digests, record and replay, rollback | Not bit-exact across platforms | Not a stated goal | Not a stated goal |
 | 2D and 3D | Both | Both | Both | Both |
@@ -26,23 +26,45 @@ The short version: **Balaur is weeks old and the others are years old.** To ship
 | Licence | MIT | MIT | MIT or Apache-2.0 | MIT |
 | Age and maturity | 0.1.0, first release September 2026; no binary yet | 4.x; more than a decade, huge community | 0.18; five years, large plugin ecosystem | 0.36; six years, calls itself production-ready |
 
+## Memory
+
+What an idle project holds, headless: the number that decides how many instances fit on a server.
+
+| scene | Balaur | Godot 4.7 |
+| --- | ---: | ---: |
+| empty project | **13 MB** | 41 MB |
+| 10,000 nodes | **19 MB** | 67 MB |
+| 50,000 nodes | **31 MB** | 166 MB |
+
+Balaur costs about 0.35 KB per node, Godot about 2.5 KB, so the gap widens with the size of the scene.
+
+Physics and scene-tree throughput are on the [benchmarks page](/docs/benchmarks).
+
+### How it was measured
+
+macOS 26.6 on an Apple M1, September 2026. Each run settles for 15 seconds, then `vmmap --summary` reports its physical footprint, the figure Activity Monitor shows as Memory. Resident set size is not used: it counts shared and mapped pages, and it drifts down as the system compresses an idle process.
+
+```bash
+vmmap --summary $(pgrep -n balaur) | grep "Physical footprint"
+```
+
 ## When to pick which
 
-**Godot** — the most mature node-and-scene editor there is, a language designed to be easy, thousands of tutorials, a community that has shipped everything. Balaur's scene model will feel familiar from it.
+Godot: the most mature node-and-scene editor there is, a language designed to be easy, thousands of tutorials, a community that has shipped everything. Balaur's scene model will feel familiar from it.
 
-**Bevy** — the whole game in Rust against an ECS, no editor for now, the largest Rust plugin ecosystem.
+Bevy: the whole game in Rust against an ECS, no editor for now, the largest Rust plugin ecosystem.
 
-**Fyrox** — Rust with an editor today, and a codebase that calls itself production-ready.
+Fyrox: Rust with an editor today, and a codebase that calls itself production-ready.
 
-**Balaur** — if determinism is the product (lockstep or rollback multiplayer, replays, a simulation that must agree bit for bit), or if what you value most is the loop: save a script, see it running, keep the state. And only if 0.1 is fine: no binary release yet, and a community that is mostly the people building it. The [roadmap](/docs/roadmap) says what is missing; the [principles](/docs/principles) say why it is built this way.
+Balaur: if determinism is the product (lockstep or rollback multiplayer, replays, a simulation that must agree bit for bit), or if what you value most is the loop: save a script, see it running, keep the state. And only if 0.1 is fine: no binary release yet, and a community that is mostly the people building it. The [roadmap](/docs/roadmap) says what is missing; the [principles](/docs/principles) say why it is built this way.
 
 ## What Balaur does not have yet
 
-- A binary release — it [builds from source](/docs/getting-started).
+- A binary release: it [builds from source](/docs/getting-started).
 - Consoles.
 - An asset store, a tutorial library, a community of any size.
 - Years of bugs found by other people.
 
 ## Sources
 
-Each project's own site, September 2026: [godotengine.org](https://godotengine.org/), [bevy.org](https://bevy.org/) and the [Bevy editor prototypes](https://bevyengine.github.io/bevy_editor_prototypes/roadmap.html), [fyrox.rs](https://fyrox.rs/) and the [Fyrox book on hot reloading](https://fyrox-book.github.io/beginning/hot_reloading.html). If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues) — this page should never flatter Balaur at another project's expense.
+Each project's own site, September 2026: [godotengine.org](https://godotengine.org/), [bevy.org](https://bevy.org/) and the [Bevy editor prototypes](https://bevyengine.github.io/bevy_editor_prototypes/roadmap.html), [fyrox.rs](https://fyrox.rs/) and the [Fyrox book on hot reloading](https://fyrox-book.github.io/beginning/hot_reloading.html). If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues). This page should never flatter Balaur at another project's expense.

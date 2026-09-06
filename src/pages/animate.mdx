@@ -1,6 +1,6 @@
 ---
 title: "2D & 3D skeletal animation for games, in the engine"
-description: "Bones, mesh skinning with painted weights, two-bone IK and look-at, a timeline with keys — on the rig that ships in the game. Free, MIT, 2D and 3D."
+description: "Bones, mesh skinning with painted weights, two-bone IK and look-at, a timeline with keys, all on the rig that ships in the game. Free, MIT, 2D and 3D."
 image: "/img/social/animate.png"
 ---
 
@@ -14,14 +14,14 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
   alt="The Animate persona on examples/rig: bones in the tree, the Thigh selected, the timeline with its keys"
   primary={{to: '/examples#rig', label: 'Open examples/rig'}}
   secondary={{to: '/docs/manual/animation', label: 'Animation manual'}}>
-  Bones and mesh skinning with painted weights, two-bone IK and look-at, keys in a timeline — on the rig that runs in the game. No export step, no runtime to integrate.
+  Bones and mesh skinning with painted weights, two-bone IK and look-at, keys in a timeline, all on the rig that runs in the game. No export step, no runtime to integrate.
 </PersonaHero>
 
 <Section title="What you get">
   <Features items={[
     {icon: 'bone', tone: 'animation', title: 'Bones and skins', text: <>A bone is a node with a rest pose; a skin is a textured polygon with painted weights. Paint them in the polygon tool's Weights mode.</>},
     {icon: 'magic-wand', tone: 'animation', title: 'Pose with inverse kinematics', text: <>Two-bone IK and look-at run as modifiers after the clip: drag a target and the limb follows. Key the target, not the joints.</>},
-    {icon: 'film-strip', tone: 'animation', title: 'A timeline with keys', text: <>Clips are tracks over time — position, rotation, scale, any component property — with twelve easings, step, linear and cubic interpolation, and method tracks that call your script.</>},
+    {icon: 'film-strip', tone: 'animation', title: 'A timeline with keys', text: <>Clips are tracks over time, position, rotation, scale, any component property, with twelve easings, step, linear and cubic interpolation, and method tracks that call your script.</>},
     {icon: 'cube', tone: '3d', title: '3D rigs from glTF', text: <><code>balaur import model.glb</code> writes the joints, the mesh and the animations as TOML the editor edits; GPU skinning draws the result.</>},
   ]} />
 </Section>
@@ -44,7 +44,7 @@ keys = [
 [[clips.patrol.tracks]]
 keys = [{ t = 4.0, call = "on_reached_end" }]   # a method track`}>
 
-A clip is a length, what to do with time past it — none, loop or pingpong — and a list of tracks. Each track addresses a property by path and keys it; a method track calls a script function. A library file holds several clips under `[clips.<name>]`.
+A clip is a length, what to do with time past it (none, loop or pingpong), and a list of tracks. Each track addresses a property by path and keys it; a method track calls a script function. A library file holds several clips under `[clips.<name>]`.
 
 A bone is any node carrying `bone2d` or `bone3d`, so the tree is the rig and the same clip keys bones by path.
 
@@ -71,6 +71,6 @@ A bone is any node carrying `bone2d` or `bone3d`, so the tree is the rig and the
 
 <StartBand
   title="Rig something."
-  text="examples/rig is one figure — a skinned leg on a clip, an arm on two-bone IK. Open it and move the target."
+  text="examples/rig is one figure: a skinned leg on a clip, an arm on two-bone IK. Open it and move the target."
   primary={{to: '/examples#rig', label: 'Open examples/rig'}}
   secondary={{to: '/docs/manual/animation', label: 'Animation manual'}} />

@@ -1,5 +1,5 @@
 ---
-title: "Scenes and nodes — TOML scenes over an ECS"
+title: "Scenes and nodes: TOML scenes over an ECS"
 sidebar_label: "Scenes and nodes"
 description: "How Balaur scenes work: nodes are ECS entities, scenes are plain TOML, and every component is a scene key, a script call and an inspector row at once."
 image: "/img/social/scenes.png"
@@ -15,7 +15,7 @@ import Clip from '@site/src/components/Clip';
 A node is an ECS entity with `Name`, `Parent`, `Children`, `Transform` and
 `GlobalTransform`. Node paths (`"A/B/C"`), transform propagation and recursive
 free are core systems, and plugins hang their own components off the same
-entities — so "node" is an API surface, not a data structure with a cost.
+entities, so "node" is an API surface, not a data structure with a cost.
 
 Scripts reach the tree through 30 operations declared once in the core and
 reached as methods on a node value: `get_node`, `parent`, `children`,
@@ -85,21 +85,21 @@ instance is refused, with the prefab to open instead.
 ## Components
 
 Plugins declare named, schema-described components. A schema gives each
-property a `type` from a closed set — `float`, `bool`, `string`, `enum`,
-`vec2`, `vec3`, `color`, `asset` — plus defaults, enum options, an optional
+property a `type` from a closed set: `float`, `bool`, `string`, `enum`,
+`vec2`, `vec3`, `color`, `asset`, plus defaults, enum options, an optional
 scalar shorthand (`body = "dynamic"`), and `readonly` markers the inspector
 honours. A malformed schema fails at boot naming the component and property,
 rather than at the first inspector row.
 
 One registration buys three things at once:
 
-- **The scene-file key.** `collider = { kind = "ball", radius = 0.5 }` works
+- The scene-file key. `collider = { kind = "ball", radius = 0.5 }` works
   because the physics plugin registered `collider3d`.
-- **The runtime API.** `node.set_component`, `get_component`,
+- The runtime API. `node.set_component`, `get_component`,
   `has_component`, `remove_component`, `component_names`, plus
   `scene::component_types()` and `scene::component_schema(name)` for
   discovery.
-- **Editor support.** The "Add component" palette and the property inspectors
+- Editor support. The "Add component" palette and the property inspectors
   are generated from the registry, so third-party components are addable and
   editable with no editor changes.
 
@@ -154,8 +154,7 @@ positions = [[0, 0, 0]]       # ...or the vertices themselves
 The primitives are `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`,
 `torus`, `pyramid`, `prism` and `tube` in 3D, and `circle`, `rect`, `capsule`,
 `ellipse`, `star` and `ngon` in 2D. `shape3d` and `shape2d` draw them straight;
-a `mesh` asset is for when something else — a collider, a boolean, a script —
-needs the triangles too.
+a `mesh` asset is for when something else (a collider, a boolean, a script)needs the triangles too.
 
 ### Paths
 
@@ -177,7 +176,7 @@ bevel = 0.08
 ### Booleans and cloners
 
 `boolean3d` draws a node's children joined, cut out of one another, or only
-where they overlap — `op` is `union`, `difference` or `intersection`, applied
+where they overlap: `op` is `union`, `difference` or `intersection`, applied
 in declaration order. The operands stay in the tree, hidden and editable, and
 moving one recomputes the result. `boolean2d` is the same over filled
 outlines.

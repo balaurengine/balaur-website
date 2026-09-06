@@ -1,5 +1,5 @@
 ---
-title: "Input — actions, keyboard, mouse, gamepads, touch"
+title: "Input: actions, keyboard, mouse, gamepads, touch"
 sidebar_label: "Input"
 description: "Input in Balaur: actions declared in project.toml, bound to keyboard, mouse, gamepad and touch, read as one snapshot per frame so every session can be replayed."
 image: "/img/social/input.png"
@@ -35,8 +35,8 @@ if input::action_just_pressed("jump") { /* ... */ }
 let x = input::action_value("move_x");   // -1 to 1
 ```
 
-`action_value` is -1 to 1 — a key answers 0 or 1, a stick or `keys:A,D` the
-whole range — and `action_pressed`, `action_just_pressed` and
+`action_value` is -1 to 1: a key answers 0 or 1, a stick or `keys:A,D` the
+whole range, and `action_pressed`, `action_just_pressed` and
 `action_just_released` are the edges. `input::bind(name, bindings)` rebinds an
 action and saves it to the user data directory; `reset_bindings` goes back to
 what the project declared. Actions are derived from the raw snapshot every
@@ -96,7 +96,7 @@ reproduces a motion-controlled session exactly.
 `input::touches()` returns the touch points active this frame, with
 `input::touches_started()` and `input::touches_ended()` for the edges.
 `input::dropped_files()` returns the paths of files dropped onto the window
-this frame — how a tool accepts a drag-and-drop.
+this frame: how a tool accepts a drag-and-drop.
 
 ## Seeing input
 
@@ -108,7 +108,7 @@ your hand. Turn it on from the command palette (*Show input overlay*) or start
 the editor with `--state input`.
 
 The actions come from the game's own `project.toml`: the editor is itself a
-Balaur project, so it declares the game's actions when it opens one — without
+Balaur project, so it declares the game's actions when it opens one, without
 that, every action a played game asked for would read zero.
 
 ## The full surface

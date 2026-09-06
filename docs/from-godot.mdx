@@ -1,5 +1,5 @@
 ---
-title: "Coming from Godot — the Balaur equivalent of every node, file and call"
+title: "Coming from Godot: the Balaur equivalent of every node, file and call"
 sidebar_label: "Coming from Godot"
 description: "A Godot to Balaur mapping, one line each: project.godot to project.toml, .tscn to TOML, node types to components, GDScript to Rune, _process to update, signals to named events and methods called by name, InputMap to input actions, AnimationPlayer and Tween to clips and tweens, export to one fused binary."
 image: "/img/social/from-godot.png"
@@ -16,12 +16,12 @@ model are the ones you know. What changes, one line each. Row by row, the
 
 | Godot | Balaur |
 | --- | --- |
-| `project.godot` | `project.toml` — name, `main_scene`, input actions |
-| `scene.tscn` | `scenes/scene.toml` — a flat `[[nodes]]` list, `parent` by id |
-| `script.gd` | `scripts/script.rn` — [Rune](/docs/manual/scripting) |
-| `.tres` resources | `[[assets]]` in TOML — `mesh`, `material`, `animation_clip`, `tileset`, … ([assets](/docs/reference/assets)) |
-| `.gdshader` | `.wesl` — WGSL with imports, in a `material` asset ([shaders](/docs/manual/shaders)) |
-| Export presets, templates | `balaur export my-game --target linux-x64` — one fused binary ([shipping](/docs/manual/shipping)) |
+| `project.godot` | `project.toml`: name, `main_scene`, input actions |
+| `scene.tscn` | `scenes/scene.toml`: a flat `[[nodes]]` list, `parent` by id |
+| `script.gd` | `scripts/script.rn`: [Rune](/docs/manual/scripting) |
+| `.tres` resources | `[[assets]]` in TOML: `mesh`, `material`, `animation_clip`, `tileset`, … ([assets](/docs/reference/assets)) |
+| `.gdshader` | `.wesl`: WGSL with imports, in a `material` asset ([shaders](/docs/manual/shaders)) |
+| Export presets, templates | `balaur export my-game --target linux-x64`: one fused binary ([shipping](/docs/manual/shipping)) |
 
 ## Nodes
 
@@ -31,7 +31,7 @@ make it, and a collider sits on the same node as its body, not on a child.
 | Godot | Balaur |
 | --- | --- |
 | `Node2D`, `Node3D` | A node. Position, rotation, scale on every one |
-| `RigidBody2D`, `StaticBody2D`, `AnimatableBody2D` | `body2d = "dynamic"` / `"static"` / `"kinematic"` — same in 3D |
+| `RigidBody2D`, `StaticBody2D`, `AnimatableBody2D` | `body2d = "dynamic"` / `"static"` / `"kinematic"`: same in 3D |
 | `CollisionShape2D` | `collider2d = { kind = "rect", half_extents = [0.5, 0.5] }` |
 | `CharacterBody2D`, `CharacterBody3D` | [`character2d`](/docs/reference/components/character2d), [`character3d`](/docs/reference/components/character3d) |
 | `PinJoint2D`, `HingeJoint3D`, … | [`joint2d`](/docs/reference/components/joint2d), [`joint3d`](/docs/reference/components/joint3d) |
@@ -45,10 +45,10 @@ make it, and a collider sits on the same node as its body, not on a child.
 | `PointLight2D`, `LightOccluder2D` | [`light2d`](/docs/reference/components/light2d), [`occluder2d`](/docs/reference/components/occluder2d) |
 | `AudioStreamPlayer`, `AudioListener3D` | [`sound`](/docs/reference/components/sound), [`listener`](/docs/reference/components/listener) |
 | `Skeleton2D` / `Bone2D`, `Skeleton3D` | Nodes with [`bone2d`](/docs/reference/components/bone2d) / [`bone3d`](/docs/reference/components/bone3d) |
-| `SkeletonIK`, `LookAtModifier` | [`modifier2d`](/docs/reference/components/modifier2d) — `look_at`, `two_bone_ik` |
-| `AnimationPlayer` | [`animation`](/docs/reference/components/animation) — a clip library and an `autoplay` |
+| `SkeletonIK`, `LookAtModifier` | [`modifier2d`](/docs/reference/components/modifier2d): `look_at`, `two_bone_ik` |
+| `AnimationPlayer` | [`animation`](/docs/reference/components/animation): a clip library and an `autoplay` |
 | `Label`, `Button`, `Panel` | [`widget`](/docs/reference/components/widget) with `kind = "label"` / `"button"` / `"panel"` |
-| `Control` layouts, editor plugins | The `ui` module — immediate-mode egui in `draw_ui` ([UI](/docs/manual/ui)) |
+| `Control` layouts, editor plugins | The `ui` module: immediate-mode egui in `draw_ui` ([UI](/docs/manual/ui)) |
 | Instancing a `PackedScene` | `instance = "scenes/crate.toml"` on a node, with `overrides` ([prefabs](/docs/manual/scenes#prefabs)) |
 
 ## Scripts
@@ -58,27 +58,27 @@ make it, and a collider sits on the same node as its body, not on a child.
 | `extends Node2D` | Nothing. A script is free functions taking `this` |
 | `_ready()` | `pub fn init(this)` |
 | `_process(delta)` | `pub fn update(this, dt)` |
-| `_physics_process(delta)` | `pub fn fixed_update(this, dt)` — fixed 60 Hz, before physics |
+| `_physics_process(delta)` | `pub fn fixed_update(this, dt)`: fixed 60 Hz, before physics |
 | `_exit_tree()` | `pub fn on_free(this)` |
 | `@export var speed = 2.0` | `pub fn exports() { #{ speed: 2.0 } }`, overridden in `[nodes.script.props]` |
 | `self` | `this`; the node is `this.node` |
 | `$Path/To/Node`, `get_node("..")` | `this.node.get_node("Path/To/Node")`, `"../Sibling"` |
-| `queue_free()` | `node.queue_free()` — deferred to end of frame, as in Godot |
+| `queue_free()` | `node.queue_free()`: deferred to end of frame, as in Godot |
 | `apply_impulse(v)` | `this.node.body2d.apply_impulse(x, y)` |
 | `signal hit` on a node, `enemy.hit.connect(_on_hit)` | `events::subscribe(this.node, "hit", enemy)`, then `pub fn on_hit(this, payload)` ([events](/docs/reference/modules/events)) |
-| `hit.emit(payload)` from that node | `this.node.emit("hit", payload)` — delivered at the top of the next frame |
-| Connecting to every emitter of a signal | `events::subscribe(this.node, "hit")` — omit the node, hear them all |
+| `hit.emit(payload)` from that node | `this.node.emit("hit", payload)`: delivered at the top of the next frame |
+| Connecting to every emitter of a signal | `events::subscribe(this.node, "hit")`: omit the node, hear them all |
 | Engine signals: `pressed`, `animation_finished`, `request_completed` | Methods by name: `on_click`, `on_animation_finished(name)`, `on_response(r)` |
 | Calling a method on another node | `node.call("method", args)` |
 | `Input.is_action_just_pressed("jump")` | `input::action_just_pressed("jump")` |
-| `Input.get_axis("left", "right")` | `input::action_value("move_x")` — one action, -1 to 1 |
+| `Input.get_axis("left", "right")` | `input::action_value("move_x")`: one action, -1 to 1 |
 | `InputMap` in project settings | `[input.actions]` in `project.toml` ([input](/docs/manual/input)) |
 | `$AnimationPlayer.play("run")` | `animation::play(this.node, "run")` |
-| `create_tween().tween_property(...)` | `animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "out_back")` — Godot's easing names and shapes |
+| `create_tween().tween_property(...)` | `animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "out_back")`: Godot's easing names and shapes |
 | `await get_tree().create_timer(1.0).timeout` | `task::wait(...)` in an `async fn`; results land at the start of a tick |
 | `HTTPRequest` | `http::request(url)` ([networking](/docs/manual/networking)) |
 | `FileAccess`, `ConfigFile` | [`fs`](/docs/reference/modules/fs), [`settings`](/docs/reference/modules/settings), [`save`](/docs/reference/modules/save) |
-| `randf()`, `randi()` | `rng::` — seeded, engine-owned, replayable |
+| `randf()`, `randi()` | `rng::`: seeded, engine-owned, replayable |
 | `print()` | `log::info()` |
 | `preload`, `load` | `assets::load("path.toml")` |
 
@@ -94,16 +94,16 @@ make it, and a collider sits on the same node as its body, not on a child.
 
 ## Not the same
 
-- **Determinism.** In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
+- Determinism. In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
   server is deterministic. Here the whole tick is: fixed step, a digest per
   tick, record and replay, rollback ([determinism](/docs/manual/determinism)).
-- **No `connect`.** Events are named, not callbacks: `events::emit("hit", p)`
+- No `connect`. Events are named, not callbacks: `events::emit("hit", p)`
   reaches a subscribed node as `on_hit(p)` next frame. Engine events work the
   same way, most with a polling twin (`input::just_pressed`,
   `events::emitted("hit")`).
-- **No editor-only nodes.** Everything the editor does is a script call any
+- No editor-only nodes. Everything the editor does is a script call any
   project can make.
-- **Maturity.** 0.1, weeks old, no binary yet. [Compare](/compare) and the
+- Maturity. 0.1, weeks old, no binary yet. [Compare](/compare) and the
   [roadmap](/docs/roadmap) say what is missing.
 
 ## Start
@@ -112,5 +112,5 @@ make it, and a collider sits on the same node as its body, not on a child.
 cargo run -p balaur_cli --features window -- edit examples/angrynerds
 ```
 
-A 2D game — bodies, colliders, widgets, one script per node — small enough to
+A 2D game (bodies, colliders, widgets, one script per node) small enough to
 read in one sitting. [Getting started](/docs/getting-started) has the rest.

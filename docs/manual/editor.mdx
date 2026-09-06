@@ -1,5 +1,5 @@
 ---
-title: "The editor — personas, tools and plugins"
+title: "The editor: personas, tools and plugins"
 sidebar_label: "The editor"
 description: "The Balaur editor is itself a Balaur project: five personas (Scene, Script, Animate, Physics, Interface), gizmos, timeline, rig tools, play-in-editor and undo."
 image: "/img/social/editor.png"
@@ -10,7 +10,7 @@ sidebar_position: 13
 
 The editor is a regular Balaur project: its scripts draw the whole interface
 through the `ui` module, and editing one hot reloads the editor itself. Nothing
-in it is privileged — every binding it uses is available to any project.
+in it is privileged: every binding it uses is available to any project.
 
 ```bash
 cargo run -p balaur_cli --features window -- edit my-game
@@ -25,7 +25,7 @@ as a real node subtree, so the viewport shows the actual scene and physics
 builds the actual bodies (paused until play). Edits are written back as TOML,
 and every one is undoable (`Ctrl+Z` / `Ctrl+Shift+Z`).
 
-**Play-in-editor** attaches the game's scripts to the mirrored nodes and
+Play-in-editor attaches the game's scripts to the mirrored nodes and
 unpauses: the real game code runs against the real scene inside the editor, and
 every run is recorded (see
 [Determinism](./determinism.mdx#in-the-editor)). Stop rebuilds the mirror from
@@ -33,8 +33,7 @@ the document.
 
 ## Personas
 
-The top bar switches between five personas, each arranging the same panels —
-node tree, viewport or code, docks, inspector — around one job.
+The top bar switches between five personas, each arranging the same panels: node tree, viewport or code, docks, inspector: around one job.
 
 <div className="persona-gallery">
   <figure><img src="/img/manual/persona_scene.webp" alt="The Scene persona: the node tree, the viewport with its gizmo on the selected Bird, and the inspector" width="1600" height="1000" loading="lazy" /><figcaption>Scene</figcaption></figure>
@@ -44,44 +43,44 @@ node tree, viewport or code, docks, inspector — around one job.
   <figure><img src="/img/manual/persona_interface.webp" alt="The Interface persona: examples/angrynerds' widgets over the safe area, the Restart button selected" width="1600" height="1000" loading="lazy" /><figcaption>Interface</figcaption></figure>
 </div>
 
-- **Scene.** The tree, the viewport with its gizmos, and the inspector
-  generated from the component registry — every registered component,
+- Scene. The tree, the viewport with its gizmos, and the inspector
+  generated from the component registry: every registered component,
   third-party ones included, is addable and editable with no editor changes. A
   2D scene is detected from its components and gets a 2D grid, a pan-and-zoom
   camera, a 2D gizmo, click-picking and collider overlays. See
   [Scenes and nodes](./scenes.mdx).
-- **Script.** One buffer per file with Rune highlighting, the hooks the file
+- Script. One buffer per file with Rune highlighting, the hooks the file
   declares, and the events the node receives. Save writes to the project and
   hot reloads the code, live while playing. Click a line number to set a
   breakpoint; the Debugger dock shows frames and locals, with continue and step
   over / into / out on `F5`, `F10`, `F11` and `Shift+F11`. See
   [Scripting](./scripting.mdx#hot-reload).
-- **Animate.** The timeline over the selected clip's tracks. See
+- Animate. The timeline over the selected clip's tracks. See
   [Animation](./animation.mdx#the-animate-persona).
-- **Physics.** Bodies and colliders with their overlays. See
+- Physics. Bodies and colliders with their overlays. See
   [Physics](./physics.mdx).
-- **Interface.** Widgets laid out over the safe area. See [UI](./ui.mdx).
+- Interface. Widgets laid out over the safe area. See [UI](./ui.mdx).
 
 ## Tools
 
 The strip beside the viewport holds Select, Move, Rotate and Scale, then two
-rig tools: **Rig bone** grows and poses a skeleton, **Polygon** edits a skinned
+rig tools: Rig bone grows and poses a skeleton, Polygon edits a skinned
 polygon's points, triangulation, UVs and weights. Both are under
 [Skeletons and skins](./animation.mdx#skeletons-and-skins).
 
 ## Docks, palette, themes
 
-Seven docks sit under the viewport. **Output** is the engine's log ring
-buffer, with level filters. **Problems** lists what the linter found in every
-script, and a shader that would not link. **Assets** browses the project's
-files. **Timeline** is the animation editor's. **Debugger** shows a paused
-script's frames and locals. **Session** lists the recordings play-in-editor
+Seven docks sit under the viewport. Output is the engine's log ring
+buffer, with level filters. Problems lists what the linter found in every
+script, and a shader that would not link. Assets browses the project's
+files. Timeline is the animation editor's. Debugger shows a paused
+script's frames and locals. Session lists the recordings play-in-editor
 made and replays one, with lanes for the input, network and log events it
-holds. **Profiler** draws the last frame as a bar per stage against the
+holds. Profiler draws the last frame as a bar per stage against the
 16.7 ms a 60 Hz frame has, from `engine::timings()`.
 
-The command palette (`⌘K`) is the single overlay — nodes, commands and
-personas — and there is a dark and a light theme. *Show input overlay* draws
+The command palette (`⌘K`) is the single overlay: nodes, commands and
+personas, and there is a dark and a light theme. *Show input overlay* draws
 the keys, buttons and pointer the game is being fed; see
 [Input](./input.mdx#seeing-input).
 
@@ -101,7 +100,7 @@ balaur edit examples/rig --offscreen --frames 100 \
 one frame, and `frames=<dir>` to capture every other frame into a numbered
 directory. `show:<name>` runs one of the scripted sequences behind this
 manual's clips, which feed input through `input::feed_key`, `feed_mouse` and
-`feed_mouse_button` — the same seam an automated test uses. Offscreen frames
+`feed_mouse_button`: the same seam an automated test uses. Offscreen frames
 advance on the fixed 1/60 step, so frame 90 is the same picture every time.
 
 The engine repository's `scripts/showcase.sh` takes every image and clip on
@@ -160,10 +159,10 @@ editor for that type; `states` map a name to `run(S)`, so a plugin carries its
 own start-up state and therefore its own test.
 
 Nothing is sandboxed: a plugin runs in the editor's host with the editor's
-capabilities — the right first cut for a tool a project writes for itself.
+capabilities: the right first cut for a tool a project writes for itself.
 
 ## Why it is built this way
 
-The editor dogfoods the scripting surface. Everything it needs — filesystem
+The editor dogfoods the scripting surface. Everything it needs: filesystem
 access, TOML parsing, scene instantiation, script reload, camera control, debug
-drawing — is an ordinary script binding, reusable by any tool or game.
+drawing: is an ordinary script binding, reusable by any tool or game.

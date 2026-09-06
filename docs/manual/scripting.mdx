@@ -1,5 +1,5 @@
 ---
-title: "Scripting in Rune — hot reload and a debugger"
+title: "Scripting in Rune: hot reload and a debugger"
 sidebar_label: "Scripting"
 description: "Scripting Balaur in Rune: lifecycle hooks, exported properties, async/await, hot reload that keeps state, and a debugger with breakpoints in the editor."
 image: "/img/social/scripting.png"
@@ -10,14 +10,14 @@ import Clip from '@site/src/components/Clip';
 
 # Scripting
 
-Scripts are [Rune](https://rune-rs.github.io/) — `.rn` files attached to
+Scripts are [Rune](https://rune-rs.github.io/): `.rn` files attached to
 nodes in a scene. Rune reads like Rust without types; the
 [Rune book](https://rune-rs.github.io/book/) covers the language itself.
 
 ## The model
 
-A script declares lifecycle functions — `init`, `update(dt)`,
-`fixed_update(dt)`, `draw_ui`, `on_free`, `hot_reload` — as free functions
+A script declares lifecycle functions: `init`, `update(dt)`,
+`fixed_update(dt)`, `draw_ui`, `on_free`, `hot_reload`, as free functions
 taking the instance first. The engine makes one instance per attached node,
 hands it back on every call as `this`, and puts the owning node on `this.node`.
 Rune mutates an object in place, so what a script writes to `this` is what the
@@ -98,8 +98,8 @@ Values a binding accepts are named rather than spelled: `input::KEY_SPACE`,
 
 Node operations are methods on a node value: `this.node.position()`,
 `node.get_node("../Target")`, `node.set_component("widget", w)`. A call
-returning several values returns a tuple — `let (text, changed) =
-ui::text_field(...)` — while a vector is one value with fields:
+returning several values returns a tuple: `let (text, changed) =
+ui::text_field(...)`, while a vector is one value with fields:
 `this.node.position().y`.
 
 Each component a node can carry is also a field on the node, and that field is
@@ -123,8 +123,8 @@ as a float is written `0.0`.
 
 ## Script files as modules
 
-`mod name;` at the top of a script pulls in `name.rn` beside it — from disk
-in a dev run, from the pack when shipped — and its items are reached as
+`mod name;` at the top of a script pulls in `name.rn` beside it, from disk
+in a dev run, from the pack when shipped, and its items are reached as
 `name::item`:
 
 ```rune
@@ -143,7 +143,7 @@ functions in an object. Both hot reload in place: a module object held since
 
 A binding that fails raises an error and the call ends there. Wrap a call
 that may legitimately fail in `script::attempt`, which returns `(ok, value)`
-— the result, or the error message:
+: the result, or the error message:
 
 ```rune
 let (ok, clip) = script::attempt(|| assets::load("animations/missing.toml"));
@@ -155,8 +155,8 @@ if !ok {
 ## Events
 
 There are no `connect`-style signals. The engine calls methods a script
-declares by name — `on_animation_finished(name)` from an animation, a widget's
-`on_click`, `on_response(r)` from an HTTP request — so a handler reads exactly
+declares by name: `on_animation_finished(name)` from an animation, a widget's
+`on_click`, `on_response(r)` from an HTTP request, so a handler reads exactly
 like `update(dt)`. Most events also have a polling twin
 (`input::just_pressed`, `animation::just_finished`): an event is a frame-scoped
 snapshot, not a subscription.
@@ -175,10 +175,10 @@ See [Networking](./networking.mdx) for the delivery model.
 
 Scripts invoke each other the same way the engine does:
 `node.call("method", args...)` calls a method on another node's script
-instance by name — one target, now, when you hold the node.
+instance by name: one target, now, when you hold the node.
 
-For the other shape — something happened and the emitter does not know who
-cares — there is `events`:
+For the other shape: something happened and the emitter does not know who
+cares. There is `events`:
 
 ```rune
 this.node.emit("hit", #{ damage: 3 });          // from this node
@@ -206,8 +206,8 @@ resolves against the new code. Save-to-live latency is file-watcher latency, a
 few milliseconds. The optional `hot_reload(this)` hook lets a script migrate
 the shape of its state.
 
-A save that does not compile puts the compiler's own diagnostic — file, line,
-column and caret — in the editor's Output dock, and the previously compiled
+A save that does not compile puts the compiler's own diagnostic: file, line,
+column and caret, in the editor's Output dock, and the previously compiled
 code keeps running. Rune resolves module paths at compile time, so a misspelled
 engine call is caught on save rather than when the line finally runs.
 
@@ -236,8 +236,8 @@ debugger::set_break_on_error(true);
 
 It is off by default because it puts every synchronous call through the
 stepping executor, otherwise used only where a breakpoint is set. The Debugger
-dock has the same switch. An error pause cannot be continued — the call is over
-— so letting go of one drops it and finishes the tick it interrupted, whichever
+dock has the same switch. An error pause cannot be continued: the call is over
+, so letting go of one drops it and finishes the tick it interrupted, whichever
 step button you press.
 
 Two further limits: an async entry point (one using `task::wait`) runs as a

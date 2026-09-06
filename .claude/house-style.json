@@ -1,0 +1,21 @@
+{
+  "name": "Balaur site and devlog",
+  "genre": "engine devlog and technical documentation",
+  "register": [
+    "Concise. A bulleted list beats a paragraph whenever the content is a list.",
+    "No hedging or throat-clearing: no \"being honest\", \"it's worth noting\", \"I should mention\", \"let's dive in\".",
+    "State what landed and what did not. Name the unfinished part plainly instead of softening it.",
+    "Impersonal about the engine. No marketing \"we\", no superlatives, no claims the benchmark does not support.",
+    "Name things exactly as they are named upstream: \"Godot\", never a nickname.",
+    "Prefer a video clip or screenshot over a paragraph describing what something looks like.",
+    "Em dashes are P1 per the detector: at most about one per 1,000 words. Prefer a comma, colon, semicolon, parentheses, or two sentences.",
+    "Do not open a bullet with a bolded noun phrase followed by a period. Lead with the sentence."
+  ],
+  "mechanics": {
+    "quotes": "straight",
+    "headings": "sentence",
+    "emDash": "sparing",
+    "latinAbbrev": "never",
+    "serialComma": true
+  }
+}

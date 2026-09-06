@@ -1,5 +1,5 @@
 ---
-description: "Balaur devlog: the script API reference is read out of a booted engine — every module, function, constant, component and asset type — and CI fails when it drifts."
+description: "Balaur devlog: the script API reference is read out of a booted engine (every module, function, constant, component and asset type) and CI fails when it drifts."
 slug: generated-script-reference
 title: A generated script reference
 authors: [dragos]
@@ -15,12 +15,12 @@ by parsing source. CI fails on drift.
 
 ## What landed
 
-- **Read from a booted engine.** Every module, function and constant comes
+- Read from a booted engine. Every module, function and constant comes
   out of a running interpreter. `input.KEY_SPACE` exists only after
   registration, and no parser would find it.
-- **Checked in CI.** The generated files are committed, and a build whose
+- Checked in CI. The generated files are committed, and a build whose
   output differs fails. What the reference says is what the engine has.
-- **On this site.** The [script modules](/docs/reference/modules),
+- On this site. The [script modules](/docs/reference/modules),
   [components](/docs/reference/components) and
   [assets](/docs/reference/assets) references are that output, one page
   per module, with what each function acts on.
