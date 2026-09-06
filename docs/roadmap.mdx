@@ -96,13 +96,13 @@ The [features page](/features) is 0.1 feature by feature, and the
       {
         group: "Editor",
         title: 'Script completion and hover',
-        text: <>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>,
+        text: <>Type <code>physics2d::</code> and the list is that module's 66 functions and 48 constants, each with the line the reference prints. Type <code>node.body2d.</code> and it is what acts on that component. Hover names a function's signature and what it does; go-to-definition opens the file, or the Docs dock when the definition is the engine's. <code>balaur fmt</code> lays a project out, rename rewrites every file a script's <code>mod</code> declarations reach, and the same server answers a VS Code, Zed or Neovim client. Semantic tokens, inlay hints and code actions are not planned.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-script-tooling.md',
       },
       {
         group: "Editor",
         title: 'Selection, alignment and a library',
-        text: <>Select several nodes, box-select, group, align and distribute, hide, lock and isolate; filter the outliner; drop an image, a <code>.glb</code> or a sky onto the viewport and get a node; gizmos for lights and cameras; wireframe and normals views; a pen tool; a material panel; and a library of materials, skies, models and templates to start from.</>,
+        text: <>Built. The selection is a set: shift and ⌘ click, box select in both viewports, and a gizmo drag that moves, turns and scales the whole set. Group, align, distribute, hide, lock, isolate; outliner facet chips; a dropped file becoming a node; light, camera and frustum gizmos; a view-mode chip and camera bookmarks; a Pen tool over <code>path2d</code>; a material panel with texture slots; a Cost dock; and a Library of materials, lighting setups and templates behind <code>balaur new --template</code>. No sky ships yet.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor-ergonomics.md',
       },
       {
@@ -126,7 +126,7 @@ The [features page](/features) is 0.1 feature by feature, and the
       {
         group: "Rendering",
         title: 'The 3D look',
-        text: <>A <code>light3d</code> component with shadows; an <code>environment</code> with sky, image-based lighting, fog, exposure, tonemap and grading; a PBR material with texture maps that needs no shader written and is imported from glTF; glass, mirrors and reflection probes; vignette, grain and the other finishing passes as post-process materials. The only 3D light today is hard-coded.</>,
+        text: <><code>light3d</code> with shadows and light layers, an <code>environment</code> carrying sky, fog, exposure, tonemap and grading, and <code>package::pbr</code> with six texture slots are built; a scene with no light still gets the engine's own. What is left: image-based lighting and SSAO bound, that surface as the built-in a node with no material draws, glTF import keeping factors and maps, glass, mirrors and probes, the finishing passes, and layer stacks.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
       },
       {
@@ -287,7 +287,7 @@ The [features page](/features) is 0.1 feature by feature, and the
       {
         group: "Gameplay and audio",
         title: 'Interactivity without a script',
-        text: <>Hover, click, key and resize hooks on any drawn node, named states a node tweens between, scene variables, and event bindings edited in the Events view — each one a call a script could make, and convertible to one. Orbit, first-person, third-person and click-to-move rigs as presets.</>,
+        text: <>Built, bar the rigs. Hover, click, key, action, scroll and resize hooks on any drawn node; <code>states</code> naming a look; typed <code>[variables]</code> on the scene; and <code>[[nodes.bindings]]</code> rows the Events view writes, each one a call a script could make and convertible to one. A <code>when</code> is a comparison over the variables, so the editor reads it and diffs it. Orbit, first-person, third-person and click-to-move rigs as presets are what is left.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-interactivity.md',
       },
       {
