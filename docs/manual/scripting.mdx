@@ -152,6 +152,48 @@ if !ok {
 }
 ```
 
+## Tooling
+
+The engine knows its own API, so an editor can ask it what completes at a
+caret. `script::complete`, `script::hover`, `script::definition`,
+`script::symbols`, `script::references`, `script::rename` and `script::format`
+answer that, and two clients read them: the editor's Script persona, and
+`balaur lsp`, which speaks the Language Server Protocol on stdin and stdout.
+
+![The completion popup: a module path, and the functions and constants under it](/img/manual/script_completion.webp)
+
+What completes depends on what the caret sits after.
+
+- `physics2d::` — that module's functions and constants, each with the line
+  the [reference](../reference/index.md) prints.
+- `node.body2d.` — what acts on that component, plus the six a handle always
+  answers: `get`, `set`, `has`, `add`, `remove`, `props`.
+- `this.` — the script's own `exports()` properties and its `pub fn`s.
+- **Anything else** — component names, `node`'s methods, Rune's own, this
+  file's functions, its locals, and keywords.
+
+Hover gives a function's signature and its doc line. Signature help names the
+argument being typed. `⌘B` jumps to a definition: a `pub fn` in the project
+opens its file at its line, and engine API opens the Docs dock, since there is
+no file to land in. `⌥⇧F` formats the buffer with Rune's own formatter, and
+`⌘⇧R` renames.
+
+A rename is textual. Rune keeps no cross-file index, so it walks the files a
+script's `mod` declarations reach, matches the identifier as a token, and lists
+every match before writing anything.
+
+```bash
+balaur fmt .           # lay every script out
+balaur fmt . --check   # name the files that would change; exits 1 if any do
+```
+
+### Another editor
+
+`balaur lsp <project>` is the same answers over LSP: diagnostics, completion,
+hover, signature help, go-to-definition, document symbols, references, rename
+and formatting. The engine repository ships a VS Code extension in
+`editors/code`, and its README carries the Neovim and Zed recipes.
+
 ## Events
 
 There are no `connect`-style signals. The engine calls methods a script
