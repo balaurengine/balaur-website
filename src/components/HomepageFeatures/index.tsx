@@ -26,7 +26,7 @@ function Icon({children}: {children: ReactNode}) {
   );
 }
 
-// Twelve cards, one line each. The long form is /features.
+// Twelve cards, one idea each, in one sentence. The long form is /features.
 const FeatureList: FeatureItem[] = [
   {
     title: 'Nodes and scenes',
@@ -40,8 +40,8 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        A game is a <strong>tree of named nodes</strong> with scripts attached.
-        Scenes are plain TOML.
+        A <strong>tree of named nodes</strong> with scripts attached, saved as
+        plain TOML.
       </>
     ),
   },
@@ -54,8 +54,8 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Rust's syntax, no build step, <strong>async/await</strong>, and a
-        debugger in the editor.
+        Rust's syntax, <strong>async/await</strong>, and a debugger in the
+        editor.
       </>
     ),
   },
@@ -68,7 +68,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Save a script while the game runs: the new code is{' '}
+        Save a script and the new code is{' '}
         <strong>live in milliseconds</strong>, state intact.
       </>
     ),
@@ -83,8 +83,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Same inputs, <strong>same bits</strong> on every platform. Record a
-        session and replay it, network replies included.
+        Same inputs, <strong>same bits</strong> on every platform.
       </>
     ),
   },
@@ -99,8 +98,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>Rapier</strong> under both, stepped on a fixed 60 Hz tick,
-        declared in scenes or driven from scripts.
+        <strong>Rapier</strong> under both, stepped on a fixed 60 Hz tick.
       </>
     ),
   },
@@ -114,8 +112,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        3D and 2D on <strong>wgpu</strong>: windowed, offscreen for screenshots
-        and CI, or fully headless.
+        3D and 2D: windowed, offscreen or headless.
       </>
     ),
   },
@@ -159,8 +156,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        HTTP and <strong>websockets</strong> with compression, delivered into
-        the simulation once per tick.
+        HTTP, <strong>websockets</strong> and WebTransport, with compression.
       </>
     ),
   },
@@ -175,13 +171,13 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>Windows, macOS and Linux</strong> today; iOS, Android and
-        the web are cross-compiled in CI on every push.
+        <strong>Windows, macOS and Linux</strong> today; iOS, Android and the
+        web cross-compiled in CI.
       </>
     ),
   },
   {
-    title: 'One file to ship',
+    title: 'Export',
     icon: (
       <Icon>
         <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -190,9 +186,8 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Export fuses bytecode, scenes and assets onto the runtime:{' '}
-        <strong>one self-contained binary per target</strong>, nothing to
-        install.
+        Bytecode, scenes and assets go into a{' '}
+        <strong>single executable</strong>, one per platform.
       </>
     ),
   },
@@ -211,8 +206,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>Safe Rust</strong> throughout, and the ecosystem as it is:
-        Rapier, wgpu, egui, rodio, Rune.
+        <strong>Safe Rust</strong> throughout: Rapier, wgpu, egui, rodio, Rune.
       </>
     ),
   },

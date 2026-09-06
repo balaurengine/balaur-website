@@ -1,7 +1,7 @@
 ---
 title: "Shipping a game: packs and one-file executables"
 sidebar_label: "Shipping a game"
-description: "Ship a Balaur game as a .bpak of bytecode, scenes and assets, or fuse it onto a runtime for one self-contained executable per platform: no compiler, no sources."
+description: "Ship a Balaur game as a .bpak of bytecode, scenes and assets, or fuse it onto a runtime for one self-contained executable per platform."
 image: "/img/social/shipping.png"
 sidebar_position: 15
 ---
@@ -15,7 +15,7 @@ and a pack either runs on a runtime or is fused onto one.
 flowchart LR
   A["scripts · scenes · assets · manifest"] -->|"balaur export"| B[".bpak: bytecode, scenes, assets; sorted keys, so the same sources give the same bytes"]
   B -->|"balaur play"| C["a runtime"]
-  B -->|"fuse onto a runtime"| D["one executable per platform, no compiler, no sources"]
+  B -->|"fuse onto a runtime"| D["one self-contained executable per platform"]
 ```
 
 ## Packs

@@ -19,9 +19,9 @@ import styles from './editor.module.css';
 // filesystem the browser keeps. Nothing loads until the visitor asks — between
 // them the two packs and the module are several megabytes.
 const PROJECTS = [
-  {id: 'hello', label: 'hello', detail: '3D — a spinning cube, a ball, physics, a HUD label'},
-  {id: 'angrynerds', label: 'angrynerds', detail: '2D — a slingshot game, 38 nodes, widgets'},
-  {id: 'rig', label: 'rig', detail: '2D skeleton — bones, a skinned leg, two-bone IK'},
+  {id: 'hello', label: 'hello', detail: '3D: a spinning cube, a ball, physics, a HUD label'},
+  {id: 'angrynerds', label: 'angrynerds', detail: '2D: a slingshot game, 38 nodes, widgets'},
+  {id: 'rig', label: 'rig', detail: '2D skeleton: bones, a skinned leg, two-bone IK'},
 ];
 
 // What the page remembers about the projects the engine keeps, so the list
@@ -294,9 +294,8 @@ export default function EditorPage(): ReactNode {
       <main className={styles.main}>
         <Heading as="h1">The editor, in your browser</Heading>
         <p className={styles.lede}>
-          The desktop editor — its scripts, its five personas, its inspector — compiled to WebAssembly and drawing
-          through WebGPU. The project is kept in your browser, so a refresh comes back to the scene as you left it,
-          and you can open a folder of your own with nothing to install.
+          The desktop editor compiled to WebAssembly, drawing through WebGPU. Your project is kept in the browser,
+          so a refresh comes back to the scene as you left it.
         </p>
 
         {idle && kept.length > 0 && (
@@ -368,8 +367,7 @@ export default function EditorPage(): ReactNode {
             />
           </div>
           <p className={styles.note}>
-            A folder is read into the tab and kept in your browser. Nothing is uploaded — there is no server behind
-            this page beyond the one that served it.
+            A folder is read into the tab and kept in your browser. Nothing is uploaded.
           </p>
         </section>
 
@@ -404,8 +402,7 @@ export default function EditorPage(): ReactNode {
                 {status.kind === 'loading' && <p>{status.text}</p>}
                 {status.kind === 'unsupported' && (
                   <p>
-                    This browser has no WebGPU. Chrome, Edge, Safari 26 and Firefox 141 on a desktop have it. The
-                    editor wants a keyboard and a few megabytes, so it is not built for a phone.
+                    This browser has no WebGPU. Chrome, Edge, Safari 26 and Firefox 141 on a desktop have it.
                   </p>
                 )}
                 {status.kind === 'error' && (
@@ -418,23 +415,23 @@ export default function EditorPage(): ReactNode {
           </div>
         </div>
 
-        <Heading as="h2">What works, and what does not</Heading>
+        <Heading as="h2">What works</Heading>
         <p>
-          The tree, the viewport and its gizmos, the inspector, the docks, the personas and the script editor all work
-          — they are the same Rune scripts the desktop editor runs. A save writes into the tab's filesystem and the
-          editor reloads from it, so hot reload needs no file watcher. Sound plays. Everything you edit is kept as you
-          go, and <strong>Download project</strong> takes it back out as a zip.
+          The tree, the viewport and its gizmos, the inspector, the docks, the personas and the script editor all
+          work: they are the same Rune scripts the desktop editor runs. A save writes into the tab's filesystem and
+          the editor reloads from it. Sound plays. Everything you edit is kept as you go, and{' '}
+          <strong>Download project</strong> takes it back out as a zip.
         </p>
         <p>
           The Export sheet offers the two builds a tab can finish by itself: a <code>.bpak</code>, and a web bundle
-          ready to unpack on any static host. Every other target fuses the pack onto a native runtime, which needs a
-          linker no browser has — a job for <code>balaur export --target</code> on a machine.
+          ready to unpack on any static host. Every other target needs a linker, so run{' '}
+          <code>balaur export --target</code> on a machine.
         </p>
         <p>
-          Not yet: a project kept on a server rather than in this browser, and a debugger; the{' '}
+          Not yet: a project kept on a server rather than in this browser, and a debugger. The{' '}
           <Link to="/docs/roadmap">roadmap</Link> tracks both. For the whole toolchain behind it,{' '}
           <Link to="/docs/getting-started">build the editor</Link>. The <Link to="/examples">examples</Link> run the
-          same projects as games, without the editor around them.
+          same projects as games.
         </p>
       </main>
     </Layout>

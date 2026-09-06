@@ -21,7 +21,7 @@ import Faq from '@site/src/components/Faq';
   },
   {
     q: 'What language are the scripts?',
-    a: 'Rune, an embeddable language that reads like Rust without the types, with async/await and no build step. A saved script is live in the running game in milliseconds, with its state intact.',
+    a: 'Rune, an embeddable language with Rust syntax and async/await. A saved script is live in the running game in milliseconds, with its state intact.',
     more: {to: '/docs/manual/scripting', label: 'Scripting'},
   },
   {
@@ -36,7 +36,7 @@ import Faq from '@site/src/components/Faq';
   },
   {
     q: 'What does "deterministic" mean here?',
-    a: 'The same inputs produce the same bits on every platform: physics and animation step on a fixed 60 Hz tick, every tick has a digest, input and network arrivals are recorded so a whole session replays exactly, and that is what lockstep or rollback multiplayer needs.',
+    a: 'The same inputs produce the same bits on every platform: physics and animation step on a fixed 60 Hz tick, every tick has a checksum, input and network arrivals are recorded so a whole session replays exactly, and that is what lockstep or rollback multiplayer needs.',
     more: {to: '/docs/manual/determinism', label: 'Determinism'},
   },
   {
@@ -46,12 +46,12 @@ import Faq from '@site/src/components/Faq';
   },
   {
     q: 'Can I ship a game as a single file?',
-    a: 'Yes. balaur export packs bytecode, scenes and assets into one .bpak, and a pack fused onto a runtime is one self-contained executable per platform, with no compiler and no sources in it.',
+    a: 'Yes. balaur export packs bytecode, scenes and assets into one .bpak, and a pack fused onto a runtime is one self-contained executable per platform.',
     more: {to: '/docs/manual/shipping', label: 'Shipping a game'},
   },
   {
     q: 'How is it different from Godot or Bevy?',
-    a: 'Godot is the mature node-and-scene editor; Bevy is Rust and ECS, code only. Balaur is a scene tree over an ECS with Rune scripts, an editor that is a Balaur project, and bit-exact determinism as a core feature. It is also far younger than either.',
+    a: 'Godot is the mature node-and-scene editor; Bevy is Rust and ECS, code only. Balaur is a scene tree with Rune scripts, an editor that is a Balaur project, and bit-exact determinism as a core feature. It is also far younger than either.',
     more: {to: '/compare', label: 'The comparison'},
   },
   {

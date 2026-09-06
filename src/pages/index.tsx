@@ -37,8 +37,7 @@ function Header() {
           </span>
         </Heading>
         <p className={styles.heroMission}>
-          Node-based, with scripts that reload in milliseconds. Fast to run,
-          fast to iterate, easy to use — and one file to ship.
+          Node-based scenes, and scripts that reload in milliseconds.
         </p>
         <div className={styles.buttons}>
           <Link className="button button--primary button--lg" to="/docs/intro">
@@ -78,7 +77,7 @@ export default function Home(): ReactNode {
         <HomepageFeatures />
         <section className={styles.cta}>
           <div className="container">
-            <p className={styles.ctaText}>Free and open source, MIT. Windows, macOS and Linux.</p>
+            <p className={styles.ctaText}>Free and open source, MIT, for Windows, macOS and Linux.</p>
             <div className={styles.buttons}>
               <Link className="button button--primary button--lg" to="/download">
                 Download

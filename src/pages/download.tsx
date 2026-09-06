@@ -39,7 +39,7 @@ type State =
   | {kind: 'release'; release: Release};
 
 const EDITOR_PLATFORMS: {key: string; label: string; detail: string; os: string | null}[] = [
-  {key: 'macos-universal', label: 'macOS', detail: 'Universal — Apple Silicon and Intel', os: 'mac'},
+  {key: 'macos-universal', label: 'macOS', detail: 'Universal: Apple Silicon and Intel', os: 'mac'},
   {key: 'windows-x64', label: 'Windows', detail: 'x64', os: 'win'},
   {key: 'linux-x64', label: 'Linux', detail: 'x64', os: 'linux'},
   {key: 'linux-arm64', label: 'Linux', detail: 'arm64', os: null},
@@ -209,10 +209,10 @@ function ReleaseView({release}: {release: Release}) {
         <>
           <Heading as="h2">Runtime templates and other builds</Heading>
           <p>
-            Needed only to export <em>for a different platform</em> than the
-            one you are on, and <code>balaur export</code> fetches a missing
-            one itself, checksum-verified. These are for offline installs: drop
-            one into <code>templates/</code> beside the editor binary. See{' '}
+            For exporting to <em>a platform other than the one you are on</em>.
+            <code>balaur export</code> fetches a missing one itself,
+            checksum-verified. For offline installs, drop one into{' '}
+            <code>templates/</code> beside the editor binary. See{' '}
             <Link to="/docs/manual/shipping">Shipping a game</Link>.
           </p>
           <ul className={styles.assetList}>
@@ -270,13 +270,12 @@ export default function Download(): ReactNode {
         <p>
           One binary that is also the <code>balaur</code> CLI and every game's
           runtime. It ships with the editor project, the runtime template for
-          its own platform — so <code>balaur export</code> works the moment it
-          is unpacked — and <code>include/balaur_extension.h</code>, the header
-          C extensions are built against.
+          its own platform, and <code>include/balaur_extension.h</code>, the
+          header C extensions are built against.
         </p>
         <p>
           No numbered release yet. This is the nightly, rebuilt on every merge
-          to <code>main</code>; the <Link to="/editor">web editor</Link> runs a
+          to <code>main</code>. The <Link to="/editor">web editor</Link> runs a
           recent one.
         </p>
 
@@ -292,7 +291,7 @@ export default function Download(): ReactNode {
             <p>
               CI publishes one on every push to <code>main</code>, and it
               appears here on its own. Until then the engine builds from source
-              with a Rust toolchain — see{' '}
+              with a Rust toolchain: see{' '}
               <Link to="/docs/getting-started">Getting started</Link>.
             </p>
             <p style={{marginBottom: 0}}>

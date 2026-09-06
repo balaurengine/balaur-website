@@ -8,7 +8,7 @@ import ExampleGrid from '@site/src/components/ExampleGrid';
 
 # Examples
 
-Seven projects, eight counting the C twin of the extension, ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them. Each card carries the command that opens its project in the editor; press **Play** to run it in the browser instead, on the same engine built to WebAssembly.
+Seven projects, eight counting the C twin of the extension, ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them. Each card carries the command that opens its project in the editor. Press **Play** to run it in the browser.
 
 <ExampleGrid items={[
   {
@@ -23,7 +23,7 @@ Seven projects, eight counting the C twin of the extension, ship in the [engine 
   {
     name: 'objects',
     title: 'Every object',
-    text: <>The primitives, a bezier path extruded, revolved and swept, two solids joined and cut, one node drawn many times in a single call, a word turned into geometry, and a mesh coloured vertex by vertex. Five rows, and the camera walks them.</>,
+    text: <>The primitives, a bezier path extruded, revolved and swept, two solids joined and cut, a cloner, a word turned into geometry, and a mesh coloured vertex by vertex. Five rows, and the camera walks them.</>,
     icon: 'shapes',
     tone: '3d',
     manual: {to: '/docs/manual/scenes', label: 'Scenes and assets'},
@@ -59,7 +59,7 @@ Seven projects, eight counting the C twin of the extension, ship in the [engine 
   {
     name: 'text',
     title: 'Text in the world',
-    text: <>A title with an outline, a sign that stays put beside a nameplate that turns to face you, a drop shadow, markup, a paragraph wrapped in the mono chain, and a <code>text2d</code> in the 2D pass. The camera arcs, so the billboard turns and the sign does not.</>,
+    text: <>A title with an outline, a sign that stays put beside a nameplate that turns to face you, a drop shadow, markup, a paragraph wrapped in the mono chain, and a <code>text2d</code> in the 2D pass. The camera arcs, so the billboard turns to follow it.</>,
     icon: 'text-aa',
     tone: 'ui',
     manual: {to: '/docs/manual/text', label: 'Text in the world'},
@@ -68,7 +68,7 @@ Seven projects, eight counting the C twin of the extension, ship in the [engine 
   {
     name: 'shaders',
     title: 'A material and its shader',
-    text: <>A glow material written in WESL, WGSL with imports and variants, on a sprite, beside a plain one, with the shader's parameters in the material file.</>,
+    text: <>A glow material written in WESL, on a sprite beside a plain one, with the shader's parameters in the material file.</>,
     image: 'shader_preview',
     alt: 'examples/shaders in the editor: the glow material on a sprite next to a plain one',
     manual: {to: '/docs/manual/shaders', label: 'Shaders and materials'},
@@ -77,7 +77,7 @@ Seven projects, eight counting the C twin of the extension, ship in the [engine 
   {
     name: 'extension_greeter',
     title: 'Plugins as shared libraries, from Rust and from C',
-    text: <>A Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module. <code>extension_c_counter</code> does the same from C in one file: the boundary is C-compatible, so a plugin need not be Rust.</>,
+    text: <>A Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module. <code>extension_c_counter</code> does the same from C in one file, because the boundary is C-compatible.</>,
     icon: 'plug',
     manual: {to: '/docs/manual/extensions', label: 'Modules and extensions'},
     run: 'run',

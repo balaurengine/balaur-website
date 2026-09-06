@@ -128,8 +128,7 @@ export default function Player({
             )}
             {status.kind === 'unsupported' && (
               <p>
-                This browser has no WebGPU. Chrome, Edge, Safari 26 and Firefox 141 on a desktop have it; the game is
-                a few megabytes, so a phone is not the place for it yet.
+                This browser has no WebGPU. Chrome, Edge, Safari 26 and Firefox 141 on a desktop have it.
               </p>
             )}
             {status.kind === 'error' && (

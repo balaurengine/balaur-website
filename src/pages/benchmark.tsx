@@ -48,7 +48,7 @@ export default function Benchmark(): ReactNode {
 
   return (
     <Layout
-      title="Benchmark — run the suite in your browser"
+      title="Benchmark: run the suite in your browser"
       description="The Balaur benchmark project running in the browser: pick a physics or scene-tree case, watch it build, and read what the engine's own profiler measured.">
       <PageMetadata image="/img/social/benchmark.png" />
       <main className={styles.main}>
@@ -69,8 +69,7 @@ export default function Benchmark(): ReactNode {
               {status.kind === 'loading' && <p>{status.text}</p>}
               {status.kind === 'unsupported' && (
                 <p>
-                  This browser has no WebGPU. Chrome, Edge, Safari 26 and Firefox 141 on a desktop have it; the
-                  cases build thousands of bodies, so a phone is not the place for them.
+                  This browser has no WebGPU. Chrome, Edge, Safari 26 and Firefox 141 on a desktop have it.
                 </p>
               )}
               {status.kind === 'error' && (
@@ -84,7 +83,7 @@ export default function Benchmark(): ReactNode {
         <p className={styles.note}>
           Needs WebGPU. The heavier cases build ten thousand bodies and take a few seconds before they settle.
         </p>
-        <Heading as="h2">What these numbers are, and are not</Heading>
+        <Heading as="h2">How to read these numbers</Heading>
         <p>
           They are the browser&rsquo;s. A web build is single-threaded, so the solver that runs on seven threads on a
           desktop runs on one here, and the browser paces frames to the display rather than to a fixed tick. Read them
@@ -93,7 +92,7 @@ export default function Benchmark(): ReactNode {
         </p>
         <p>
           Everything else is the same engine: the same scenes, the same rapier, the same scripts. Each case reports a
-          whole physics tick, rapier&rsquo;s own step inside it, and what the script cost crossing the seam — read
+          whole physics tick, rapier&rsquo;s own step inside it, and what the script cost crossing the seam, read
           from{' '}
           <Link to="/docs/reference/modules/engine">
             <code>engine.timings()</code>

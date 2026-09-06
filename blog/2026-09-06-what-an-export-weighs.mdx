@@ -24,30 +24,25 @@ runtime beside it is 17.9 MB.
 
 - **A report.** `balaur export` prints the pack by section, by extension, its
   ten heaviest entries, and the assets nothing references. `--report` prints
-  and writes nothing.
+  without writing.
 - **Strip.** `strip = true` drops every asset no scene, asset document,
-  script string literal or `id://` reference names. Off by default; `keep`
-  protects a path a script builds at run time.
+  script string literal or `id://` reference names. Off by default.
 - **Images.** `images = "smallest"` keeps the smaller of the PNG optimiser
-  and lossless WebP, the same pixels either way. A 128x256 sprite goes 1.1 KB
+  and lossless WebP. A 128x256 sprite goes 1.1 KB
   to 0.5 KB. JPEGs are left alone, since re-encoding one loses twice.
 - **Fonts.** `fonts = "subset"` keeps the code points in the project's scenes
   and scripts, printable ASCII, and any `font_ranges` named for server text.
-  One face: 421 KB to 29 KB. Kerning, ligatures and Arabic joining survive;
-  `font_keep` ships a face whole.
+  One face: 421 KB to 29 KB. Kerning, ligatures and Arabic joining survive.
 - **Audio.** `audio = "flac"`: WAV as FLAC, lossless, about half the size.
 - **Lossy, under their own names.** `images = "quantised"` with
   `images_quality`, `audio = "vorbis"` with `audio_quality`. Separate keys on
-  purpose, so a lossless setting never quietly becomes a lossy one, and
-  `smallest` never quantises.
+  purpose, so a lossless setting never quietly becomes a lossy one.
 - **One file can disagree.** `recode` in a picture's import settings beats the
-  export's mode for that file alone, so a logo ships exactly as drawn while the
-  rest is squeezed.
-- **Bitmap fonts.** `.fnt` descriptors are in the pack's extension list; a
-  game shipping one drew nothing before.
+  export's mode for that file alone.
+- **Bitmap fonts.** `.fnt` descriptors are in the pack's extension list.
 
-No mode changes an image's pixel dimensions: a sprite is sized from its
-header, so a re-encoded texture is the same sprite and the same world.
+Every mode keeps an image's pixel dimensions, so a re-encoded texture is the
+same sprite.
 
 ```toml
 [export]
@@ -64,7 +59,7 @@ audio = "flac"              # write uncompressed WAV as lossless FLAC
 - Atlases: a few percent of the image bytes, and no draw-call win, since the
   renderer issues one call per node.
 - GPU-compressed textures (BC, ETC2, ASTC): a byte per pixel on disk, about
-  twelve times the PNG. They cut video memory and upload time.
+  twelve times the PNG, but they cut video memory and upload time.
 - Compressing the pack: the media inside is already compressed, and static
   hosts gzip on the way out.
 

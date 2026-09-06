@@ -9,24 +9,24 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
 <PersonaHero
   who="For animators"
   persona="Animate persona"
-  title="Skeletal animation, 2D and 3D, inside the engine you ship with."
+  title="Skeletal animation, 2D and 3D."
   image="persona_animate"
   alt="The Animate persona on examples/rig: bones in the tree, the Thigh selected, the timeline with its keys"
   primary={{to: '/examples#rig', label: 'Open examples/rig'}}
   secondary={{to: '/docs/manual/animation', label: 'Animation manual'}}>
-  Bones and mesh skinning with painted weights, two-bone IK and look-at, keys in a timeline, all on the rig that runs in the game. No export step, no runtime to integrate.
+  Bones and mesh skinning with painted weights, two-bone IK and look-at, keys in a timeline, on the rig that runs in the game. Free, MIT.
 </PersonaHero>
 
 <Section title="What you get">
   <Features items={[
-    {icon: 'bone', tone: 'animation', title: 'Bones and skins', text: <>A bone is a node with a rest pose; a skin is a textured polygon with painted weights. Paint them in the polygon tool's Weights mode.</>},
-    {icon: 'magic-wand', tone: 'animation', title: 'Pose with inverse kinematics', text: <>Two-bone IK and look-at run as modifiers after the clip: drag a target and the limb follows. Key the target, not the joints.</>},
-    {icon: 'film-strip', tone: 'animation', title: 'A timeline with keys', text: <>Clips are tracks over time, position, rotation, scale, any component property, with twelve easings, step, linear and cubic interpolation, and method tracks that call your script.</>},
-    {icon: 'cube', tone: '3d', title: '3D rigs from glTF', text: <><code>balaur import model.glb</code> writes the joints, the mesh and the animations as TOML the editor edits; GPU skinning draws the result.</>},
+    {icon: 'bone', tone: 'animation', title: 'Bones and skins', text: <>A bone is a node with a rest pose; a skin is a textured polygon with painted weights.</>},
+    {icon: 'magic-wand', tone: 'animation', title: 'Pose with inverse kinematics', text: <>Drag a target and the limb follows, then key the target.</>},
+    {icon: 'film-strip', tone: 'animation', title: 'A timeline with keys', text: <>Position, rotation, scale or any component property, with twelve easings and method tracks.</>},
+    {icon: 'cube', tone: '3d', title: '3D rigs from glTF', text: <><code>balaur import model.glb</code> writes the joints, the mesh and the animations as TOML the editor edits.</>},
   ]} />
 </Section>
 
-<Section title="How it works" sub="A clip is a file, or lives in the scene. Either way it is TOML you can read and diff.">
+<Section title="How it works" sub="A clip is TOML you can read and diff.">
   <HowItWorks file="animations/platform.toml" code={`type = "animation_clip"
 
 [clips.patrol]
@@ -51,11 +51,11 @@ A bone is any node carrying `bone2d` or `bone3d`, so the tree is the rig and the
   </HowItWorks>
 </Section>
 
-<Section title="In the editor" sub="The Animate persona arranges the tree, the viewport and the timeline around one job.">
+<Section title="In the editor" sub="The Animate persona puts the tree, the viewport and the timeline on one screen.">
   <EditorCards items={[
-    {icon: 'bone', tone: 'animation', title: 'Bone tool', text: 'Place bones in the viewport; each is a node in the tree with a rest pose to return to.'},
-    {icon: 'polygon', tone: '2d', title: 'Polygon tool', text: 'Points, Polygons, UV and Weights modes: draw the skin, then paint how much each bone moves each vertex.'},
-    {icon: 'film-strip', tone: 'animation', title: 'Timeline dock', text: 'Scrub, pose, key. Keys show per track; play the clip in the editor without leaving the scene.'},
+    {icon: 'bone', tone: 'animation', title: 'Bone tool', text: 'Place bones in the viewport, each a node in the tree with a rest pose.'},
+    {icon: 'polygon', tone: '2d', title: 'Polygon tool', text: 'Draw the skin, then paint how much each bone moves each vertex.'},
+    {icon: 'film-strip', tone: 'animation', title: 'Timeline dock', text: 'Scrub, pose, key, and play the clip in the editor.'},
   ]} />
 </Section>
 
@@ -71,6 +71,6 @@ A bone is any node carrying `bone2d` or `bone3d`, so the tree is the rig and the
 
 <StartBand
   title="Rig something."
-  text="examples/rig is one figure: a skinned leg on a clip, an arm on two-bone IK. Open it and move the target."
+  text="One figure: a skinned leg on a clip, an arm on two-bone IK."
   primary={{to: '/examples#rig', label: 'Open examples/rig'}}
   secondary={{to: '/docs/manual/animation', label: 'Animation manual'}} />

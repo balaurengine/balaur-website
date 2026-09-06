@@ -8,8 +8,8 @@ sidebar_position: 6
 
 # Built on
 
-Balaur reuses the Rust ecosystem rather than re-implementing it. The major
-libraries underneath, and what each does:
+Balaur reuses the Rust ecosystem. The major libraries underneath, and what
+each does:
 
 | Library | What it does in Balaur |
 | --- | --- |
@@ -20,7 +20,7 @@ libraries underneath, and what each does:
 | [rodio](https://github.com/RustAudio/rodio) | Audio playback |
 | [gilrs](https://gitlab.com/gilrs-project/gilrs) | Gamepads |
 | [Rune](https://rune-rs.github.io/) | The scripting language and VM, [lightly forked](https://github.com/balaurengine/rune/tree/deterministic-pow) so `powf`/`powi` are deterministic |
-| [glamx](https://github.com/dimforge/glamx) | Math: [glam](https://github.com/bitshifter/glam-rs) re-exported whole, plus pose and rotation types. Shared with Rapier and kiss3d so nothing converts |
+| [glamx](https://github.com/dimforge/glamx) | Math: [glam](https://github.com/bitshifter/glam-rs) re-exported whole, plus pose and rotation types. Shared with Rapier and kiss3d |
 | [libm](https://github.com/rust-lang/libm) | Bit-identical transcendentals on every platform, under both glam and the engine's own math |
 | [gltf](https://github.com/gltf-rs/gltf), [image](https://github.com/image-rs/image) | Model and texture loading |
 | [ureq](https://github.com/algesten/ureq), [tungstenite](https://github.com/snapview/tungstenite-rs), [rustls](https://github.com/rustls/rustls) | HTTP, websockets, TLS |

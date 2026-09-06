@@ -17,11 +17,10 @@ on the [roadmap](./roadmap.mdx), and then how the project is run.
    libraries it stands on. Physics time is physics time. Everything runs
    headless, so what is measured is the engine.
 2. Fast to iterate. A saved script is live in milliseconds with its state
-   intact. No build step for game code. The editor reloads itself the same
-   way.
+   intact. The editor reloads itself the same way.
 3. Easy to use. Nodes and scripts on top, a scene-tree editor that works
    the way you expect, one scripting language. The ECS underneath is a
-   detail only plugin authors see.
+   detail for plugin authors.
 4. Always deterministic. Same inputs, same bits, on every platform, and
    provable: a fixed step, a digest per tick, record and replay, rollback.
    Every subsystem is held to it, the network included. Never optional.
@@ -34,12 +33,12 @@ on the [roadmap](./roadmap.mdx), and then how the project is run.
    glTF, websocket compression: the engine speaks it.
 7. Safe by construction. Safe Rust throughout. A mistake in a script is
    an error message, not a crash.
-8. Verified, not asserted. Each promise above has a test holding it:
-   digests compared across three operating systems, every example run twenty
+8. Verified. Each promise above has a test holding it: digests
+   compared across three operating systems, every example run twenty
    ways, reference docs generated from a booted engine. [Quality](./quality.mdx)
    is the whole list.
-9. Ship as one file, anywhere. Reproducible packs fused onto a runtime;
-   desktop, mobile and the web from the same sources.
+9. Ship a single executable, anywhere. Reproducible packs fused onto a
+   runtime; desktop, mobile and the web from the same sources.
 
 When two of these conflict, the lower number wins.
 

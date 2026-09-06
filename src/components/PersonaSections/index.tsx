@@ -7,10 +7,14 @@ import Icon, {type IconName, type Tone} from '@site/src/components/Icon';
 import styles from './styles.module.css';
 
 // One section per person the engine is for, in the words that person uses —
-// a designer says materials and real time, an animator says mesh skinning and
-// inverse kinematics, a multiplayer programmer says deterministic and
-// rollback. Each names the editor persona it lives in and shows a clip the
-// manual already has. Sides alternate down the page.
+// a designer says viewport and inspector, an animator says mesh skinning and
+// IK, a multiplayer programmer says deterministic. Each names the editor
+// persona it lives in and shows a clip the manual already has. Sides
+// alternate down the page.
+//
+// Copy rules, from the site's writing rules in AGENTS.md: a headline is a
+// short positive fragment, a line is one idea in one sentence, and nothing
+// here says what the engine does not have.
 type Line = {icon: IconName; tone?: Tone; text: string};
 type Persona = {
   id: string;
@@ -29,11 +33,11 @@ const PERSONAS: Persona[] = [
     id: 'design',
     who: 'For designers',
     persona: 'Scene and Interface personas',
-    headline: 'Real-time design, no build step.',
+    headline: 'Design in real time.',
     lines: [
-      {icon: 'cursor', tone: '2d', text: 'Place, move and scale in the viewport; every property is a row in the inspector, and every change is undoable.'},
-      {icon: 'palette', tone: 'render', text: 'Materials, lights, shadows and particles, live in the scene you are editing.'},
-      {icon: 'play', tone: 'ui', text: 'Press play. The scene you designed is the game, and the HUD is laid out over the safe area right there.'},
+      {icon: 'cursor', tone: '2d', text: 'Place, move and scale in the viewport.'},
+      {icon: 'layout', tone: 'ui', text: 'View properties in the inspector.'},
+      {icon: 'play', tone: 'ui', text: 'Pressing play starts the game.'},
     ],
     clip: 'scenes_inspect',
     alt: 'Selecting a node in the tree and editing it in the inspector, the viewport updating as you type',
@@ -47,11 +51,11 @@ const PERSONAS: Persona[] = [
     id: 'code',
     who: 'For programmers',
     persona: 'Script persona',
-    headline: 'Save the script. It is already running.',
+    headline: 'Scripts reload instantly on save.',
     lines: [
-      {icon: 'code', text: 'Rune reads like Rust without the types: no build step, async/await, one language for the game and the editor.'},
-      {icon: 'lightning', text: 'Hot reload in milliseconds with state intact; breakpoints, stepping, frames and locals in the editor.'},
-      {icon: 'plug', text: 'Plugins in Rust or C when you want the metal, and one file to ship when you are done.'},
+      {icon: 'code', text: 'Rune scripting with Rust syntax and async/await.'},
+      {icon: 'lightning', text: 'Hot reload with breakpoint support.'},
+      {icon: 'plug', text: 'Plugins in Rust or C.'},
     ],
     clip: 'scripting_live',
     alt: 'Editing a script while the game runs; on save the new code is live and the state survives',
@@ -66,11 +70,11 @@ const PERSONAS: Persona[] = [
     id: 'animate',
     who: 'For animators',
     persona: 'Animate persona',
-    headline: '2D and 3D animation for games, rigged where you play it.',
+    headline: '2D and 3D animation.',
     lines: [
-      {icon: 'bone', tone: 'animation', text: 'Bend and deform images with mesh skinning: bones, painted weights, polygons.'},
-      {icon: 'magic-wand', tone: 'animation', text: 'Pose with inverse kinematics, two-bone IK and look-at, and key it in the timeline.'},
-      {icon: 'cube', tone: '3d', text: '3D rigs imported from glTF; clips, tweens and twelve easings drive any property.'},
+      {icon: 'bone', tone: 'animation', text: 'Mesh skinning with bones and painted weights.'},
+      {icon: 'magic-wand', tone: 'animation', text: 'Pose with two-bone IK and look-at.'},
+      {icon: 'cube', tone: '3d', text: '3D rigs imported from glTF.'},
     ],
     clip: 'animation_key',
     alt: 'Scrubbing a clip, posing a bone, keying it, and playing it back',
@@ -84,14 +88,14 @@ const PERSONAS: Persona[] = [
     id: 'multiplayer',
     who: 'For multiplayer and simulation',
     persona: 'Physics persona',
-    headline: 'Deterministic by default: same inputs, same bits, on every machine.',
+    headline: 'Deterministic by default.',
     lines: [
-      {icon: 'timer', tone: 'physics', text: 'A fixed 60 Hz tick and a digest per tick, so the engine can prove two machines agree.'},
-      {icon: 'record', tone: 'physics', text: 'Record inputs only, network included, and replay the whole session; rollback-ready.'},
-      {icon: 'broadcast', text: 'HTTP, websockets and QUIC delivered once per tick; rooms and server hooks through Gamend.'},
+      {icon: 'timer', tone: 'physics', text: 'A fixed 60 Hz tick.'},
+      {icon: 'record', tone: 'physics', text: 'Record inputs and replay the whole session.'},
+      {icon: 'broadcast', text: 'HTTP, websockets and WebTransport.'},
     ],
     clip: 'determinism_replay',
-    alt: 'A recorded session replayed to the same per-tick digests',
+    alt: 'A recorded session replayed tick by tick to the same result',
     links: [
       {to: '/multiplayer', label: 'Balaur for multiplayer'},
       {to: '/docs/manual/determinism', label: 'Determinism manual'},
@@ -102,11 +106,11 @@ const PERSONAS: Persona[] = [
     id: 'art',
     who: 'For artists',
     persona: 'Scene persona, shaders and rendering',
-    headline: 'Lights, shadows and shaders you can read.',
+    headline: 'Lights, shadows and shaders.',
     lines: [
-      {icon: 'sun', tone: 'render', text: '2D lights and occluders build a light map every sprite, polygon and tile is lit by.'},
-      {icon: 'paint-brush', tone: 'render', text: 'Materials in WESL, WGSL with imports and variants, linked at run time rather than at build.'},
-      {icon: 'sparkle', tone: 'render', text: 'Post-processing, particles, tile maps, sprites and meshes on wgpu.'},
+      {icon: 'sun', tone: 'render', text: '2D lights and occluders.'},
+      {icon: 'paint-brush', tone: 'render', text: 'Materials in WESL.'},
+      {icon: 'sparkle', tone: 'render', text: 'Post-processing, particles, tile maps, sprites and meshes.'},
     ],
     image: 'rendering_lights2d',
     alt: 'Two 2D lights over a scene, the shapes casting shadows from occluders',

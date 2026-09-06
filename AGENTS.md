@@ -49,6 +49,66 @@ and scores roughly twenty points low. Measure against a server that gzips, or
 against the deployed site. A mobile score in the seventies from `serve` is
 normally a high nineties in production.
 
+## Writing rules for site copy
+
+Headlines, feature lines, card text and page intros. The engine repo's
+`AGENTS.md` still governs the manual and the devlog; these are the extra rules
+for the marketing pages, and they are read, not linted.
+
+1. **Never define by negation.** Say what it is, never what it lacks or
+   avoids. "no build step", "nothing to install", "no export step", "rather
+   than at build" all go.
+   - No: `Real-time design, no build step.`
+   - Yes: `Design in real time.`
+2. **One idea per line.** A semicolon, a colon or a second `and` is the tell.
+   Cut everything after the first idea, or promote it to its own line.
+   - No: `Place, move and scale in the viewport; every property is a row in the inspector, and every change is undoable.`
+   - Yes: `Place, move and scale in the viewport.`
+3. **Enumerations enumerate.** A list of things is a list of things, with no
+   trailing clause explaining them.
+   - No: `Materials, lights, shadows and particles, live in the scene you are editing.`
+   - Yes: `Materials, lights, shadows, particles.`
+4. **One sentence.** Two sentences means the first was setup; write the
+   second one properly instead.
+   - No: `Press play. The scene you designed is the game, and the HUD is laid out over the safe area right there.`
+   - Yes: `Pressing play starts the game exactly as you designed it.`
+   - No: `Save the script. It is already running.`
+   - Yes: `Scripts reload instantly on save.`
+5. **One subject. No clause stacking.**
+   - No: `Hot reload in milliseconds with state intact; breakpoints, stepping, frames and locals in the editor.`
+   - Yes: `Hot reload with breakpoint support.`
+6. **Short headlines.** A few words, not a claim with a subordinate clause.
+   - No: `Deterministic by default: same inputs, same bits, on every machine.`
+   - Yes: `Deterministic by default.`
+7. **Cut reassurance.** `right there`, `already`, `live in the scene you are
+   editing`, `when you want the metal`, `when you are done`, `you can read`
+   are tone, not fact.
+8. **No framing, just the thing.** Drop "reads like X without the Y" and
+   "think of it as".
+   - No: `Rune reads like Rust without the types: no build step, async/await, one language for the game and the editor.`
+   - Yes: `Rune scripting with Rust syntax and async/await.`
+
+9. **Simple verbs, simple structure.** No metaphor where a verb will do.
+   - No: `Every property is a row in the inspector.`
+   - Yes: `View properties in the inspector.`
+10. **No jargon a working game developer would not say.** `digest`, `QUIC`,
+    `wgpu`, `light map` mean nothing outside the engine. Say `WebTransport`,
+    not `QUIC`. Materials are written in `WESL`; `WGSL` is the target and
+    belongs in the manual, not on a page.
+11. **Cut implementation detail nobody asked for.** `delivered once per tick`,
+    `on wgpu`, `linked at run time`, `over an ECS` answer a question the
+    reader did not ask.
+    - No: `HTTP, websockets and QUIC delivered once per tick.`
+    - Yes: `HTTP, websockets and WebTransport.`
+    - No: `2D lights and occluders build a light map.`
+    - Yes: `2D lights and occluders.`
+12. **Banned phrases.** `one file to ship` says nothing; the fact is that a
+    game exports to a single executable, so write that. `no build step` is
+    gone site-wide, including the comparison tables.
+
+A fact cut from one page must already live on the page it links to. Check
+before cutting.
+
 ## Prose lint
 
 `scripts/lint-prose.mjs` runs in CI before the build, and a post over any of
