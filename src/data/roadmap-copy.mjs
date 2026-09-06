@@ -40,7 +40,7 @@ group are ordered by it.
 
   items: {
     'Tile maps':
-      `<>What is left of tile maps: quarter-tile sheets, where a cell is four half-tiles picked by its corners; <code>balaur import</code> for LDtk projects; cells kept in their own chunked file, for a level too big to read in a scene; and a multi-tile stamp in the Tiles tool. Collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the fill, line, pick and terrain brushes, the Set panel and Tiled import all landed.</>`,
+      `<>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>`,
     'Script completion and hover':
       `<>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>`,
     'Curve editor and onion skin':
@@ -54,7 +54,7 @@ group are ordered by it.
     'The editor in a browser':
       `'Shipped: the canvas, play and hot reload as on the desktop, a project the browser keeps across a refresh, a folder opened from your machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.'`,
     'Texture import settings':
-      `<>A pixel-art sprite can ask for hard edges today: a settings file sits beside the picture, <code>[import.texture]</code> sets the project's default, and filtering and colour space reach the upload. Still to come: repeat, mipmaps, anisotropy and premultiplied alpha, which wait on the renderer exposing a whole sampler; an Import section in the editor; and GPU-compressed textures at export.</>`,
+      `<>A pixel-art sprite can ask for hard edges today: a settings file sits beside the picture, <code>[import.texture]</code> sets the project's default, and filtering and colour space reach the upload. The editor has an Import tab beside the Inspector for the file the Assets dock has selected, saying for each key whether the value is the file's own, the project's or the engine's. Still to come: repeat, mipmaps, anisotropy and premultiplied alpha, which wait on the renderer exposing a whole sampler, and GPU-compressed textures at export.</>`,
     'Asset streaming':
       `'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.'`,
     'Extensions, tier two':
