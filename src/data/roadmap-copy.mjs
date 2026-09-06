@@ -63,11 +63,11 @@ The [features page](/features) is 0.1 feature by feature, and the
     'Tile maps':
       `<>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>`,
     'Script completion and hover':
-      `<>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>`,
+      `<>Type <code>physics2d::</code> and the list is that module's 66 functions and 48 constants, each with the line the reference prints. Type <code>node.body2d.</code> and it is what acts on that component. Hover names a function's signature and what it does; go-to-definition opens the file, or the Docs dock when the definition is the engine's. <code>balaur fmt</code> lays a project out, rename rewrites every file a script's <code>mod</code> declarations reach, and the same server answers a VS Code, Zed or Neovim client. Semantic tokens, inlay hints and code actions are not planned.</>`,
     'Curve editor and onion skin':
       `'Tangent handles on keys and ghosted neighbouring frames in the timeline.'`,
     'Selection, alignment and a library':
-      `<>Select several nodes, box-select, group, align and distribute, hide, lock and isolate; filter the outliner; drop an image, a <code>.glb</code> or a sky onto the viewport and get a node; gizmos for lights and cameras; wireframe and normals views; a pen tool; a material panel; and a library of materials, skies, models and templates to start from.</>`,
+      `<>Built. The selection is a set: shift and ⌘ click, box select in both viewports, and a gizmo drag that moves, turns and scales the whole set. Group, align, distribute, hide, lock, isolate; outliner facet chips; a dropped file becoming a node; light, camera and frustum gizmos; a view-mode chip and camera bookmarks; a Pen tool over <code>path2d</code>; a material panel with texture slots; a Cost dock; and a Library of materials, lighting setups and templates behind <code>balaur new --template</code>. No sky ships yet.</>`,
     'Network dock and Play as two':
       `'Round trip, loss, rollbacks per second and the desync tick per link, and a second instance of the project launched headless and joined over loopback with the fault settings on.'`,
     'The editor in a browser':
@@ -89,7 +89,7 @@ The [features page](/features) is 0.1 feature by feature, and the
     'Pause, time scale and smooth frames':
       `<>A pause that holds the game and keeps the menu alive, a <code>process</code> mode per subtree, slow motion and fast forward, motion interpolated between fixed steps so a 144 Hz display sees every frame move, and a tick rate setting.</>`,
     'Interactivity without a script':
-      `<>Hover, click, key and resize hooks on any drawn node, named states a node tweens between, scene variables, and event bindings edited in the Events view — each one a call a script could make, and convertible to one. Orbit, first-person, third-person and click-to-move rigs as presets.</>`,
+      `<>Built, bar the rigs. Hover, click, key, action, scroll and resize hooks on any drawn node; <code>states</code> naming a look; typed <code>[variables]</code> on the scene; and <code>[[nodes.bindings]]</code> rows the Events view writes, each one a call a script could make and convertible to one. A <code>when</code> is a comparison over the variables, so the editor reads it and diffs it. Orbit, first-person, third-person and click-to-move rigs as presets are what is left.</>`,
     'Navigation':
       `<>A <code>navmesh</code> asset baked from the scene's colliders and tile maps, paths over it through <code>polyanya</code> or over a grid, and <code>agent2d</code> and <code>agent3d</code> that avoid each other and moving obstacles, all on the fixed step and in the digest so a lockstep game runs it on every peer.</>`,
     'Voice in a session':
@@ -97,7 +97,7 @@ The [features page](/features) is 0.1 feature by feature, and the
     'Motion and haptics beyond one pad':
       `'Gyro on Switch Pro and Joy-Con, sensor calibration per unit, adaptive triggers and light bars, waveform haptics, motion from a phone or tablet, and gamepads on iOS and Android. A PlayStation pad reports motion and runs both motors today; nothing else does.'`,
     'The 3D look':
-      `<>A <code>light3d</code> component with shadows; an <code>environment</code> with sky, image-based lighting, fog, exposure, tonemap and grading; a PBR material with texture maps that needs no shader written and is imported from glTF; glass, mirrors and reflection probes; vignette, grain and the other finishing passes as post-process materials. The only 3D light today is hard-coded.</>`,
+      `<><code>light3d</code> with shadows and light layers, an <code>environment</code> carrying sky, fog, exposure, tonemap and grading, and <code>package::pbr</code> with six texture slots are built; a scene with no light still gets the engine's own. What is left: image-based lighting and SSAO bound, that surface as the built-in a node with no material draws, glTF import keeping factors and maps, glass, mirrors and probes, the finishing passes, and layer stacks.</>`,
     'Lit normal-mapped sprites':
       `<>2D lights and shadows are built. A normal map on <code>sprite</code> needs the light map to carry a direction as well as a colour. Occluding tiles moved to the tile-map plan.</>`,
     'Particles in 3D':

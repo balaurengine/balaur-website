@@ -118,8 +118,84 @@ knowing about a particle effect.
 Lights observe, like the rest of rendering: they never touch the simulation, so
 a lit game and a headless one tick identically.
 
+## Lights in 3D
+
+`light3d` is the 3D half. A node's position places it and its rotation aims
+it; `kind` is `directional`, `point` or `spot`.
+
+```toml
+[[nodes]]
+name = "Key"
+position = [4, 7, 4]
+rotation_euler = [-50, 40, 0]
+
+[nodes.light3d]
+kind = "spot"
+color = "#fff2e0"
+intensity = 6
+radius = 30
+inner = 25
+outer = 45
+```
+
+![A spot light selected in the editor, its cone drawn in the viewport and its light3d rows in the inspector](/img/manual/editor_lights.webp)
+
+A scene with no `light3d` keeps the engine's own key light, so nothing written
+before they existed draws differently; the first one added retires it. Turn one
+off with the node's `visible`. `shadows` says whether it casts, and `layers` is
+a bitmask a `mesh` or `shape3d` has to share a bit with to be lit by it.
+
+## The scene's atmosphere
+
+`environment` carries what belongs to the scene rather than to a view: the sky,
+the ambient light, fog, exposure, the tonemap, colour grading and the shadow
+budget. The last `current` one in tree order wins, so a level can carry two and
+switch between them.
+
+```toml
+[nodes.environment]
+sky = "skies/studio.hdr"
+ambient = "#20242a"
+tonemap = "neutral"
+exposure = 1.1
+fog = "exponential"
+fog_color = "#9fb4c8"
+fog_density = 0.012
+```
+
+A sky draws behind the scene and can be turned off with `show_sky` while its
+orientation and intensity still apply. Image-based lighting from the sky is
+not bound yet; the scene is lit by its `light3d` nodes and its ambient.
+
+## A physically based material
+
+`package::pbr` is the surface a 3D material imports to get metallic, roughness,
+emissive and reflectance instead of Lambert:
+
+```wgsl
+import package::mesh::{VertexInput, VertexOutput, vertex};
+import package::pbr::{default_surface, shade_pbr};
+
+struct Params { metallic: f32, roughness: f32, reflectance: f32 }
+@group(3) @binding(0) var<uniform> params: Params;
+
+@fragment fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
+    var s = default_surface(in);
+    s.metallic = params.metallic;
+    s.roughness = max(params.roughness, 0.045);
+    s.reflectance = params.reflectance;
+    return shade_pbr(in, s);
+}
+```
+
+A `[params]` key named for one of six texture slots and given an image path
+binds that slot: `albedo`, `normal`, `metallic_roughness`, `occlusion`,
+`emissive` and `height`. Every slot a material leaves out gets a one-pixel
+neutral, so a shader never branches on an absent map. The editor's library
+ships four materials over one such shader.
+
 ## Limits
 
-A frame draws at most 64 lights, and each shadow-casting light costs a pass of
-its own. A scene past that is told once in the log rather than quietly dropping
-frames.
+A frame draws at most 64 2D lights, and each shadow-casting one costs a pass
+of its own. A scene past that is told once in the log rather than quietly
+dropping frames. The 3D contract carries sixteen lights in its frame uniforms.

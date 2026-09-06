@@ -216,6 +216,67 @@ features = { vertex_color = true }
 
 `examples/objects` shows all of it, one row per category.
 
+## Reacting without a script
+
+A scene can be interactive before anyone writes code for it. Three keys do it:
+typed values the scene owns, named looks a node can be in, and a table saying
+what one event does.
+
+```toml
+[variables]
+score = { type = "int", value = 0 }
+
+[[nodes]]
+name = "Door"
+
+[nodes.states]
+current = "shut"
+
+[nodes.states.shut]
+shape3d = { color = "#734f2b" }
+
+[nodes.states.open]
+shape3d = { color = "#4cbf66" }
+
+[[nodes]]
+name = "Ball"
+
+[[nodes.bindings]]
+event = "pointer_click"
+action = "add_variable"
+target = "score"
+value = 1
+
+[[nodes.bindings]]
+event = "pointer_click"
+when = "score >= 3"
+action = "state"
+target = "../Door"
+value = "open"
+```
+
+![The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three](/img/manual/editor_events.webp)
+
+`examples/hello` carries exactly this and no code for it.
+
+- **Events.** Pointer enter, exit, down, up, click, drag and drop; key down
+  and up; a declared action; scroll; resize; a variable or a state changing;
+  a collision starting or stopping. Each also reaches a node's script as
+  `on_<event>`, bindings first.
+- **Actions.** `state`, `set_variable`, `add_variable`, `play`, `sound`,
+  `spawn`, `free`, `switch`, `open_url`, `emit`, `call`, `visible`. Every one
+  is a call a script could make.
+- **`when`.** A comparison over the scene's variables, joined with `&&` and
+  `||`. It is data in a file, so the editor reads it, shows it and diffs it;
+  anything a comparison cannot say is a script.
+- **States.** A state is a table of component properties, patched over what
+  the node already has, so it says only what differs. `node.go("hover")` from
+  a script does the same thing, and `on_state_changed(from, to)` follows.
+
+The editor's Events view writes these rows, and *Convert to script* writes the
+Rune they mean, one function per hook. A node may carry both; the bindings run
+first.
+
 ## Import settings
 
 How a file is read is stated beside the file. `art/hero.png.toml` settles

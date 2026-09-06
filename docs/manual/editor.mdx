@@ -61,27 +61,66 @@ The top bar switches between five personas, each arranging the same panels: node
   [Physics](./physics.mdx).
 - Interface. Widgets laid out over the safe area. See [UI](./ui.mdx).
 
+## Selecting
+
+The selection is a set, and the first thing in it is the active node.
+
+- Shift or ⌘ click a row or a node; drag on empty viewport to box-select.
+- A gizmo drag moves, turns or scales the whole set about its own centre.
+- `⌘G` groups at the centroid keeping every world pose, `⇧⌘G` ungroups.
+- Six aligns and three distributes, in the palette.
+- `H` hides, `⌘L` locks, `/` isolates. Hidden writes the node's `visible`;
+  locked is editor state the gizmo and box select skip.
+- The inspector shows the active node's rows and writes to every selected node
+  that carries the same component.
+
+![The Library dock open under the viewport, with a torus selected and pointed at the library's metal material](/img/manual/editor_selection.webp)
+
 ## Tools
 
-The strip beside the viewport holds Select, Move, Rotate and Scale, then two
-rig tools: Rig bone grows and poses a skeleton, Polygon edits a skinned
-polygon's points, triangulation, UVs and weights. Both are under
+The strip beside the viewport holds Select, Move, Rotate and Scale, then Pen,
+then two rig tools: Rig bone grows and poses a skeleton, Polygon edits a
+skinned polygon's points, triangulation, UVs and weights. Both are under
 [Skeletons and skins](./animation.mdx#skeletons-and-skins).
+
+Pen edits a `path2d` asset in place: click adds an anchor, drag pulls its
+handles, alt breaks the pair, right-click removes an anchor, and clicking the
+first anchor closes the path.
+
+## Dropping a file in
+
+A file dropped on the window becomes a node.
+
+- An image lands under `art/`, as a sprite in 2D and a textured plane in 3D.
+- A `.glb`, `.aseprite`, `.tmx` or `.ldtk` goes through `balaur import`, and
+  the scene it wrote is instanced.
+- A `.wesl` becomes a shader and the material that names it.
+- An `.hdr` becomes the environment's sky.
+- A scene file is instanced as a prefab; a font lands under `fonts/`.
 
 ## Docks, palette, themes
 
-Seven docks sit under the viewport.
+Eleven docks sit under the viewport.
 
 - Output: the engine's log ring buffer, with level filters.
 - Problems: what the linter found in every script, and a shader that would
   not link.
 - Assets: the project's files.
+- Docs: the script reference, module by module, from the running engine rather
+  than a file. `⌘B` on an engine call lands here. See
+  [Tooling](./scripting.mdx#tooling).
 - Timeline: the animation editor's.
 - Debugger: a paused script's frames and locals.
 - Session: the recordings play-in-editor made. It replays one, with lanes for
   the input, network and log events it holds.
 - Profiler: the last frame as a bar per stage against the 16.7 ms a 60 Hz
   frame has, from `engine::timings()`.
+- Cost: what the frame draws, from `render::stats()`: draws, triangles,
+  texture bytes and a cloner's copies, per node.
+- Library: stock materials, lighting setups and project templates. Clicking a
+  material copies it in and points the selected node at it.
+
+![The Cost dock: seventeen draws and 3758 triangles, with a bar per node and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
 
 The command palette (`⌘K`) is the single overlay: nodes, commands and
 personas, and there is a dark and a light theme. *Show input overlay* draws
