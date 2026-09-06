@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import type {Props} from '@theme/NotFound/Content';
@@ -9,6 +10,16 @@ import type {Props} from '@theme/NotFound/Content';
 export default function NotFoundContent({className}: Props): ReactNode {
   return (
     <main className={clsx('container margin-vert--xl', className)}>
+      {/* A 404 is served for any address that does not exist, so it must not
+          be indexed under one of them; it is also the one page with no
+          description of its own to give a crawler. */}
+      <Head>
+        <meta name="robots" content="noindex, follow" />
+        <meta
+          name="description"
+          content="Nothing at this address. Links to the Balaur manual, the reference, the examples and the devlog, and where to report a broken link."
+        />
+      </Head>
       <div className="row">
         <div className="col col--6 col--offset-3">
           <Heading as="h1" className="hero__title">

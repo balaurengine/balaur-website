@@ -1,0 +1,64 @@
+---
+description: "Balaur devlog: balaur export reports what a pack weighs, drops unreferenced assets, recompresses images, subsets fonts and rewrites WAV as FLAC."
+slug: what-an-export-weighs
+title: What an export weighs
+authors: [dragos]
+image: /img/manual/export_size.png
+keywords: [export size, pack size, texture atlas, font subsetting, webp, game build size]
+---
+
+`balaur export` reports what a pack weighs and takes bytes off it, all of it
+lossless: unreferenced assets dropped, PNGs re-encoded, fonts subset, WAV
+written as FLAC.
+
+{/* truncate */}
+
+![Where a pack's bytes are, and what lossless re-encoding takes off](/img/manual/export_size.webp)
+
+## Where the bytes are
+
+The editor's own pack, 2.1 MB: fonts 77%, scripts 22%, images 1%. The web
+runtime beside it is 17.9 MB.
+
+## What landed
+
+- **A report.** `balaur export` prints the pack by section, by extension, its
+  ten heaviest entries, and the assets nothing references. `--report` prints
+  and writes nothing.
+- **Strip.** `strip = true` drops every asset no scene, asset document,
+  script string literal or `id://` reference names. Off by default; `keep`
+  protects a path a script builds at run time.
+- **Images.** `images = "smallest"` keeps the smaller of the PNG optimiser
+  and lossless WebP. A 512-pixel logo: 20.7 KB to 8.3 KB, same pixels. JPEGs
+  are left alone.
+- **Fonts.** `fonts = "subset"` keeps the code points in the project's scenes
+  and scripts, printable ASCII, and any `font_ranges` named for server text.
+  One face: 421 KB to 92 KB. Kerning, ligatures and Arabic joining survive;
+  `font_keep` ships a face whole.
+- **Audio.** `audio = "flac"`: WAV as FLAC, lossless, about half the size.
+- **Bitmap fonts.** `.fnt` descriptors are in the pack's extension list; a
+  game shipping one drew nothing before.
+
+No mode changes an image's pixel dimensions: a sprite is sized from its
+header, so a re-encoded texture is the same sprite and the same world.
+
+```toml
+[export]
+strip = true            # drop an asset no scene, script or keep glob names
+keep = ["sfx/**"]       # ...except paths a script builds at run time
+font_keep = ["fonts/ui-*"]  # ship these faces whole even when subsetting
+images = "smallest"     # recompress PNG, or write lossless WebP, whichever wins
+fonts = "subset"        # cut a face to the characters the project actually shows
+audio = "flac"          # write uncompressed WAV as lossless FLAC
+```
+
+## Not size levers
+
+- Atlases: a few percent of the image bytes, and no draw-call win, since the
+  renderer issues one call per node.
+- GPU-compressed textures (BC, ETC2, ASTC): a byte per pixel on disk, about
+  twelve times the PNG. They cut video memory and upload time.
+- Compressing the pack: the media inside is already compressed, and static
+  hosts gzip on the way out.
+
+[Build size](/docs/manual/build-size) is the manual page.

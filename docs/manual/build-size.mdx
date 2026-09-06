@@ -48,13 +48,24 @@ The engine module is one download; the pack beside it is the other. Every
 export prints what it built, so the decision comes with a number attached:
 
 ```text
-pack       2059 KB
-  scenes      9 KB   3 entries
-  scripts   443 KB   35 entries
-  assets   1604 KB   6 entries
-    .ttf   1582 KB   4 files
-    .png     23 KB   2 files
-  nothing names 2 files (31 KB)
+pack 2.0 MB
+section                                 entries      bytes
+manifest                                      1       78 B
+scenes                                        1     3.4 KB
+scripts                                      37   488.2 KB
+assets                                        6     1.6 MB
+
+extension                               entries      bytes
+ttf                                           4     1.5 MB
+png                                           2    22.7 KB
+
+largest                                              bytes
+fonts/icons-Phosphor.ttf                          477.2 KB
+fonts/ui-SourceSans3-Regular.ttf                  421.1 KB
+fonts/heading-SourceSans3-Semibold.ttf            415.9 KB
+assets/balaur-logo.png                             20.2 KB
+
+0 files nothing references, 0 B
 ```
 
 Fonts outweigh images in most projects, and the engine outweighs both. Four
@@ -65,10 +76,14 @@ turn it on:
 [export]
 strip = true            # drop an asset no scene, script or keep glob names
 keep = ["sfx/**"]       # ...except paths a script builds at run time
+font_keep = ["fonts/ui-*"]  # ship these faces whole even when subsetting
 images = "smallest"     # recompress PNG, or write lossless WebP, whichever wins
 fonts = "subset"        # cut a face to the characters the project actually shows
 audio = "flac"          # write uncompressed WAV as lossless FLAC
 ```
+
+Anything under `fonts/` survives a strip whatever the references say: the UI
+finds faces by listing that directory, so no scene ever names one.
 
 Every mode here is lossless, and none of them changes a pixel count: a sprite
 is sized from its image header, so a re-encoded texture is the same sprite and

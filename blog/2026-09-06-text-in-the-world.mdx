@@ -7,10 +7,9 @@ image: /img/manual/text_overview.png
 keywords: [text3d, text2d, bitmap fonts, text shaping, godot label3d, game engine text]
 ---
 
-The widget layer already shaped text properly: bidi, Arabic joining, CJK
-breaks, the project's font chain. None of it reached the scene, because the
-atlas wrote straight into an egui texture. Now it owns its pixels, and a
-label in a panel and a sign in a scene come from one bitmap.
+`text2d` and `text3d`: a sign in a scene and a label in a panel from one
+bitmap, shaped the way the widgets are, with bidi, Arabic joining, CJK breaks
+and the project's font chain.
 
 {/* truncate */}
 
@@ -18,47 +17,42 @@ label in a panel and a sign in a scene come from one bitmap.
 
 ## What landed
 
-- `text2d` and `text3d`. One component for both passes, with the keys a
-  label takes plus `pixels_per_unit` to size it like a sprite. In 3D:
-  `billboard`, `double_sided`, `depth_test`, `alpha_cut`.
-- Outline and shadow. The same quads offset and tinted, each layer a
-  thousandth of a unit in front of the last: coplanar, the depth test picks
-  between them at random.
-- Markup in the world. `[b]`, `[i]`, `[color=…]`, `[wave]`. A block is one
-  mesh per colour, so a coloured word keeps its colour.
-- Bitmap fonts. An AngelCode `.fnt` ships a pixel face as drawn. No
-  shaping, one glyph per character, and its page goes in the same atlas.
-- Immediate calls. `render.draw_text` and `draw_text_2d` for one frame,
-  like a debug line. The Rig tool names bones in the viewport with them.
-- `render.text_size`, and double-click a text node to edit it in place.
+- **`text2d`, `text3d`.** One component for both passes: the keys a label
+  takes, plus `pixels_per_unit` to size it like a sprite. In 3D: `billboard`,
+  `double_sided`, `depth_test`, `alpha_cut`.
+- **Outline and shadow.** The same quads offset and tinted, each layer a
+  thousandth of a unit in front of the last.
+- **Markup.** `[b]`, `[i]`, `[color=…]`, `[wave]`. One mesh per colour, so a
+  coloured word keeps its colour.
+- **Bitmap fonts.** An AngelCode `.fnt` ships a pixel face as drawn: one
+  glyph per character, no shaping, its page in the same atlas.
+- **Crisp at any distance.** A block is rasterised at the size it covers on
+  screen, in buckets 8.7% apart, geometric rather than linear.
+- **Emoji.** A colour face per platform in the fallback chain.
+- **Immediate calls.** `render.draw_text` and `draw_text_2d` for one frame,
+  like a debug line. The Rig tool names bones with them.
+- **`render.text_size`.** Measures against the project's and bundled faces
+  only, never a system face, so a width written into state is the same on
+  every platform. The glyph mesher reads the same faces, so a `kind = "text"`
+  mesh and its colliders are too.
+- **Edit in place.** Double-click a text node in the viewport.
 
-## A promise the code was not keeping
+```toml
+[[nodes]]
+id = "sign"
+name = "Sign"
+position = [0.0, 1.6, 0.0]
+[nodes.text3d]
+text = "A score on a sign"
+font_size = 64
+color = [1.0, 0.85, 0.3, 1.0]
+pixels_per_unit = 110
+outline_size = 3.0
+outline_color = [0.1, 0.05, 0.0, 1.0]
+```
 
-`text_size` said it measured against the project's fonts and never a system
-face. It did not: the chain ends with whatever the machine has, so an
-uncovered character measured differently on macOS than on Linux. A width
-written into state is in the digest.
+No distance fields yet: a glyph is scaled by up to 8.7% between buckets.
 
-Measuring now sees the project's faces and the bundled ones only; drawing
-keeps the system's. The same leak reached the glyph mesher, which is worse:
-a `kind = "text"` mesh has colliders fitted to it, so the host's fonts were
-in the simulation.
-
-- Crisp at any distance. A block is rasterised at the size it covers on
-  screen, quantised to buckets 8.7% apart, so walking towards a sign re-shapes
-  it a few times rather than magnifying a bitmap. Browsers bucket the same way;
-  geometric rather than linear, because a camera's distance spans orders of
-  magnitude.
-- Emoji. A colour face per platform joins the fallback chain; the atlas
-  already took colour bitmaps.
-
-## What is not done
-
-Distance fields. Buckets mean a glyph is scaled by up to 8.7%, so it is
-fractionally soft or sharp where an SDF would be exact. That is the trade
-`PLAN-text` called the cheaper first answer, and it is waiting for a scene
-that asks.
-
-[Text in the world](/docs/manual/text) is the manual page.
+[Text in the world](/docs/manual/text) is the manual page;
 [`examples/text`](https://github.com/balaurengine/balaur/tree/main/examples/text)
-is a tour: press **Play** on its card in [Examples](/examples).
+runs from [Examples](/examples).

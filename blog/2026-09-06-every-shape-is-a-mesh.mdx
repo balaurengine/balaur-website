@@ -60,9 +60,8 @@ dimensions, a cloner, and a word as a mesh.
 - Tests measure meshes: closed, outward-facing, the exact volume a boolean should have.
 - Deterministic by construction: `libm` for the curves, and a BSP that is dot
   products and lerps with no transcendental to pin.
-- The meshers are the engine's own, not a renderer's and not parry's: core
-  builds the triangles, and physics fits its colliders to them. Parry stays
-  where it belongs, under the colliders and the `geometry3d` toolkit.
+- The meshers are the engine's own: core builds the triangles, physics fits
+  its colliders to them.
 
 ```toml
 [[assets]]
@@ -82,9 +81,8 @@ mesh = "#ring"
 
 ## Try it
 
-- `examples/objects`: five rows, one per category, then the 2D layer, and
-  the camera walks them.
-  It runs [in the browser](/examples/?play=objects) too.
+- `examples/objects`: five rows, one per category, then the 2D layer.
+  It runs [in the browser](/examples/?play=objects).
 - The [manual](/docs/manual/scenes#objects) and the generated
   [asset](/docs/reference/assets) and [component](/docs/reference/components)
   references.

@@ -42,9 +42,10 @@ twelve physics cases Balaur is the quickest engine: about 3× Godot Jolt,
 - Children are indexed by name, so a path lookup is one hash per segment,
   and freeing a node with no components asks no plugin anything.
 
-Adding children is quicker than Godot; deleting and looking up are not
-yet, and the table says so. Rapier is under both Balaur and Godot Rapier,
-so the gap between those two columns is the engine around the physics.
+- Adding children is quicker than Godot. Deleting and looking up are not yet,
+  and the table says so.
+- Rapier is under both Balaur and Godot Rapier, so the gap between those two
+  columns is the engine around the physics.
 
 ```bash
 balaur run examples/benchmark --headless --fixed-tick -- --case=3d/pyramid

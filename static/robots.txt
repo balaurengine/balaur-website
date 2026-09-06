@@ -1,4 +1,39 @@
+# Everything here is meant to be read, by people and by crawlers alike.
 User-agent: *
+Allow: /
+
+# The search page is a form with no content of its own: every result it can
+# show is a page already in the sitemap.
+Disallow: /search/
+
+# Answer engines are welcome to the same pages, and to llms.txt beside this
+# file: a plain-text map of the site, with llms-full.txt carrying the whole
+# manual and reference in one document.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://balaurengine.org/sitemap.xml

@@ -30,12 +30,6 @@
   margin: 0 auto 2rem;
 }
 
-/* The forced break only helps when both halves fit on one line each. */
-@media screen and (max-width: 720px) {
-  .heroBreak {
-    display: none;
-  }
-}
 
 .heroGhost {
   color: #3a444e;

@@ -14,30 +14,30 @@ shadows.
 
 ## What landed
 
-- **Collision.** The tileset marks solid tiles; a `tile_collision` component
-  on the map builds one parry voxel shape from the solid cells, not a row of
-  boxes, so a body sliding along a wall has no seam to catch on. Slopes are
-  polygons in tile pixels; `one_way = true` for platforms. `set_cell` marks
-  the map and the collider is rebuilt once on the next fixed step.
-- **Autotiling.** One table of `[[rules]]`, read in order, first match wins.
-  `transforms` lets one rule cover eight orientations, so a 47-tile blob is a
-  dozen rules. `outside` says whether the map edge counts as the same
-  terrain. Variation is hashed from the cell's coordinate, so a map resolves
-  the same on every machine. `mode = "sides"` or `"corners_and_sides"` writes
-  the rules from a bitmask sheet.
+- **Collision.** The tileset marks solid tiles; `tile_collision` on the map
+  builds one parry voxel shape from them, not a row of boxes, so a sliding
+  body has no seam to catch on. Slopes are polygons in tile pixels;
+  `one_way = true` for platforms. `set_cell` marks the map; the collider is
+  rebuilt once on the next fixed step.
+- **Autotiling.** One table of `[[rules]]`, first match wins. `transforms`
+  covers eight orientations per rule, so a 47-tile blob is a dozen rules.
+  `outside` says whether the map edge counts as the same terrain. Variation
+  is hashed from the cell's coordinate, so a map resolves the same on every
+  machine. `mode = "sides"` or `"corners_and_sides"` writes the rules from a
+  bitmask sheet.
 - **Animated and occluding tiles.** `animation = { frames, fps }` runs on the
   frame clock, outside the digest. `occluder = true` feeds the 2D light map
   only the exposed edges, so fifty tiles cast one shadow.
-- **Origin.** Cell `0,0` has its top-left corner on the node; the map keeps
-  an `origin`. Painting reaches in every direction.
+- **Origin.** Cell `0,0` has its top-left corner on the node and the map
+  keeps an `origin`, so painting reaches in every direction.
 - **Tiles dock.** Paint, rectangle, fill, line, pick, a terrain brush through
   the engine's own resolver, and a Set panel that writes solid, one-way or
   occluder back to the tileset file.
 - **Isometric and hex.** `layout = "isometric"` or `"hex"` on the tileset;
-  mesh, collider, picking and painter share one cell-placement function.
+  mesh, collider, picking and painter share one placement function.
 - **Tiled import.** `balaur import level.tmx --project game` writes the
-  atlas, a `tileset` per sheet with grid, spacing, margin, per-tile collision
-  and animations, and a scene with one `tilemap` node per layer.
+  atlas, a `tileset` per sheet (grid, spacing, margin, per-tile collision,
+  animations) and a scene with one `tilemap` node per layer.
 
 ```toml
 [tiles.0]
@@ -64,7 +64,7 @@ outside = "same"
 ```
 
 Not yet: quarter-tile sheets, LDtk import, chunked cell files, a multi-tile
-stamp. On the [roadmap](/docs/roadmap); the
-[plan](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md)
-says how each lands. `tilemap` and `tile_collision` are in the
+stamp. [Roadmap](/docs/roadmap),
+[plan](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md).
+`tilemap` and `tile_collision` are in the
 [components reference](/docs/reference/components).

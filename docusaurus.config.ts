@@ -82,6 +82,12 @@ const config: Config = {
   },
 
   headTags: [
+    // The @font-face rules live here rather than in custom.css because
+    // webpack rewrites every url() it finds in a stylesheet to a hashed copy
+    // under /assets: the fonts would ship twice, and the preloads below name
+    // the stable path so they would match neither copy. In the head they also
+    // need no stylesheet parsed before the browser can start the download.
+    {tagName: 'style', attributes: {}, innerHTML: '@font-face{font-family:\'Alegreya\';font-style:normal;font-weight:400 900;font-display:swap;src:url(\'/fonts/alegreya-latin.woff2\') format(\'woff2\');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:\'Alegreya\';font-style:normal;font-weight:400 900;font-display:swap;src:url(\'/fonts/alegreya-latin-ext.woff2\') format(\'woff2\');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:\'JetBrains Mono\';font-style:normal;font-weight:100 800;font-display:swap;src:url(\'/fonts/jetbrains-mono-latin.woff2\') format(\'woff2\');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:\'JetBrains Mono\';font-style:normal;font-weight:100 800;font-display:swap;src:url(\'/fonts/jetbrains-mono-latin-ext.woff2\') format(\'woff2\');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:\'Source Sans 3\';font-style:normal;font-weight:200 900;font-display:swap;src:url(\'/fonts/source-sans-3-latin.woff2\') format(\'woff2\');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:\'Source Sans 3\';font-style:normal;font-weight:200 900;font-display:swap;src:url(\'/fonts/source-sans-3-latin-ext.woff2\') format(\'woff2\');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:\'Source Sans 3\';font-style:italic;font-weight:200 900;font-display:swap;src:url(\'/fonts/source-sans-3-italic-latin.woff2\') format(\'woff2\');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:\'Source Sans 3\';font-style:italic;font-weight:200 900;font-display:swap;src:url(\'/fonts/source-sans-3-italic-latin-ext.woff2\') format(\'woff2\');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}'},
     // The two faces that draw the first screen, fetched in parallel with the
     // stylesheet rather than after it. Only the latin subsets: latin-ext and
     // the mono are left to the @font-face rules to pull when a page needs
@@ -99,19 +105,60 @@ const config: Config = {
     {tagName: 'link', attributes: {rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml'}},
     {tagName: 'link', attributes: {rel: 'icon', href: '/favicon-192.png', type: 'image/png', sizes: '192x192'}},
     {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180'}},
+    // Who publishes the site. The founders are named because an engine is
+    // judged by who writes it, and because a bare name and logo give an
+    // answer engine nothing to tie the project to: the people, the repository
+    // and the licence are what make it one identifiable thing rather than a
+    // word. All of it is already on /about.
     jsonLd({
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'Balaur',
+      alternateName: 'Balaur Engine',
       url: `${url}/`,
       logo: `${url}/brand/balaur-mark-light-512.png`,
-      sameAs: ['https://github.com/balaurengine', discordUrl],
+      description:
+        'Balaur is a free and open source 2D and 3D node-based game engine written in Rust, with Rune scripts that hot reload in milliseconds and an always-on deterministic tick.',
+      foundingDate: '2026',
+      founder: [
+        {
+          '@type': 'Person',
+          name: 'Dragos Daian',
+          url: 'https://github.com/Ughuuu',
+          sameAs: ['https://github.com/Ughuuu', 'https://appsinacup.com'],
+        },
+        {
+          '@type': 'Person',
+          name: 'Sébastien Crozet',
+          url: 'https://github.com/sebcrozet',
+          sameAs: ['https://github.com/sebcrozet'],
+        },
+      ],
+      sameAs: [
+        'https://github.com/balaurengine',
+        `${repoUrl}`,
+        discordUrl,
+      ],
     }),
+    // The site itself, with the search box that the built-in index answers.
     jsonLd({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Balaur',
+      alternateName: 'Balaur Engine',
       url: `${url}/`,
+      description:
+        'Documentation, devlog and downloads for Balaur, a deterministic 2D and 3D game engine in Rust.',
+      inLanguage: 'en',
+      publisher: {'@type': 'Organization', name: 'Balaur', url: `${url}/`},
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${url}/search/?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
     }),
   ],
 
