@@ -116,6 +116,8 @@ The components registered by the standard plugins:
 | `shape3d`, `shape2d` | render | Renderable 3D / 2D shape, with a `color` |
 | `sprite`, `tilemap`, `particles` | render | Textured 2D quad (with sheets), a tile grid over a tileset, a particle emitter |
 | `mesh` | render | An OBJ or glTF mesh, optionally skinned to a `skeleton` |
+| `boolean3d`, `boolean2d` | render | The node's children joined, cut out of one another, or overlapped |
+| `cloner` | render | The node's subtree drawn many times over, in one call per mesh |
 | `polygon` | render | A textured 2D polygon, GPU-skinned to a rig |
 | `camera` | render | The 2D or 3D camera |
 | `bone2d`, `bone3d` | core | A rest pose; a node with one is a bone |
@@ -132,3 +134,74 @@ component with every property, default, and option.
 
 A tagged-union property is always called `kind` (`kind = "ball"`), so `type`
 always means the datatype.
+
+## Objects
+
+Every shape the engine draws is a mesh, built without a GPU. A collider
+fitted to one collides what is on screen, a ray picks it, and a headless
+test can measure it.
+
+A `mesh` asset names one of four things:
+
+```toml
+[[assets]]
+id = "blade"
+type = "mesh"
+source = "models/blade.glb"   # a model file...
+kind = "torus"                # ...or a primitive, with its own knobs...
+kind = "text"                 # ...or a word, shaped from the project's fonts...
+kind = "extrude"              # ...or a path given thickness
+positions = [[0, 0, 0]]       # ...or the vertices themselves
+```
+
+The primitives are `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`,
+`torus`, `pyramid`, `prism` and `tube` in 3D, and `circle`, `rect`,
+`capsule`, `ellipse`, `star` and `ngon` in 2D. `shape3d` and `shape2d` draw
+them straight; a `mesh` asset is for when something else — a collider, a
+boolean, a script — needs the triangles too.
+
+### Paths
+
+A `path2d` or `path3d` is a run of cubic control points with a `closed`
+flag. `extrude` gives a closed outline thickness with an optional `bevel`,
+`lathe` revolves a profile around y, and `sweep` carries a cross-section
+along a rail. A `shape2d` polyline whose `mesh` names a `path2d` strokes it.
+
+```toml
+[[assets]]
+id = "arch"
+type = "mesh"
+kind = "extrude"
+path = "#outline"
+depth = 0.5
+bevel = 0.08
+```
+
+### Booleans and cloners
+
+`boolean3d` on a node draws its children joined, cut out of one another, or
+only where they overlap — `op` is `union`, `difference` or `intersection`,
+applied in the order the children are declared. The operands stay in the
+tree, hidden and editable, and moving one recomputes the result. `boolean2d`
+is the same over filled outlines.
+
+`cloner` draws the node's whole subtree many times over: `linear` with a
+`count` and a `step`, `radial` with a `radius` and an `angle` that closes
+the ring when it is zero, or `grid` with `counts`. A `seed` and a `random`
+range scatter the copies. The tree, physics and scripts still see one node,
+and each mesh is one draw call however many copies there are.
+
+### Vertex colours and morph targets
+
+A glTF's `COLOR_0` and its blend shapes survive the import. A morph weight is
+an ordinary component property, so a clip drives one as `mesh/morph.<name>`
+with the tracks it already has. Vertex colours reach a shader through a
+material that asks for them:
+
+```toml
+type = "material"
+shader = "shaders/painted.wesl"
+features = { vertex_color = true }
+```
+
+`examples/objects` shows all of it, one row per category.

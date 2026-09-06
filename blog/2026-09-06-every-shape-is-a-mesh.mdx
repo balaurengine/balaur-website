@@ -1,0 +1,78 @@
+---
+description: "Balaur devlog: ten 3D primitives, bezier paths extruded and swept, booleans, a cloner, and text as geometry — every one a mesh built without a GPU."
+slug: every-shape-is-a-mesh
+title: Every shape is a mesh
+authors: [dragos]
+image: /img/manual/objects_overview.png
+---
+
+Every shape is now a mesh built without a GPU. The triangles a collider is
+fitted to are the triangles on screen.
+
+{/* truncate */}
+
+![Every object, one row per category](/img/manual/objects_overview.webp)
+
+## What landed
+
+- **Primitives.** Torus, pyramid, prism, tube, rounded cuboid; ellipse, star
+  and ngon in 2D. `segments`, `rings`, `sides`, `corner_radius` on all of them.
+
+  ![The primitives row](/img/manual/objects_primitives.webp)
+
+- **Paths.** `path2d` and `path3d` assets. Extrude with a bevel, lathe, sweep
+  along a rail, stroke.
+
+  ![An arch extruded, a goblet revolved, a rail swept](/img/manual/objects_paths.webp)
+
+- **Booleans.** `boolean3d` and `boolean2d` over a node's children: union,
+  difference, intersection. Operands stay editable; moving one recomputes.
+  Booleans nest.
+
+  ![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
+
+- **Cloner.** Linear, radial, grid. `seed` and `random` scatter the copies. A
+  thousand copies are one draw call, custom materials included.
+
+  ![A row, a ring and a scattered grid](/img/manual/objects_cloner.webp)
+
+- **Text.** `kind = "text"` on a `mesh` asset: a word as geometry, counters
+  kept as holes, sized in world units, sitting on its baseline.
+
+- **Colours and morph targets.** Both survive a glTF import now. A morph
+  weight is a property, so a clip drives it as `mesh/morph.<name>`. Vertex
+  colours reach a material that asks: `features = { vertex_color = true }`.
+
+  ![A word as a mesh, and a triangle coloured per vertex](/img/manual/objects_text.webp)
+
+## Why one mesher
+
+- A collider fitted to a torus is a torus, not the box around one.
+- A ray picks the shape that is drawn.
+- Tests measure meshes: closed, outward-facing, the exact volume a boolean should have.
+- Deterministic by construction: `libm` for the curves, and a BSP that is dot
+  products and lerps with no transcendental to pin.
+
+```toml
+[[assets]]
+id = "ring"
+type = "mesh"
+kind = "torus"
+radius = 1.1
+tube_radius = 0.28
+
+[nodes.mesh]
+source = "#ring"
+
+[nodes.collider3d]
+kind = "trimesh"
+mesh = "#ring"
+```
+
+## Try it
+
+- `examples/objects`: five rows, one per category, and the camera walks them.
+  It runs [in the browser](/examples/?play=objects) too.
+- The [manual](/docs/manual/scenes#objects) and the generated
+  [asset](/docs/reference/assets) and [component](/docs/reference/components)
+  references.
