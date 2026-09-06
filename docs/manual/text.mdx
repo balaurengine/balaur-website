@@ -1,0 +1,131 @@
+---
+title: "Text in the world — text2d, text3d and the shaper"
+sidebar_label: "Text in the world"
+description: "A name over a character and a score on a sign in Balaur: the text2d and text3d components, outline and shadow, markup, bitmap fonts, and a measurement every platform agrees on."
+sidebar_position: 18
+---
+
+# Text in the world
+
+The widget layer draws text on the screen. This is the other half: text that
+lives in the scene, standing in front of the camera or painted on a wall. A
+name over a character, a score on a sign, damage numbers, a label on a bone.
+
+Both halves come from one shaper. Bidirectional text, Arabic joining, CJK and
+Thai line breaking and the project's font chain work the same in a panel and
+in the world, and both draw from one glyph atlas.
+
+## Two components
+
+`text2d` draws in the 2D pass, sized like a sprite. `text3d` draws in the 3D
+pass on a quad that faces the camera. They take the same keys.
+
+```toml
+[[nodes]]
+id = "sign"
+name = "Sign"
+position = [0.0, 1.6, 0.0]
+[nodes.text3d]
+text = "A score on a sign"
+font_size = 64
+color = [1.0, 0.85, 0.3, 1.0]
+pixels_per_unit = 110
+outline_size = 3.0
+outline_color = [0.1, 0.05, 0.0, 1.0]
+```
+
+`pixels_per_unit` sizes the block in the world the same way it sizes a sprite.
+`font_size` is the height in font pixels; this says how many of those go to one
+world unit. Doubling both leaves the text the same size on screen and twice as
+sharp.
+
+| Key | What it does |
+| --- | --- |
+| `text` | The string drawn |
+| `text_key` | A key in the project's strings, re-read every frame so a language change shows at once |
+| `family` | Which font chain to shape with: `ui`, `heading`, `mono` or `icons` |
+| `font` | A project-relative `.fnt` naming a bitmap face |
+| `font_size`, `font_weight`, `font_style` | Height in font pixels, 100–900, upright or italic |
+| `color`, `align` | Tint, and where the block sits across the node's origin |
+| `max_width`, `line_height`, `letter_spacing` | Wrapping width, baseline spacing, tracking |
+| `markup` | Read the text as markup |
+| `outline_size`, `outline_color` | An outline around the glyphs |
+| `shadow_offset_x`, `shadow_offset_y`, `shadow_color` | A shadow behind them |
+| `pixels_per_unit` | Font pixels to one world unit |
+
+`text3d` adds `billboard`, `double_sided`, `depth_test` and `alpha_cut`. A
+billboard turns to the camera every frame; turn it off and the block stays in
+the node's own plane, which is what a sign painted on a wall wants.
+
+## Markup
+
+With `markup = true` the text takes the same tags a widget's label does: `[b]`,
+`[i]`, `[color=#7fd4ff]`, `[wave amp= freq=]`, `[center]`, `[right]` and an
+inline `[img=…]`. A coloured run keeps its own colour over the block's.
+
+## From a script
+
+`render.set_text` changes what a node draws, for a score that moves every
+frame:
+
+```rune
+let node = scene::get_node("Hud/Score");
+render::set_text(node, format!("{}", this.score));
+```
+
+Two more calls draw text with no node at all, for one frame, the way a debug
+line does. Neither is recorded: a replay re-runs the script that drew.
+
+```rune
+render::draw_text(x, y, z, "over a character", #{ size: 32.0, align: "center" });
+render::draw_text_2d(x, y, "in the 2D pass", #{ size: 24.0 });
+```
+
+The editor uses them itself: the Rig tool labels bones in the viewport with
+`draw_text`.
+
+## Measuring
+
+`render.text_size` answers the width and height a string shapes to, in font
+pixels.
+
+```rune
+let (w, h) = render::text_size("measure me", #{ size: 32.0 });
+```
+
+It measures against the project's fonts and the bundled ones only, never the
+machine's, so every platform answers the same. That matters, because a width is
+presentation, and a script that writes one into state has put presentation in
+the digest. The same rule holds for a `kind = "text"` mesh, whose vertices are
+real geometry with colliders fitted to them.
+
+## Bitmap fonts
+
+A pixel font ships as the artist drew it. Point `font` at an AngelCode `.fnt`
+and the engine reads its page and every glyph's box, then lays the text out by
+advance and kerning — there is nothing to shape, because a bitmap font has one
+glyph per character and no contextual forms.
+
+```toml
+[nodes.text2d]
+text = "SCORE 1200"
+font = "fonts/pixel.fnt"
+font_size = 32
+```
+
+The page is copied into the same atlas the rasterised glyphs live in, so a
+bitmap glyph and a vector one are one texture and one draw.
+
+## Editing in the viewport
+
+Double-click a `text2d` or `text3d` in the Scene persona and a field opens over
+it. Enter keeps the text, Escape drops it.
+
+## What it costs
+
+A block is one mesh per colour it draws in, plus one for the outline and one
+for the shadow — not one node per letter. Sizes are rasterised in buckets, so
+two sizes a hair apart share their glyphs in the atlas.
+
+[`examples/text`](https://github.com/balaurengine/balaur/tree/main/examples/text)
+is a tour of all of it.

@@ -1,6 +1,6 @@
 ---
 title: "Examples — the projects that ship with the engine"
-description: "Seven example projects in the Balaur repository, from a spinning cube with a hot-reloading script to a 2D slingshot game, a skinned rig, a glTF rig, a WESL shader and two extensions — what each shows, how to open it, and three that run in the browser."
+description: "Eight example projects in the Balaur repository, from a spinning cube with a hot-reloading script to a 2D slingshot game, a skinned rig, a glTF rig, a WESL shader, text in the world and two extensions — what each shows, how to open it, and three that run in the browser."
 image: "/img/social/examples.png"
 ---
 
@@ -8,7 +8,7 @@ import ExampleGrid from '@site/src/components/ExampleGrid';
 
 # Examples
 
-Six projects — seven counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them. Each card carries the command that opens its project in the editor; press **Play** to run it in the browser instead, on the same engine built to WebAssembly.
+Seven projects — eight counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them. Each card carries the command that opens its project in the editor; press **Play** to run it in the browser instead, on the same engine built to WebAssembly.
 
 <ExampleGrid items={[
   {
@@ -54,6 +54,15 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
     image: 'example_rig3d',
     alt: 'examples/rig3d in the editor: the Column node with its three bones, the imported mesh bent by the sway clip',
     manual: {to: '/docs/manual/animation#skeletons-and-skins', label: 'Skeletons and skins'},
+    play: true,
+  },
+  {
+    name: 'text',
+    title: 'Text in the world',
+    text: <>A title with an outline, a sign that stays put beside a nameplate that turns to face you, a drop shadow, markup, a paragraph wrapped in the mono chain, and a <code>text2d</code> in the 2D pass. The camera arcs, so the billboard turns and the sign does not.</>,
+    icon: 'text-aa',
+    tone: 'ui',
+    manual: {to: '/docs/manual/text', label: 'Text in the world'},
     play: true,
   },
   {
