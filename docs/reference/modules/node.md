@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).
 
-45 functions, 0 constants. Scripts reach it as `node::`.
+46 functions, 0 constants. Scripts reach it as `node::`.
 
 ## Functions
 
@@ -26,6 +26,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `component_names()` | — | The names of every component on the node. |
 | `descendants()` | — | Every node under this one, in tree order, the node itself excluded. |
 | `detach_script()` | — | Drop the script instance on this node, so no further lifecycle call reaches it; the node and its components stay. |
+| `emit(name: string, payload: any?)` | — | Emit an event from this node, delivered at the top of the next frame to whoever subscribed to `name` on this node, and to whoever subscribed to `name` from anyone. `call` is the twin that reaches one known script, now. |
 | `get_component(component: string)` | — | The named component's properties as a table, nil when the node does not carry it. |
 | `get_node(path: string)` | — | The node at an `A/B/C` path relative to this one, `..` climbing to the parent; nil when nothing matches. |
 | `global_position()` | — | The node's position in world space, as of the last transform sync. |
@@ -58,7 +59,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_scale(x: float, y: float, z: float)` | — | Set the node's scale relative to its parent, as three numbers or one vector. |
 | `set_visible(node, on: bool)` | — | Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides. |
 | `set_z_index(node, z: int, relative: bool)` | — | Put the node and its subtree on a draw layer: higher draws later. Relative by default, adding to the parent's layer; false makes it absolute. |
-| `stable_id()` | — | The node's stable id — what a scene file declared or what `ids::mint` gave a spawned node — empty when it carries none. Survives rename and reparent, which a path does not. |
+| `stable_id()` | — | The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not. |
 | `tags(node)` | — | The names the node is filed under, sorted. |
 | `translate(x: float, y: float, z: float)` | — | Move the node by an offset in its parent's space, given as three numbers or one vector. |
 | `visible(node)` | — | Whether the node itself is set to draw; an ancestor may still hide it. |

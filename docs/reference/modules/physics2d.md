@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The 2D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. `physics` holds what spans both worlds.
 
-62 functions, 47 constants. Scripts reach it as `physics2d::`.
+66 functions, 48 constants. Scripts reach it as `physics2d::`.
 
 Acts on [`body2d`](../components/body2d.md), [`character2d`](../components/character2d.md), [`collider2d`](../components/collider2d.md), [`joint2d`](../components/joint2d.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -54,6 +54,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `overlaps(node) -> [node]` | [`collider2d`](../components/collider2d.md) | The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor. |
 | `point_hits(any) -> any` | — | Every collider containing a world point: what a mouse click asks. |
 | `predict_position(node, float) -> float, float` | [`body2d`](../components/body2d.md) | Where the body will be after `dt` seconds at its current velocity. |
+| `ragdoll(node, any?) -> any` | — | Build a 2D ragdoll from the rig under this node: a body and a capsule per bone, hinged to its parent's. The options table takes `thickness` (capsule radius as a fraction of bone length), `density`, `friction`, `limits` and `blend`. Answers the body nodes it made. |
 | `raycast(any) -> any` | — | The first collider a ray meets: `#{ from = [x, y], dir = [x, y], max = 100.0, filter = #{ exclude = node } }`. Returns `#{ node, point, normal, distance }`, or nothing. |
 | `raycast_all(any) -> any` | — | Every collider a ray meets, nearest first. |
 | `remove_joint(node)` | [`joint2d`](../components/joint2d.md) | Undo the node's joint, leaving both bodies free. |
@@ -73,6 +74,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_lock_translation(node, bool, bool)` | [`body2d`](../components/body2d.md) | Freeze the body's movement along x and y. |
 | `set_motor_position(node, float, float, float)` | [`joint2d`](../components/joint2d.md) | Drive the joint towards an angle or a distance, with a spring's stiffness and damping. |
 | `set_motor_velocity(node, float, float)` | [`joint2d`](../components/joint2d.md) | Drive the joint towards a speed: how a wheel is powered. |
+| `set_voxel(node, int, int, bool)` | [`collider2d`](../components/collider2d.md) | Fill or empty one cell of a voxel collider: digging a hole, or building a wall, while the game runs. |
 | `shape_hits(any) -> any` | — | Every collider a shape overlaps where it stands. |
 | `shapecast(any) -> any` | — | Sweep a shape along a direction until it hits something: a thick raycast. |
 | `sleep(node)` | [`body2d`](../components/body2d.md) | Put the body to sleep now. |
@@ -80,6 +82,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `user_force(node) -> float, float` | [`body2d`](../components/body2d.md) | The force the next step will integrate. |
 | `user_torque(node) -> float` | [`body2d`](../components/body2d.md) | The torque the next step will integrate. |
 | `velocity_at_point(node, float, float) -> float, float` | [`body2d`](../components/body2d.md) | How fast a world point on the body is moving, spin included. |
+| `voxel(node, int, int) -> bool` | [`collider2d`](../components/collider2d.md) | Whether one cell of a voxel collider is filled. |
+| `voxel_at(node, float, float) -> int, int` | [`collider2d`](../components/collider2d.md) | The cell a world position falls in, as two whole numbers. |
 | `wake_all()` | — | Wake every sleeping body in the 2D world. |
 | `wake_up(node)` | [`body2d`](../components/body2d.md) | Wake the body, so the next step moves it. |
 
@@ -132,5 +136,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `SHAPE_SEGMENT` | `segment` |
 | `SHAPE_TRIANGLE` | `triangle` |
 | `SHAPE_TRIMESH` | `trimesh` |
+| `SHAPE_VOXELS` | `voxels` |
 | `SOLVER_IMPULSE` | `impulse` |
 | `SOLVER_REDUCED` | `reduced` |

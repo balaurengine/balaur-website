@@ -19,7 +19,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | function | acts on | what it does |
 | --- | --- | --- |
 | `hardware_concurrency() -> any` | — | How many threads the browser reports, or nil off the web. |
-| `listen(node, any?)` | — | Have the node's `on_web_message(payload)` — or the `on_event` method the options name — called for every message the parent frame posts. |
+| `listen(node, any?)` | — | Have the node's `on_web_message(payload)`, or the `on_event` method the options name, called for every message the parent frame posts. |
 | `location() -> any` | — | The page's URL, or nil off the web. |
 | `messages() -> any` | — | Every message the parent frame posted this tick, for a script that would rather ask than declare a method. |
 | `post_message(any) -> bool` | — | Post a value to the page that embeds this one. False off the web, and false while a recording plays. |

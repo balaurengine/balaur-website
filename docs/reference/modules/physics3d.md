@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The 3D rigid-body world: bodies and colliders on nodes, their velocities, and overlap queries. `physics` holds what spans both worlds.
 
-88 functions, 62 constants. Scripts reach it as `physics3d::`.
+89 functions, 62 constants. Scripts reach it as `physics3d::`.
 
 Acts on [`body3d`](../components/body3d.md), [`character3d`](../components/character3d.md), [`collider3d`](../components/collider3d.md), [`joint3d`](../components/joint3d.md), [`vehicle3d`](../components/vehicle3d.md), [`wheel3d`](../components/wheel3d.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -38,7 +38,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `box_hits(any) -> any` | — | Every collider whose bounds meet an axis-aligned box; cheaper and looser than shape_hits. |
 | `closest_points(node, node) -> any` | — | The nearest point on each of two nodes' colliders. |
 | `collider_mass(node) -> float` | [`collider3d`](../components/collider3d.md) | What this collider weighs, density and size together. |
-| `collider_mesh(node) -> any` | [`collider3d`](../components/collider3d.md) | The collider's shape as points and triangles — including a voxel grid's — for drawing it or for spawning the pieces it broke into. |
+| `collider_mesh(node) -> any` | [`collider3d`](../components/collider3d.md) | The collider's shape as points and triangles, including a voxel grid's, for drawing it or for spawning the pieces it broke into. |
 | `collider_volume(node) -> float` | [`collider3d`](../components/collider3d.md) | How much space the shape encloses. |
 | `contacts(node) -> any` | [`collider3d`](../components/collider3d.md) | Every contact point on this node's collider this step: `#{ node, point, normal, impulse }` each. Empty for a sensor, which has no contacts by definition. |
 | `damping(node) -> float, float` | [`body3d`](../components/body3d.md) | This body's linear and angular damping. |
@@ -47,7 +47,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `effective_dominance(node) -> float` | [`body3d`](../components/body3d.md) | The dominance rapier will use for this body: its own group, or the rank every non-dynamic body outranks with. |
 | `gravity() -> float, float, float` | — | The 3D world's gravity. |
 | `gravity_scale(node) -> float` | [`body3d`](../components/body3d.md) | This body's gravity multiplier. |
-| `handles(node) -> any` | [`collider3d`](../components/collider3d.md) | The rapier handles behind this node — its body and its colliders — as `#{ body, colliders }` of index and generation pairs. For matching a log line against rapier's own output. |
+| `handles(node) -> any` | [`collider3d`](../components/collider3d.md) | The rapier handles behind this node, its body and its colliders, as `#{ body, colliders }` of index and generation pairs. For matching a log line against rapier's own output. |
 | `intersects(node, node) -> any` | — | Whether two nodes' colliders overlap right now, sensor or not. |
 | `is_ccd(node) -> bool` | [`body3d`](../components/body3d.md) | Whether continuous collision detection is on for this body. |
 | `is_enabled(node) -> bool` | [`body3d`](../components/body3d.md) | Whether the body is being simulated. |
@@ -60,7 +60,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `locked_axes(node) -> bool, bool, bool, bool, bool, bool` | [`body3d`](../components/body3d.md) | Which translation and rotation axes are frozen. |
 | `mass(node) -> float` | [`body3d`](../components/body3d.md) | The body's total mass, colliders included. |
 | `max_contact_impulse(node) -> float` | [`collider3d`](../components/collider3d.md) | The hardest contact this node took in the last step, zero when nothing touched it: a damage threshold in one number. |
-| `move_character(node, float, float, float) -> any` | [`character3d`](../components/character3d.md) | Move the character by an offset, sliding along walls, climbing steps and staying on the ground: returns `#{ x, y, z, grounded, sliding, collisions }`. Call it from fixed_update — it reads the world the step just wrote. |
+| `move_character(node, float, float, float) -> any` | [`character3d`](../components/character3d.md) | Move the character by an offset, sliding along walls, climbing steps and staying on the ground: returns `#{ x, y, z, grounded, sliding, collisions }`. Call it from fixed_update. It reads the world the step just wrote. |
 | `nearest_point(any) -> any` | — | The closest point on any collider to a world point. |
 | `next_position(node) -> float, float, float` | [`body3d`](../components/body3d.md) | The pose a kinematic body has been told to move to. |
 | `overlaps(node) -> [node]` | [`collider3d`](../components/collider3d.md) | The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor. |
@@ -68,6 +68,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `potential_energy(node) -> float` | [`body3d`](../components/body3d.md) | The body's gravitational potential energy over one step. |
 | `predict_position(node, float) -> float, float, float` | [`body3d`](../components/body3d.md) | Where the body will be after `dt` seconds at its current velocity. |
 | `predict_position_with_forces(node, float) -> float, float, float` | [`body3d`](../components/body3d.md) | The same, with the forces already applied taken into account: where a thrust or a spring will have put it. |
+| `ragdoll(node, any?) -> any` | — | Build a 3D ragdoll from the rig under this node: a body and a capsule per bone, hinged to its parent's. The options table takes `thickness` (capsule radius as a fraction of bone length), `density`, `friction`, `limits` and `blend`. Answers the body nodes it made. |
 | `raycast(any) -> any` | — | The first collider a ray meets: `#{ from = [x, y, z], dir = [x, y, z], max = 100.0, filter = #{ exclude = node, only = "dynamic" } }`. Returns `#{ node, point, normal, distance }`, or nothing. |
 | `raycast_all(any) -> any` | — | Every collider a ray meets, nearest first. |
 | `remove_joint(node)` | [`joint3d`](../components/joint3d.md) | Undo the node's joint, leaving both bodies free. |

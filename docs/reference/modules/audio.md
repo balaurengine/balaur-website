@@ -32,7 +32,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `play_event(string, any?) -> any` | — | Play a named sound: the next of its variations in turn, at its own volume and pitch, through its own bus. A `position` in the options table places it. Nil for a name nothing declared. |
 | `play_on(node) -> int` | [`sound`](../components/sound.md) | Start the node's own `sound` from the top, replacing what it had going, and return the new handle. |
 | `ready() -> bool` | — | Whether an output device is open. False on a page until the first gesture, and false for good with no sound card; playing before then hands out handles that make no sound. |
-| `set_bus_volume(string, float)` | — | Set one bus's gain and re-apply it to everything already playing on it — which is what a volume slider is. |
+| `set_bus_volume(string, float)` | — | Set one bus's gain and re-apply it to everything already playing on it: which is what a volume slider is. |
 | `set_emitter_position(int, any, any?, any?)` | — | Move what a handle plays from, so a sound follows something the script is driving; the frame takes its doppler from how far it moved. |
 | `set_listener(any, any?, any?)` | — | Put the ears at a point by hand, for a game whose view is not a node; a `listener` node in the scene takes it back on the next frame. |
 | `set_pitch(int, float)` | — | Set a playing handle's speed multiplier, which carries its pitch with it. |

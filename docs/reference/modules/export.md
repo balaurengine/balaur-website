@@ -18,8 +18,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
-| `listen(node, any?)` | — | Have the node's `on_export(event)` — or the `on_event` method the options name — called as each export starts, finishes or fails. |
+| `listen(node, any?)` | — | Have the node's `on_export(event)`, or the `on_event` method the options name, called as each export starts, finishes or fails. |
 | `output(string) -> any` | — | Where an export for this target will be written, as the project's `[export] output` decides. |
 | `running() -> int` | — | How many exports are in flight. |
 | `start(string, any?) -> bool` | — | Export the edited project for one target, on a thread. `download` allows fetching a missing template, `sign` names an identity, `output` overrides where it lands. Answers false while a recording plays. |
-| `targets() -> any` | — | Every target, each `{ name, bundle, installed, note }`: whether its runtime template is already here, and what a signed build of it would additionally need. |
+| `targets() -> any` | — | Every target, each `{ name, bundle, installed, note }`: whether its runtime template is already here, and what a signed build of it would also need. |

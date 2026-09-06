@@ -2,13 +2,13 @@
 title: "animation module"
 image: "/img/social/reference.png"
 sidebar_label: "animation"
-description: "Clip playback on a node's animation component — starting, holding, seeking — and tweens, short clips generated from a table of steps and addressed by the…"
+description: "Clip playback on a node's animation component: starting, holding, seeking, and tweens, short clips generated from a table of steps and addressed by the…"
 custom_edit_url: null
 ---
 
 # <span class="ref-icon ref-icon--animation" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M32,176H224v24a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8ZM216,48H40a8,8,0,0,0-8,8V80H224V56A8,8,0,0,0,216,48Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,88h80v80H40Zm96-16V56h32V72Zm-16,0H88V56h32Zm0,112v16H88V184Zm16,0h32v16H136Zm0-16V88h80v80Zm80-96H184V56h32ZM72,56V72H40V56ZM40,184H72v16H40Zm176,16H184V184h32v16Z"/></svg></span>`animation`
 
-Clip playback on a node's `animation` component — starting, holding, seeking — and tweens, short clips generated from a table of steps and addressed by the handle they hand back.
+Clip playback on a node's `animation` component: starting, holding, seeking, and tweens, short clips generated from a table of steps and addressed by the handle they hand back.
 
 16 functions, 0 constants. Scripts reach it as `animation::`.
 
@@ -26,7 +26,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `is_tween_running(any) -> bool` | — | Whether a handle still names a running tween; one that finished, was stopped, or lost its node answers false. Takes a tween handle, where `is_playing` takes a node and asks about its clip. |
 | `just_finished(node) -> string?` | [`animation`](../components/animation.md) | The clip that ended on this node during the last step, and nil on every other frame. |
 | `pause(node)` | [`animation`](../components/animation.md) | Hold the playhead where it is, keeping the clip current so `resume` has something to go back to. |
-| `play(node, string, any?)` | [`animation`](../components/animation.md) | Start the clip of that name on this node; the trailing options table takes `speed` (a multiplier) and `from_start`. |
+| `play(node, string, any?)` | [`animation`](../components/animation.md) | Start the clip of that name on this node; the trailing options table takes `speed` (a multiplier), `from_start`, and `retarget` (a `bone_map` reference, so this rig can play another rig's clips). |
 | `queue(node, string)` | [`animation`](../components/animation.md) | Play the clip of that name once the current one ends; a looping clip never ends, so a queue behind one never drains. |
 | `resume(node)` | [`animation`](../components/animation.md) | Carry on from where `pause` left off; a stopped, finished or never-started node is left alone. |
 | `seek(node, float)` | [`animation`](../components/animation.md) | Move the playhead to a number of seconds and pose the node there, even on a paused or ended clip. |

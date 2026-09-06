@@ -2,7 +2,7 @@
 title: "tileset asset type"
 image: "/img/social/reference.png"
 sidebar_label: "tileset"
-description: "An image cut into equal tiles for the tilemap component: texture names the image, tile_size is the pixel length of one tile edge and columns is how many…"
+description: "An image cut into equal tiles for the tilemap component: texture names the image, tile_size is one tile in pixels — a number, or [w, h] for a sheet whose…"
 custom_edit_url: null
 ---
 
@@ -11,9 +11,16 @@ custom_edit_url: null
 Files live in `tilesets/`. Used by [`tilemap`](../components/tilemap.md) · `tileset`.
 
 An image cut into equal tiles for the `tilemap` component: `texture` names
-the image, `tile_size` is the pixel length of one tile edge and `columns` is
-how many tiles one row of the image holds. Tile indices count row by row
-from the top left.
+the image, `tile_size` is one tile in pixels — a number, or `[w, h]` for a
+sheet whose tiles are not square — and `columns` is how many tiles one row of
+the image holds. `spacing` is the gutter between tiles and `margin` the border
+around the sheet, both zero by default. Tile indices count row by row from the
+top left.
+
+A `[tiles.<id>]` table says what one tile is. `collision` is `"full"` for a
+solid cell, or a list of polygons in tile pixels with y down from the tile's
+top-left corner; `one_way` makes a platform a body passes through from below.
+A tile with no table of its own is the plain quad it always was.
 
 ```toml
 [[assets]]
@@ -22,4 +29,10 @@ type = "tileset"
 texture = "art/dungeon.png"
 tile_size = 16
 columns = 8
+
+[tiles.3]
+collision = "full"
+
+[tiles.7]
+collision = [[[0, 16], [16, 16], [16, 8]]]
 ```

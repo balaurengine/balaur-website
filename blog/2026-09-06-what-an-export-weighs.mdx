@@ -29,13 +29,20 @@ runtime beside it is 17.9 MB.
   script string literal or `id://` reference names. Off by default; `keep`
   protects a path a script builds at run time.
 - **Images.** `images = "smallest"` keeps the smaller of the PNG optimiser
-  and lossless WebP. A 512-pixel logo: 20.7 KB to 8.3 KB, same pixels. JPEGs
-  are left alone.
+  and lossless WebP, the same pixels either way. A 128x256 sprite goes 1.1 KB
+  to 0.5 KB. JPEGs are left alone, since re-encoding one loses twice.
 - **Fonts.** `fonts = "subset"` keeps the code points in the project's scenes
   and scripts, printable ASCII, and any `font_ranges` named for server text.
-  One face: 421 KB to 92 KB. Kerning, ligatures and Arabic joining survive;
+  One face: 421 KB to 29 KB. Kerning, ligatures and Arabic joining survive;
   `font_keep` ships a face whole.
 - **Audio.** `audio = "flac"`: WAV as FLAC, lossless, about half the size.
+- **Lossy, under their own names.** `images = "quantised"` with
+  `images_quality`, `audio = "vorbis"` with `audio_quality`. Separate keys on
+  purpose, so a lossless setting never quietly becomes a lossy one, and
+  `smallest` never quantises.
+- **One file can disagree.** `recode` in a picture's import settings beats the
+  export's mode for that file alone, so a logo ships exactly as drawn while the
+  rest is squeezed.
 - **Bitmap fonts.** `.fnt` descriptors are in the pack's extension list; a
   game shipping one drew nothing before.
 
@@ -44,12 +51,12 @@ header, so a re-encoded texture is the same sprite and the same world.
 
 ```toml
 [export]
-strip = true            # drop an asset no scene, script or keep glob names
-keep = ["sfx/**"]       # ...except paths a script builds at run time
-font_keep = ["fonts/ui-*"]  # ship these faces whole even when subsetting
-images = "smallest"     # recompress PNG, or write lossless WebP, whichever wins
-fonts = "subset"        # cut a face to the characters the project actually shows
-audio = "flac"          # write uncompressed WAV as lossless FLAC
+strip = true                # drop an asset no scene, script or keep glob names
+keep = ["sfx/**"]           # ...except paths a script builds at run time
+images = "smallest"         # recompress PNG, or write lossless WebP, whichever wins
+fonts = "subset"            # cut a face to the characters the project shows
+font_keep = ["fonts/ui-*"]  # ...but ship these whole
+audio = "flac"              # write uncompressed WAV as lossless FLAC
 ```
 
 ## Not size levers

@@ -40,4 +40,4 @@ From [`physics3d`](../modules/physics3d.md):
 | method | what it does |
 | --- | --- |
 | `is_grounded() -> bool` | Whether the last move ended with ground under the character's feet. |
-| `move_character(float, float, float) -> any` | Move the character by an offset, sliding along walls, climbing steps and staying on the ground: returns `#{ x, y, z, grounded, sliding, collisions }`. Call it from fixed_update — it reads the world the step just wrote. |
+| `move_character(float, float, float) -> any` | Move the character by an offset, sliding along walls, climbing steps and staying on the ground: returns `#{ x, y, z, grounded, sliding, collisions }`. Call it from fixed_update. It reads the world the step just wrote. |

@@ -161,9 +161,20 @@ you edit it.
 
 ### Modifiers
 
-A `modifier2d` component runs after the clip every frame. `look_at` turns one
-bone toward a target node; `two_bone_ik` solves a root, middle and tip chain
-so the tip reaches the target, with `flip` choosing the bend side.
+A `modifier2d` component runs after the clip every frame, so a clip poses the
+rig and a modifier has the last word. `modifier3d` is the same five kinds
+over `bone3d`.
+
+| `kind` | What it does |
+| --- | --- |
+| `look_at` | Turns one bone so it points at a target node. |
+| `two_bone_ik` | Bends a root, middle and tip chain so the tip reaches the target; `flip` picks the bend side. |
+| `fabrik` | Reaches with a chain of any length. Converges from any pose. `iterations`, `tolerance`. |
+| `ccdik` | The same reach, one bone at a time, and the only one that can hold an `angle_limit` per bone. |
+| `jiggle` | No target: a spring per bone toward the pose the clip left it in, so a chain trails a walk and settles when it stops. `stiffness`, `damping`, `mass`, `gravity`, `use_gravity`. |
+
+`chain` says how many bones a chain solver walks, counting the driven one.
+Zero walks to the deepest tip.
 
 ```toml
 [nodes.modifier2d]
@@ -171,6 +182,115 @@ kind = "two_bone_ik"
 bone = "Shoulder"
 target = "Target"
 ```
+
+```toml
+# The plume in examples/rig: nothing keys it, and it moves anyway.
+[nodes.modifier2d]
+kind = "jiggle"
+bone = "Hip/Thigh/Shin/Plume"
+stiffness = 26.0
+damping = 0.32
+use_gravity = true
+```
+
+![The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it](/img/manual/rigging_modifiers.webp)
+
+In the editor the chain a modifier solves is drawn in the viewport, with a
+dashed line to the target and a handle that drags the node it names. It is
+the same walk the solver makes, so a `chain` of two draws two bones.
+
+### Deforming a mesh without a bone
+
+A `polygon/deform` track keys an `[dx, dy]` offset per vertex, added to the
+mesh's authored positions before it is skinned. Spine calls it free-form
+deformation: a mouth, a cape edge or a breathing outline, without a bone for
+each. It is the one track that goes past four numbers per key.
+
+```toml
+[[tracks]]
+target = "Limb"
+property = "polygon/deform"
+keys = [
+  { t = 0.0, value = [0, 0, 0, 0] },
+  { t = 1.0, value = [-0.09, 0, 0.09, 0], ease = "in_out_sine" },
+]
+```
+
+In the Polygon tool's Points mode, dragging a vertex with the Animate persona
+armed moves the offset rather than the mesh, and the inspector's **Deform ·
+key** row writes it at the playhead.
+
+### One rig's clips on another
+
+A `bone_map` asset pairs canonical bone names with the node paths they take on
+one rig, so a clip authored for a different skeleton plays:
+
+```toml
+type = "bone_map"
+
+[bones]
+Hips = "Armature/Hips"
+Spine = "Armature/Hips/Spine"
+```
+
+```rune
+animation::play(hero, "walk", #{ "retarget": "animations/hero.bonemap.toml" });
+```
+
+Each track's target is renamed through the map before the pose is written. A
+rotation key is read as a turn away from the profile's rest and applied to
+this rig's. A position key is scaled by how much longer this rig's bone rests.
+
+A track the map says nothing about keeps the path it was authored with, so a
+clip that half matches plays the half that does. `skeleton_profile` is the
+canonical skeleton the names come from; leaving it out uses the built-in
+humanoid.
+
+![The Bone map dock: canonical names on the left, the rig's own bones on the right](/img/manual/rigging_bonemap.webp)
+
+The **Bone map** dock fills the rows it can by name and writes the asset. It
+ignores case, separators and an exporter's prefix, so `LeftUpperArm` finds
+`mixamorig:LeftUpperArm`.
+
+### Weights, mirroring and tracing
+
+The **Weights** dock is the numbers behind the Polygon tool's brush: the
+picked vertices, one editable weight per bone, and a per-vertex sum that goes
+red when it is not one. It has **Bind** and **Unbind**, **Normalise**,
+**Auto** (weights by distance to each bone's segment) and **Smooth** (average
+with the vertices sharing an edge).
+
+![The Weights dock over a skinned polygon](/img/manual/rigging_weights.webp)
+
+**Mirror** is one verb in both tools. The Rig's reflects every bone's rest
+over the node's x or y, and hands each bone's rest to the bone whose name
+differs by a side: `Arm_L` to `Arm_R`, `left_hand` to `right_hand`. The
+Polygon's reflects the picked vertices and swaps the weights the same way.
+
+**Trace** walks a texture's alpha at a threshold and writes the outline it
+finds as the polygon's points, simplified to a tolerance in pixels. It is the
+shape a sprite already has, without clicking it out.
+
+### Ragdolls
+
+`physics2d.ragdoll(node, opts)` walks a rig into a body and a capsule per
+bone, hinged to its parent's. It leaves a `ragdoll` component whose `blend`
+moves each bone from the pose the clip wrote toward its body's:
+
+```rune
+physics2d::ragdoll(this.node, #{ blend: 0.0, thickness: 0.22, limits: [-0.7, 0.7] });
+// … and later, to fall over:
+physics::ragdoll_blend(this.node, 1.0);
+```
+
+At `0` the clip is in charge and the bodies simulate unseen, so turning the
+blend up does not snap the rig to a fresh pose. At `1` it is limp. Tween
+between them and a hit pushes an animation around without ending it.
+
+The bodies are ordinary nodes with ordinary `body2d`, `collider2d` and
+`joint2d` components, so a ragdoll is inspectable, undoable and saved with
+the scene. The editor's **Skeleton · Ragdoll** row is this call.
+`physics3d.ragdoll` is the 3D twin.
 
 ### 3D rigs
 
@@ -192,9 +312,11 @@ draw against `package::mesh` and know nothing about a palette. Both compute the
 same blend: the shader's is `@const`, so a headless test holds it to the CPU
 reference without a GPU.
 
-![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp) `examples/rig` is one figure: a skinned body swung by a clip, with an arm
-branching off its top bone that reaches on two-bone IK;
-`examples/rig3d` is a column imported this way.
+![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp) `examples/rig` is one figure showing four kinds of rigging at once. A clip
+keys the bone rotations, two-bone IK reaches the arm at a moving target, a
+`jiggle` plume trails behind, and a `polygon/deform` track breathes the
+outline. It falls into a ragdoll every few seconds. `examples/rig3d` is a
+column imported this way.
 
 ## Deterministic, and scheduled deliberately
 

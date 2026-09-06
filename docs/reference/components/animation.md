@@ -38,7 +38,7 @@ From [`animation`](../modules/animation.md):
 | `is_playing() -> bool` | Whether a clip is advancing on this node; a paused, stopped, finished or absent one answers false. |
 | `just_finished() -> string?` | The clip that ended on this node during the last step, and nil on every other frame. |
 | `pause()` | Hold the playhead where it is, keeping the clip current so `resume` has something to go back to. |
-| `play(string, any?)` | Start the clip of that name on this node; the trailing options table takes `speed` (a multiplier) and `from_start`. |
+| `play(string, any?)` | Start the clip of that name on this node; the trailing options table takes `speed` (a multiplier), `from_start`, and `retarget` (a `bone_map` reference, so this rig can play another rig's clips). |
 | `queue(string)` | Play the clip of that name once the current one ends; a looping clip never ends, so a queue behind one never drains. |
 | `resume()` | Carry on from where `pause` left off; a stopped, finished or never-started node is left alone. |
 | `seek(float)` | Move the playhead to a number of seconds and pose the node there, even on a paused or ended clip. |

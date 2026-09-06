@@ -23,4 +23,4 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `intersect(any, any) -> any` | — | The mesh both meshes have in common, or nothing when they do not overlap. |
 | `pieces(any) -> any` | — | The mesh's separate parts, one mesh each: what a model that was already broken is made of. |
 | `split(any, any) -> any` | — | Cut the mesh with a plane, returning the two halves: `#{ point = [..], normal = [..] }`. |
-| `voxelize(any, any?) -> any` | — | The mesh as a voxel grid — `#{ size, cells }`, ready to be a `voxels` asset — so a model can become destructible terrain. |
+| `voxelize(any, any?) -> any` | — | The mesh as a voxel grid (`#{ size, cells }`, ready to be a `voxels` asset) so a model can become destructible terrain. |

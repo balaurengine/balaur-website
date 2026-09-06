@@ -20,7 +20,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `break_on_error()` | — | Whether a script that throws stops rather than being logged. |
 | `breakpoints(path: string)` | — | The lines one file's breakpoints landed on. |
-| `paused()` | — | Where a script is stopped — node, path, line, reason and frames, innermost first — or nil while none is. |
+| `paused()` | — | Where a script is stopped (node, path, line, reason and frames, innermost first) or nil while none is. |
 | `request_break()` | — | Ask to stop at the next line any script runs; nothing is stopped yet when it returns. |
 | `resume(mode: string?)` | — | Let the stopped script go on, in the given step mode (`CONTINUE`, `STEP_OVER`, `STEP_INTO`, `STEP_OUT`). |
 | `scope()` | — | The node whose subtree a pause holds still, or nil when a pause stops the whole tree. |

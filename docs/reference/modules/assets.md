@@ -23,7 +23,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `duplicate(reference: string)` | — | A private copy of a definition, read past the cache, so editing it disturbs no other holder of that reference. |
 | `exists(reference: string)` | — | Whether a reference resolves to a definition that is really there; false rather than an error when it does not. |
 | `id(path: string) -> string?` | — | The id `assets/index.toml` gives a file, or nil when it has none. |
-| `invalidate()` | — | Declare everything derived from project files stale — a shader a material links, say — so it is rebuilt from disk; for a file the watcher does not cover. |
+| `invalidate()` | — | Declare everything derived from project files stale (a shader a material links, say) so it is rebuilt from disk; for a file the watcher does not cover. |
 | `load(reference: string)` | — | The definition table behind a reference, from the cache; an error when the reference resolves to nothing. |
 | `path(reference: string) -> string` | — | The path an `id://` reference resolves to in the running project; a path comes back as itself, and an unknown id is an error naming the index. |
 | `reload(reference: string)` | — | Forget a reference so the next load re-reads its file, along with every entry cut from that same file. |

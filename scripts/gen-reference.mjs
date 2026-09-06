@@ -44,10 +44,11 @@ const COMPONENT_ICONS = {
   collider2d: 'selection', collider3d: 'selection', character2d: 'person-simple-run',
   character3d: 'person-simple-run', joint2d: 'link', joint3d: 'link', vehicle3d: 'car',
   wheel3d: 'tire', bone2d: 'bone', bone3d: 'bone', animation: 'film-strip',
-  modifier2d: 'sliders-horizontal', sound: 'speaker-high', widget: 'layout',
+  modifier2d: 'sliders-horizontal', modifier3d: 'sliders-horizontal', ragdoll: 'person-simple-throw',
+  sound: 'speaker-high', widget: 'layout',
   light2d: 'sun', occluder2d: 'moon', listener: 'ear',
 };
-const ASSET_ICONS = {animation_clip: 'film-strip', heightfield: 'mountains', material: 'paint-brush', mesh: 'cube', tileset: 'grid-nine', voxels: 'stack', widget_theme: 'palette'};
+const ASSET_ICONS = {animation_clip: 'film-strip', bone_map: 'swap', heightfield: 'mountains', material: 'paint-brush', mesh: 'cube', skeleton_profile: 'bone', tileset: 'grid-nine', voxels: 'stack', widget_theme: 'palette'};
 const MODULE_ICONS = {
   animation: 'film-strip', assets: 'package', audio: 'speaker-high', debugger: 'bug', engine: 'engine',
   fs: 'folder-open', gamend: 'cloud', geometry3d: 'cube-transparent', http: 'globe', input: 'game-controller',

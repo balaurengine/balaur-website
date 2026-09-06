@@ -45,8 +45,6 @@ group are ordered by it.
       `<>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>`,
     'Curve editor and onion skin':
       `'Tangent handles on keys and ghosted neighbouring frames in the timeline.'`,
-    'Rigging panels':
-      `'A weight table with auto and smooth weights, handles for IK targets, bone names in the viewport, mirror and symmetry, a mesh traced from an image, deform keys, and a bone map for retargeting. The Rig and Polygon tools, four mesh modes with a brush, and the rest-pose verbs are there today.'`,
     'Selection, alignment and a library':
       `<>Select several nodes, box-select, group, align and distribute, hide, lock and isolate; filter the outliner; drop an image, a <code>.glb</code> or a sky onto the viewport and get a node; gizmos for lights and cameras; wireframe and normals views; a pen tool; a material panel; and a library of materials, skies, models and templates to start from.</>`,
     'Network dock and Play as two':
@@ -62,9 +60,7 @@ group are ordered by it.
     'Soft bodies, tearing, fluids':
       `'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.'`,
     'Animation blending':
-      `'Blend trees and state machines that mix clips by weight, and IK in 3D.'`,
-    'More of a rig':
-      `<>FABRIK and CCDIK chains, jiggle, a clip played on another rig through a bone map, vertex deform tracks, and a ragdoll built from the bones. <code>look_at</code> and two-bone IK are built.</>`,
+      `'Blend trees and state machines that mix clips by weight. A rig is otherwise complete — five modifier kinds in 2D and 3D, retargeting, deform tracks and ragdolls — and what is missing is running two clips at once.'`,
     'A sequencer':
       `'Cutscenes and cameras on a timeline, with tracks that call something rather than only move it.'`,
     'Pause, time scale and smooth frames':

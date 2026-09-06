@@ -9,13 +9,40 @@
 // Prose is what is left after front matter, code fences, images, tags,
 // tables, headings and link URLs are removed; inline code counts as one word.
 //
+// The same run feeds each page through avoid-ai-writing-detector, the
+// mechanical half of the avoid-ai-writing skill: the tier word lists, hollow
+// intensifiers, template phrases, transition openers, "it's not X, it's Y",
+// bold overuse, chatbot artifacts and the rest. Its P0 and P1 findings are
+// errors; P2, P3 and the stylometric heuristics are reports, printed with
+// --reports and never failing, because a heuristic that fails the build
+// teaches people to game the heuristic.
+//
 //   node scripts/lint-prose.mjs            # blog/ and docs/, exit 1 on error
+//   node scripts/lint-prose.mjs --reports  # show P2/P3 and stylometric notes
 //   node scripts/lint-prose.mjs blog/x.mdx # one file
 import {existsSync, readdirSync, readFileSync, statSync} from 'node:fs';
 import {dirname, join, relative} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+
+const detector = await import('avoid-ai-writing-detector')
+  .then((m) => (m.default?.analyzeText ? m.default : m.default?.default))
+  .catch(() => null);
+if (!detector?.analyzeText) {
+  console.error('avoid-ai-writing-detector is not installed: run `yarn install`');
+  process.exit(2);
+}
+// Statistical signals over the whole document. Useful to read, wrong to fail
+// a build on: a short factual post trips them by being short and factual.
+// Words the detector reads as filler that are names here. `showcase` is the
+// engine's screenshot pipeline (scripts/showcase.sh); `features` is the cargo
+// noun and the /features page, never the inflated verb.
+const DOMAIN_TERMS = new Set(['showcase', 'features']);
+const HEURISTIC_TYPES = new Set([
+  'uniformity', 'low-ttr', 'punct-distribution', 'fnword-trigram-entropy',
+  'cross-para-burstiness', 'normalization-flag',
+]);
 
 const PROFILES = {
   // The devlog: short by rule.
@@ -43,7 +70,8 @@ const PHRASES = [
 ];
 
 const findings = [];
-const err = (file, line, rule, message) => findings.push({file, line, rule, message});
+const err = (file, line, rule, message) => findings.push({file, line, rule, message, level: 'ERROR'});
+const report = (file, line, rule, message) => findings.push({file, line, rule, message, level: 'report'});
 
 function frontMatter(src) {
   const m = src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
@@ -151,6 +179,25 @@ function lint(file) {
     if (/^\s*(-|\*|\d+\.)\s+(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|`[^`]+`)\s*—\s/.test(l)) continue;
     err(rel, i + 1, 'em-dash', 'em dash in prose; use a comma, a colon, a period or a list');
   }
+
+  // The detector reads markdown, so it gets the page with only the MDX
+  // machinery removed: front matter, code fences, {/* */}, imports and tags.
+  const md = src
+    .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
+    .replace(/(```|~~~)[\s\S]*?\1/g, '')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+    .replace(/^\s*(import|export)\s.*$/gm, '')
+    .replace(/<[^>]+>/g, '');
+  const lower = src.toLowerCase();
+  for (const issue of detector.analyzeText(md).issues ?? []) {
+    if (DOMAIN_TERMS.has(String(issue.text ?? '').toLowerCase())) continue;
+    const at = issue.text ? lower.indexOf(String(issue.text).toLowerCase()) : -1;
+    const line = at >= 0 ? src.slice(0, at).split('\n').length : 1;
+    const label = detector.TYPE_LABELS?.[issue.type] ?? issue.type;
+    const message = `"${issue.text}" (${label}): ${issue.suggestion ?? 'cut it'}`;
+    const hard = (issue.severity === 'critical' || issue.severity === 'high') && !HEURISTIC_TYPES.has(issue.type);
+    (hard ? err : report)(rel, line, `ai:${issue.type}`, message);
+  }
 }
 
 function walk(dir, out = []) {
@@ -162,7 +209,9 @@ function walk(dir, out = []) {
   return out;
 }
 
-const args = process.argv.slice(2);
+const argv = process.argv.slice(2);
+const showReports = argv.includes('--reports');
+const args = argv.filter((a) => !a.startsWith('--'));
 const files = args.length
   ? args.map((a) => join(ROOT, a))
   : [...walk(join(ROOT, 'blog')), ...walk(join(ROOT, 'docs'))];
@@ -174,6 +223,9 @@ for (const f of files) {
   linted += 1;
 }
 findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
-for (const f of findings) console.log(`ERROR  ${f.file}:${f.line}  [${f.rule}] ${f.message}`);
-console.log(`\n${linted} files · ${findings.length} errors`);
-process.exit(findings.length ? 1 : 0);
+const errors = findings.filter((f) => f.level === 'ERROR');
+const reports = findings.filter((f) => f.level === 'report');
+for (const f of errors) console.log(`ERROR  ${f.file}:${f.line}  [${f.rule}] ${f.message}`);
+if (showReports) for (const f of reports) console.log(`report ${f.file}:${f.line}  [${f.rule}] ${f.message}`);
+console.log(`\n${linted} files · ${errors.length} errors · ${reports.length} reports${showReports ? '' : ' (--reports to list)'}`);
+process.exit(errors.length ? 1 : 0);

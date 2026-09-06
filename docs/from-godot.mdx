@@ -45,7 +45,9 @@ make it, and a collider sits on the same node as its body, not on a child.
 | `PointLight2D`, `LightOccluder2D` | [`light2d`](/docs/reference/components/light2d), [`occluder2d`](/docs/reference/components/occluder2d) |
 | `AudioStreamPlayer`, `AudioListener3D` | [`sound`](/docs/reference/components/sound), [`listener`](/docs/reference/components/listener) |
 | `Skeleton2D` / `Bone2D`, `Skeleton3D` | Nodes with [`bone2d`](/docs/reference/components/bone2d) / [`bone3d`](/docs/reference/components/bone3d) |
-| `SkeletonIK`, `LookAtModifier` | [`modifier2d`](/docs/reference/components/modifier2d): `look_at`, `two_bone_ik` |
+| `SkeletonIK`, `LookAtModifier`, `SkeletonModification2DFABRIK` / `CCDIK` / `Jiggle` | [`modifier2d`](/docs/reference/components/modifier2d) and `modifier3d`: `look_at`, `two_bone_ik`, `fabrik`, `ccdik`, `jiggle` |
+| `BoneMap`, `SkeletonProfile` | A `bone_map` asset and `animation.play(node, clip, { retarget })` |
+| `PhysicalBone2D`, *Create Physical Skeleton* | `physics2d.ragdoll(node)`, and a `ragdoll` component whose `blend` mixes the clip with the simulation |
 | `AnimationPlayer` | [`animation`](/docs/reference/components/animation): a clip library and an `autoplay` |
 | `Label`, `Button`, `Panel` | [`widget`](/docs/reference/components/widget) with `kind = "label"` / `"button"` / `"panel"` |
 | `Control` layouts, editor plugins | The `ui` module: immediate-mode egui in `draw_ui` ([UI](/docs/manual/ui)) |

@@ -68,6 +68,16 @@ Prose is what is left after front matter, code, images, tags, tables and link
 URLs are removed. Generated and synced files are not linted; their fix is in
 the generator or the engine repo.
 
+The same run feeds each page through `avoid-ai-writing-detector`, the
+mechanical half of the `avoid-ai-writing` skill (MIT, a dev dependency): the
+tier word lists, hollow intensifiers, template phrases, "it's not X, it's Y",
+transition openers, bold overuse and the rest. A P0 or P1 finding is an
+error; P2 and P3, and the stylometric heuristics, print with `--reports` and
+never fail. The skill's judgement-only rules (invented specifics, fake first
+person) have no lint; that is still a read. A name it misreads as filler
+(`showcase`, the screenshot pipeline; `features`, the cargo noun) goes in the
+script's `DOMAIN_TERMS`, not into a rewording.
+
 ## Before committing
 
     yarn lint && yarn typecheck && yarn build

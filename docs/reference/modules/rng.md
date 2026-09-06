@@ -20,6 +20,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `int(low: int, high: int)` | — | A whole number from the deterministic engine stream, uniform in `[low, high]`, both ends included. |
 | `random()` | — | A float from the deterministic engine stream, uniform in `[0, 1)`. |
-| `range(low: float, high: float)` | — | A float from the deterministic engine stream, uniform in `[low, high)` — the two arguments. |
+| `range(low: float, high: float)` | — | A float from the deterministic engine stream, uniform in `[low, high)`: the two arguments. |
 | `seed(seed: int)` | — | Restart the deterministic engine stream at the given seed, so every draw after it repeats. |
 | `uuid()` | — | A version-4 UUID drawn from the deterministic engine stream, so a replay makes the same ids; not for anything that must be unique across machines. |

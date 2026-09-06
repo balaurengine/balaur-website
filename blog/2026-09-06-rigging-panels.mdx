@@ -1,0 +1,58 @@
+---
+description: "Balaur devlog: FABRIK, CCDIK and jiggle in 2D and 3D, deform tracks, retargeting through a bone map, ragdolls from a rig, and the editor panels for all of it."
+slug: rigging-panels
+title: The rest of the rig
+authors: [dragos]
+image: /img/manual/rigging_weights.png
+keywords: [fabrik, ccdik, jiggle, ragdoll, bone map, retargeting, weight painting, free-form deformation]
+---
+
+Five modifier kinds instead of two, in 3D as well as 2D. A track that keys
+vertices. One rig's clips on another. A ragdoll faded in halfway.
+
+{/* truncate */}
+
+![The Weights dock over a skinned polygon: the picked vertices, one editable number per bone](/img/manual/rigging_weights.webp)
+
+## What landed
+
+- **Chain solvers and a spring.** `modifier2d` gained `fabrik`, `ccdik` and
+  `jiggle`. Jiggle has no target: it springs each bone toward the pose the
+  clip left, so a plume trails a walk. `modifier3d` is the same five kinds,
+  and is entirely new.
+
+  ![A modifier's chain, the dashed line to its target, and the handle that drags it](/img/manual/rigging_modifiers.webp)
+
+- **Deform tracks.** `polygon/deform` keys an offset per vertex, added before
+  skinning. A mouth or a cape edge, without a bone for each.
+
+- **Retargeting.** A `bone_map` pairs canonical bone names with the paths
+  they take on one rig. A rotation key is read as a turn away from the
+  profile's rest, so a clip built for another skeleton still lands.
+
+  ![The Bone map dock: canonical names on the left, the rig's own bones on the right](/img/manual/rigging_bonemap.webp)
+
+- **Ragdolls.** `physics2d.ragdoll(node)` walks a rig into a body and a
+  capsule per bone, hinged to its parent's. A `blend` mixes the clip's pose
+  with the simulated one.
+
+- **The panels.** A Weights dock with Bind, Unbind, Normalise, Auto and
+  Smooth. Mirror in both tools. Trace, over a texture's alpha. Bone names in
+  the viewport.
+
+## Two bugs the spring taught us
+
+Both need a hard shove. The test that found them teleports the rig three
+units sideways in one frame.
+
+- **It read its own answer.** A jiggle bone springs toward the pose the clip
+  wrote. Read that off the bone and you read the spring's last answer, because
+  the spring wrote it. The two agree at any angle, upside down included, so
+  one shove left the chain inverted.
+
+- **The point was held too tightly.** It started out kept on the bone's own
+  circle. But a point flung past the origin sits opposite the pose, where the
+  pull is along the radius the projection cancels. It is a direction, not a
+  joint.
+
+The [Animation manual](/docs/manual/animation) has the tables and the TOML.

@@ -10,7 +10,9 @@ custom_edit_url: null
 
 What spans both physics worlds at once: pausing, sleeping and clearing. Bodies and colliders live in `physics2d` and `physics3d`.
 
-13 functions, 0 constants. Scripts reach it as `physics::`.
+14 functions, 0 constants. Scripts reach it as `physics::`.
+
+Acts on [`ragdoll`](../components/ragdoll.md): those functions are also methods on the component's handle, without the node argument.
 
 ## Functions
 
@@ -23,11 +25,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `debug_draw() -> any` | — | What the debug renderer is drawing now, as a table of `enabled` and one flag per mode. |
 | `is_paused() -> bool` | — | Whether stepping is stopped. |
 | `quarantined() -> any` | — | The nodes rapier disabled this step because their position or velocity stopped being a number. Empty is the normal answer. |
+| `ragdoll_blend(node, float)` | [`ragdoll`](../components/ragdoll.md) | How much of the ragdoll's simulated pose the rig's bones take, 0 to 1: 0 leaves the clip in charge while the bodies simulate unseen, 1 goes limp. Tween it to fall over and get back up. |
 | `set_debug_draw(any)` | — | Draw the physics world over the scene: `true` for the usual shapes, or a table naming modes (`#{ colliders = true, joints = true }`). |
 | `set_paused(bool)` | — | Stop or resume stepping both worlds; nodes keep their poses. |
 | `set_sleeping_allowed(bool)` | — | Allow or forbid resting bodies falling asleep, in both worlds and for bodies added later. |
 | `set_threads(int) -> any` | — | How many threads the solver may use. The default is one less than the machine reports, capped at eight; rayon's pool is set once per process, so a later call does nothing. |
-| `set_tuning(any)` | — | Change how the solver behaves in both worlds: `solver_iterations`, `length_unit`, `ccd_substeps`, contact softness and the rest. Every value here changes results, so a recording only replays against the same numbers — prefer `[physics]` in project.toml. |
+| `set_tuning(any)` | — | Change how the solver behaves in both worlds: `solver_iterations`, `length_unit`, `ccd_substeps`, contact softness and the rest. Every value here changes results, so a recording only replays against the same numbers: prefer `[physics]` in project.toml. |
 | `sleeping_allowed() -> bool` | — | Whether resting bodies are allowed to fall asleep. |
 | `threads() -> int` | — | How many threads the solver is using. |
 | `tuning() -> any` | — | The solver settings both worlds are running with. |

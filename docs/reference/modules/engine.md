@@ -31,8 +31,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `quit()` | — | Ask the app to shut down; the frame in flight still finishes. |
 | `reload_script(key: string)` | — | Recompile one script by its project-relative key, for a tool editing files outside the watched root. |
 | `reveal(path: string)` | — | Show a file or directory in the system file manager, selected where the platform can. Never recorded, like `open_url`. |
-| `tick()` | — | Which frame this is, counted whole — what simulation code branches on instead of `time`. |
+| `tick()` | — | Which frame this is, counted whole: what simulation code branches on instead of `time`. |
 | `time()` | — | Seconds of engine time since the app started, accumulated as a float. |
-| `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only — branching a `fixed_update` on wall time desyncs, and nothing records it. |
+| `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only: branching a `fixed_update` on wall time desyncs, and nothing records it. |
 | `unix_time()` | — | The wall clock at the top of this tick, in seconds since 1970. Read once per frame and recorded, so a replay sees the time the recording saw. |
 | `user_data_dir()` | — | A writable per-user directory for saves and settings, created on first call and named after the project. |

@@ -10,9 +10,9 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.
 
-54 functions, 20 constants. Scripts reach it as `render::`.
+63 functions, 20 constants. Scripts reach it as `render::`.
 
-Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
+Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
 ## Functions
 
@@ -36,6 +36,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `draw_line_2d(float, float, float, float, float, float, float, float?)` | — | Draw one 2D world-space line for this frame; width is in pixels. |
 | `draw_polyline_2d(any, float?, any?)` | — | Stroke a chain of world-space points for this frame; width is in pixels. |
 | `draw_rect_2d(float, float, float, float, any?)` | — | Fill a rectangle centred at a point, in world units, for this frame. |
+| `draw_text(float, float, float, string, any?)` | — | The same in 3D world space, on a quad that faces the camera. `pixels_per_unit` sizes it, so text a metre away reads the same whatever the font size. |
+| `draw_text_2d(float, float, string, any?)` | — | Draw a line of text in 2D world space for this frame, shaped by the engine's fonts. `opts` takes `size`, `weight`, `italic`, `color`, `align`, `markup`, `max_width` and `pixels_per_unit`. |
 | `draw_texture_2d(string, float, float, float, float, any?)` | — | Draw a project image over a rectangle centred at a point, in world units, for this frame; the colour tints it. |
 | `material_params(string) -> any` | — | The material's editable rows, one `#{ name, type, value }` per field its linked shader declares; empty when it will not link. |
 | `mouse_ray() -> float, float, float, float, float, float` | — | The picking ray through the mouse position: its origin xyz then its direction xyz, in world units. |
@@ -51,8 +53,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_camera(float, float, float, float, float, float)` | — | Point the 3D camera: the eye position xyz, then the world point it looks at, in world units. |
 | `set_camera_2d(float, float, float)` | — | Point the 2D camera: the world centre xy, then the zoom in logical pixels per world unit. |
 | `set_camera_input(bool)` | — | Allow or inhibit the backend's own mouse camera controls, so an editor can take the pointer for a drag. |
-| `set_cell(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Put one tile at a column and row, counted from the top left; below zero clears the cell, and a cell past the edge grows the map. The mesh rebuilds on the next frame. |
-| `set_channel(string)` | — | Draw one channel of the scene — normals, uv, depth or albedo — instead of its colour; an empty name puts the picture back. |
+| `set_cell(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Put one tile at a column and row; a tile below zero clears the cell, and a cell outside the map grows it in that direction. The mesh rebuilds on the next frame. |
+| `set_channel(string)` | — | Draw one channel of the scene (normals, uv, depth or albedo) instead of its colour; an empty name puts the picture back. |
 | `set_circle(node, float)` | [`shape2d`](../components/shape2d.md) | Draw the node as a circle of the given radius in world units, replacing any other 2D shape. |
 | `set_color(node, float, float, float, float?)` | [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md) | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |
 | `set_cuboid(node, float, float, float)` | [`shape3d`](../components/shape3d.md) | Draw the node as a box from its three half-extents, in world units, replacing any other 3D shape. |
@@ -69,11 +71,18 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_sprite_frame(node, int)` | [`sprite`](../components/sprite.md) | Show a sheet cell, numbered left to right then top to bottom; only the UVs move, so it is cheap per frame. |
 | `set_sprite_sheet(node, string, int, int)` | [`sprite`](../components/sprite.md) | Draw the node as one cell of a columns-by-rows sheet, sizing the quad to a single frame, not the whole image. |
 | `set_sprite_size(node, float, float)` | [`sprite`](../components/sprite.md) | Override the size the sprite took from its image, giving half-extents in world units instead. |
+| `set_terrain(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Paint a terrain value at a column and row and let the tileset's rules pick the tiles, for that cell and the ring around it; below zero clears it. |
+| `set_text(node, string)` | [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md) | Replace the text a node draws. The block re-shapes on the next frame; a `text_key` on the node still wins over it. |
 | `shader_probe() -> any` | — | The four channels the previewed line wrote at the probed pixel, or `()` when nothing has been read yet. |
 | `shape2d(node) -> string, float, float` | [`shape2d`](../components/shape2d.md) | The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape. |
 | `shape3d(node) -> string, float, float, float` | [`shape3d`](../components/shape3d.md) | The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape. |
 | `sprite(node) -> string, int, int, int` | [`sprite`](../components/sprite.md) | The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite. |
+| `terrain(node, int, int) -> int` | [`tilemap`](../components/tilemap.md) | The terrain value painted at a column and row, or -1 where nothing was painted. |
+| `text(node) -> string` | [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md) | The text a node draws, as it was last set — not the localized string a `text_key` resolves to. |
+| `text_size(string, any?) -> float, float` | — | The width and height `text` shapes to, in font pixels, with the project's own fonts and never a system face — so a headless run and a windowed one answer the same. A width is presentation: writing one into state puts presentation in the digest. |
 | `texture_size(string) -> int, int` | — | An image's width and height in pixels, read from the file's own header. |
+| `tile_data(node, int, int) -> any` | [`tilemap`](../components/tilemap.md) | What the tileset says about the tile at a column and row -- its `[tiles.<id>.data]` table -- or nil where the cell is empty or the tile carries none. |
+| `trace_texture(string, any?) -> any` | — | The outline of an image's opaque pixels, as `[x, y]` points in a node's own space, ready to be a polygon's `positions`. `opts` takes `threshold` (alpha counted as opaque, 0 to 1, default 0.5), `tolerance` (how many pixels of detail to drop, default 2), `pixels_per_unit` (default 100) and `holes` (include the loops inside the shape, default false). Counter-clockwise with y up, centred on the origin, the way a sprite at the same `pixels_per_unit` is drawn. |
 
 ## Constants
 

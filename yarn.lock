@@ -5850,6 +5850,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"avoid-ai-writing-detector@npm:^3.33.0":
+  version: 3.33.0
+  resolution: "avoid-ai-writing-detector@npm:3.33.0"
+  checksum: 10c0/f4f5b43b72fe208afe163cfcd27ff25905bcf3259dbd0225faec48819dadfa3560e9574ffa943d02fdf1421aea456228ecbe6f488ab3c1c9b8535b69766ebbd1
+  languageName: node
+  linkType: hard
+
 "babel-loader@npm:^9.2.1":
   version: 9.2.1
   resolution: "babel-loader@npm:9.2.1"
@@ -5949,6 +5956,7 @@ __metadata:
     "@mdx-js/react": "npm:^3.0.0"
     "@phosphor-icons/core": "npm:^2.1.1"
     "@types/react": "npm:^19.0.0"
+    avoid-ai-writing-detector: "npm:^3.33.0"
     clsx: "npm:^2.0.0"
     prism-react-renderer: "npm:^2.3.0"
     react: "npm:^19.0.0"

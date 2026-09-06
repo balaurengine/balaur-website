@@ -24,7 +24,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `component_tags(name: string)` | — | The facets a component type is filed under, for filtering a palette; nil for a name nothing registered. |
 | `component_types()` | — | The names of every registered component type, not the components on any node. |
 | `get_node(path: string)` | — | The node at an `A/B/C` path from the root, where `..` climbs to the parent; nil when nothing matches. |
-| `instantiate(source: string, parent: node?, opts: any?)` | — | Build a scene document — TOML text, not a path — under a parent; `{ scripts: false }` leaves scripts unattached. |
+| `instantiate(source: string, parent: node?, opts: any?)` | — | Build a scene document (TOML text, not a path) under a parent; `{ scripts: false }` leaves scripts unattached. |
 | `node_by_id(id: string, under: node?)` | — | The node carrying a stable id, which survives the rename and the reparent a path does not; nil when nothing carries it. `under` bounds the search to one subtree, for a tool holding more than one tree. |
 | `preset_info(name: string)` | — | A preset's description, tags and the components it adds; nil for a name nothing registered. |
 | `presets()` | — | The names of every registered preset. |

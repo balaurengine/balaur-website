@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # <span class="ref-icon ref-icon--2d" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40V216H40V40Z" opacity="0.2"/><path d="M152,40a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,40Zm-8,168H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM208,32H184a8,8,0,0,0,0,16h24V72a8,8,0,0,0,16,0V48A16,16,0,0,0,208,32Zm8,72a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V112A8,8,0,0,0,216,104Zm0,72a8,8,0,0,0-8,8v24H184a8,8,0,0,0,0,16h24a16,16,0,0,0,16-16V184A8,8,0,0,0,216,176ZM40,152a8,8,0,0,0,8-8V112a8,8,0,0,0-16,0v32A8,8,0,0,0,40,152Zm32,56H48V184a8,8,0,0,0-16,0v24a16,16,0,0,0,16,16H72a8,8,0,0,0,0-16ZM72,32H48A16,16,0,0,0,32,48V72a8,8,0,0,0,16,0V48H72a8,8,0,0,0,0-16Z"/></svg></span>`collider2d`
 
-`2d` · `physics` · 32 properties · 2D
+`2d` · `physics` · 36 properties · 2D
 
 The shape the node collides with in 2D. On a node with a `body2d` it is that body's shape; on a node without one it is immovable world geometry. A collider on a child node belongs to the nearest body above it, which is how one body carries several shapes.
 
@@ -23,17 +23,19 @@ In a scene, `collider2d` is the node key that applies it. A script reaches the s
 | `b` | vec2 | `[1,0]` | Second corner, when kind is triangle or segment |
 | `border` | float | `0` | Rounds a rect or triangle by this radius, so it slides over seams instead of catching on them At least 0. |
 | `c` | vec2 | `[0,1]` | Third corner, when kind is triangle |
+| `clean` | bool | `false` | Merge duplicate vertices and drop degenerate triangles when building a trimesh |
 | `contact_force_threshold` | float | `0` | How hard a contact must be before on_contact_force is called At least 0. |
 | `contact_skin` | float | `0` | A margin the solver treats as already touching; stops thin shapes tunnelling and jittering At least 0. |
 | `density` | float | `1` | Mass per volume, so the shape's size sets its mass At least 0.001. |
 | `enabled` | bool | `true` | Collide at all; a disabled collider keeps its shape and costs nothing |
 | `events` | flags | `[]` | What this collider reports to its node's script: on_collision_start and on_collision_stop, or on_contact_force One of `collision`, `contact_force`. |
+| `fix_internal_edges` | bool | `true` | Take neighbouring triangles into account for a trimesh's contacts, so a body does not catch on the seam between two of them |
 | `friction` | float | `0.5` | Surface friction; 0 is ice At least 0. |
 | `friction_combine` | enum | `average` | How this surface's friction combines with the other one's One of `average`, `min`, `multiply`, `max`, `clamped_sum`, `geometric_mean`. |
 | `half_extents` | vec2 | `[0.5,0.5]` | Half-sizes of the rect, when kind is rect |
 | `height` | float | `1` | Length along y of the straight part, when kind is capsule At least 0.01. |
 | `heightfield` | asset · [`heightfield`](../assets/heightfield.md) | — | A row of heights, when kind is heightfield: a side-scroller's ground |
-| `kind` | enum | `rect` | Collision shape One of `circle`, `rect`, `capsule`, `triangle`, `segment`, `halfspace`, `trimesh`, `convex_hull`, `polyline`, `heightfield`. |
+| `kind` | enum | `rect` | Collision shape One of `circle`, `rect`, `capsule`, `triangle`, `segment`, `halfspace`, `trimesh`, `convex_hull`, `polyline`, `heightfield`, `voxels`. |
 | `layers` | flags | `["0"]` | The layers this collider is on One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
 | `mask` | flags | `[]` | The layers it collides with; empty means every layer One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
 | `mass` | float | `0` | Mass in kilograms, overriding what density works out to; 0 keeps the density At least 0. |
@@ -43,6 +45,7 @@ In a scene, `collider2d` is the node key that applies it. A script reaches the s
 | `offset_rotation` | float | `0` | How the shape is turned relative to the node, in radians |
 | `one_way` | bool | `false` | A platform bodies pass through from below and land on from above |
 | `one_way_axis` | vec2 | `[0,1]` | The direction a one-way platform lets bodies through from |
+| `oriented` | bool | `false` | Treat a trimesh or polyline as one-sided: the winding decides which side is solid, counter-clockwise enclosing the solid |
 | `radius` | float | `0.5` | Circle radius, when kind is circle or capsule At least 0.01. |
 | `restitution` | float | `0` | Bounciness: 0 is a dead stop, 1 a full rebound Range 0–1. |
 | `restitution_combine` | enum | `average` | How this surface's bounciness combines with the other one's One of `average`, `min`, `multiply`, `max`, `clamped_sum`, `geometric_mean`. |
@@ -50,8 +53,9 @@ In a scene, `collider2d` is the node key that applies it. A script reaches the s
 | `sensor` | bool | `false` | Detects overlaps without colliding: bodies pass through and are reported |
 | `solver_layers` | flags | `["0"]` | Layers for the solver alone: a pair can be detected but not resolved One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
 | `solver_mask` | flags | `[]` | Which solver layers this one pushes against; empty means all of them One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
+| `voxels` | asset · [`voxels`](../assets/voxels.md) | — | Filled cells, when kind is voxels; a script may dig into them while the game runs |
 
-Asset types this component references: [`heightfield`](../assets/heightfield.md), [`mesh`](../assets/mesh.md).
+Asset types this component references: [`heightfield`](../assets/heightfield.md), [`mesh`](../assets/mesh.md), [`voxels`](../assets/voxels.md).
 
 ## Script functions
 
@@ -63,3 +67,6 @@ From [`physics2d`](../modules/physics2d.md):
 | --- | --- |
 | `add_collider(any)` | Attach a 2D collider from a `collider2d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary. |
 | `overlaps() -> [node]` | The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor. |
+| `set_voxel(int, int, bool)` | Fill or empty one cell of a voxel collider: digging a hole, or building a wall, while the game runs. |
+| `voxel(int, int) -> bool` | Whether one cell of a voxel collider is filled. |
+| `voxel_at(float, float) -> int, int` | The cell a world position falls in, as two whole numbers. |

@@ -69,7 +69,9 @@ assets/balaur-logo.png                             20.2 KB
 0 files nothing references, 0 B
 ```
 
-Fonts outweigh images in most projects, and the engine outweighs both. Four
+Fonts outweigh images in most projects, and the engine outweighs both. On the
+engine's own assets, subsetting takes a 421 KB face to 29 KB, and the image
+pass takes a small sprite from 1.1 KB to 0.5 KB. Four
 keys in `[export]` act on what the report shows, and each is off until you
 turn it on:
 
@@ -77,18 +79,38 @@ turn it on:
 
 ```toml
 [export]
-strip = true            # drop an asset no scene, script or keep glob names
-keep = ["sfx/**"]       # ...except paths a script builds at run time
-font_keep = ["fonts/ui-*"]  # ship these faces whole even when subsetting
-images = "smallest"     # recompress PNG, or write lossless WebP, whichever wins
-fonts = "subset"        # cut a face to the characters the project actually shows
-audio = "flac"          # write uncompressed WAV as lossless FLAC
+strip = true                # drop an asset no scene, script or keep glob names
+keep = ["sfx/**"]           # ...except paths a script builds at run time
+images = "smallest"         # recompress PNG, or write lossless WebP, whichever wins
+fonts = "subset"            # cut a face to the characters the project actually shows
+font_keep = ["fonts/ui-*"]  # ...but ship these whole
+audio = "flac"              # write uncompressed WAV as lossless FLAC
 ```
 
 Anything under `fonts/` survives a strip whatever the references say: the UI
 finds faces by listing that directory, so no scene ever names one.
 
-Every mode here is lossless, and none of them changes a pixel count. A sprite
+Two more keys give up fidelity for size, and they are named separately so a
+lossless setting can never quietly become a lossy one:
+
+```toml
+[export]
+images = "quantised"    # a 256-colour palette with alpha, then the PNG pass
+images_quality = 80     # the palette's quality target, 0 to 100
+audio = "vorbis"        # an Ogg Vorbis stream instead of the original PCM
+audio_quality = 0.5     # libvorbis quality, -0.1 to 1.0
+```
+
+One picture can opt out of whatever the project chose, or ask for something
+else, in its own [import settings](/docs/manual/scenes#import-settings):
+
+```toml
+# art/logo.png.toml
+recode = "keep"     # this one ships exactly as drawn
+```
+
+Every mode except `quantised` and `vorbis` is lossless, and none of them
+changes a pixel count. A sprite
 is sized from its image header, so a re-encoded texture is the same sprite and
 the game computes the same world. `balaur export --report` prints the table and
 writes nothing, so you can see the saving before taking it.

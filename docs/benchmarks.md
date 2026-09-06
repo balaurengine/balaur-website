@@ -1,14 +1,14 @@
 ---
-title: "Benchmarks: Balaur beside Godot, case for case"
+title: "Benchmarks — Balaur beside Godot, case for case"
 sidebar_label: "Benchmarks"
 image: "/img/social/benchmarks.png"
-description: "Balaur measured on the same physics and scene-tree scenes the Godot benchmark suites publish: what a tick costs, and what the engine adds on top of rapier."
+description: "The Balaur game engine measured on the same physics and scene-tree scenes the Godot benchmark suites publish: what a tick costs, what rapier costs inside it, and what the engine adds."
 custom_edit_url: null
 ---
 
 
 
-Balaur is the quickest engine on all 12 physics cases: about 3× faster than Godot Jolt and 11–18× faster than Godot Physics.
+**Balaur is the quickest engine on all 12 physics cases**: about 3× faster than Godot Jolt and 11–18× faster than Godot Physics.
 
 ## 3D
 

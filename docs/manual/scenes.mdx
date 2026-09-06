@@ -243,6 +243,17 @@ filter = "nearest"
 
 A file's kind comes from its extension: `texture`, `audio`, `font` or `model`.
 
+One key here is read by the exporter rather than the engine: `recode` says how
+this file is re-encoded when a game ships, overriding the project's
+[export](/docs/manual/build-size) mode for this file alone.
+
+The editor writes these for you. Select a picture in the Assets dock and the
+Import tab, beside the Inspector, shows one row per key, each saying whether the
+value is the file's own, the project's or the engine's default. Clearing a row
+drops the key and deletes a sidecar that has nothing left in it.
+
+![The Import tab showing filter and srgb for a selected picture](/img/manual/import_dock.webp)
+
 Settings change pixels, never sizes. A sprite takes its extent from the image
 header, so a headless run resolves settings for nothing and computes the same
 world as a windowed one. That is why downscaling art for a phone is an
