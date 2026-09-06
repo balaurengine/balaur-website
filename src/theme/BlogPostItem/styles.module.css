@@ -1,6 +1,10 @@
 .cover {
   display: block;
   width: 100%;
+  /* The width/height attributes on the tag are a ratio hint for the space the
+     cover reserves before it loads, not a size: without height:auto they land
+     as a literal 1000px box and the crop turns portrait. */
+  height: auto;
   aspect-ratio: 2.4 / 1;
   object-fit: cover;
   object-position: top;
