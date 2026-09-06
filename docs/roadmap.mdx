@@ -3,6 +3,7 @@ title: "Roadmap — what the engine does not do yet"
 sidebar_label: "Roadmap"
 description: "What the Balaur game engine does not do yet and will: editor tools, scripts and assets, networking, platforms and more, each item linked to its plan."
 image: "/img/social/roadmap.png"
+hide_table_of_contents: true
 ---
 
 import Roadmap from '@site/src/components/Roadmap';
@@ -13,353 +14,351 @@ What does not exist yet and will. Everything in [Features](/features) is
 already in the engine; the [changelog](./changelog.md) is what each release
 added.
 
-A tier says how much a game needs the thing, not when it lands. Cards in a
-group are ordered by it.
+Each tab is a milestone: the release that carries the work under it. The
+engine is at 0.1, so 0.2 is what is being built now. **Later** is the pile
+with no version against it, wanted and waiting on someone with a game that
+needs it. Nothing here is a date.
 
-- **Tier 1 — blocks a game today.** You hit this making an ordinary game and
-  there is no way around it. Built next.
-- **Tier 2 — rounds out the engine.** A game ships without it, awkwardly, or
-  a whole kind of game needs it.
-- **Tier 3 — when a game asks.** Wanted and planned, waiting on someone with
-  a game that needs it.
-
-## Editor
-
-<Roadmap items={[
+<Roadmap milestones={[
   {
-    title: 'Tile maps',
-    tier: 3,
-    text: <>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
+    id: '0.2',
+    title: "Nothing blocks an ordinary game",
+    lead: 'The list you hit making an ordinary game: two clips at once, a viewport that selects more than one node, a 3D light you place yourself, a session a script can host, and a build signed for the platform it runs on.',
+    items: [
+      {
+        group: "Editor",
+        title: 'Script completion and hover',
+        text: <>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-script-tooling.md',
+      },
+      {
+        group: "Editor",
+        title: 'Selection, alignment and a library',
+        text: <>Select several nodes, box-select, group, align and distribute, hide, lock and isolate; filter the outliner; drop an image, a <code>.glb</code> or a sky onto the viewport and get a node; gizmos for lights and cameras; wireframe and normals views; a pen tool; a material panel; and a library of materials, skies, models and templates to start from.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor-ergonomics.md',
+      },
+      {
+        group: "Scripts and assets",
+        title: 'Texture import settings',
+        text: <>A pixel-art sprite can ask for hard edges today: a settings file sits beside the picture, <code>[import.texture]</code> sets the project's default, and filtering and colour space reach the upload. The editor has an Import tab beside the Inspector for the file the Assets dock has selected, saying for each key whether the value is the file's own, the project's or the engine's. Still to come: repeat, mipmaps, anisotropy and premultiplied alpha, which wait on the renderer exposing a whole sampler, and GPU-compressed textures at export.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-textures.md',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Animation blending',
+        text: 'Blend trees and state machines that mix clips by weight. A rig is otherwise complete — five modifier kinds in 2D and 3D, retargeting, deform tracks and ragdolls — and what is missing is running two clips at once.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Pause, time scale and smooth frames',
+        text: <>A pause that holds the game and keeps the menu alive, a <code>process</code> mode per subtree, slow motion and fast forward, motion interpolated between fixed steps so a 144 Hz display sees every frame move, and a tick rate setting.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-time.md',
+      },
+      {
+        group: "Rendering",
+        title: 'The 3D look',
+        text: <>A <code>light3d</code> component with shadows; an <code>environment</code> with sky, image-based lighting, fog, exposure, tonemap and grading; a PBR material with texture maps that needs no shader written and is imported from glTF; glass, mirrors and reflection probes; vignette, grain and the other finishing passes as post-process materials. The only 3D light today is hard-coded.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
+      },
+      {
+        group: "Networking",
+        title: 'Sessions from a script',
+        text: 'Host, join and leave from Rune, with a roster whose slots are bound to links; peer, host and headless server roles, the server ordering inputs, verifying every client’s digest and holding the history a late joiner replays from. Rollback runs today between two engines in a Rust test only.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md',
+      },
+      {
+        group: "Shipping",
+        title: 'Signed releases',
+        text: 'The nightly and tagged builds, their runtime templates and the updater exist. What is missing is a download per platform that is signed and notarized, so it opens without a warning.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md#binary-releases',
+      },
+    ],
   },
   {
-    title: 'Script completion and hover',
-    tier: 1,
-    text: <>Completion, docs on hover, go-to-definition, formatting and rename in <code>balaur lsp</code> and the Script persona, and a VS Code extension over the same server. Diagnostics are all the server publishes today.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-script-tooling.md',
+    id: '0.3',
+    title: "The picture: what draws, and what authors it",
+    lead: <>Everything you see. 2D lights get normal maps, particles reach 3D, the camera culls what is behind it and draws to more than one view, and the timeline grows the curve handles and the sequencer a cutscene needs.</>,
+    items: [
+      {
+        group: "Editor",
+        title: 'Curve editor and onion skin',
+        text: 'Tangent handles on keys and ghosted neighbouring frames in the timeline.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor.md#curve-editor-and-onion-skin',
+      },
+      {
+        group: "Physics and animation",
+        title: 'A sequencer',
+        text: 'Cutscenes and cameras on a timeline, with tracks that call something rather than only move it.',
+      },
+      {
+        group: "Rendering",
+        title: 'Lit normal-mapped sprites',
+        text: <>2D lights and shadows are built. A normal map on <code>sprite</code> needs the light map to carry a direction as well as a colour. Occluding tiles moved to the tile-map plan.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Particles in 3D',
+        text: <>A <code>particles3d</code> emitter, and in both dimensions: emission from a sphere, box, cone, ring or mesh, randomness, animated sheets, attractors, colliders, trails and sub-emitters, with a compute stepper where the GPU has one.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-particles.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Culling and level of detail',
+        text: 'Nodes outside the camera skipped and a script that can ask whether one is in view, visibility layers, repeated meshes drawn in one call, and meshes that carry cheaper versions of themselves for distance.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Voxels and terrain',
+        text: <>Block types in a <code>voxel_set</code>, a greedy chunk mesher with baked ambient occlusion, a grid file that scales past a hand-written one, a Voxels tool that paints in the viewport, <code>balaur import</code> for MagicaVoxel files, and the same mesher over <code>heightfield</code>. Physics is already there — rapier's voxel shape collides without the seam-catching every hand-rolled voxel collider has, and a script can dig into one today. Nothing draws either asset.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voxels.md',
+      },
+      {
+        group: "Rendering",
+        title: 'More than one view',
+        text: <>A <code>viewport</code> component: split screen, a camera rendered to a texture any sprite or material can read, picture-in-picture, and a camera with a projection, field of view and clip planes an author sets.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Post-process materials',
+        text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#post-process-materials',
+      },
+    ],
   },
   {
-    title: 'Curve editor and onion skin',
-    tier: 3,
-    text: 'Tangent handles on keys and ghosted neighbouring frames in the timeline.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor.md#curve-editor-and-onion-skin',
+    id: '0.4',
+    title: "Multiplayer, end to end",
+    lead: <>Two machines playing the same game. Rollback, stable ids and QUIC datagrams are built and reachable only from Rust; this is the milestone that puts them behind <code>session</code> in a script, in a browser, and on a Gamend lobby. Server work lives in the <a href="https://github.com/appsinacup/gamend">Gamend repository</a>; the plan is kept beside the engine's so the two sides agree.</>,
+    items: [
+      {
+        group: "Editor",
+        title: 'Network dock and Play as two',
+        text: 'Round trip, loss, rollbacks per second and the desync tick per link, and a second instance of the project launched headless and joined over loopback with the fault settings on.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
+      },
+      {
+        group: "Networking",
+        title: 'WebTransport in the browser',
+        text: 'QUIC runs natively today: reliable streams and unreliable datagrams in one encrypted connection, with datagrams doing the job of raw UDP so the engine never exposes a UDP socket. The browser reaches WebTransport through its own API, which the web build still has to wrap.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
+      },
+      {
+        group: "Networking",
+        title: 'Late join, reconnect and host migration',
+        text: 'A snapshot on its own stream for whoever arrives late, a grace period that keeps a dropped player’s slot, spectators, the next member taking over when the host vanishes, and bincode instead of JSON on the wire.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
+      },
+      {
+        group: "Networking",
+        title: 'State replication and RPC',
+        text: <>A <code>replicate</code> key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
+      },
+      {
+        group: "Networking",
+        title: 'Client prediction and reconciliation',
+        text: 'Your own node moves the frame you press the key, and the server’s correction rewinds that node alone and replays what is still pending, smoothed out over a few frames. Everyone else is drawn a little behind and interpolated.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#hiding-latency',
+      },
+      {
+        group: "Networking",
+        title: 'Lag compensation and interest management',
+        text: 'The server rewinds to the tick the shooter saw before testing a hit, and sends each client only what it can see, at a send rate below the tick rate.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
+      },
+      {
+        group: "Gamend",
+        title: 'A game server per lobby',
+        text: 'Gamend launches a headless Balaur when a lobby starts, records its address and certificate hash on the lobby, and players connect to it over QUIC. Gamend keeps the roster; the game keeps the ticks.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#3-steps',
+      },
+      {
+        group: "Gamend",
+        title: 'Lobby tokens and rejoin',
+        text: 'A lobby-scoped token binds a player to their slot on the game server and lets them back in after a dropped socket. Leaderboard writes come from the server that saw the match, never from the client that claims a score.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#1-design',
+      },
+      {
+        group: "Gamend",
+        title: 'The match record',
+        text: 'The server’s recording and final digest uploaded as the lobby’s record, so a disputed result is a replay that either matches or names the tick.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#1-design',
+      },
+      {
+        group: "Gamend",
+        title: 'Typed bindings for the whole API',
+        text: <>One script call per Gamend operation, generated from its OpenAPI document and realtime protobuf, with typed events per channel; <code>rest</code> and <code>push</code> stay for the hooks a game adds.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#engine-side-in-this-repository',
+      },
+    ],
   },
   {
-    title: 'Selection, alignment and a library',
-    tier: 1,
-    text: <>Select several nodes, box-select, group, align and distribute, hide, lock and isolate; filter the outliner; drop an image, a <code>.glb</code> or a sky onto the viewport and get a node; gizmos for lights and cameras; wireframe and normals views; a pen tool; a material panel; and a library of materials, skies, models and templates to start from.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor-ergonomics.md',
+    id: '0.5',
+    title: "A game built without writing a script",
+    lead: 'Making a game without opening a script: hooks and states on any node, paths an agent walks, a tile map finished, voice and a controller that does more than rumble, and an agent driving the editor over MCP.',
+    items: [
+      {
+        group: "Editor",
+        title: 'Tile maps',
+        text: <>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
+      },
+      {
+        group: "Scripts and assets",
+        title: 'Extensions, tier two',
+        text: 'Native extensions that add components and systems, and call back into scripts.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-c-api.md#what-tier-1-does-not-do',
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Interactivity without a script',
+        text: <>Hover, click, key and resize hooks on any drawn node, named states a node tweens between, scene variables, and event bindings edited in the Events view — each one a call a script could make, and convertible to one. Orbit, first-person, third-person and click-to-move rigs as presets.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-interactivity.md',
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Navigation',
+        text: <>A <code>navmesh</code> asset baked from the scene's colliders and tile maps, paths over it through <code>polyanya</code> or over a grid, and <code>agent2d</code> and <code>agent3d</code> that avoid each other and moving obstacles, all on the fixed step and in the digest so a lockstep game runs it on every peer.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-navigation.md',
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Voice in a session',
+        text: 'Capture, Opus, a jitter buffer, push-to-talk or voice activity, echo cancellation, and each player heard from where their node stands, on a bus like every other sound. Voice never enters the simulation or the digest.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voice.md',
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Motion and haptics beyond one pad',
+        text: 'Gyro on Switch Pro and Joy-Con, sensor calibration per unit, adaptive triggers and light bars, waveform haptics, motion from a phone or tablet, and gamepads on iOS and Android. A PlayStation pad reports motion and runs both motors today; nothing else does.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
+      },
+      {
+        group: "Tools and services",
+        title: 'An MCP server',
+        text: <><code>balaur mcp</code>: the project, its components and API, <code>check</code>, a headless run and a screenshot as tools an agent drives from Claude Code, Cursor or an IDE, and the running editor's palette behind a second flag. Files are the API, so the editor follows every edit.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mcp.md',
+      },
+      {
+        group: "Tools and services",
+        title: 'A crash report that reproduces itself',
+        text: 'The recording, the log and the build id in one file, so a bug report re-runs the session that caused it bit for bit.',
+      },
+    ],
   },
   {
-    title: 'Network dock and Play as two',
-    tier: 2,
-    text: 'Round trip, loss, rollbacks per second and the desync tick per link, and a second instance of the project launched headless and joined over loopback with the fault settings on.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
+    id: '0.6',
+    title: "A game gets out: export, stores, the browser",
+    lead: <>Getting the thing out. One command puts a build on a URL or a phone, a pack ships sealed, Steam and Google Play join Apple behind the <code>platform</code> module, and a project loads while the game runs rather than whole.</>,
+    items: [
+      {
+        group: "Editor",
+        title: 'The editor in a browser',
+        text: 'Shipped: the canvas, play and hot reload as on the desktop, a project the browser keeps across a refresh, a folder opened from your machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-web-editor.md',
+      },
+      {
+        group: "Scripts and assets",
+        title: 'Asset streaming',
+        text: 'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.',
+      },
+      {
+        group: "Tools and services",
+        title: 'Accessibility',
+        text: 'A screen reader over the widget tree, text scaling, captions and colour-blind-safe defaults. Focus order, localization and rebindable actions are already there.',
+      },
+      {
+        group: "Tools and services",
+        title: 'Steam',
+        text: <>Sign-in, achievements, leaderboards, Cloud saves, rich presence, the overlay, Workshop, Steam Input and Steam networking — behind the <code>platform</code> module Apple's stores already speak, so one script runs everywhere.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-steam.md',
+      },
+      {
+        group: "Tools and services",
+        title: 'Google Play',
+        text: 'Play Games Services, Sign in with Google, Play Billing, Play Integrity and Play Asset Delivery on Android, over the same module. An application id, an app bundle and 16 KB page alignment come first: without them Play refuses the upload, store or no store.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-google.md',
+      },
+      {
+        group: "Shipping",
+        title: 'One-click deploy',
+        text: 'Deploy to the web or to a phone from one command or one button: the game built, signed and put somewhere a player can reach it — a URL, itch.io, a device on the cable, TestFlight, Play or Steam. Today an export leaves a bundle on your disk and stops.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-deploy.md',
+      },
+      {
+        group: "Shipping",
+        title: 'Sealed packs and stripped binaries',
+        text: 'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-protection.md',
+      },
+    ],
   },
   {
-    title: 'The editor in a browser',
-    tier: 2,
-    text: 'Shipped: the canvas, play and hot reload as on the desktop, a project the browser keeps across a refresh, a folder opened from your machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-web-editor.md',
-  },
-]} />
-
-## Scripts and assets
-
-<Roadmap items={[
-  {
-    title: 'Texture import settings',
-    tier: 1,
-    text: <>A pixel-art sprite can ask for hard edges today: a settings file sits beside the picture, <code>[import.texture]</code> sets the project's default, and filtering and colour space reach the upload. The editor has an Import tab beside the Inspector for the file the Assets dock has selected, saying for each key whether the value is the file's own, the project's or the engine's. Still to come: repeat, mipmaps, anisotropy and premultiplied alpha, which wait on the renderer exposing a whole sampler, and GPU-compressed textures at export.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-textures.md',
-  },
-  {
-    title: 'Asset streaming',
-    tier: 2,
-    text: 'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.',
-  },
-  {
-    title: 'Extensions, tier two',
-    tier: 3,
-    text: 'Native extensions that add components and systems, and call back into scripts.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-c-api.md#what-tier-1-does-not-do',
-  },
-]} />
-
-## Physics and animation
-
-<Roadmap items={[
-  {
-    title: 'Soft bodies, tearing, fluids',
-    tier: 3,
-    text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md',
-  },
-  {
-    title: 'Animation blending',
-    tier: 1,
-    text: 'Blend trees and state machines that mix clips by weight. A rig is otherwise complete — five modifier kinds in 2D and 3D, retargeting, deform tracks and ragdolls — and what is missing is running two clips at once.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
-  },
-  {
-    title: 'A sequencer',
-    tier: 3,
-    text: 'Cutscenes and cameras on a timeline, with tracks that call something rather than only move it.',
-  },
-  {
-    title: 'Pause, time scale and smooth frames',
-    tier: 1,
-    text: <>A pause that holds the game and keeps the menu alive, a <code>process</code> mode per subtree, slow motion and fast forward, motion interpolated between fixed steps so a 144 Hz display sees every frame move, and a tick rate setting.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-time.md',
-  },
-]} />
-
-## Gameplay and audio
-
-<Roadmap items={[
-  {
-    title: 'Interactivity without a script',
-    tier: 2,
-    text: <>Hover, click, key and resize hooks on any drawn node, named states a node tweens between, scene variables, and event bindings edited in the Events view — each one a call a script could make, and convertible to one. Orbit, first-person, third-person and click-to-move rigs as presets.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-interactivity.md',
-  },
-  {
-    title: 'Navigation',
-    tier: 2,
-    text: <>A <code>navmesh</code> asset baked from the scene's colliders and tile maps, paths over it through <code>polyanya</code> or over a grid, and <code>agent2d</code> and <code>agent3d</code> that avoid each other and moving obstacles, all on the fixed step and in the digest so a lockstep game runs it on every peer.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-navigation.md',
-  },
-  {
-    title: 'Voice in a session',
-    tier: 3,
-    text: 'Capture, Opus, a jitter buffer, push-to-talk or voice activity, echo cancellation, and each player heard from where their node stands, on a bus like every other sound. Voice never enters the simulation or the digest.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voice.md',
-  },
-  {
-    title: 'Motion and haptics beyond one pad',
-    tier: 3,
-    text: 'Gyro on Switch Pro and Joy-Con, sensor calibration per unit, adaptive triggers and light bars, waveform haptics, motion from a phone or tablet, and gamepads on iOS and Android. A PlayStation pad reports motion and runs both motors today; nothing else does.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
-  },
-]} />
-
-## Rendering
-
-<Roadmap items={[
-  {
-    title: 'The 3D look',
-    tier: 1,
-    text: <>A <code>light3d</code> component with shadows; an <code>environment</code> with sky, image-based lighting, fog, exposure, tonemap and grading; a PBR material with texture maps that needs no shader written and is imported from glTF; glass, mirrors and reflection probes; vignette, grain and the other finishing passes as post-process materials. The only 3D light today is hard-coded.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
-  },
-  {
-    title: 'Lit normal-mapped sprites',
-    tier: 2,
-    text: <>2D lights and shadows are built. A normal map on <code>sprite</code> needs the light map to carry a direction as well as a colour. Occluding tiles moved to the tile-map plan.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-rendering.md',
-  },
-  {
-    title: 'Particles in 3D',
-    tier: 2,
-    text: <>A <code>particles3d</code> emitter, and in both dimensions: emission from a sphere, box, cone, ring or mesh, randomness, animated sheets, attractors, colliders, trails and sub-emitters, with a compute stepper where the GPU has one.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-particles.md',
-  },
-  {
-    title: 'Culling and level of detail',
-    tier: 2,
-    text: 'Nodes outside the camera skipped and a script that can ask whether one is in view, visibility layers, repeated meshes drawn in one call, and meshes that carry cheaper versions of themselves for distance.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
-  },
-  {
-    title: 'Voxels and terrain',
-    tier: 3,
-    text: <>Block types in a <code>voxel_set</code>, a greedy chunk mesher with baked ambient occlusion, a grid file that scales past a hand-written one, a Voxels tool that paints in the viewport, <code>balaur import</code> for MagicaVoxel files, and the same mesher over <code>heightfield</code>. Physics is already there — rapier's voxel shape collides without the seam-catching every hand-rolled voxel collider has, and a script can dig into one today. Nothing draws either asset.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voxels.md',
-  },
-  {
-    title: 'More than one view',
-    tier: 2,
-    text: <>A <code>viewport</code> component: split screen, a camera rendered to a texture any sprite or material can read, picture-in-picture, and a camera with a projection, field of view and clip planes an author sets.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
-  },
-  {
-    title: 'Video playback',
-    tier: 3,
-    text: 'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.',
-  },
-  {
-    title: 'Post-process materials',
-    tier: 3,
-    text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#post-process-materials',
-  },
-]} />
-
-## Networking
-
-<Roadmap items={[
-  {
-    title: 'WebTransport in the browser',
-    tier: 2,
-    text: 'QUIC runs natively today: reliable streams and unreliable datagrams in one encrypted connection, with datagrams doing the job of raw UDP so the engine never exposes a UDP socket. The browser reaches WebTransport through its own API, which the web build still has to wrap.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
-  },
-  {
-    title: 'Sessions from a script',
-    tier: 1,
-    text: 'Host, join and leave from Rune, with a roster whose slots are bound to links; peer, host and headless server roles, the server ordering inputs, verifying every client’s digest and holding the history a late joiner replays from. Rollback runs today between two engines in a Rust test only.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md',
-  },
-  {
-    title: 'Late join, reconnect and host migration',
-    tier: 2,
-    text: 'A snapshot on its own stream for whoever arrives late, a grace period that keeps a dropped player’s slot, spectators, the next member taking over when the host vanishes, and bincode instead of JSON on the wire.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
-  },
-  {
-    title: 'State replication and RPC',
-    tier: 2,
-    text: <>A <code>replicate</code> key on a node — authority, components, mode — and the server sends deltas off the component schema; RPCs address nodes by stable id.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
-  },
-  {
-    title: 'Client prediction and reconciliation',
-    tier: 2,
-    text: 'Your own node moves the frame you press the key, and the server’s correction rewinds that node alone and replays what is still pending, smoothed out over a few frames. Everyone else is drawn a little behind and interpolated.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#hiding-latency',
-  },
-  {
-    title: 'Lag compensation and interest management',
-    tier: 3,
-    text: 'The server rewinds to the tick the shooter saw before testing a hit, and sends each client only what it can see, at a send rate below the tick rate.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#3-steps',
-  },
-  {
-    title: 'WebRTC data channels',
-    tier: 3,
-    text: 'Browser peer-to-peer without a relay, behind the same transport trait. Built only once a game needs it; on native, Steam’s Datagram Relay answers the same NAT in the Steam plan.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
-  },
-]} />
-
-## Gamend
-
-Server work lives in the [Gamend repository](https://github.com/appsinacup/gamend); the plan is kept beside the engine's so the two sides agree.
-
-<Roadmap items={[
-  {
-    title: 'A game server per lobby',
-    tier: 2,
-    text: 'Gamend launches a headless Balaur when a lobby starts, records its address and certificate hash on the lobby, and players connect to it over QUIC. Gamend keeps the roster; the game keeps the ticks.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#3-steps',
-  },
-  {
-    title: 'Lobby tokens and rejoin',
-    tier: 2,
-    text: 'A lobby-scoped token binds a player to their slot on the game server and lets them back in after a dropped socket. Leaderboard writes come from the server that saw the match, never from the client that claims a score.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#1-design',
-  },
-  {
-    title: 'The match record',
-    tier: 3,
-    text: 'The server’s recording and final digest uploaded as the lobby’s record, so a disputed result is a replay that either matches or names the tick.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#1-design',
-  },
-  {
-    title: 'A WebRTC relay for browsers',
-    tier: 3,
-    text: 'The server-side WebRTC peer generalised from hook calls to unordered, unreliable data channels per lobby, so two browsers play through Gamend before the engine has WebTransport in a tab.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2-the-surface',
-  },
-  {
-    title: 'Typed bindings for the whole API',
-    tier: 2,
-    text: <>One script call per Gamend operation, generated from its OpenAPI document and realtime protobuf, with typed events per channel; <code>rest</code> and <code>push</code> stay for the hooks a game adds.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#engine-side-in-this-repository',
-  },
-  {
-    title: 'Skill matchmaking',
-    tier: 3,
-    text: 'Ratings, widening bands and leaver refill, on Gamend’s own roadmap. The engine binds whatever the API exposes.',
-    plan: 'https://github.com/appsinacup/gamend/blob/main/ROADMAP.md',
-  },
-]} />
-
-## Tools and services
-
-<Roadmap items={[
-  {
-    title: 'An MCP server',
-    tier: 2,
-    text: <><code>balaur mcp</code>: the project, its components and API, <code>check</code>, a headless run and a screenshot as tools an agent drives from Claude Code, Cursor or an IDE, and the running editor's palette behind a second flag. Files are the API, so the editor follows every edit.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mcp.md',
-  },
-  {
-    title: 'Projects in the cloud',
-    tier: 3,
-    text: <>A project on a Gamend account with a version per save, a share link with a role, who else is in the scene and what they have selected, comments pinned to nodes, and editing together — under a lock per scene first, over a CRDT if a team asks.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-collaboration.md',
-  },
-  {
-    title: 'Accessibility',
-    tier: 2,
-    text: 'A screen reader over the widget tree, text scaling, captions and colour-blind-safe defaults. Focus order, localization and rebindable actions are already there.',
-  },
-  {
-    title: 'A crash report that reproduces itself',
-    tier: 3,
-    text: 'The recording, the log and the build id in one file, so a bug report re-runs the session that caused it bit for bit.',
-  },
-  {
-    title: 'Steam',
-    tier: 2,
-    text: <>Sign-in, achievements, leaderboards, Cloud saves, rich presence, the overlay, Workshop, Steam Input and Steam networking — behind the <code>platform</code> module Apple's stores already speak, so one script runs everywhere.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-steam.md',
-  },
-  {
-    title: 'Google Play',
-    tier: 2,
-    text: 'Play Games Services, Sign in with Google, Play Billing, Play Integrity and Play Asset Delivery on Android, over the same module. An application id, an app bundle and 16 KB page alignment come first: without them Play refuses the upload, store or no store.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-google.md',
-  },
-]} />
-
-## Shipping
-
-<Roadmap items={[
-  {
-    title: 'Signed releases',
-    tier: 1,
-    text: 'The nightly and tagged builds, their runtime templates and the updater exist. What is missing is a download per platform that is signed and notarized, so it opens without a warning.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md#binary-releases',
-  },
-  {
-    title: 'One-click deploy',
-    tier: 2,
-    text: 'Deploy to the web or to a phone from one command or one button: the game built, signed and put somewhere a player can reach it — a URL, itch.io, a device on the cable, TestFlight, Play or Steam. Today an export leaves a bundle on your disk and stops.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-deploy.md',
-  },
-  {
-    title: 'Embedding on a page',
-    tier: 3,
-    text: <>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>,
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
-  },
-  {
-    title: 'Sealed packs and stripped binaries',
-    tier: 2,
-    text: 'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
-    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-protection.md',
-  },
-  {
-    title: 'Console export',
-    tier: 3,
-    text: 'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.',
-  },
-  {
-    title: 'XR',
-    tier: 3,
-    text: 'OpenXR on desktop and standalone headsets, WebXR in the browser: stereo views, tracked poses, controller and hand input.',
+    id: 'Later',
+    title: "When a game asks",
+    lead: 'Wanted, planned, and waiting on a game that asks. Nothing here is refused; each one moves into a numbered milestone the moment somebody needs it.',
+    items: [
+      {
+        group: "Physics and animation",
+        title: 'Falling sand',
+        text: <>A Noita-shaped grid in 2D: sand pours, water flows, lava sets fire to wood and cools to stone, each cell following a rule table in a <code>cell_set</code> rather than a script of its own. It is not physics, so it is not in rapier and not in the default build — a <code>balaur_cells</code> plugin behind a feature that is off, on the fixed step and in the digest. Bodies couple through parry's 2D voxel collider, which <code>collider2d</code> already has and which a script already digs into.</>,
+      },
+      {
+        group: "Physics and animation",
+        title: 'Soft bodies, tearing, fluids',
+        text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Video playback',
+        text: 'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.',
+      },
+      {
+        group: "Networking",
+        title: 'WebRTC data channels',
+        text: 'Browser peer-to-peer without a relay, behind the same transport trait. Built only once a game needs it; on native, Steam’s Datagram Relay answers the same NAT in the Steam plan.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
+      },
+      {
+        group: "Gamend",
+        title: 'A WebRTC relay for browsers',
+        text: 'The server-side WebRTC peer generalised from hook calls to unordered, unreliable data channels per lobby, so two browsers play through Gamend before the engine has WebTransport in a tab.',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2-the-surface',
+      },
+      {
+        group: "Gamend",
+        title: 'Skill matchmaking',
+        text: 'Ratings, widening bands and leaver refill, on Gamend’s own roadmap. The engine binds whatever the API exposes.',
+        plan: 'https://github.com/appsinacup/gamend/blob/main/ROADMAP.md',
+      },
+      {
+        group: "Tools and services",
+        title: 'Projects in the cloud',
+        text: <>A project on a Gamend account with a version per save, a share link with a role, who else is in the scene and what they have selected, comments pinned to nodes, and editing together — under a lock per scene first, over a CRDT if a team asks.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-collaboration.md',
+      },
+      {
+        group: "Shipping",
+        title: 'Embedding on a page',
+        text: <>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
+      },
+      {
+        group: "Shipping",
+        title: 'Console export',
+        text: 'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.',
+      },
+      {
+        group: "Shipping",
+        title: 'XR',
+        text: 'OpenXR on desktop and standalone headsets, WebXR in the browser: stereo views, tracked poses, controller and hand input.',
+      },
+    ],
   },
 ]} />
 

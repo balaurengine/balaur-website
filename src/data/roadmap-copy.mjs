@@ -1,6 +1,6 @@
 // The prose half of the roadmap page. The engine's docs/ROADMAP.md owns which
-// items exist, their order, their tier and their plan; this file owns how each
-// one reads. scripts/gen-roadmap.mjs joins the two on the title and writes
+// items exist, their order, their milestone and their plan; this file owns how
+// each one reads. scripts/gen-roadmap.mjs joins the two on the title and writes
 // docs/roadmap.mdx, so a new item is added there and its paragraph here.
 //
 // Every value is source pasted into the generated MDX verbatim: `items` holds
@@ -12,30 +12,31 @@ title: "Roadmap — what the engine does not do yet"
 sidebar_label: "Roadmap"
 description: "What the Balaur game engine does not do yet and will: editor tools, scripts and assets, networking, platforms and more, each item linked to its plan."
 image: "/img/social/roadmap.png"
+hide_table_of_contents: true
 ---`,
 
   intro: `What does not exist yet and will. Everything in [Features](/features) is
 already in the engine; the [changelog](./changelog.md) is what each release
 added.
 
-A tier says how much a game needs the thing, not when it lands. Cards in a
-group are ordered by it.
+Each tab is a milestone: the release that carries the work under it. The
+engine is at 0.1, so 0.2 is what is being built now. **Later** is the pile
+with no version against it, wanted and waiting on someone with a game that
+needs it. Nothing here is a date.`,
 
-- **Tier 1 — blocks a game today.** You hit this making an ordinary game and
-  there is no way around it. Built next.
-- **Tier 2 — rounds out the engine.** A game ships without it, awkwardly, or
-  a whole kind of game needs it.
-- **Tier 3 — when a game asks.** Wanted and planned, waiting on someone with
-  a game that needs it.`,
-
-  // Closes the page, under the last group.
+  // Closes the page, under the tabs.
   outro: `[Discord](https://discord.gg/v649emcpAu) ·
 [Issues](https://github.com/balaurengine/balaur/issues) ·
 [Discussions](https://github.com/balaurengine/balaur/discussions)`,
 
-  // An opening line under the group's heading, for the groups that want one.
-  groups: {
-    'Gamend': `Server work lives in the [Gamend repository](https://github.com/appsinacup/gamend); the plan is kept beside the engine's so the two sides agree.`,
+  // The line under each milestone's heading, above its cards.
+  milestones: {
+    '0.2': `'The list you hit making an ordinary game: two clips at once, a viewport that selects more than one node, a 3D light you place yourself, a session a script can host, and a build signed for the platform it runs on.'`,
+    '0.3': `<>Everything you see. 2D lights get normal maps, particles reach 3D, the camera culls what is behind it and draws to more than one view, and the timeline grows the curve handles and the sequencer a cutscene needs.</>`,
+    '0.4': `<>Two machines playing the same game. Rollback, stable ids and QUIC datagrams are built and reachable only from Rust; this is the milestone that puts them behind <code>session</code> in a script, in a browser, and on a Gamend lobby. Server work lives in the <a href="https://github.com/appsinacup/gamend">Gamend repository</a>; the plan is kept beside the engine's so the two sides agree.</>`,
+    '0.5': `'Making a game without opening a script: hooks and states on any node, paths an agent walks, a tile map finished, voice and a controller that does more than rumble, and an agent driving the editor over MCP.'`,
+    '0.6': `<>Getting the thing out. One command puts a build on a URL or a phone, a pack ships sealed, Steam and Google Play join Apple behind the <code>platform</code> module, and a project loads while the game runs rather than whole.</>`,
+    'Later': `'Wanted, planned, and waiting on a game that asks. Nothing here is refused; each one moves into a numbered milestone the moment somebody needs it.'`,
   },
 
   items: {
@@ -57,6 +58,8 @@ group are ordered by it.
       `'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.'`,
     'Extensions, tier two':
       `'Native extensions that add components and systems, and call back into scripts.'`,
+    'Falling sand':
+      `<>A Noita-shaped grid in 2D: sand pours, water flows, lava sets fire to wood and cools to stone, each cell following a rule table in a <code>cell_set</code> rather than a script of its own. It is not physics, so it is not in rapier and not in the default build — a <code>balaur_cells</code> plugin behind a feature that is off, on the fixed step and in the digest. Bodies couple through parry's 2D voxel collider, which <code>collider2d</code> already has and which a script already digs into.</>`,
     'Soft bodies, tearing, fluids':
       `'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.'`,
     'Animation blending':

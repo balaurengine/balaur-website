@@ -1,40 +1,103 @@
-import type {ReactNode} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import type {KeyboardEvent, ReactNode} from 'react';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
-export type RoadmapTier = 1 | 2 | 3;
-
-/** Short on the card; the page's legend above the groups spells each one out. */
-const TIER_LABEL: Record<RoadmapTier, string> = {
-  1: 'Tier 1',
-  2: 'Tier 2',
-  3: 'Tier 3',
-};
-
 export type RoadmapItem = {
+  /** The engine group the item sits in, shown above the card's title. */
+  group: string;
   title: string;
   text: ReactNode;
-  tier: RoadmapTier;
   /** The engine's plan document for this item; kept as data, not rendered. */
   plan?: string;
 };
 
-// One card per thing that does not exist yet: a title and one sentence. The
-// page groups cards under markdown h2 sections, so cards are h3. Cards sort by
-// tier, keeping the order the page wrote them in within a tier.
-export default function Roadmap({items}: {items: RoadmapItem[]}): ReactNode {
-  const sorted = [...items].sort((a, b) => a.tier - b.tier);
+export type RoadmapMilestone = {
+  /** `0.2`, or `Later` for the ones with no version against them. */
+  id: string;
+  title: string;
+  lead?: ReactNode;
+  items: RoadmapItem[];
+};
+
+const slug = (id: string) => `milestone-${id.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
+// The near milestone keeps the full rule down the card's side; later ones
+// lighten, so the tab you land on reads as the one being built.
+const weight = (index: number) => (index === 0 ? styles.near : index < 3 ? styles.mid : styles.far);
+
+// One tab per milestone, one card per thing that milestone does not do yet.
+// The tab is in the URL hash, so a link can open the page on 0.4.
+export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}): ReactNode {
+  const [active, setActive] = useState(milestones[0].id);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // The hash is read once the page is in a browser: the build prerenders the
+  // first milestone, and a deep link corrects it before paint.
+  useEffect(() => {
+    const wanted = decodeURIComponent(window.location.hash.replace(/^#/, ''));
+    if (milestones.some((m) => m.id === wanted)) setActive(wanted);
+  }, [milestones]);
+
+  const select = (id: string) => {
+    setActive(id);
+    window.history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+  };
+
+  // Left and right move between tabs, as a tablist is expected to.
+  const onKeyDown = (event: KeyboardEvent, index: number) => {
+    const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+    if (!step) return;
+    event.preventDefault();
+    const next = (index + step + milestones.length) % milestones.length;
+    select(milestones[next].id);
+    tabs.current[next]?.focus();
+  };
+
+  const shown = milestones.find((m) => m.id === active) ?? milestones[0];
+  const index = milestones.indexOf(shown);
+
   return (
-    <div className={styles.grid}>
-      {sorted.map((item) => (
-        <div className={`${styles.card} ${styles[`tier${item.tier}`]}`} key={item.title}>
-          <p className={styles.tier}>{TIER_LABEL[item.tier]}</p>
-          <Heading as="h3" className={styles.title}>
-            {item.title}
-          </Heading>
-          <p className={styles.text}>{item.text}</p>
+    <div className={styles.roadmap}>
+      <div className={styles.tabs} role="tablist" aria-label="Milestones">
+        {milestones.map((milestone, i) => (
+          <button
+            key={milestone.id}
+            ref={(el) => {
+              tabs.current[i] = el;
+            }}
+            type="button"
+            role="tab"
+            id={`${slug(milestone.id)}-tab`}
+            aria-controls={slug(milestone.id)}
+            aria-selected={milestone.id === shown.id}
+            tabIndex={milestone.id === shown.id ? 0 : -1}
+            className={`${styles.tab} ${milestone.id === shown.id ? styles.tabActive : ''}`}
+            onClick={() => select(milestone.id)}
+            onKeyDown={(event) => onKeyDown(event, i)}>
+            {milestone.id}
+            <span className={styles.count}>{milestone.items.length}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.panel} role="tabpanel" id={slug(shown.id)} aria-labelledby={`${slug(shown.id)}-tab`}>
+        <Heading as="h2" className={styles.milestone}>
+          {shown.title}
+        </Heading>
+        {shown.lead && <p className={styles.lead}>{shown.lead}</p>}
+        <div className={styles.grid}>
+          {shown.items.map((item) => (
+            <div className={`${styles.card} ${weight(index)}`} key={item.title}>
+              <p className={styles.group}>{item.group}</p>
+              <Heading as="h3" className={styles.title}>
+                {item.title}
+              </Heading>
+              <p className={styles.text}>{item.text}</p>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 // Writes docs/roadmap.mdx from two sources that own different halves of it.
 //
-// The engine's docs/ROADMAP.md owns the structure — which groups exist, which
-// items are in them, in what order, at what tier, behind which plan — because
-// that is the list the engine's own contributors keep. This repository owns the
-// prose, in src/data/roadmap-copy.mjs: the frontmatter, the legend, each
-// group's opening line and each card's paragraph, all keyed by item title.
+// The engine's docs/ROADMAP.md owns the structure — which milestones exist,
+// which items are in them, in what order, behind which plan — because that is
+// the list the engine's own contributors keep. This repository owns the prose,
+// in src/data/roadmap-copy.mjs: the frontmatter, the intro, each milestone's
+// opening line and each card's paragraph, all keyed by title.
 //
 // So a roadmap item lands here by being added there, and a title is the join:
 // rename one on either side without the other and this script fails rather
@@ -41,69 +41,117 @@ function sourcePath() {
   return SYNCED;
 }
 
-// One row: `| **Title** — text | tier | [PLAN-x.md](PLAN-x.md) |`, where the
-// tier is 1, 2, 3 or an em dash for work the engine tracks and this page does
-// not. The text column is the engine's own one-liner; the card's paragraph is
-// this repository's, so the column is read and dropped.
-function parseRoadmap(md) {
-  const groups = [];
+const cells = (line) => line.slice(1, line.lastIndexOf('|')).split(' | ').map((c) => c.trim());
+const isRule = (line) => /^\|\s*(Item|Milestone|:?-{3,})/.test(line);
+
+// The `## Milestones` table: `| **0.2** | What it is |`, in tab order. Every
+// item row names one of these, so the two tables cannot drift apart.
+function parseMilestones(md) {
+  const out = [];
+  let inside = false;
+  for (const line of md.split('\n')) {
+    const heading = /^## (.+?)\s*$/.exec(line);
+    if (heading) {
+      if (inside) break;
+      inside = heading[1] === 'Milestones';
+      continue;
+    }
+    if (!inside || !line.startsWith('| ') || isRule(line)) continue;
+    const [id, title] = cells(line);
+    const bare = /^\*\*(.+?)\*\*$/.exec(id);
+    if (!bare) fail(`a milestone is "**0.2**", got ${id}`);
+    out.push({id: bare[1], title, items: []});
+  }
+  if (!out.length) fail('no `## Milestones` table');
+  return out;
+}
+
+// One row: `| **Title** — text | 0.2 | [PLAN-x.md](PLAN-x.md) |`, where the
+// milestone is one from the table above, or that milestone in parentheses for
+// work the engine tracks and this page does not. The text column is the
+// engine's own one-liner; the card's paragraph is this repository's, so the
+// column is read and dropped.
+function parseRoadmap(md, milestones) {
+  const by = new Map(milestones.map((m) => [m.id, m]));
   let group = null;
   md.split('\n').forEach((line, i) => {
     const heading = /^## (.+?)\s*$/.exec(line);
     if (heading) {
-      group = {title: heading[1], items: []};
-      groups.push(group);
+      group = heading[1] === 'Milestones' ? null : heading[1];
       return;
     }
-    if (!group || !line.startsWith('| ') || /^\|\s*(Item|:?-{3,})/.test(line)) return;
-    const cells = line.slice(1, line.lastIndexOf('|')).split(' | ').map((c) => c.trim());
-    if (cells.length !== 3) fail(`${i + 1}: a row needs three columns, got ${cells.length}`);
-    const [item, tier, plan] = cells;
-    if (tier === '—') return; // in-tree work, deliberately not on this page
-    if (!['1', '2', '3'].includes(tier)) fail(`${i + 1}: tier is "${tier}", not 1, 2, 3 or —`);
+    if (!group || !line.startsWith('| ') || isRule(line)) return;
+    const row = cells(line);
+    if (row.length !== 3) fail(`${i + 1}: a row needs three columns, got ${row.length}`);
+    const [item, milestone, plan] = row;
+    if (/^\(.+\)$/.test(milestone)) {
+      const inner = milestone.slice(1, -1);
+      if (!by.has(inner)) fail(`${i + 1}: milestone "${inner}" is not in the Milestones table`);
+      return; // in-tree work, deliberately not on this page
+    }
+    if (!by.has(milestone)) fail(`${i + 1}: milestone "${milestone}" is not in the Milestones table`);
     const title = /^\*\*(.+?)\*\*\s+—\s/.exec(item);
     if (!title) fail(`${i + 1}: an item starts with "**Title** — ", got ${item.slice(0, 60)}`);
     const link = /^\[[^\]]+\]\(([^)]+)\)$/.exec(plan);
     if (!link && plan !== 'no plan') fail(`${i + 1}: the plan is a link or "no plan", got ${plan}`);
     const url = link && (/^https?:/.test(link[1]) ? link[1] : PLAN_BASE + link[1]);
-    group.items.push({title: title[1].replace(/`/g, ''), tier: Number(tier), plan: url});
+    by.get(milestone).items.push({group, title: title[1].replace(/`/g, ''), plan: url});
   });
-  return groups.filter((g) => g.items.length > 0);
+  const empty = milestones.filter((m) => !m.items.length).map((m) => m.id);
+  if (empty.length) fail(`a milestone with no items: ${empty.join(', ')}`);
+  return milestones;
 }
 
-function render(groups, copy) {
+function render(milestones, copy) {
   const known = new Set();
-  const out = [copy.frontmatter.trimEnd(), '', "import Roadmap from '@site/src/components/Roadmap';", '', '# Roadmap', '', copy.intro.trim(), ''];
-  for (const group of groups) {
-    out.push(`## ${group.title}`, '');
-    const lead = copy.groups[group.title];
-    if (lead) out.push(lead.trim(), '');
-    out.push('<Roadmap items={[');
-    for (const item of group.items) {
+  const out = [
+    copy.frontmatter.trimEnd(),
+    '',
+    "import Roadmap from '@site/src/components/Roadmap';",
+    '',
+    '# Roadmap',
+    '',
+    copy.intro.trim(),
+    '',
+    '<Roadmap milestones={[',
+  ];
+  for (const milestone of milestones) {
+    const lead = copy.milestones[milestone.id];
+    if (!lead) fail(`no copy for milestone "${milestone.id}" — add it to src/data/roadmap-copy.mjs`);
+    out.push('  {');
+    out.push(`    id: '${milestone.id}',`);
+    out.push(`    title: ${JSON.stringify(milestone.title)},`);
+    out.push(`    lead: ${lead.trim()},`);
+    out.push('    items: [');
+    for (const item of milestone.items) {
       const text = copy.items[item.title];
       if (!text) fail(`no copy for "${item.title}" — add it to src/data/roadmap-copy.mjs`);
       known.add(item.title);
-      out.push('  {');
-      out.push(`    title: '${item.title.replace(/'/g, "\\'")}',`);
-      out.push(`    tier: ${item.tier},`);
-      out.push(`    text: ${text.trim()},`);
-      if (item.plan) out.push(`    plan: '${item.plan}',`);
-      out.push('  },');
+      out.push('      {');
+      out.push(`        group: ${JSON.stringify(item.group)},`);
+      out.push(`        title: '${item.title.replace(/'/g, "\\'")}',`);
+      out.push(`        text: ${text.trim()},`);
+      if (item.plan) out.push(`        plan: '${item.plan}',`);
+      out.push('      },');
     }
-    out.push(']} />', '');
+    out.push('    ],');
+    out.push('  },');
   }
+  out.push(']} />', '');
   if (copy.outro) out.push(copy.outro.trim(), '');
   const stale = Object.keys(copy.items).filter((t) => !known.has(t));
   if (stale.length) fail(`copy for items the roadmap no longer has: ${stale.join(', ')}`);
-  const staleGroups = Object.keys(copy.groups).filter((g) => !groups.some((x) => x.title === g));
-  if (staleGroups.length) fail(`copy for groups the roadmap no longer has: ${staleGroups.join(', ')}`);
+  const ids = new Set(milestones.map((m) => m.id));
+  const staleMilestones = Object.keys(copy.milestones).filter((id) => !ids.has(id));
+  if (staleMilestones.length) fail(`copy for milestones the roadmap no longer has: ${staleMilestones.join(', ')}`);
   return out.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 }
 
 const src = sourcePath();
 if (!existsSync(src)) fail(`no ${src}; run scripts/sync-docs.sh, or set BALAUR_REPO`);
+const md = readFileSync(src, 'utf8');
 const {default: copy} = await import('../src/data/roadmap-copy.mjs');
-const body = render(parseRoadmap(readFileSync(src, 'utf8')), copy);
+const body = render(parseRoadmap(md, parseMilestones(md)), copy);
 
 if (process.argv.includes('--check')) {
   const have = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';

@@ -1,8 +1,69 @@
+.roadmap {
+  margin: 2rem 0 2.5rem;
+}
+
+/* One row of milestones. It scrolls sideways rather than wrapping, so the
+   run of versions still reads as an order on a phone. */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--balaur-card-border);
+}
+
+.tab {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  padding: 0.6rem 0.9rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  font: inherit;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ifm-color-emphasis-700);
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ifm-font-color-base);
+  background: var(--balaur-card-bg);
+}
+
+.tabActive {
+  border-bottom-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.count {
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.tabActive .count {
+  color: var(--ifm-color-primary);
+}
+
+.milestone {
+  font-size: 1.6rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.lead {
+  font-size: 1.05rem;
+  color: var(--ifm-color-emphasis-800);
+  max-width: 46rem;
+  margin: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
-  margin: 2rem 0 2.5rem;
+  margin: 1.5rem 0 0;
 }
 
 .card {
@@ -13,16 +74,16 @@
   background: var(--balaur-card-bg);
 }
 
-/* Later tiers keep the card but lighten the rule down its side. */
-.tier2 {
+/* Later milestones keep the card but lighten the rule down its side. */
+.mid {
   border-left-color: var(--ifm-color-emphasis-500);
 }
 
-.tier3 {
+.far {
   border-left-color: var(--ifm-color-emphasis-300);
 }
 
-.tier {
+.group {
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -30,7 +91,7 @@
   margin: 0 0 0.5rem;
 }
 
-.tier1 .tier {
+.near .group {
   color: var(--ifm-color-primary);
 }
 
