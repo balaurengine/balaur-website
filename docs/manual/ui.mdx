@@ -8,22 +8,21 @@ sidebar_position: 7
 
 # UI
 
-Balaur has two UI layers, both script-facing. Which one you want depends on
-whether the interface belongs to the game or to a tool:
+Two UI layers, both script-facing. Which one you want depends on whether the
+interface belongs to the game or to a tool:
 
-- **`widget`**, a component on a scene node. Retained: it is saved with the
-  scene, edited in the inspector, and previewed in the editor viewport. This
-  is game HUD — a score readout, a menu button.
+- **`widget`**, a component on a scene node. Retained: saved with the scene,
+  edited in the inspector, previewed in the editor viewport. This is game HUD —
+  a score readout, a menu button.
 - **the `ui` module**, immediate-mode egui redrawn every frame from a script's
   `draw_ui`. This is what tools and the editor itself are built from.
 
 ## Widgets: game HUDs as scene nodes
 
 There is one `widget` component, not one per kind of element. What it draws is
-its `kind` — `label`, `button`, or `panel` — which is the engine's convention
-throughout: a component that comes in variants selects them with `kind`,
-rather than each variant being its own component. A button is a widget whose
-`kind` is `button`, anchored to a screen corner or the center:
+its `kind` — `label`, `button` or `panel` — the engine's convention throughout:
+a component that comes in variants selects them with `kind`. A button is a
+widget anchored to a screen corner or the centre:
 
 ```toml
 [[nodes]]
@@ -39,10 +38,9 @@ font_size = 22
 text_color = "#2b2b2b"
 ```
 
-A button does something in one of two ways. `on_click` names a method on that
-node's own script, called when the button is pressed; or the read-only
-`clicked` property is true for the frame the press happened, which a script
-can poll:
+A button acts in one of two ways: `on_click` names a method on that node's own
+script, or the read-only `clicked` property is true for the frame the press
+happened and a script polls it:
 
 ```toml
 [nodes.widget]
@@ -65,13 +63,13 @@ pub fn update(this, dt) {
 ```
 
 Widgets live in the scene tree like any node, so they are saved with the
-scene, editable in the editor (which previews them in its viewport), and
-updatable from scripts through the component handle.
+scene, editable in the editor, and updatable from scripts through the component
+handle.
 
 ![The Interface persona: examples/angrynerds' Score, Birds, Hint and Restart widgets in the tree, the HUD over the safe area, and the Restart button in the inspector](/img/manual/ui_widgets.webp)
 
-A button's `on_click` names a method on the button's own node, so a button
-that acts on another node's script forwards the call:
+`on_click` names a method on the button's own node, so a button that acts on
+another node's script forwards the call:
 
 ```rust
 // scripts/restart_button.rn, on the Restart node
@@ -80,9 +78,9 @@ pub fn on_restart(this) {
 }
 ```
 
-A component handle's `set` builds the component from your table over the
-schema's defaults rather than merging into what is there, so change one
-property by reading the table first:
+A handle's `set` builds the component from your table over the schema's
+defaults rather than merging into what is there, so read the table first to
+change one property:
 
 ```rune
 let w = this.node.widget.get();
@@ -97,8 +95,8 @@ toggles the layer.
 ## The `ui` module: immediate-mode UI
 
 For tools and anything beyond a HUD, the `ui` module exposes immediate-mode
-[egui](https://github.com/emilk/egui) to scripts. A script implements a
-`draw_ui` lifecycle method, which runs once per frame inside the egui pass:
+[egui](https://github.com/emilk/egui) to scripts, through a `draw_ui`
+lifecycle method that runs once per frame inside the egui pass:
 
 ```rune
 pub fn draw_ui(this) {
@@ -112,16 +110,16 @@ pub fn draw_ui(this) {
 }
 ```
 
-Panel and container calls take a closure and push their child UI around it,
-so a script composes layouts exactly like Rust egui code. Widgets that
-change return a tuple — `let (text, changed) = ui::text_field(...)`. The
-widget set includes panels, labels, pills, toggles, sliders, drag values,
-dropdowns, text fields, modals, scroll areas, menus, shortcuts, and
-`ui::code_editor` — an editable, Rune-syntax-highlighted buffer.
+Panel and container calls take a closure and push their child UI around it, so
+a script composes layouts exactly like Rust egui code. Widgets that change
+return a tuple — `let (text, changed) = ui::text_field(...)`. The set includes
+panels, labels, pills, toggles, sliders, drag values, dropdowns, text fields,
+modals, scroll areas, menus, shortcuts, and `ui::code_editor`, an editable
+Rune-highlighted buffer.
 
-Widgets take colors per call, so complete themes live in scripts and hot
-reload with them. Fonts load from `<project>/fonts/*.ttf`, with the named
-families `heading` / `ui` / `mono` always available.
+Widgets take colors per call, so complete themes live in scripts and hot reload
+with them. Fonts load from `<project>/fonts/*.ttf`, with the families
+`heading` / `ui` / `mono` always available.
 
 All dimensions are design pixels: `ui::set_scale(f)` multiplies every metric
 and the query functions divide back, so scripts author against the design's

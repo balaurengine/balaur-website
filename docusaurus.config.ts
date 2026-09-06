@@ -210,6 +210,16 @@ const config: Config = {
           label: 'Roadmap',
         },
         {to: '/blog', label: 'Devlog', position: 'left'},
+        {
+          label: 'Community',
+          position: 'right',
+          items: [
+            {to: '/community', label: 'Community'},
+            {to: '/about', label: 'About'},
+            {to: '/donate', label: 'Support Balaur'},
+            {href: discordUrl, label: 'Discord'},
+          ],
+        },
         {to: '/editor', label: 'Editor', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
         {
@@ -237,11 +247,19 @@ const config: Config = {
               label: 'Reference',
               to: '/docs/reference',
             },
+            {
+              label: 'Roadmap',
+              to: '/docs/roadmap',
+            },
           ],
         },
         {
           title: 'Community',
           items: [
+            {
+              label: 'Community and contributing',
+              to: '/community',
+            },
             {
               label: 'Discord',
               href: discordUrl,
@@ -258,10 +276,14 @@ const config: Config = {
               label: 'Engine repo',
               href: 'https://github.com/balaurengine/balaur',
             },
+            {
+              label: 'Website repo',
+              href: 'https://github.com/balaurengine/balaur-website',
+            },
           ],
         },
         {
-          title: 'More',
+          title: 'Made for',
           items: [
             {
               label: 'For game developers',
@@ -276,10 +298,6 @@ const config: Config = {
               to: '/multiplayer',
             },
             {
-              label: 'Devlog',
-              to: '/blog',
-            },
-            {
               label: 'Compare',
               to: '/compare',
             },
@@ -287,17 +305,34 @@ const config: Config = {
               label: 'FAQ',
               to: '/faq',
             },
+          ],
+        },
+        {
+          title: 'The project',
+          items: [
             {
-              label: 'Branding',
-              to: '/branding',
+              label: 'About',
+              to: '/about',
+            },
+            {
+              label: 'Support Balaur',
+              to: '/donate',
+            },
+            {
+              label: 'Devlog',
+              to: '/blog',
             },
             {
               label: 'Devlog RSS',
               href: 'pathname:///blog/rss.xml',
             },
             {
-              label: 'Website repo',
-              href: 'https://github.com/balaurengine/balaur-website',
+              label: 'Branding',
+              to: '/branding',
+            },
+            {
+              label: 'Privacy',
+              to: '/privacy',
             },
           ],
         },

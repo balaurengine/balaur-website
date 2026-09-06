@@ -12,9 +12,9 @@ Balaur is a node-based game engine in Rust: 2D and 3D, scripting, physics,
 animation, networking, and an editor. Fast to run, fast to iterate, easy to
 use.
 
-To a game developer it is a scene tree of named nodes with scripts attached.
-Underneath, every node is an ECS entity and every subsystem is a plugin —
-a layer only plugin authors see. The editor is itself a Balaur project.
+A game is a scene tree of named nodes with scripts attached. Underneath,
+every node is an ECS entity and every subsystem is a plugin — a layer only
+plugin authors see. The editor is itself a Balaur project.
 
 ![The editor: scene tree, viewport, inspector](/img/manual/editor_overview.webp)
 
@@ -31,8 +31,8 @@ No published release yet. Balaur builds from source — see
   live in milliseconds and the state survives.
 - **Determinism, always on.** Same inputs, same bits on every platform, and
   the engine can prove it: a fixed 60 Hz step, a digest per tick, record and
-  replay. Network replies enter an ordered queue and land at the start of a
-  tick, so a replay covers logins and retries without touching the network.
+  replay. Network replies land at the start of a tick in arrival order, so a
+  replay covers logins and retries without touching the network.
 
 ## A script
 
@@ -58,7 +58,7 @@ collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
 ```
 
-`body3d`, `collider3d` and `shape3d` are components: the physics and render
+`body3d`, `collider3d` and `shape3d` are components. The physics and render
 plugins registered them, which also made them script calls and inspector rows.
 
 ## Where to go next

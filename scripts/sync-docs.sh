@@ -14,6 +14,11 @@
 # is hand written, one line per feature, and it is the "what shipped" that the
 # roadmap's "what has not" points at.
 #
+# `docs/ROADMAP.md` lands in reference/roadmap.md, which scripts/gen-roadmap.mjs
+# turns into docs/roadmap.mdx with the prose in src/data/roadmap-copy.mjs. It is
+# hand written too: the engine owns which items exist, this repository owns how
+# each card reads.
+#
 # By default this fetches from GitHub. Set BALAUR_REPO to a local checkout
 # to sync from the working tree instead:
 #
@@ -101,5 +106,23 @@ if [[ "$changelog" == 1 ]]; then
   echo "synced CHANGELOG.md"
 else
   echo "warning: could not fetch CHANGELOG.md; keeping the committed copy" >&2
+fi
+rm -f "$tmp"
+
+# The roadmap's structure, from the engine's docs/. gen-roadmap.mjs reads this
+# copy when BALAUR_REPO is unset, so the committed one keeps a build going.
+tmp="$(mktemp)"
+if [[ -n "${BALAUR_REPO:-}" ]]; then
+  cp "$BALAUR_REPO/docs/ROADMAP.md" "$tmp" && roadmap=1 || roadmap=0
+elif curl -fsSL "$ROOT_URL/docs/ROADMAP.md" -o "$tmp"; then
+  roadmap=1
+else
+  roadmap=0
+fi
+if [[ "$roadmap" == 1 ]]; then
+  mv "$tmp" "$ROOT/reference/roadmap.md"
+  echo "synced ROADMAP.md"
+else
+  echo "warning: could not fetch ROADMAP.md; keeping the committed copy" >&2
 fi
 rm -f "$tmp"

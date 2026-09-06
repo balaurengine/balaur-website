@@ -54,8 +54,8 @@ export default function Benchmark(): ReactNode {
       <main className={styles.main}>
         <Heading as="h1">Run the benchmarks</Heading>
         <p className={styles.lede}>
-          The same project the <Link to="/docs/benchmarks">published numbers</Link> come from, built to
-          WebAssembly. Pick a case, watch it build, and read the median tick beside what rapier took inside it.
+          The project the <Link to="/docs/benchmarks">published numbers</Link> come from, built to WebAssembly. Pick
+          a case, watch it build, and read the median tick beside what rapier took inside it.
         </p>
         <div className={styles.stage}>
           <canvas id="balaur-canvas" className={styles.canvas} width={1600} height={1000} tabIndex={0} />
@@ -86,20 +86,19 @@ export default function Benchmark(): ReactNode {
         </p>
         <Heading as="h2">What these numbers are, and are not</Heading>
         <p>
-          They are the browser's. A web build is single-threaded, so the solver that runs on seven threads on a
-          desktop runs on one here, and the browser paces frames to the display rather than to a fixed tick. Read
-          them as this machine in this tab, and take the{' '}
-          <Link to="/docs/benchmarks">published table</Link> for the comparison against Godot: those come from a
-          headless run at a fixed 60 Hz on a quiet machine, beside the Godot physics suites measured the same day.
+          They are the browser&rsquo;s. A web build is single-threaded, so the solver that runs on seven threads on a
+          desktop runs on one here, and the browser paces frames to the display rather than to a fixed tick. Read them
+          as this machine in this tab; the <Link to="/docs/benchmarks">published table</Link> is the comparison
+          against Godot, from a headless run at a fixed 60 Hz on a quiet machine.
         </p>
         <p>
-          Everything else is the same engine: the same scenes, the same rapier, the same scripts. Each case reports
-          a whole physics tick, rapier&rsquo;s own step inside it, and what the case&rsquo;s script cost crossing
-          the seam — all read from{' '}
+          Everything else is the same engine: the same scenes, the same rapier, the same scripts. Each case reports a
+          whole physics tick, rapier&rsquo;s own step inside it, and what the script cost crossing the seam — read
+          from{' '}
           <Link to="/docs/reference/modules/engine">
             <code>engine.timings()</code>
           </Link>
-          , the profiler the editor&rsquo;s own dock draws.
+          , the profiler the editor&rsquo;s dock draws.
         </p>
         <p>
           To run it on your own machine, where the numbers mean something:{' '}

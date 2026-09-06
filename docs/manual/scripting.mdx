@@ -19,9 +19,9 @@ nodes in a scene. Rune reads like Rust without types; the
 A script declares lifecycle functions — `init`, `update(dt)`,
 `fixed_update(dt)`, `draw_ui`, `on_free`, `hot_reload` — as free functions
 taking the instance first. The engine makes one instance per attached node,
-hands it back on every call as `this`, and puts the owning node on
-`this.node`. An object handed into a Rune function is mutated in place, so
-what a script writes to `this` is what the host reads next frame.
+hands it back on every call as `this`, and puts the owning node on `this.node`.
+Rune mutates an object in place, so what a script writes to `this` is what the
+host reads next frame.
 
 ```rune
 // scripts/spinner.rn
@@ -38,12 +38,12 @@ pub fn fixed_update(this, dt) {}   // the fixed 60 Hz step, before physics
 pub fn draw_ui(this) {}            // immediate-mode UI, once per frame
 ```
 
-`update` runs once per frame with the measured frame time; `fixed_update`
-runs on the fixed 60 Hz step, before physics, and is where simulation
-belongs. See [Determinism](./determinism.mdx).
+`update` runs once per frame with the measured frame time; `fixed_update` runs
+on the fixed 60 Hz step, before physics, and is where simulation belongs. See
+[Determinism](./determinism.mdx).
 
-`project.toml` names the language with `language`; it defaults to `"rune"`,
-and any other value is an error.
+`project.toml` names the language with `language`. It defaults to `"rune"`, and
+any other value is an error.
 
 ![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.webp)
 
@@ -69,22 +69,22 @@ source = "scripts/spinner.rn"
 speed = 3.5
 ```
 
-The defaults are written onto the instance, the node's `props` over them,
-and only then is `init` called. The inspector lists them per node and writes
-an override only where the value differs from the default, so changing a
-default in the file reaches every node that never overrode it.
-`node.attach_script(path, props)` is the same thing at run time.
+The defaults are written onto the instance, the node's `props` over them, and
+only then is `init` called. The inspector writes an override only where the
+value differs from the default, so changing a default in the file reaches every
+node that never overrode it. `node.attach_script(path, props)` is the same
+thing at run time.
 
 ## Modules
 
 Subsystems declare their bindings once against a language-neutral seam
 (`balaur_script`), and scripts reach them as modules with `::`: `engine`,
-`scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`,
-`physics3d`, `render`, `audio`, `ui`, `animation`, `skeleton`, `assets`,
-`http`, `websocket`, `gamend`, `task`, `debugger`, `fs`, `toml`, `json`
-and `script`. The complete surface — every function and constant — is in
-the [script modules reference](/docs/reference/modules), which is generated
-from a booted engine so it cannot drift.
+`scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`, `physics3d`,
+`render`, `audio`, `ui`, `animation`, `skeleton`, `assets`, `http`,
+`websocket`, `gamend`, `task`, `debugger`, `fs`, `toml`, `json` and `script`.
+Every function and constant is in the
+[script modules reference](/docs/reference/modules), generated from a booted
+engine so it cannot drift.
 
 ```rune
 let t = engine::time();
@@ -97,16 +97,16 @@ Values a binding accepts are named rather than spelled: `input::KEY_SPACE`,
 
 Node operations are methods on a node value: `this.node.position()`,
 `node.get_node("../Target")`, `node.set_component("widget", w)`. A call
-that returns several values returns a tuple — `let (text, changed) =
+returning several values returns a tuple — `let (text, changed) =
 ui::text_field(...)` — while a vector is one value with fields:
 `this.node.position().y`.
 
-Each component a node can carry is also a field on the node, and that field
-is a handle whose methods are the driving module's functions with the node
-filled in: `this.node.body2d.apply_impulse(x, y)` is
-`physics2d::apply_impulse(this.node, x, y)`. Every handle has `get()`,
-`set(table)`, `has()` and `remove()` too. The [component
-reference](/docs/reference/components) lists the methods per component.
+Each component a node can carry is also a field on the node, and that field is
+a handle whose methods are the driving module's functions with the node filled
+in: `this.node.body2d.apply_impulse(x, y)` is `physics2d::apply_impulse(this.node, x, y)`.
+Every handle also has `get()`, `set(table)`, `has()` and `remove()`. The
+[component reference](/docs/reference/components) lists the methods per
+component.
 
 ```rune
 let body = this.node.body2d;
@@ -134,9 +134,9 @@ pub fn update(this, dt) {
 }
 ```
 
-`script::require("lib.rn")` loads a file at run time instead and returns
-its functions in an object. Both hot reload in place: a module object held
-since `init` sees the new code after a save.
+`script::require("lib.rn")` loads a file at run time instead and returns its
+functions in an object. Both hot reload in place: a module object held since
+`init` sees the new code after a save.
 
 ## Errors
 
@@ -154,15 +154,14 @@ if !ok {
 ## Events
 
 There are no `connect`-style signals. The engine calls methods a script
-declares by name — `on_animation_finished(name)` from an animation, a
-widget's `on_click`, `on_response(r)` from an HTTP request — so a handler
-reads exactly like `update(dt)` does. Most events also have a polling twin
-(`input::just_pressed`, `animation::just_finished`): an event is a
-frame-scoped snapshot, not a subscription.
+declares by name — `on_animation_finished(name)` from an animation, a widget's
+`on_click`, `on_response(r)` from an HTTP request — so a handler reads exactly
+like `update(dt)`. Most events also have a polling twin
+(`input::just_pressed`, `animation::just_finished`): an event is a frame-scoped
+snapshot, not a subscription.
 
-An asynchronous operation can also be awaited in sequence. An entry point
-declared `async` suspends on `task::wait` and resumes when the result enters
-the simulation at the start of a later tick:
+An `async` entry point suspends on `task::wait` and resumes when the result
+enters the simulation at the start of a later tick:
 
 ```rune
 pub async fn init(this) {
@@ -181,29 +180,26 @@ instance by name.
 
 <Clip name="scripting_live" alt="A value changed and saved while the scene runs, then a breakpoint stepped in the Debugger dock" />
 
-The host watches the project directory. On save, the file is recompiled; a
-compile error keeps the previous unit running and is reported once. Rune
+The host watches the project directory and recompiles a file on save. Rune
 compiles to an immutable unit, so there is nothing to patch: the new unit
 replaces the old one, instances keep their state objects, and the next call
-resolves against the new code. Measured save-to-live latency is
-file-watcher latency, a few milliseconds. The optional `hot_reload(this)`
-hook lets a script migrate the shape of its state.
+resolves against the new code. Save-to-live latency is file-watcher latency, a
+few milliseconds. The optional `hot_reload(this)` hook lets a script migrate
+the shape of its state.
 
-A save that does not compile is reported rather than assumed: the editor's
-Output dock gets the compiler's own diagnostic — file, line, column and
-caret — and the previously compiled code keeps running. Because Rune
-resolves module paths at compile time, a misspelled engine call is caught
-on save, not when the line finally runs.
+A save that does not compile puts the compiler's own diagnostic — file, line,
+column and caret — in the editor's Output dock, and the previously compiled
+code keeps running. Rune resolves module paths at compile time, so a misspelled
+engine call is caught on save rather than when the line finally runs.
 
 ![A save that did not compile, reported in the Output dock](/img/editor/save_error.webp)
 
 ## Debugging
 
-A script can be paused on a breakpoint and stepped. In the editor's Script
-persona, click a line number to set a breakpoint and run the scene; the
-Debugger dock shows the call frames and their locals, with continue and
-step over / into / out on `F5` / `F10` / `F11` / `Shift+F11`. The same
-controls are the `debugger` script module, so a tool can drive them:
+In the editor's Script persona, click a line number to set a breakpoint and
+run the scene. The Debugger dock shows the call frames and their locals, with
+continue and step over / into / out on `F5` / `F10` / `F11` / `Shift+F11`. The
+same controls are the `debugger` script module, so a tool can drive them:
 
 ```rune
 debugger::set_breakpoints("scripts/ball.rn", [12, 30]);
@@ -211,29 +207,28 @@ let pause = debugger::paused();         // (), or the pause: reason, line, frame
 debugger::resume(debugger::STEP_OVER);  // CONTINUE | STEP_OVER | STEP_INTO | STEP_OUT
 ```
 
-A script that throws normally logs the error and the engine carries on.
-Turning on break on error stops at the line that threw instead, with the
-frames and locals still there to read:
+A script that throws logs the error and the engine carries on. Break on error
+stops at the line that threw instead, with the frames and locals still there to
+read:
 
 ```rune
 debugger::set_break_on_error(true);
 ```
 
 It is off by default because it puts every synchronous call through the
-stepping executor, which is otherwise used only where you have set a
-breakpoint. The Debugger dock has the same switch. An error pause cannot be
-continued — the call is over — so letting go of one drops it and finishes
-the tick it interrupted, whichever step button you press.
+stepping executor, otherwise used only where a breakpoint is set. The Debugger
+dock has the same switch. An error pause cannot be continued — the call is over
+— so letting go of one drops it and finishes the tick it interrupted, whichever
+step button you press.
 
-Two further limits: an async entry point (one that uses `task::wait`) runs
-as a future and cannot be paused, so a breakpoint inside one is let through;
-and locals are a frame's named arguments, since Rune keeps no names for its
-other slots.
+Two further limits: an async entry point (one using `task::wait`) runs as a
+future and cannot be paused, so a breakpoint inside one is let through; and
+locals are a frame's named arguments, since Rune keeps no names for its other
+slots.
 
 ## Determinism in scripts
 
-Straightforward simulation code is deterministic by construction: the
-engine's `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is
-`libm`-backed and bit-identical on every platform, and `rng` is an
-engine-owned seeded stream. Simulation goes in `fixed_update`. See
-[Determinism](./determinism.mdx) for the rules.
+Simulation code is deterministic by construction: the `math` module
+(`math::sin`, `math::pow`, `math::PI`, ...) is `libm`-backed and bit-identical
+everywhere, and `rng` is an engine-owned seeded stream. Simulation goes in
+`fixed_update`. See [Determinism](./determinism.mdx) for the rules.

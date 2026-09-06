@@ -1,0 +1,67 @@
+---
+title: "Community — Discord, discussions, and how to help build Balaur"
+description: "Where the Balaur conversation happens — Discord, GitHub Discussions and Issues — how to follow what ships, and how to help, with code or without it."
+image: "/img/social/community.png"
+keywords: [balaur community, balaur discord, contribute to balaur, open source game engine community, help build a game engine]
+---
+
+import Link from '@docusaurus/Link';
+
+# Community
+
+## Talk
+
+- **[Discord](https://discord.gg/v649emcpAu)** — questions, screenshots, what
+  broke. Fastest way to reach anyone.
+- **[Discussions](https://github.com/balaurengine/balaur/discussions)** — ideas
+  and proposals. Propose here before building anything large.
+- **[Issues](https://github.com/balaurengine/balaur/issues)** — bugs, one per
+  issue.
+
+## Follow
+
+- **[Devlog](/blog)** — what shipped and why.
+  <a href="pathname:///blog/rss.xml">RSS</a> · <a href="pathname:///blog/atom.xml">Atom</a>.
+- **[Changelog](/docs/changelog)** — release by release.
+- **[Roadmap](/docs/roadmap)** — what is missing.
+- **Watch the [repo](https://github.com/balaurengine/balaur)** for release tags.
+
+## Help without engine code
+
+- Build from source, run the [examples](/examples), report what your OS, GPU or
+  gamepad did differently.
+- Bug reports: the scene or script that reproduces it, expected, actual,
+  platform.
+- Fix the docs: *Edit this page* at the bottom of every page.
+- Answer someone in the Discord.
+- [Sponsor](/donate) the hardware and accounts the engine needs.
+
+## Help with the engine
+
+- [CONTRIBUTING.md](https://github.com/balaurengine/balaur/blob/main/CONTRIBUTING.md)
+  — build, test, lint.
+- [ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md)
+  before changing the shape of anything; [Principles](/docs/principles) for how
+  the project is run.
+- Large changes: a [Discussion](https://github.com/balaurengine/balaur/discussions)
+  first.
+- Every change is complete: code, tests, docs, changelog line. Generated docs
+  regenerated.
+- Determinism is a hard gate. A changed digest needs a reason.
+- One concern per pull request. [CI](/docs/quality) enforces lints and style.
+- AI-assisted contributions welcome, at the same bar.
+
+## Repositories
+
+| | |
+| --- | --- |
+| [balaurengine/balaur](https://github.com/balaurengine/balaur) | Engine, editor, CLI |
+| [balaurengine/balaur-website](https://github.com/balaurengine/balaur-website) | This site and the docs |
+| [balaurengine/rune](https://github.com/balaurengine/rune/tree/deterministic-pow) | Scripting language, forked so `powf` and `powi` are deterministic |
+
+Direct and kind: say what is wrong with the code, never with the person.
+
+<div style={{display: 'flex', flexWrap: 'wrap', gap: '0.75rem', margin: '2rem 0 0'}}>
+  <a className="button button--primary button--lg" href="https://discord.gg/v649emcpAu">Join the Discord</a>
+  <Link className="button button--outline button--lg" to="/docs/getting-started">Getting started</Link>
+</div>

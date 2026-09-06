@@ -1,0 +1,70 @@
+---
+title: "About — who builds Balaur, and why"
+description: "Balaur is a deterministic 2D and 3D game engine in Rust, built by two people: Dragos Daian, who maintains Godot Rapier Physics, and Sébastien Crozet, who writes Rapier. Where it came from, how old it is, how it is paid for."
+image: "/img/social/about.png"
+keywords: [about balaur, balaur engine, who makes balaur, rust game engine, dragos daian, sebastien crozet, open source game engine]
+---
+
+# About
+
+Balaur is a 2D & 3D node-based game engine in Rust. Deterministic tick, TOML
+scenes, Rune scripts that hot reload in milliseconds. Free, MIT.
+
+## Who
+
+**[Dragos Daian](https://github.com/Ughuuu)** — [appsinacup](https://appsinacup.com). Started Balaur.
+
+- [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics) —
+  Rapier's 2D and 3D physics in Godot. Where Balaur started.
+- [Gamend](https://github.com/appsinacup/gamend) — open source Elixir game
+  server: auth, lobbies, leaderboards, payments, server hooks. Balaur's
+  [Gamend module](/docs/manual/gamend) talks to it.
+- [Godot Box2D](https://github.com/appsinacup/godot-box2d),
+  [Godot SoftBody2D](https://github.com/appsinacup/godot-softbody2d),
+  [Godot Whisper](https://github.com/appsinacup/godot-whisper) — more Godot
+  extensions.
+
+**[Sébastien Crozet](https://github.com/sebcrozet)** — [dimforge](https://dimforge.com).
+
+- [Rapier](https://rapier.rs) — the physics under Balaur, 2D and 3D.
+- [Parry](https://parry.rs) — the collision detection under Rapier.
+- [kiss3d](https://github.com/dimforge/kiss3d) — the renderer under Balaur, on
+  wgpu.
+- [nalgebra](https://nalgebra.rs), [salva](https://github.com/dimforge/salva),
+  [bevy_rapier](https://github.com/dimforge/bevy_rapier) — the rest of dimforge.
+
+Everything else the engine stands on: [Built on](/docs/built-on).
+
+## Why
+
+- Godot Rapier Physics makes the physics server deterministic. The rest of the
+  game is not. Balaur makes the **whole tick** deterministic.
+- A bug fix in Godot waits on review and a release. Here it ships the same day.
+- Longer: [From Godot Rapier to Balaur](/blog/godot-rapier-and-balaur).
+
+## Where it is
+
+- First commit August 2026. Version **0.1.0**. Builds from source; no binary
+  release yet.
+- [Compare](/compare) says when to pick Godot, Bevy or Fyrox instead.
+  [Roadmap](/docs/roadmap) says what is missing.
+
+## How it is run
+
+- [Principles](/docs/principles): what the engine optimises for, and how the
+  project is run.
+- MIT, no CLA. Nothing is for sale: no fees, no revenue share, no paid tier.
+- [Sponsoring](/donate) pays for test hardware, developer accounts, code
+  signing and CI.
+
+## The name
+
+Romanian for dragon, and *Balaur bondoc*, the Transylvanian dromaeosaur with two
+sickle claws on each foot. The mark is the claws. Files on [Branding](/branding).
+
+## Contact
+
+[Discord](https://discord.gg/v649emcpAu) ·
+[Discussions](https://github.com/balaurengine/balaur/discussions) ·
+[Issues](https://github.com/balaurengine/balaur/issues) ·
+[Community](/community)

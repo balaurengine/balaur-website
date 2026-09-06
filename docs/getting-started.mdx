@@ -8,13 +8,10 @@ sidebar_position: 2
 
 # Getting started
 
-Prebuilt editor downloads, once a release is published, live on the
-[Download](/download) page. Below is the from-source path, which is also how
-the editor is developed.
-
-Balaur builds from source. You need a
-[Rust toolchain](https://rustup.rs) (stable) and, for the desktop window, a
-platform that wgpu supports.
+Prebuilt editor downloads are on the [Download](/download) page. Below is the
+from-source path, which is also how the editor is developed: you need a stable
+[Rust toolchain](https://rustup.rs) and, for the desktop window, a platform
+wgpu supports.
 
 ```bash
 git clone https://github.com/balaurengine/balaur
@@ -43,9 +40,8 @@ The engine has three run modes:
 | offscreen (`--offscreen`) | yes | no | screenshots, automation, visual CI |
 | windowed | yes | yes | playing and editing |
 
-Build with `--features window` for the kiss3d/wgpu window; without it,
-everything runs headless. All three modes compute exactly the same
-simulation.
+Build with `--features window` for the kiss3d/wgpu window; without it
+everything runs headless. All three modes compute the same simulation.
 
 | Command | Effect |
 | --- | --- |
@@ -58,11 +54,10 @@ simulation.
 | `replay <session>` | Play back a session recorded with `run --record`; `--verify` re-checks every tick |
 | `api` | Dump every script module, function and constant as JSON |
 
-Useful dev flags: `--frames N` stops after N frames; `--headless` and
-`--offscreen` select the run mode. Screenshots are taken from scripts —
-`render::screenshot("out.png")` captures the next rendered frame, in
-offscreen and windowed runs alike — so the caller decides *when* to capture,
-not a frame number chosen before the game started.
+`--frames N` stops after N frames, and `--headless` / `--offscreen` select
+the run mode. Screenshots come from scripts: `render::screenshot("out.png")`
+captures the next rendered frame, offscreen or windowed, so the caller decides
+*when* rather than a frame number chosen before the game started.
 
 ## Project layout
 
@@ -95,12 +90,12 @@ cargo run -p balaur_cli --features window -- edit examples/rig
 cargo run -p balaur_cli --features window -- edit examples/rig3d
 ```
 
-To see hot reload, edit `examples/hello/scripts/spinner.rn` while `run` is
-going: the change applies the moment you save, without losing state.
+For hot reload, edit `examples/hello/scripts/spinner.rn` while `run` is going:
+the change applies the moment you save, without losing state.
 
 ## Benchmarks
 
-The benchmark suite is headless — no window, no GPU — so a measurement shows
+The benchmark suite is headless — no window, no GPU — so what it measures is
 the engine:
 
 ```bash
@@ -109,5 +104,5 @@ python3 scripts/bench.py              # full run
 python3 scripts/bench.py --no-run     # re-report the last run
 ```
 
-Results are reported as a share of one 60 fps frame, because a nanosecond
-count on its own says nothing about whether you have headroom.
+Results are a share of one 60 fps frame, because a nanosecond count on its
+own says nothing about whether you have headroom.

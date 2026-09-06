@@ -12,30 +12,29 @@ import Clip from '@site/src/components/Clip';
 
 ## Nodes are entities
 
-A node is nothing but an ECS entity with `Name`, `Parent`, `Children`,
-`Transform`, and `GlobalTransform` components. Node paths (`"A/B/C"`),
-transform propagation, and recursive free are core systems. Plugins hang
-their own components off the same entities, so "node" is an API surface, not
-a data structure with a cost.
+A node is an ECS entity with `Name`, `Parent`, `Children`, `Transform` and
+`GlobalTransform`. Node paths (`"A/B/C"`), transform propagation and recursive
+free are core systems, and plugins hang their own components off the same
+entities — so "node" is an API surface, not a data structure with a cost.
 
-Scripts reach the tree through the node API — 30 operations declared once in
-the core, reached as methods on a node value: `get_node`, `parent`, `children`,
+Scripts reach the tree through 30 operations declared once in the core and
+reached as methods on a node value: `get_node`, `parent`, `children`,
 `add_child`, `set_parent` (which keeps the node where it is in the world),
 `queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
-`translate`, `attach_script`, the component operations, and the rest. Node
-paths accept `..`, so `../Target` names a sibling. The full list is in the
+`translate`, `attach_script`, the component operations, and the rest. Paths
+accept `..`, so `../Target` names a sibling. The full list is in the
 [script modules reference](/docs/reference/modules).
 
-Structural changes requested by scripts (`queue_free`) are deferred to the
-end of the frame, so iteration is never invalidated mid-frame.
+`queue_free` and other structural changes are deferred to the end of the
+frame, so iteration is never invalidated mid-frame.
 
 ![The node tree of examples/hello, with the Platform node's components in the inspector](/img/manual/scenes_tree.webp)
 
 ## Scene files
 
-A scene is declarative TOML: a flat list of `[[nodes]]` entries with `name`,
-optional `parent` (by id), `position`, `script`, and any component keys the
-registered plugins contribute.
+A scene is a flat list of `[[nodes]]` entries with `name`, optional `parent`
+(by id), `position`, `script`, and any component keys the registered plugins
+contribute.
 
 ```toml
 [[nodes]]
@@ -70,7 +69,7 @@ position = [-0.5, 5, 1.5]
 color = [0.9, 0.3, 0.25, 1]
 ```
 
-`overrides` is keyed by path from the instance node and holds scene keys —
+`overrides` is keyed by path from the instance node and holds scene keys:
 components, the transform, and a `script` whose `props` merge over the
 prefab's. An override patches one property and leaves the rest of the
 component alone. Ids inside an instance are prefixed by the instance's own
@@ -79,9 +78,9 @@ replay's digest. A prefab that contains itself is an error naming the cycle.
 
 In the editor a prefab is placed from the command palette, one command per
 scene file. An instance's nodes appear in the tree in place, one shade
-quieter; editing one writes an override on the instance node, and an edit
-back to the prefab's own value removes it. Adding or deleting a node inside
-an instance is refused, with the prefab to open instead.
+quieter; editing one writes an override on the instance node, and an edit back
+to the prefab's own value removes it. Adding or deleting a node inside an
+instance is refused, with the prefab to open instead.
 
 ## Components
 
@@ -89,9 +88,8 @@ Plugins declare named, schema-described components. A schema gives each
 property a `type` from a closed set — `float`, `bool`, `string`, `enum`,
 `vec2`, `vec3`, `color`, `asset` — plus defaults, enum options, an optional
 scalar shorthand (`body = "dynamic"`), and `readonly` markers the inspector
-honours.
-A malformed schema fails at boot, naming the component and property, rather
-than at the first inspector row.
+honours. A malformed schema fails at boot naming the component and property,
+rather than at the first inspector row.
 
 One registration buys three things at once:
 
@@ -101,9 +99,9 @@ One registration buys three things at once:
   `has_component`, `remove_component`, `component_names`, plus
   `scene::component_types()` and `scene::component_schema(name)` for
   discovery.
-- **Editor support.** The editor's "Add component" palette and property
-  inspectors are generated from the registry, so third-party plugin
-  components are addable and editable with zero editor changes.
+- **Editor support.** The "Add component" palette and the property inspectors
+  are generated from the registry, so third-party components are addable and
+  editable with no editor changes.
 
 <Clip name="scenes_inspect" alt="Selecting nodes in the tree; the inspector follows, a scale is dragged, and undone" />
 
@@ -126,20 +124,19 @@ The components registered by the standard plugins:
 | `sound` | audio | A sound file with volume and looping |
 | `widget` | ui | HUD element (label / button / panel) anchored to the screen |
 
-There is deliberately no class hierarchy behind any of this: no `Node2D`
-that inherits from `Node`, no `RigidBody` subtype. A node *is* whatever its
-components make it, and the generated
-[component reference](/docs/reference/components) lists every registered
-component with every property, default, and option.
+There is deliberately no class hierarchy: no `Node2D` inheriting from `Node`,
+no `RigidBody` subtype. A node *is* whatever its components make it. The
+generated [component reference](/docs/reference/components) lists every
+registered component with every property, default and option.
 
 A tagged-union property is always called `kind` (`kind = "ball"`), so `type`
 always means the datatype.
 
 ## Objects
 
-Every shape the engine draws is a mesh, built without a GPU. A collider
-fitted to one collides what is on screen, a ray picks it, and a headless
-test can measure it.
+Every shape the engine draws is a mesh, built without a GPU. A collider fitted
+to one collides what is on screen, a ray picks it, and a headless test can
+measure it.
 
 A `mesh` asset names one of four things:
 
@@ -155,10 +152,10 @@ positions = [[0, 0, 0]]       # ...or the vertices themselves
 ```
 
 The primitives are `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`,
-`torus`, `pyramid`, `prism` and `tube` in 3D, and `circle`, `rect`,
-`capsule`, `ellipse`, `star` and `ngon` in 2D. `shape3d` and `shape2d` draw
-them straight; a `mesh` asset is for when something else — a collider, a
-boolean, a script — needs the triangles too.
+`torus`, `pyramid`, `prism` and `tube` in 3D, and `circle`, `rect`, `capsule`,
+`ellipse`, `star` and `ngon` in 2D. `shape3d` and `shape2d` draw them straight;
+a `mesh` asset is for when something else — a collider, a boolean, a script —
+needs the triangles too.
 
 ### Paths
 
@@ -179,19 +176,19 @@ bevel = 0.08
 
 ### Booleans and cloners
 
-`boolean3d` on a node draws its children joined, cut out of one another, or
-only where they overlap — `op` is `union`, `difference` or `intersection`,
-applied in the order the children are declared. The operands stay in the
-tree, hidden and editable, and moving one recomputes the result. `boolean2d`
-is the same over filled outlines.
+`boolean3d` draws a node's children joined, cut out of one another, or only
+where they overlap — `op` is `union`, `difference` or `intersection`, applied
+in declaration order. The operands stay in the tree, hidden and editable, and
+moving one recomputes the result. `boolean2d` is the same over filled
+outlines.
 
 ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
 
 `cloner` draws the node's whole subtree many times over: `linear` with a
-`count` and a `step`, `radial` with a `radius` and an `angle` that closes
-the ring when it is zero, or `grid` with `counts`. A `seed` and a `random`
-range scatter the copies. The tree, physics and scripts still see one node,
-and each mesh is one draw call however many copies there are.
+`count` and a `step`, `radial` with a `radius` and an `angle` that closes the
+ring when it is zero, or `grid` with `counts`. A `seed` and a `random` range
+scatter the copies. The tree, physics and scripts still see one node, and each
+mesh is one draw call however many copies there are.
 
 ### Vertex colours and morph targets
 

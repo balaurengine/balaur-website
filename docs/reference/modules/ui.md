@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
 
-53 functions, 37 constants. Scripts reach it as `ui::`.
+56 functions, 37 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -39,7 +39,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `focused() -> any` | — | The widget node focus is on, or nil. |
 | `frame(any?, fn)` | — | Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels. |
 | `horizontal(any?, fn)` | — | Lay the callback's widgets out in a row; `width`, `height` and `tight` size it, in design pixels. |
-| `image(string, any?)` | — | Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path. |
+| `image(string, any?)` | — | Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path. `region` — `[x, y, w, h]` in the image's own pixels — draws one part of it, which is how an atlas is shown a tile at a time. |
+| `image_button(string, any?) -> bool` | — | The same picture, answering a click: returns whether it was clicked this frame. Takes every `image` option plus `selected`, which draws the `stroke` border a chosen tile needs. |
 | `label(string, any?)` | — | Draw a line of text; `size`, `font`, `color`, `strong`, `wrap` and `truncate` style it. |
 | `left_panel(string, any?, fn) -> float` | — | Dock a column down the left of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
 | `menu_item(string, any?) -> bool` | — | Draw a row inside a context menu; true on the frame it was clicked, which also closes the menu. |
@@ -47,6 +48,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `overlay(string, any?, fn)` | — | Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer. `w`/`h` fix its size, and `fill`, `stroke`, `radius` and padding make it a sheet. |
 | `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. `disabled` greys it out and swallows the click. |
 | `rect_stroke(float, float, float, float, any?)` | — | Outline a rectangle at x/y/w/h design pixels from the current panel's corner, `dashed` when asked. |
+| `request_repaint()` | — | Run the UI pass this frame even when lazy; call it every frame something on screen moves without input, such as while the scene plays. |
 | `right(fn)` | — | Lay the callback's widgets out against the right edge, still declared left to right. |
 | `right_panel(string, any?, fn) -> float` | — | Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
 | `scale() -> float` | — | The global UI scale: real pixels per design pixel. |
@@ -56,6 +58,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_clipboard(string)` | — | Copy text to the system clipboard. |
 | `set_focus(node)` | — | Put focus on a widget node. A node focus cannot activate is refused at the next draw. |
 | `set_keyboard_focus(bool)` | — | Let the arrows, Tab, Enter and Space move and activate the focused widget. Off unless asked for, so a game that moves with the arrows does not click its own HUD; `standard_app` turns it on for a project declaring the `ui_*` actions. |
+| `set_lazy(bool)` | — | Run the UI pass only when something asks for it — input, `request_repaint`, a log line, an asset reload, an egui animation, or the idle tick every 250 ms — and re-present the last pass in between. Off by default: a HUD that reads live state each frame should leave it off. Ignored offscreen. |
 | `set_scale(float)` | — | Set the global UI scale, clamped to between 0.25 and 3.0 real pixels per design pixel; a design resolution is `screen_size` divided by it. |
 | `set_text(string, string)` | — | Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone. |
 | `set_theme(any)` | — | Replace the theme: `name = "#rrggbb"` colour tokens, `dark = true\|false`, and a `roles` table of named looks a widget takes with `role:`. |

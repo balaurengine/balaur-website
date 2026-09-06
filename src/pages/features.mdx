@@ -17,7 +17,7 @@ What is in the engine today, one line each. The why is in [Principles](/docs/pri
   <Feature icon="code" to="/docs/manual/scripting"><strong>Rune.</strong> Rust's syntax, no build step, `async`/`await`.</Feature>
   <Feature icon="lightning" to="/docs/manual/scripting#hot-reload"><strong>Hot reload.</strong> A saved script is live in milliseconds, state intact.</Feature>
   <Feature icon="bug" to="/docs/manual/scripting#debugging"><strong>Debugger.</strong> Breakpoints, stepping, frames and locals, in the editor.</Feature>
-  <Feature icon="warning-circle" to="/docs/manual/editor#personas"><strong>Errors on save.</strong> A script that does not compile reports its file, line and caret in the editor; the running code stays up.</Feature>
+  <Feature icon="warning-circle" to="/docs/manual/editor#personas"><strong>Errors on save.</strong> A script that does not compile reports file, line and caret; the running code stays up.</Feature>
   <Feature icon="package" to="/docs/reference/assets"><strong>Assets.</strong> Content by reference or inline, one rule for every type.</Feature>
 </FeatureGroup>
 
@@ -30,8 +30,8 @@ What is in the engine today, one line each. The why is in [Principles](/docs/pri
 
 <FeatureGroup title="Screen and sound" clip="shader_preview" alt="A material's shader edited and previewed in the editor" to="/docs/manual/rendering" toLabel="Rendering">
   <Feature icon="image" tone="render"><strong>Rendering.</strong> 3D and 2D on wgpu — windowed, offscreen, or headless — with sprites, tile maps, particles and meshes.</Feature>
-  <Feature icon="shapes" tone="3d" to="/docs/manual/scenes"><strong>Objects.</strong> Ten 3D primitives and six 2D ones, bezier paths extruded, revolved and swept, booleans over a node's children, and a cloner that draws its copies in one call — every one a mesh built headless, so colliders and picking agree with the screen.</Feature>
-  <Feature icon="sun" tone="render" to="/docs/manual/rendering"><strong>Lights.</strong> 2D lights and occluders build a light map the whole scene is lit by; post-processing on top.</Feature>
+  <Feature icon="shapes" tone="3d" to="/docs/manual/scenes"><strong>Objects.</strong> Sixteen primitives, bezier paths extruded, revolved and swept, booleans, and a cloner drawing its copies in one call. Every one a mesh built headless, so colliders and picking agree with the screen.</Feature>
+  <Feature icon="sun" tone="render" to="/docs/manual/rendering"><strong>Lights.</strong> 2D lights and occluders build a light map the whole scene is lit by, with post-processing on top.</Feature>
   <Feature icon="paint-brush" tone="render" to="/docs/manual/shaders"><strong>Shaders.</strong> WESL — WGSL with imports and variants — in material assets, linked at run time.</Feature>
   <Feature icon="layout" tone="ui" to="/docs/manual/ui"><strong>UI.</strong> Widgets for HUDs, an immediate-mode API for tools.</Feature>
   <Feature icon="speaker-high" tone="audio" to="/docs/manual/input"><strong>Audio and input.</strong> rodio playback; keyboard, mouse, gamepads, touch.</Feature>
@@ -53,7 +53,7 @@ What is in the engine today, one line each. The why is in [Principles](/docs/pri
   }>
   <Feature icon="globe" to="/docs/manual/networking"><strong>Networking.</strong> HTTP and websockets with compression, delivered once per tick and replayable.</Feature>
   <Feature icon="cloud" to="/docs/manual/gamend"><strong>Gamend.</strong> Login, REST, realtime rooms, server hooks.</Feature>
-  <Feature icon="storefront" to="/docs/manual/stores"><strong>Stores.</strong> Sign-in, achievements, leaderboards, cloud saves and purchases through one module — Game Center, iCloud and StoreKit today.</Feature>
+  <Feature icon="storefront" to="/docs/manual/stores"><strong>Stores.</strong> Sign-in, achievements, leaderboards, cloud saves and purchases through one module. Game Center, iCloud and StoreKit today.</Feature>
 </FeatureGroup>
 
 <FeatureGroup title="Tools and shipping" image="editor_overview" alt="The editor: node tree, viewport, inspector and the Output dock" to="/docs/manual/editor" toLabel="The editor">

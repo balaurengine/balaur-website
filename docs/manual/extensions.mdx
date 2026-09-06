@@ -8,17 +8,15 @@ sidebar_position: 12
 
 # Modules and extensions
 
-Everything above the core is a plugin, and a plugin ships one of two ways
+Everything above the core is a plugin, and one `Plugin` trait ships either way
 from the same source:
 
-- A **module** is linked into the engine and switched on by a cargo feature —
-  `audio`, `net`, and `gamend` work this way (all on by default; switching
-  one off drops its entire dependency stack from the binary).
-- An **extension** is the same `Plugin` trait built as a shared library
-  (`cdylib`) and loaded at run time from the project's `extensions/`
-  directory, with the `extensions` feature enabled.
-
-One trait, so the same source ships either way.
+- A **module** is linked into the engine and switched on by a cargo feature.
+  `audio`, `net` and `gamend` work this way, all on by default; switching one
+  off drops its entire dependency stack from the binary.
+- An **extension** is built as a shared library (`cdylib`) and loaded at run
+  time from the project's `extensions/` directory, with the `extensions`
+  feature enabled.
 
 ## Writing a plugin
 
@@ -44,8 +42,7 @@ impl Plugin for Greeter {
 ```
 
 Scripts then call `greeter::greet("...")` like any built-in module.
-`examples/extension_greeter` in the repository is the complete working
-example.
+`examples/extension_greeter` is the complete working example.
 
 ## Rust or C at the boundary
 
@@ -58,20 +55,20 @@ which symbols the library exports:
 | Checked by | Compiler + engine version + registry ABI fingerprint | One ABI version number |
 | Written in | Rust, with the exact compiler that built the host | Anything with a C ABI: C, Zig, Odin, C++ |
 
-The Rust path is refused unless the extension's fingerprint matches the
-host's exactly — checked through a fixed-size tag *before* anything
-Rust-shaped crosses, so a mismatched build fails with a message naming the
-differences rather than crashing later.
+The Rust path is refused unless the extension's fingerprint matches the host's
+exactly, checked through a fixed-size tag *before* anything Rust-shaped
+crosses, so a mismatched build fails with a message naming the differences
+rather than crashing later.
 
-The C path keeps its state behind its own pointer and receives a table of
-host function pointers; no allocation crosses the boundary, and the committed
-C header is asserted against the Rust layout from both sides. Today it
-covers script modules of functions and constants.
+The C path keeps its state behind its own pointer and receives a table of host
+function pointers. No allocation crosses the boundary, and the committed C
+header is asserted against the Rust layout from both sides. It covers script
+modules of functions and constants today.
 
-Extensions load in an order sorted by name and declared requirements — never
-by directory iteration — because load order decides registration order,
-which decides the simulation.
+Extensions load sorted by name and declared requirements, never by directory
+iteration, because load order decides registration order — which decides the
+simulation.
 
 For the binding API itself — declaring functions, registering components and
-scene keys — see [Architecture](../architecture.mdx); `balaur_physics` is
-the reference implementation of a full plugin.
+scene keys — see [Architecture](../architecture.mdx). `balaur_physics` is the
+reference implementation of a full plugin.

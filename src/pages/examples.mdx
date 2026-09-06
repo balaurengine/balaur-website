@@ -8,13 +8,13 @@ import ExampleGrid from '@site/src/components/ExampleGrid';
 
 # Examples
 
-Six projects — seven counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them, so what you see there is what opens here. Balaur builds from source for now — [Getting started](/docs/getting-started) has the toolchain — and each card carries the command that opens its project in the editor. Three of them — `hello`, `angrynerds` and `rig` — also run in the browser: press **Play** on the card and the game takes the screen, the same engine built to WebAssembly and drawing through WebGPU, with nothing to install.
+Six projects — seven counting the C twin of the extension — ship in the [engine repository](https://github.com/balaurengine/balaur/tree/main/examples). Every screenshot and clip in the manual is taken on one of them. Each card carries the command that opens its project in the editor; press **Play** to run it in the browser instead, on the same engine built to WebAssembly.
 
 <ExampleGrid items={[
   {
     name: 'hello',
     title: 'Start here',
-    text: <>3D: a spinning cube, a bouncing ball, physics and a HUD label. Five short scripts. Open it, change <code>scripts/spinner.rn</code> while it runs, and watch the new code go live with the state intact.</>,
+    text: <>3D: a spinning cube, a bouncing ball, physics and a HUD label, in five short scripts. Change <code>scripts/spinner.rn</code> while it runs and watch the new code go live, state intact.</>,
     image: 'hello_open',
     alt: 'examples/hello open in the editor: the World node selected and the Output dock showing the boot',
     manual: {to: '/docs/manual/scripting', label: 'Scripting'},
@@ -23,7 +23,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   {
     name: 'objects',
     title: 'Every object',
-    text: <>The shapes a palette starts with, a bezier path extruded, revolved and swept, two solids joined and cut, one node drawn many times in a single call, a word turned into geometry, and a mesh coloured vertex by vertex. Five rows, one per category, and the camera walks them.</>,
+    text: <>The primitives, a bezier path extruded, revolved and swept, two solids joined and cut, one node drawn many times in a single call, a word turned into geometry, and a mesh coloured vertex by vertex. Five rows, and the camera walks them.</>,
     icon: 'shapes',
     tone: '3d',
     manual: {to: '/docs/manual/scenes', label: 'Scenes and assets'},
@@ -32,7 +32,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   {
     name: 'angrynerds',
     title: 'A 2D game',
-    text: <>A small slingshot game: 2D shapes, 2D physics on a fixed step, and a HUD of widgets — Score, Birds, Hint and a Restart button. The physics, UI and determinism pages are all filmed on it.</>,
+    text: <>A slingshot game: 2D shapes, 2D physics on a fixed step, and a HUD of widgets. The physics, UI and determinism pages are all filmed on it.</>,
     image: 'persona_scene',
     alt: 'examples/angrynerds in the Scene persona: the node tree, the 2D viewport with the Bird selected, and the inspector',
     manual: {to: '/docs/manual/physics', label: 'Physics'},
@@ -41,7 +41,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   {
     name: 'rig',
     title: 'A 2D skeleton',
-    text: <>One figure: a skinned leg swung by a clip, and an arm branching off its top bone that reaches on two-bone IK. The bone and polygon tools, painted weights, and the timeline, in one scene.</>,
+    text: <>One figure: a skinned leg swung by a clip, an arm on two-bone IK. The bone and polygon tools, painted weights and the timeline, in one scene.</>,
     image: 'persona_animate',
     alt: 'examples/rig in the Animate persona: the bones in the tree, the Thigh selected, and the timeline with its keys',
     manual: {to: '/docs/manual/animation', label: 'Animation'},
@@ -50,7 +50,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   {
     name: 'rig3d',
     title: 'A 3D rig from glTF',
-    text: <>A column imported from a <code>.glb</code> with <code>balaur import</code>: three bones deforming the mesh, bent by its <code>sway</code> clip. The joints, the mesh and the animation land as TOML the editor edits.</>,
+    text: <>A column imported from a <code>.glb</code>: three bones deforming the mesh, bent by its <code>sway</code> clip. The joints, the mesh and the animation land as TOML the editor edits.</>,
     image: 'example_rig3d',
     alt: 'examples/rig3d in the editor: the Column node with its three bones, the imported mesh bent by the sway clip',
     manual: {to: '/docs/manual/animation#skeletons-and-skins', label: 'Skeletons and skins'},
@@ -68,7 +68,7 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   {
     name: 'extension_greeter',
     title: 'Plugins as shared libraries, from Rust and from C',
-    text: <>The complete working extension: a Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module. <code>extension_c_counter</code> does the same from C, in one file — the boundary is C-compatible, so a plugin need not be Rust.</>,
+    text: <>A Rust crate built as a <code>cdylib</code>, loaded from the project's <code>extensions/</code> directory, that scripts call as <code>greeter::greet(…)</code> like any built-in module. <code>extension_c_counter</code> does the same from C in one file — the boundary is C-compatible, so a plugin need not be Rust.</>,
     icon: 'plug',
     manual: {to: '/docs/manual/extensions', label: 'Modules and extensions'},
     run: 'run',
@@ -76,4 +76,4 @@ Six projects — seven counting the C twin of the extension — ship in the [eng
   },
 ]} />
 
-Each example's scene is plain TOML and its scripts are Rune, so the fastest way to learn the engine is to open one and change something. What the editor's own personas look like on them is on [the editor](/docs/manual/editor) page, and [the editor in the browser](/editor) opens the same three projects for editing.
+Every scene is plain TOML and every script is Rune, so the fastest way to learn the engine is to open one and change something. [The editor](/docs/manual/editor) shows its personas on them, and [the editor in the browser](/editor) opens the same projects for editing.

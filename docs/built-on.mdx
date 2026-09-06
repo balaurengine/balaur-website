@@ -8,8 +8,8 @@ sidebar_position: 6
 
 # Built on
 
-Balaur reuses the Rust ecosystem rather than re-implementing it. These are
-the major libraries underneath, and what each one does for the engine.
+Balaur reuses the Rust ecosystem rather than re-implementing it. The major
+libraries underneath, and what each does:
 
 | Library | What it does in Balaur |
 | --- | --- |
@@ -35,15 +35,15 @@ generated [Crates](./crates.md) reference.
 
 ## glamx, glam and libm
 
-These three look like three choices and are really one. `glamx` is dimforge's
-extension crate over `glam` — it adds `Pose2`/`Pose3`/`Rot2` and re-exports
-everything else, so depending on it *is* depending on glam. Balaur names only
-glamx; `use glamx::Vec3` is the single spelling across the workspace.
+Three names, one choice. `glamx` is dimforge's extension crate over `glam`:
+it adds `Pose2`/`Pose3`/`Rot2` and re-exports everything else, so depending on
+it *is* depending on glam. Balaur names only glamx — `use glamx::Vec3` is the
+single spelling across the workspace.
 
 `libm` is underneath both. Rapier's `enhanced-determinism` builds glam against
 libm instead of the platform's math library, and the workspace pins those
-features itself so they hold in every build rather than only when physics
-happens to be in the dependency graph. The engine calls libm directly for the
-transcendentals that do not come out of a glam type — skeleton rest poses,
-slerp, IK, easing curves, and the `math` module scripts call. Same library,
-reached two ways. See [Determinism](./manual/determinism.mdx).
+features itself so they hold in every build, not only when physics is in the
+dependency graph. The engine also calls libm directly for the transcendentals
+that do not come out of a glam type: skeleton rest poses, slerp, IK, easing
+curves, and the `math` module scripts call. See
+[Determinism](./manual/determinism.mdx).

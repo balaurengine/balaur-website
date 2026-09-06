@@ -10,9 +10,9 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.
 
-52 functions, 13 constants. Scripts reach it as `render::`.
+54 functions, 20 constants. Scripts reach it as `render::`.
 
-Acts on [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
+Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
 ## Functions
 
@@ -20,6 +20,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
+| `built_mesh(node) -> any` | [`boolean3d`](../components/boolean3d.md) | The triangles the node's boolean settled on, as `#{ positions, indices }` ready to be written out as a `mesh` asset; nil when the node draws no built geometry. |
 | `camera_2d() -> float, float, float` | — | The 2D camera this frame: centre xy and zoom in logical pixels per world unit; all zeros with no window. |
 | `camera_matrix() -> [float]` | — | The camera's projection*view matrix this frame, 16 numbers column-major; all zeros with no window. |
 | `camera_pose() -> float, float, float, float, float, float, float, float` | — | The camera the renderer actually used: eye xyz, target xyz, vertical fov in radians, HiDPI scale. |
@@ -27,6 +28,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `channel() -> string` | — | Which channel the viewport is drawing instead of the scene's colour, or empty for the scene as it is. |
 | `channels() -> any` | — | Every channel name `set_channel` accepts, as a list. |
 | `check_material(string) -> any` | — | Every diagnostic about the material at that path, as `[#{ file, line, column, severity, message }]`; empty when it links. |
+| `clones(node) -> any` | [`cloner`](../components/cloner.md) | Where the node's cloner puts each copy, in the node's own space, as `#{ position, rotation, scale }`; an empty list when the node has no cloner. What a bake-to-nodes command spawns from. |
 | `color(node) -> float, float, float, float` | [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md) | The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all. |
 | `draw_arc_2d(float, float, float, float, float, float?, any?)` | — | Stroke an arc between two angles in degrees, counter-clockwise from the x axis, for this frame; width is in pixels. |
 | `draw_circle_2d(float, float, float, any?)` | — | Fill a circle in world units for this frame, over everything the scene drew. |
@@ -87,6 +89,13 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `SHAPE_CONE` | `cone` |
 | `SHAPE_CUBOID` | `cuboid` |
 | `SHAPE_CYLINDER` | `cylinder` |
+| `SHAPE_ELLIPSE` | `ellipse` |
+| `SHAPE_NGON` | `ngon` |
 | `SHAPE_PLANE` | `plane` |
 | `SHAPE_POLYLINE` | `polyline` |
+| `SHAPE_PRISM` | `prism` |
+| `SHAPE_PYRAMID` | `pyramid` |
 | `SHAPE_RECT` | `rect` |
+| `SHAPE_STAR` | `star` |
+| `SHAPE_TORUS` | `torus` |
+| `SHAPE_TUBE` | `tube` |

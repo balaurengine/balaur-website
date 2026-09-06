@@ -10,15 +10,14 @@ import Roadmap from '@site/src/components/Roadmap';
 # Roadmap
 
 What does not exist yet and will. Everything in [Features](/features) is
-already in the engine, and the [changelog](./changelog.md) is what each
-release added.
+already in the engine; the [changelog](./changelog.md) is what each release
+added.
 
-Each item carries a tier, and the cards in a group are ordered by it. A tier
-says how much a game needs the thing, ranked the way the
-[principles](./principles.mdx) rank everything else — not when it lands.
+A tier says how much a game needs the thing, not when it lands. Cards in a
+group are ordered by it.
 
 - **Tier 1 — blocks a game today.** You hit this making an ordinary game and
-  there is no way around it. This is what gets built next.
+  there is no way around it. Built next.
 - **Tier 2 — rounds out the engine.** A game ships without it, awkwardly, or
   a whole kind of game needs it.
 - **Tier 3 — when a game asks.** Wanted and planned, waiting on someone with
@@ -30,7 +29,7 @@ says how much a game needs the thing, ranked the way the
   {
     title: 'Tile maps',
     tier: 1,
-    text: <>Collision from the tileset. Autotiling as an ordered rule table — first match wins, one rule covering eight orientations, variation picked by hash so a stroke resolves the same twice — with templates for the sheet layouts people actually ship, and the bitmask terrains Godot and Tiled use as sugar over it. Animated and occluding tiles, custom data per tile, chunked cells, isometric and hexagonal layouts. A Tiles dock with seven brushes, a tileset document that edits collision, terrains, rules and animation, and <code>balaur import</code> for Tiled and LDtk projects.</>,
+    text: <>Collision from the tileset. Autotiling as an ordered rule table — first match wins, one rule covering eight orientations, variation picked by hash so a stroke resolves the same twice — with templates for the sheet layouts people ship, and the bitmask terrains Godot and Tiled use as sugar over it. Animated and occluding tiles, custom data per tile, chunked cells, isometric and hexagonal layouts. A Tiles dock with seven brushes, a tileset document, and <code>balaur import</code> for Tiled and LDtk projects.</>,
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
   },
   {
@@ -66,7 +65,7 @@ says how much a game needs the thing, ranked the way the
   {
     title: 'The editor in a browser',
     tier: 2,
-    text: 'The same editor, on a canvas in a tab, with nothing to install. Shipped: the canvas, play and hot reload as on the desktop, a project your browser keeps across a refresh, a folder opened from your own machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.',
+    text: 'Shipped: the canvas, play and hot reload as on the desktop, a project the browser keeps across a refresh, a folder opened from your machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-web-editor.md',
   },
 ]} />
@@ -192,7 +191,7 @@ says how much a game needs the thing, ranked the way the
   {
     title: 'Voxels and terrain',
     tier: 3,
-    text: <>Block types in a <code>voxel_set</code>, a greedy chunk mesher with baked ambient occlusion, a grid file that scales past a hand-written one, and a Voxels tool that paints in the viewport with a plane lock and a slice view — plus <code>balaur import</code> for MagicaVoxel files and for a model turned into voxels, and the same mesher over <code>heightfield</code>. Physics is already there: rapier's voxel shape collides without the seam-catching every hand-rolled voxel collider has, and a script can dig into one today. Nothing draws either asset.</>,
+    text: <>Block types in a <code>voxel_set</code>, a greedy chunk mesher with baked ambient occlusion, a grid file that scales past a hand-written one, a Voxels tool that paints in the viewport, <code>balaur import</code> for MagicaVoxel files, and the same mesher over <code>heightfield</code>. Physics is already there — rapier's voxel shape collides without the seam-catching every hand-rolled voxel collider has, and a script can dig into one today. Nothing draws either asset.</>,
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voxels.md',
   },
   {
@@ -299,7 +298,7 @@ Server work lives in the [Gamend repository](https://github.com/appsinacup/gamen
   {
     title: 'Skill matchmaking',
     tier: 3,
-    text: 'Ratings, widening bands and leaver refill, on Gamend’s own roadmap; the engine binds whatever the API exposes.',
+    text: 'Ratings, widening bands and leaver refill, on Gamend’s own roadmap. The engine binds whatever the API exposes.',
     plan: 'https://github.com/appsinacup/gamend/blob/main/ROADMAP.md',
   },
 ]} />
@@ -367,7 +366,7 @@ Server work lives in the [Gamend repository](https://github.com/appsinacup/gamen
   {
     title: 'Sealed packs and stripped binaries',
     tier: 2,
-    text: 'Every texture, sound and scene comes out of a shipped game as the original file today, scripts as bytecode on native and as source on the web, and the engine binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 under a key the project owns — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
+    text: 'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-protection.md',
   },
   {

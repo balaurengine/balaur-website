@@ -10,6 +10,7 @@ const sidebars: SidebarsConfig = {
     'intro',
     'principles',
     'getting-started',
+    'from-godot',
     {
       type: 'category',
       label: 'Manual',

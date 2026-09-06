@@ -8,25 +8,23 @@ sidebar_position: 1
 
 # Principles
 
-Two lists. The first says what the engine optimises for — the why behind
-every feature and everything on the [roadmap](./roadmap.mdx). The second
-says how the project is run, for anyone who wants to help build it.
+What the engine optimises for — the why behind every feature and everything
+on the [roadmap](./roadmap.mdx) — and then how the project is run.
 
 ## What the engine is for
 
 1. **Fast to run.** As little engine as possible between a game and the
    libraries it stands on. Physics time is physics time. Everything runs
-   headless, so what we measure is the engine.
+   headless, so what is measured is the engine.
 2. **Fast to iterate.** A saved script is live in milliseconds with its state
    intact. No build step for game code. The editor reloads itself the same
    way.
 3. **Easy to use.** Nodes and scripts on top, a scene-tree editor that works
    the way you expect, one scripting language. The ECS underneath is a
    detail only plugin authors see.
-4. **Always deterministic.** Same inputs, same bits, on every platform — and
+4. **Always deterministic.** Same inputs, same bits, on every platform, and
    provable: a fixed step, a digest per tick, record and replay, rollback.
-   Every subsystem is held to it, the network included. It is never
-   optional.
+   Every subsystem is held to it, the network included. Never optional.
 5. **Few rules, applied everywhere.** A component is a scene key, a script
    call and an inspector row at once. A string is a reference, a table is a
    definition. An event is a method the engine calls by name. One rule per
@@ -36,10 +34,10 @@ says how the project is run, for anyone who wants to help build it.
    glTF, websocket compression — the engine speaks it.
 7. **Safe by construction.** Safe Rust throughout. A mistake in a script is
    an error message, not a crash.
-8. **Verified, not asserted.** Each promise above has a test that holds it:
-   digests compared across three operating systems in CI, every example run
-   twenty ways, reference docs generated from a booted engine so they cannot
-   drift. [Quality](./quality.mdx) is the whole list.
+8. **Verified, not asserted.** Each promise above has a test holding it:
+   digests compared across three operating systems, every example run twenty
+   ways, reference docs generated from a booted engine. [Quality](./quality.mdx)
+   is the whole list.
 9. **Ship as one file, anywhere.** Reproducible packs fused onto a runtime;
    desktop, mobile and the web from the same sources.
 
@@ -53,12 +51,10 @@ When two of these conflict, the lower number wins.
 2. **The maintainers own the architecture.** Dragos Daian and Sébastien
    Crozet decide the shape of the engine and write it down in
    [ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md)
-   and the `docs/PLAN-*.md` files. Propose before building anything large;
-   a [discussion](https://github.com/balaurengine/balaur/discussions) is
-   the place.
-3. **AI-assisted contributions are welcome.** They meet the same bar as any
-   other: the contributor understands and stands behind every line, and the
-   change comes with its tests and its docs.
+   and the `docs/PLAN-*.md` files. Propose anything large in a
+   [discussion](https://github.com/balaurengine/balaur/discussions) first.
+3. **AI-assisted contributions are welcome**, at the same bar as any other:
+   the contributor stands behind every line, with tests and docs.
 4. **Every change is complete.** Code, tests, documentation and a changelog
    line land together. Generated docs are regenerated. Lints, naming rules
    and the comment style are enforced by [CI](./quality.mdx), not by review.

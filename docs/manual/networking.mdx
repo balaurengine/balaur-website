@@ -8,11 +8,10 @@ sidebar_position: 9
 
 # Networking
 
-One crate per protocol: `balaur_http` gives scripts HTTP requests
-(`http::request`), `balaur_websocket` gives them connections
-(`websocket::connect` / `send` / `close`), and `balaur_webtransport` adds
-QUIC for sessions. All three are on by default, each behind its own feature,
-so building without `http` drops the HTTP and TLS stack and building without
+One crate per protocol: `balaur_http` for requests (`http::request`),
+`balaur_websocket` for connections (`websocket::connect` / `send` / `close`),
+`balaur_webtransport` for QUIC. All three are on by default, each behind its
+own feature — building without `http` drops the HTTP and TLS stack, without
 `webtransport` drops QUIC and its runtime.
 
 :::tip[For multiplayer and simulation]
@@ -25,9 +24,9 @@ so building without `http` drops the HTTP and TLS stack and building without
 
 All I/O runs on background threads. Completions cross back over a channel and
 enter the simulation once per tick, at the start of the frame, recorded in a
-snapshot — the same model as input, which means recording the snapshot per
-tick is all a replay of a networked session needs. Nothing blocks the frame,
-and handlers never run from an I/O thread.
+snapshot — the same model as input, so recording the snapshot per tick is all a
+replay of a networked session needs. Nothing blocks the frame, and handlers
+never run from an I/O thread.
 
 ```mermaid
 sequenceDiagram
@@ -43,8 +42,8 @@ sequenceDiagram
 Scripts never poll. There are two shapes:
 
 **Handler methods.** A request or connection names the node that handles its
-results, and results are dispatched as method calls — the same signal shape a
-widget's `on_click` or an animation method track uses:
+results, dispatched as method calls — the same shape a widget's `on_click` or
+an animation method track uses:
 
 ```rune
 pub fn init(this) {
@@ -56,8 +55,8 @@ pub fn on_response(this, r) {
 }
 ```
 
-**Sequential await.** A request made without a node is a token the script
-suspends on until the result arrives. The entry point is declared `async`:
+**Sequential await.** A request made without a node returns a token the script
+suspends on until the result arrives, from an `async` entry point:
 
 ```rune
 pub async fn init(this) {
@@ -67,15 +66,15 @@ pub async fn init(this) {
 ```
 
 The script resumes at the start of a later tick, in arrival order —
-deterministic given the same recorded arrivals. One limit: an async entry
-point cannot be paused by the [debugger](./scripting.mdx#debugging).
+deterministic given the same recorded arrivals. One limit: an async entry point
+cannot be paused by the [debugger](./scripting.mdx#debugging).
 
 ## Options and configuration
 
 A websocket takes options beside its handler: `compression` offers
-`permessage-deflate` (RFC 7692) and lets the server decide, and `headers`
-go on the upgrade request. An HTTP request takes `method`, `body`,
-`headers` and `timeout` the same way.
+`permessage-deflate` (RFC 7692) and lets the server decide, and `headers` go on
+the upgrade request. An HTTP request takes `method`, `body`, `headers` and
+`timeout` the same way.
 
 ```rune
 this.socket = websocket::connect(this.node, "wss://game.example/play", #{
@@ -85,9 +84,9 @@ this.socket = websocket::connect(this.node, "wss://game.example/play", #{
 });
 ```
 
-The defaults come from each protocol's table in `project.toml`, so a project
-can turn compression off everywhere, or shorten every request's timeout,
-without touching a script:
+Defaults come from each protocol's table in `project.toml`, so a project can
+turn compression off everywhere, or shorten every timeout, without touching a
+script:
 
 ```toml
 [websocket]
@@ -101,28 +100,26 @@ A call's own option wins over the table.
 
 ## Why there are no signals
 
-The engine has no `connect`-style signal registration: a script cannot
-register a persistent callback and be handed a payload three frames later
-(persistent callbacks would need an id space with explicit release). Events
-go the other way — the engine calls a method the script declares by name.
-Most events also have a polling twin (`input::just_pressed`,
-`animation::just_finished`) for scripts that would rather ask than declare a
-method: an event is a frame-scoped snapshot, not a subscription.
+A script cannot register a persistent callback and be handed a payload three
+frames later — that would need an id space with explicit release. Events go the
+other way: the engine calls a method the script declares by name. Most also
+have a polling twin (`input::just_pressed`, `animation::just_finished`) for
+scripts that would rather ask than declare a method. An event is a frame-scoped
+snapshot, not a subscription.
 
 For a hosted game backend — auth, storage, realtime rooms — see
-[Gamend](./gamend.mdx), which is built on the same delivery contract.
+[Gamend](./gamend.mdx), built on the same delivery contract.
 
 ## What is not there yet
 
 Rollback works: two engines exchange only inputs, predict each other, roll
 back when a prediction was wrong, and compare a per-tick digest to catch a
-desync. It runs over websockets or over QUIC, and on QUIC a datagram is a
-real one, so a lost input costs a misprediction rather than a stall. What is
-missing is replication, RPC, a browser WebTransport backend, and WebRTC. The
-rest of the plan, in order — recording a session, sessions from Gamend,
-replication, WebTransport in the browser, WebRTC for browser peer-to-peer —
-is
+desync. It runs over websockets or QUIC, and on QUIC a datagram is a real one,
+so a lost input costs a misprediction rather than a stall.
+
+Missing: replication, RPC, a browser WebTransport backend, and WebRTC. The rest
+of the plan is
 [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md)
-in the engine repository; the [roadmap](../roadmap.mdx) has the short form.
-Raw UDP is not coming: QUIC datagrams cover it, with encryption and a
-browser story.
+in the engine repository, with the short form on the
+[roadmap](../roadmap.mdx). Raw UDP is not coming: QUIC datagrams cover it, with
+encryption and a browser story.

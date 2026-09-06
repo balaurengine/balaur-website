@@ -209,11 +209,10 @@ function ReleaseView({release}: {release: Release}) {
         <>
           <Heading as="h2">Runtime templates and other builds</Heading>
           <p>
-            Needed only to export a game <em>for a different platform</em> than
-            the one you are on — and <code>balaur export</code> offers to
-            download a missing one itself, checksum-verified, into a per-user
-            cache. These files are for offline installs: drop one into{' '}
-            <code>templates/</code> next to the editor binary. See{' '}
+            Needed only to export <em>for a different platform</em> than the
+            one you are on, and <code>balaur export</code> fetches a missing
+            one itself, checksum-verified. These are for offline installs: drop
+            one into <code>templates/</code> beside the editor binary. See{' '}
             <Link to="/docs/manual/shipping">Shipping a game</Link>.
           </p>
           <ul className={styles.assetList}>
@@ -269,19 +268,16 @@ export default function Download(): ReactNode {
       <main className="container margin-vert--lg">
         <Heading as="h1">Download</Heading>
         <p>
-          The editor download is one binary that is also the <code>balaur</code>{' '}
-          CLI and every game's runtime. It ships with the editor project and
-          the runtime template for its own platform, so{' '}
-          <code>balaur export</code> produces a playable executable the moment
-          it is unpacked. It also carries{' '}
-          <code>include/balaur_extension.h</code>, the header C extensions are
-          built against.
+          One binary that is also the <code>balaur</code> CLI and every game's
+          runtime. It ships with the editor project, the runtime template for
+          its own platform — so <code>balaur export</code> works the moment it
+          is unpacked — and <code>include/balaur_extension.h</code>, the header
+          C extensions are built against.
         </p>
         <p>
-          There is no numbered release yet. What is offered here is the
-          nightly: the engine as of the last merge to <code>main</code>,
-          rebuilt on every merge. The <Link to="/editor">web editor</Link> runs
-          a recent nightly.
+          No numbered release yet. This is the nightly, rebuilt on every merge
+          to <code>main</code>; the <Link to="/editor">web editor</Link> runs a
+          recent one.
         </p>
 
         {state.kind === 'loading' && (
@@ -294,10 +290,10 @@ export default function Download(): ReactNode {
           <div className={styles.stateCard}>
             <Heading as="h2">No nightly yet</Heading>
             <p>
-              The nightly has not been published; CI publishes one on every
-              push to <code>main</code>, and it appears here on its own. Until
-              then, the engine builds from source in a few minutes with a Rust
-              toolchain — see <Link to="/docs/getting-started">Getting started</Link>.
+              CI publishes one on every push to <code>main</code>, and it
+              appears here on its own. Until then the engine builds from source
+              with a Rust toolchain — see{' '}
+              <Link to="/docs/getting-started">Getting started</Link>.
             </p>
             <p style={{marginBottom: 0}}>
               <a href={RELEASES_URL}>Releases on GitHub</a>
@@ -309,7 +305,7 @@ export default function Download(): ReactNode {
           <div className={styles.stateCard}>
             <Heading as="h2">Could not reach GitHub</Heading>
             <p style={{marginBottom: 0}}>
-              The nightly could not be fetched just now. See the{' '}
+              The nightly could not be fetched. See the{' '}
               <a href={RELEASES_URL}>releases page on GitHub</a> directly.
             </p>
           </div>

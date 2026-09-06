@@ -7,8 +7,8 @@ sidebar_position: 17
 
 # Continuous integration
 
-Three actions, each named for what comes out of it. A game pins one version —
-the engine's — and gets the engine, its runtime templates and the actions that
+Three actions, each named for what comes out of it. A game pins one version,
+the engine's, and gets the engine, its runtime templates and the actions that
 know its flags from the same tag.
 
 | `uses:` | Produces |
@@ -18,7 +18,7 @@ know its flags from the same tag.
 | `balaurengine/balaur/.github/actions/build-engine@v0.2.0` | the editor and runtime templates built from source, for features the published build does not carry |
 
 `setup` installs the release its own ref names, so `@v0.2.0` installs v0.2.0
-and the version is written down once. `@main` follows the rolling nightly.
+and the version is written down once; `@main` follows the rolling nightly.
 
 ## A build on every tag
 
@@ -41,15 +41,15 @@ jobs:
           targets: "linux-x64 windows-x64 web"
 ```
 
-That is the whole file for an unsigned build. No secret, no account, and no
-Rust toolchain: `setup` downloads the engine and `export-game` runs it.
+That is the whole file for an unsigned build: no secret, no account, no Rust
+toolchain. `setup` downloads the engine and `export-game` runs it.
 
 ## Signing
 
-Every signature is applied by `balaur export` itself, never by a step beside
-it, so a build CI signed can be reproduced by exporting it by hand. An action's
-job is to put each credential where that platform's own tool looks and hand the
-exporter the identity's *name*.
+Every signature is applied by `balaur export` itself, never a step beside it,
+so a build CI signed can be reproduced by hand. An action's job is to put each
+credential where that platform's own tool looks and hand the exporter the
+identity's *name*.
 
 ```yaml
       - uses: balaurengine/balaur/.github/actions/export-game@v0.2.0
@@ -83,15 +83,15 @@ What each target needs:
 | `android` | `android-keystore`, `android-key` and the passwords; without them the build takes Android's debug identity, which installs but ships nowhere | any with the SDK |
 | `web` | nothing; a browser trusts the origin | any |
 
-Identities, team ids and keystore aliases are not secrets, and may live in the
-project's `[export]` table instead, so a click in the editor and a run on a
-runner sign the same way. The passwords never do.
+Identities, team ids and keystore aliases are not secrets and may live in the
+project's `[export]` table, so a click in the editor and a run on a runner sign
+the same way. The passwords never do.
 
 ## Provenance
 
 Both building actions can attach Sigstore build provenance to what they
-upload, which `gh attestation verify` checks with no certificate and no account
-of your own. The job needs two extra permissions:
+upload, which `gh attestation verify` checks with no certificate or account of
+your own. The job needs two extra permissions:
 
 ```yaml
     permissions:
@@ -106,9 +106,9 @@ of your own. The job needs two extra permissions:
 
 ## A custom engine
 
-The published templates are built with `window` and `extensions`, plus `apple`
-on macOS. A game that needs a different set — a smaller web build, or one
-without the networking stack — builds the engine itself:
+The published templates carry `window` and `extensions`, plus `apple` on macOS.
+A game needing a different set — a smaller web build, or one without the
+networking stack — builds the engine itself:
 
 ```yaml
       - uses: actions/checkout@v7
@@ -123,12 +123,12 @@ without the networking stack — builds the engine itself:
 
 [Build size](./build-size.mdx) says what each feature costs. `build-engine`
 produces the same `balaur-editor-*`, `balaur-runtime-*` and `balaur-template-*`
-files a release holds, so a later `export-game` uses them by pointing
-`BALAUR_TEMPLATES` at where they landed.
+files a release holds, so a later `export-game` picks them up through
+`BALAUR_TEMPLATES`.
 
 ## What a run costs
 
 A macOS or iOS export needs a `macos-*` runner, billed at ten times a Linux
 minute; Linux, Windows, Android and web all export on a Linux runner. Group
 targets by the host they need rather than giving each its own job, so a game
-with four targets spends one Mac job's minutes and not four.
+with four targets spends one Mac job's minutes rather than four.

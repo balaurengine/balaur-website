@@ -1,0 +1,115 @@
+---
+title: "Coming from Godot — the Balaur equivalent of every node, file and call"
+sidebar_label: "Coming from Godot"
+description: "A Godot to Balaur mapping, one line each: project.godot to project.toml, .tscn to TOML, node types to components, GDScript to Rune, _process to update, signals to named events and methods called by name, InputMap to input actions, AnimationPlayer and Tween to clips and tweens, export to one fused binary."
+image: "/img/social/from-godot.png"
+keywords: [godot alternative, godot to balaur, migrate from godot, godot rust engine, gdscript to rune, godot deterministic]
+---
+
+# Coming from Godot
+
+The tree of nodes, the scene files, the instancing and the script-per-node
+model are the ones you know. What changes, one line each. Row by row, the
+[manual](/docs/intro) and the [reference](/docs/reference) have the rest.
+
+## Files
+
+| Godot | Balaur |
+| --- | --- |
+| `project.godot` | `project.toml` — name, `main_scene`, input actions |
+| `scene.tscn` | `scenes/scene.toml` — a flat `[[nodes]]` list, `parent` by id |
+| `script.gd` | `scripts/script.rn` — [Rune](/docs/manual/scripting) |
+| `.tres` resources | `[[assets]]` in TOML — `mesh`, `material`, `animation_clip`, `tileset`, … ([assets](/docs/reference/assets)) |
+| `.gdshader` | `.wesl` — WGSL with imports, in a `material` asset ([shaders](/docs/manual/shaders)) |
+| Export presets, templates | `balaur export my-game --target linux-x64` — one fused binary ([shipping](/docs/manual/shipping)) |
+
+## Nodes
+
+No class hierarchy. A node is whatever its [components](/docs/reference/components)
+make it, and a collider sits on the same node as its body, not on a child.
+
+| Godot | Balaur |
+| --- | --- |
+| `Node2D`, `Node3D` | A node. Position, rotation, scale on every one |
+| `RigidBody2D`, `StaticBody2D`, `AnimatableBody2D` | `body2d = "dynamic"` / `"static"` / `"kinematic"` — same in 3D |
+| `CollisionShape2D` | `collider2d = { kind = "rect", half_extents = [0.5, 0.5] }` |
+| `CharacterBody2D`, `CharacterBody3D` | [`character2d`](/docs/reference/components/character2d), [`character3d`](/docs/reference/components/character3d) |
+| `PinJoint2D`, `HingeJoint3D`, … | [`joint2d`](/docs/reference/components/joint2d), [`joint3d`](/docs/reference/components/joint3d) |
+| `VehicleBody3D`, `VehicleWheel3D` | [`vehicle3d`](/docs/reference/components/vehicle3d), [`wheel3d`](/docs/reference/components/wheel3d) |
+| `Sprite2D` | [`sprite`](/docs/reference/components/sprite) |
+| `TileMapLayer` | [`tilemap`](/docs/reference/components/tilemap) over a `tileset` asset |
+| `GPUParticles2D` | [`particles`](/docs/reference/components/particles) |
+| `MeshInstance3D`, `CSGBox3D`, … | [`mesh`](/docs/reference/components/mesh) for a model; [`shape3d`](/docs/reference/components/shape3d) for a primitive; `boolean3d` for CSG |
+| `Polygon2D` | [`polygon`](/docs/reference/components/polygon) |
+| `Camera2D`, `Camera3D` | [`camera`](/docs/reference/components/camera) |
+| `PointLight2D`, `LightOccluder2D` | [`light2d`](/docs/reference/components/light2d), [`occluder2d`](/docs/reference/components/occluder2d) |
+| `AudioStreamPlayer`, `AudioListener3D` | [`sound`](/docs/reference/components/sound), [`listener`](/docs/reference/components/listener) |
+| `Skeleton2D` / `Bone2D`, `Skeleton3D` | Nodes with [`bone2d`](/docs/reference/components/bone2d) / [`bone3d`](/docs/reference/components/bone3d) |
+| `SkeletonIK`, `LookAtModifier` | [`modifier2d`](/docs/reference/components/modifier2d) — `look_at`, `two_bone_ik` |
+| `AnimationPlayer` | [`animation`](/docs/reference/components/animation) — a clip library and an `autoplay` |
+| `Label`, `Button`, `Panel` | [`widget`](/docs/reference/components/widget) with `kind = "label"` / `"button"` / `"panel"` |
+| `Control` layouts, editor plugins | The `ui` module — immediate-mode egui in `draw_ui` ([UI](/docs/manual/ui)) |
+| Instancing a `PackedScene` | `instance = "scenes/crate.toml"` on a node, with `overrides` ([prefabs](/docs/manual/scenes#prefabs)) |
+
+## Scripts
+
+| Godot | Balaur |
+| --- | --- |
+| `extends Node2D` | Nothing. A script is free functions taking `this` |
+| `_ready()` | `pub fn init(this)` |
+| `_process(delta)` | `pub fn update(this, dt)` |
+| `_physics_process(delta)` | `pub fn fixed_update(this, dt)` — fixed 60 Hz, before physics |
+| `_exit_tree()` | `pub fn on_free(this)` |
+| `@export var speed = 2.0` | `pub fn exports() { #{ speed: 2.0 } }`, overridden in `[nodes.script.props]` |
+| `self` | `this`; the node is `this.node` |
+| `$Path/To/Node`, `get_node("..")` | `this.node.get_node("Path/To/Node")`, `"../Sibling"` |
+| `queue_free()` | `node.queue_free()` — deferred to end of frame, as in Godot |
+| `apply_impulse(v)` | `this.node.body2d.apply_impulse(x, y)` |
+| `signal hit`, `hit.connect(_on_hit)` | `events::subscribe(this.node, "hit")`, then `pub fn on_hit(this, payload)` ([events](/docs/reference/modules/events)) |
+| `hit.emit(payload)` | `events::emit("hit", payload)` — delivered at the top of the next frame |
+| Engine signals: `pressed`, `animation_finished`, `request_completed` | Methods by name: `on_click`, `on_animation_finished(name)`, `on_response(r)` |
+| Calling a method on another node | `node.call("method", args)` |
+| `Input.is_action_just_pressed("jump")` | `input::action_just_pressed("jump")` |
+| `Input.get_axis("left", "right")` | `input::action_value("move_x")` — one action, -1 to 1 |
+| `InputMap` in project settings | `[input.actions]` in `project.toml` ([input](/docs/manual/input)) |
+| `$AnimationPlayer.play("run")` | `animation::play(this.node, "run")` |
+| `create_tween().tween_property(...)` | `animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "out_back")` — Godot's easing names and shapes |
+| `await get_tree().create_timer(1.0).timeout` | `task::wait(...)` in an `async fn`; results land at the start of a tick |
+| `HTTPRequest` | `http::request(url)` ([networking](/docs/manual/networking)) |
+| `FileAccess`, `ConfigFile` | [`fs`](/docs/reference/modules/fs), [`settings`](/docs/reference/modules/settings), [`save`](/docs/reference/modules/save) |
+| `randf()`, `randi()` | `rng::` — seeded, engine-owned, replayable |
+| `print()` | `log::info()` |
+| `preload`, `load` | `assets::load("path.toml")` |
+
+## The editor
+
+| Godot | Balaur |
+| --- | --- |
+| 2D / 3D / Script / AssetLib tabs | Personas: Scene, Script, Animate, Physics, Interface ([editor](/docs/manual/editor)) |
+| Script reloads on save | Hot reload in milliseconds, state intact; a compile error keeps the old code running |
+| Debugger tab | Breakpoints in the gutter, frames and locals in a dock |
+| Editor plugins in GDScript | The editor is a Balaur project; editing its scripts hot reloads the editor |
+| Remote scene tree | Play in editor: the real scripts on the real scene, every run recorded |
+
+## Not the same
+
+- **Determinism.** In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
+  server is deterministic. Here the whole tick is: fixed step, a digest per
+  tick, record and replay, rollback ([determinism](/docs/manual/determinism)).
+- **No `connect`.** Events are named, not callbacks: `events::emit("hit", p)`
+  reaches a subscribed node as `on_hit(p)` next frame. Engine events work the
+  same way, most with a polling twin (`input::just_pressed`,
+  `events::emitted("hit")`).
+- **No editor-only nodes.** Everything the editor does is a script call any
+  project can make.
+- **Maturity.** 0.1, weeks old, no binary yet. [Compare](/compare) and the
+  [roadmap](/docs/roadmap) say what is missing.
+
+## Start
+
+```bash
+cargo run -p balaur_cli --features window -- edit examples/angrynerds
+```
+
+A 2D game — bodies, colliders, widgets, one script per node — small enough to
+read in one sitting. [Getting started](/docs/getting-started) has the rest.
