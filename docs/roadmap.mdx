@@ -364,6 +364,12 @@ Server work lives in the [Gamend repository](https://github.com/appsinacup/gamen
     plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
   },
   {
+    title: 'Sealed packs and stripped binaries',
+    tier: 2,
+    text: 'Every texture, sound and scene comes out of a shipped game as the original file today, scripts as bytecode on native and as source on the web, and the engine binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 under a key the project owns — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
+    plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-protection.md',
+  },
+  {
     title: 'Console export',
     tier: 3,
     text: 'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.',
