@@ -44,8 +44,11 @@ function sourcePath() {
 const cells = (line) => line.slice(1, line.lastIndexOf('|')).split(' | ').map((c) => c.trim());
 const isRule = (line) => /^\|\s*(Item|Milestone|:?-{3,})/.test(line);
 
-// The `## Milestones` table: `| **0.2** | What it is |`, in tab order. Every
-// item row names one of these, so the two tables cannot drift apart.
+const STATES = ['built', 'building', 'planned'];
+
+// The `## Milestones` table: `| **0.2** | building | What it is |`, in tab
+// order. Every item row names one of these, so the two tables cannot drift
+// apart.
 function parseMilestones(md) {
   const out = [];
   let inside = false;
@@ -57,10 +60,13 @@ function parseMilestones(md) {
       continue;
     }
     if (!inside || !line.startsWith('| ') || isRule(line)) continue;
-    const [id, title] = cells(line);
+    const row = cells(line);
+    if (row.length !== 3) fail(`a milestone needs three columns, got ${row.length}`);
+    const [id, state, title] = row;
     const bare = /^\*\*(.+?)\*\*$/.exec(id);
     if (!bare) fail(`a milestone is "**0.2**", got ${id}`);
-    out.push({id: bare[1], title, items: []});
+    if (!STATES.includes(state)) fail(`a milestone state is ${STATES.join(', ')}, got "${state}"`);
+    out.push({id: bare[1], state, title, items: []});
   }
   if (!out.length) fail('no `## Milestones` table');
   return out;
@@ -120,6 +126,7 @@ function render(milestones, copy) {
     if (!lead) fail(`no copy for milestone "${milestone.id}" — add it to src/data/roadmap-copy.mjs`);
     out.push('  {');
     out.push(`    id: '${milestone.id}',`);
+    out.push(`    state: '${milestone.state}',`);
     out.push(`    title: ${JSON.stringify(milestone.title)},`);
     out.push(`    lead: ${lead.trim()},`);
     out.push('    items: [');

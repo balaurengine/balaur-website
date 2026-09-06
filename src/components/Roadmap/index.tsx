@@ -15,28 +15,43 @@ export type RoadmapItem = {
 export type RoadmapMilestone = {
   /** `0.2`, or `Later` for the ones with no version against them. */
   id: string;
+  state: 'built' | 'building' | 'planned';
   title: string;
   lead?: ReactNode;
   items: RoadmapItem[];
 };
 
+/** Said once beside the milestone's heading; `planned` is the default and mute. */
+const STATE_LABEL: Record<string, string> = {
+  built: 'Built, not yet tagged',
+  building: 'Being built now',
+};
+
 const slug = (id: string) => `milestone-${id.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
-// The near milestone keeps the full rule down the card's side; later ones
-// lighten, so the tab you land on reads as the one being built.
-const weight = (index: number) => (index === 0 ? styles.near : index < 3 ? styles.mid : styles.far);
+// The milestone being built keeps the full rule down the card's side; later
+// ones lighten with distance, and a built one is quieter than any of them.
+const weight = (milestone: RoadmapMilestone, index: number) =>
+  milestone.state === 'built' ? styles.done : index <= 1 ? styles.near : index < 4 ? styles.mid : styles.far;
 
 // One tab per milestone, one card per thing that milestone does not do yet.
 // The tab is in the URL hash, so a link can open the page on 0.4.
 export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}): ReactNode {
   const [active, setActive] = useState(milestones[0].id);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const strip = useRef<HTMLDivElement | null>(null);
 
   // The hash is read once the page is in a browser: the build prerenders the
-  // first milestone, and a deep link corrects it before paint.
+  // first milestone, and a deep link corrects it before paint. On a narrow
+  // screen the strip scrolls, so bring the milestone landed on into view —
+  // its own scrollLeft, never the page's.
   useEffect(() => {
     const wanted = decodeURIComponent(window.location.hash.replace(/^#/, ''));
-    if (milestones.some((m) => m.id === wanted)) setActive(wanted);
+    const index = milestones.findIndex((m) => m.id === wanted);
+    if (index < 0) return;
+    setActive(wanted);
+    const tab = tabs.current[index];
+    if (tab && strip.current) strip.current.scrollLeft = tab.offsetLeft - 16;
   }, [milestones]);
 
   const select = (id: string) => {
@@ -59,7 +74,7 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
 
   return (
     <div className={styles.roadmap}>
-      <div className={styles.tabs} role="tablist" aria-label="Milestones">
+      <div className={styles.tabs} role="tablist" aria-label="Milestones" ref={strip}>
         {milestones.map((milestone, i) => (
           <button
             key={milestone.id}
@@ -85,10 +100,13 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
         <Heading as="h2" className={styles.milestone}>
           {shown.title}
         </Heading>
+        {STATE_LABEL[shown.state] && (
+          <p className={`${styles.state} ${styles[shown.state]}`}>{STATE_LABEL[shown.state]}</p>
+        )}
         {shown.lead && <p className={styles.lead}>{shown.lead}</p>}
         <div className={styles.grid}>
           {shown.items.map((item) => (
-            <div className={`${styles.card} ${weight(index)}`} key={item.title}>
+            <div className={`${styles.card} ${weight(shown, index)}`} key={item.title}>
               <p className={styles.group}>{item.group}</p>
               <Heading as="h3" className={styles.title}>
                 {item.title}

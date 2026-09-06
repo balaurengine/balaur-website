@@ -8,21 +8,20 @@
 
 export default {
   frontmatter: `---
-title: "Roadmap — what the engine does not do yet"
+title: "Roadmap — what is built, and what each milestone adds"
 sidebar_label: "Roadmap"
-description: "What the Balaur game engine does not do yet and will: editor tools, scripts and assets, networking, platforms and more, each item linked to its plan."
+description: "What the Balaur game engine does today and what each milestone adds next: the editor, rendering, physics, networking, platforms and shipping, one tab per version."
 image: "/img/social/roadmap.png"
 hide_table_of_contents: true
 ---`,
 
-  intro: `What does not exist yet and will. Everything in [Features](/features) is
-already in the engine; the [changelog](./changelog.md) is what each release
-added.
+  intro: `What is built, and what comes after it, one tab per milestone. **0.1**
+is the engine as it stands, built and waiting on a tag; 0.2 is what is being
+built now; **Later** is the pile with no version against it, wanted and waiting
+on someone with a game that needs it. Nothing here is a date.
 
-Each tab is a milestone: the release that carries the work under it. The
-engine is at 0.1, so 0.2 is what is being built now. **Later** is the pile
-with no version against it, wanted and waiting on someone with a game that
-needs it. Nothing here is a date.`,
+The [features page](/features) is 0.1 feature by feature, and the
+[changelog](./changelog.md) is the same list as one line each.`,
 
   // Closes the page, under the tabs.
   outro: `[Discord](https://discord.gg/v649emcpAu) ·
@@ -31,6 +30,7 @@ needs it. Nothing here is a date.`,
 
   // The line under each milestone's heading, above its cards.
   milestones: {
+    '0.1': `<>Everything below already runs. It is one version for the whole workspace, tagged nowhere yet, so there is no download that carries a number: the ten cards here are what a <code>v0.1.0</code> would contain. The <a href="/docs/changelog">changelog</a> lists it feature by feature.</>`,
     '0.2': `'The list you hit making an ordinary game: two clips at once, a viewport that selects more than one node, a 3D light you place yourself, a session a script can host, and a build signed for the platform it runs on.'`,
     '0.3': `<>Everything you see. 2D lights get normal maps, particles reach 3D, the camera culls what is behind it and draws to more than one view, and the timeline grows the curve handles and the sequencer a cutscene needs.</>`,
     '0.4': `<>Two machines playing the same game. Rollback, stable ids and QUIC datagrams are built and reachable only from Rust; this is the milestone that puts them behind <code>session</code> in a script, in a browser, and on a Gamend lobby. Server work lives in the <a href="https://github.com/appsinacup/gamend">Gamend repository</a>; the plan is kept beside the engine's so the two sides agree.</>`,
@@ -40,6 +40,26 @@ needs it. Nothing here is a date.`,
   },
 
   items: {
+    'The editor':
+      `<>A stage shell of tabbed, resizable, animated docks, built out of the engine's own widgets and themed with them, so the editor is a Balaur application. Undo and redo, copy and paste, a searchable inspector, prefab instances with overrides, ray picking, a profiler dock, a narrow-window layout, and the Rig, Polygon and Tiles tools. Renaming a file in the Assets dock rewrites every reference to it.</>`,
+    'Rune scripting':
+      `<>One language, chosen for being deterministic: Rune, with a <code>math</code> module that answers the same on every platform. Exported properties, component handles on nodes, hot reload, named events between scripts, modules loaded from disk or a pack, and a debugger with breakpoints, stepping and frames over the Debug Adapter Protocol. The API documents itself, and <code>balaur api</code> prints it.</>`,
+    'Scenes, assets and packs':
+      `<>Prefabs with an override per path, <code>id://</code> references that survive a rename, import settings in a file beside the picture, sprite sheets with tags and slices, and hot reload for textures, models, fonts and sounds. <code>balaur import</code> reads Aseprite, Tiled and LDtk. A shipped project is a sha256-verified binary pack.</>`,
+    'Rapier in 2D and 3D':
+      `<>The whole of rapier, in both dimensions and behind one script API: bodies with CCD and sleep, joints with motors, limits and breaking, character controllers, raycasts and shape casts, collision and contact-force events, one-way platforms, ray-cast vehicles, and every collider shape rapier has, voxels included and editable while the game runs.</>`,
+    'Rigs and animation':
+      `<>Skeletons in 2D and 3D with the same five modifiers each — <code>look_at</code>, <code>two_bone_ik</code>, <code>fabrik</code>, <code>ccdik</code> and <code>jiggle</code> — GPU skinning, per-vertex deform tracks, morph targets from glTF, a clip retargeted onto another rig through a <code>bone_map</code>, and ragdolls blended back onto the bones by weight.</>`,
+    'What draws today':
+      `<>Sprites, atlases and tile maps; 2D lights and shadows; WESL shaders and material assets, including ones that read the screen; bloom, SSAO, SSR and depth of field; ten 3D primitives and six 2D ones, every one a mesh built headless; path assets stroked, extruded, revolved and swept; booleans; a <code>cloner</code>; and textured particles.</>`,
+    'Widgets, text and the batteries':
+      `<>Fourteen widget kinds with containers, themes, focus and a text field that takes IME input, over cosmic-text, so bidi, CJK breaks and font fallback work. Text in the world as <code>text2d</code> and <code>text3d</code>, and bitmap fonts for a pixel face. Beside them: audio buses and positional audio, input actions with rebinding, save games with migrations, localisation with plurals, and tweens.</>`,
+    'The deterministic core':
+      `<>A fixed 60 Hz step, a digest per tick that CI compares across operating systems, record and replay, and rollback with node ids stable across spawns. Sessions run lockstep over a socket and are recordable, with a faulty transport to test against. HTTP, WebSocket and WebTransport sit behind one <code>Transport</code> trait.</>`,
+    'Apple and the platform module':
+      `<>Sign-in, achievements, leaderboards, cloud saves and presence behind one <code>platform</code> module, with Game Center and iCloud behind it, in-app purchase, notifications and URL handling. An <code>[apple]</code> manifest section writes <code>Info.plist</code> and entitlements and signs a macOS app. A store write waits for its tick to settle, so rollback cannot double it.</>`,
+    'Export, the web and the CLI':
+      `<><code>balaur export</code> builds a native or web target and reports what the pack weighs, by section and by largest entry, naming what nothing references; <code>strip</code> drops those, and images, fonts and audio re-encode losslessly or lossily per kind. The editor runs in a browser over IndexedDB. <code>balaur test</code>, a lint script that mirrors CI, and a benchmark suite measured beside Godot's come with it.</>`,
     'Tile maps':
       `<>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>`,
     'Script completion and hover':

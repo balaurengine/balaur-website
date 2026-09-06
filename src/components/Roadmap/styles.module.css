@@ -52,6 +52,23 @@
   margin: 1.75rem 0 0.5rem;
 }
 
+.state {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--balaur-card-border);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-700);
+  margin: 0 0 0.75rem;
+}
+
+.building {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
 .lead {
   font-size: 1.05rem;
   color: var(--ifm-color-emphasis-800);
@@ -74,7 +91,13 @@
   background: var(--balaur-card-bg);
 }
 
-/* Later milestones keep the card but lighten the rule down its side. */
+/* Later milestones keep the card but lighten the rule down its side; a built
+   one is quieter still, because it is a record rather than a promise. */
+.done {
+  border-left-color: var(--ifm-color-emphasis-300);
+  background: none;
+}
+
 .mid {
   border-left-color: var(--ifm-color-emphasis-500);
 }
