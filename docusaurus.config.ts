@@ -261,8 +261,11 @@ const config: Config = {
             {type: 'docSidebar', sidebarId: 'docsSidebar', label: 'Documentation'},
             {to: '/docs/getting-started', label: 'Getting started'},
             {type: 'docSidebar', sidebarId: 'referenceSidebar', label: 'Reference'},
-            {type: 'doc', docId: 'roadmap', label: 'Roadmap'},
-            {type: 'doc', docId: 'changelog', label: 'Changelog'},
+            // Plain links, not type: 'doc'. A doc navbar item is also active for
+            // every other page in the same sidebar, so the changelog lit up on
+            // every page of the manual.
+            {to: '/docs/roadmap', label: 'Roadmap'},
+            {to: '/docs/changelog', label: 'Changelog'},
             {to: '/blog', label: 'Devlog'},
           ],
         },
