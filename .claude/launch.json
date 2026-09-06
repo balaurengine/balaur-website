@@ -4,7 +4,22 @@
     {
       "name": "docs-preview",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "serve"],
+      "runtimeArgs": [
+        "run",
+        "serve"
+      ],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "docs-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "start",
+        "--",
+        "--no-open"
+      ],
       "port": 3000,
       "autoPort": true
     }

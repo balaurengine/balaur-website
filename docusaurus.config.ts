@@ -127,6 +127,10 @@ const config: Config = {
           // near-duplicates of the list; tags are off the posts and the
           // author page is off in authors.yml for the same reason.
           archiveBasePath: null,
+          // The devlog is a running list of what shipped; the sidebar is the
+          // only index of it now that the archive page is off, so show it all.
+          blogSidebarCount: 'ALL',
+          blogSidebarTitle: 'All posts',
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
