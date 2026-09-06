@@ -20,18 +20,34 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PLAY="$ROOT/static/play"
 TAG="${ENGINE_TAG:-nightly}"
 BASE="https://github.com/balaurengine/balaur/releases/download/$TAG"
-FILES=(balaur.js balaur_bg.wasm editor.bpak hello.bpak angrynerds.bpak rig.bpak benchmark.bpak)
+# The two the page cannot run without; the packs are whatever the bundle
+# carries, so an example added to the engine reaches /examples without a
+# name being added here.
+REQUIRED=(balaur.js balaur_bg.wasm)
 
 warn() { echo "warning: $*; keeping the committed copy" >&2; }
+
+# Copy the web build and every pack from `src` into static/play, dropping a
+# pack that is no longer shipped so the page cannot offer a stale game.
+install_play() { # install_play <dir>
+  local src=$1 f
+  for f in "${REQUIRED[@]}"; do
+    [[ -s "$src/$f" ]] || { warn "no $src/$f — run scripts/package_play.sh there"; return 1; }
+  done
+  shopt -s nullglob
+  local packs=("$src"/*.bpak)
+  shopt -u nullglob
+  [[ ${#packs[@]} -ge 2 ]] || { warn "$src holds ${#packs[@]} pack(s); the editor and the examples are expected"; return 1; }
+  rm -f "$PLAY"/*.bpak
+  cp "${REQUIRED[@]/#/$src/}" "${packs[@]}" "$PLAY/"
+  echo "packs: $(cd "$src" && ls *.bpak | tr '\n' ' ')"
+}
 
 mkdir -p "$PLAY"
 
 if [[ -n "${BALAUR_REPO:-}" ]]; then
   src="$BALAUR_REPO/dist/play"
-  for f in "${FILES[@]}"; do
-    [[ -s "$src/$f" ]] || { warn "no $src/$f — run scripts/package_play.sh there"; exit 0; }
-  done
-  cp "${FILES[@]/#/$src/}" "$PLAY/"
+  install_play "$src" || exit 0
   printf 'local-%s\n' "$(git -C "$BALAUR_REPO" rev-parse --short=7 HEAD)" >"$PLAY/VERSION"
   echo "synced play from $src"
   exit 0
@@ -58,9 +74,6 @@ if command -v sha256sum >/dev/null 2>&1; then sum=(sha256sum); else sum=(shasum 
 
 mkdir -p "$tmp/play"
 tar -xzf "$tmp/balaur-play.tar.gz" -C "$tmp/play"
-for f in "${FILES[@]}"; do
-  [[ -s "$tmp/play/$f" ]] || { warn "the bundle has no $f"; exit 0; }
-done
-cp "${FILES[@]/#/$tmp/play/}" "$PLAY/"
+install_play "$tmp/play" || exit 0
 printf '%s\n' "$want" >"$PLAY/VERSION"
 echo "synced play: engine ${have:-none} -> $want"
