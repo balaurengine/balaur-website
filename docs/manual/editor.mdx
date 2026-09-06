@@ -70,14 +70,18 @@ polygon's points, triangulation, UVs and weights. Both are under
 
 ## Docks, palette, themes
 
-Seven docks sit under the viewport. Output is the engine's log ring
-buffer, with level filters. Problems lists what the linter found in every
-script, and a shader that would not link. Assets browses the project's
-files. Timeline is the animation editor's. Debugger shows a paused
-script's frames and locals. Session lists the recordings play-in-editor
-made and replays one, with lanes for the input, network and log events it
-holds. Profiler draws the last frame as a bar per stage against the
-16.7 ms a 60 Hz frame has, from `engine::timings()`.
+Seven docks sit under the viewport.
+
+- Output: the engine's log ring buffer, with level filters.
+- Problems: what the linter found in every script, and a shader that would
+  not link.
+- Assets: the project's files.
+- Timeline: the animation editor's.
+- Debugger: a paused script's frames and locals.
+- Session: the recordings play-in-editor made. It replays one, with lanes for
+  the input, network and log events it holds.
+- Profiler: the last frame as a bar per stage against the 16.7 ms a 60 Hz
+  frame has, from `engine::timings()`.
 
 The command palette (`⌘K`) is the single overlay: nodes, commands and
 personas, and there is a dark and a light theme. *Show input overlay* draws
@@ -96,9 +100,9 @@ balaur edit examples/rig --offscreen --frames 100 \
 
 `--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
 `ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`,
-`zoom:<percent>`, `palette`, `light`, `play`, `input`, `shot=<file>` to capture
-one frame, and `frames=<dir>` to capture every other frame into a numbered
-directory. `show:<name>` runs one of the scripted sequences behind this
+`zoom:<percent>`, `palette`, `light`, `play` and `input`. `shot=<file>`
+captures one frame, and `frames=<dir>` captures every other frame into a
+numbered directory. `show:<name>` runs one of the scripted sequences behind this
 manual's clips, which feed input through `input::feed_key`, `feed_mouse` and
 `feed_mouse_button`: the same seam an automated test uses. Offscreen frames
 advance on the fixed 1/60 step, so frame 90 is the same picture every time.
@@ -151,12 +155,15 @@ the document (`S.doc`), the live mirror, the selection (`S.sel`), history and
 the theme. The one rule is to call the history recorder before mutating the
 document, so undo keeps working.
 
-Each list is optional. `docks` and `windows` take a `draw(S, k)`; `commands` a
-`run(S)`; `sections` are `draw(S, k, node)`, drawn under the built-in
-inspector; `overlays` are `draw(S)` and draw viewport lines; `editors` map a
-schema datatype to `draw(S, k, target, spec, value)`, replacing the built-in
-editor for that type; `states` map a name to `run(S)`, so a plugin carries its
-own start-up state and therefore its own test.
+Each list is optional.
+
+- `docks` and `windows` take a `draw(S, k)`; `commands` a `run(S)`.
+- `sections` are `draw(S, k, node)`, drawn under the built-in inspector.
+- `overlays` are `draw(S)` and draw viewport lines.
+- `editors` map a schema datatype to `draw(S, k, target, spec, value)`,
+  replacing the built-in editor for that type.
+- `states` map a name to `run(S)`, so a plugin carries its own start-up state
+  and therefore its own test.
 
 Nothing is sandboxed: a plugin runs in the editor's host with the editor's
 capabilities: the right first cut for a tool a project writes for itself.

@@ -15,6 +15,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
+    "lint": "node scripts/lint-prose.mjs",
     "sync-docs": "bash scripts/sync-docs.sh",
     "optimize-images": "node scripts/optimize-images.mjs",
     "social-cards": "node scripts/social-cards.mjs",

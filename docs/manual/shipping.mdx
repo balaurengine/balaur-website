@@ -93,8 +93,8 @@ executable in an `.app`, `assets/game.bpak` in an APK, and the engine reads
 it from there instead of out of its own file.
 
 Signing is `balaur export`'s own, with a certificate or keystore that is
-yours: `--sign <identity>` and `--profile <file>` for iOS, plus `--ipa` for the
-shape App Store Connect takes; `--apk` on Android assembles and signs with the
+yours. On iOS: `--sign <identity>` and `--profile <file>`, plus `--ipa` for the
+shape App Store Connect takes. On Android, `--apk` assembles and signs with the
 keystore `[export] android_keystore` names, or Android's debug identity when
 the project names none. Without those flags a build comes out unsigned, which
 installs on no device.

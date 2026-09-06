@@ -78,7 +78,7 @@ thing at run time.
 ## Modules
 
 Subsystems declare their bindings once against a language-neutral seam
-(`balaur_script`), and scripts reach them as modules with `::`: `engine`,
+(`balaur_script`), and scripts reach them as modules with `::`. The modules: `engine`,
 `scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`, `physics3d`,
 `render`, `audio`, `ui`, `animation`, `skeleton`, `assets`, `http`,
 `websocket`, `gamend`, `events`, `task`, `debugger`, `fs`, `toml`, `json` and
@@ -240,9 +240,9 @@ dock has the same switch. An error pause cannot be continued: the call is over
 , so letting go of one drops it and finishes the tick it interrupted, whichever
 step button you press.
 
-Two further limits: an async entry point (one using `task::wait`) runs as a
-future and cannot be paused, so a breakpoint inside one is let through; and
-locals are a frame's named arguments, since Rune keeps no names for its other
+Two further limits. An async entry point (one using `task::wait`) runs as a
+future and cannot be paused, so a breakpoint inside one is let through. Locals
+are a frame's named arguments, since Rune keeps no names for its other
 slots.
 
 ## Determinism in scripts

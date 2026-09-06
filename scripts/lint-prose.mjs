@@ -36,7 +36,7 @@ const SKIP = [
 const PHRASES = [
   /\bhonest(ly)?\b/i, /\bactually\b/i, /\btruly\b/i, /\bgenuinely\b/i,
   /\bit(?:'s| is) worth\b/i, /\bworth (?:noting|a look|mentioning)\b/i,
-  /\bthe question (?:was|is)\b/i, /\blet'?s\b/i, /\bto be (?:clear|fair)\b/i,
+  /\bthe question (?:was|is)\b/i, /\blet's\b/i, /\bto be (?:clear|fair)\b/i,
   /\bsimply put\b/i, /\bin order to\b/i, /\bat its core\b/i,
   /\bleverag(?:e|es|ed|ing)\b/i, /\bdelv(?:e|es|ed|ing)\b/i, /\bseamless(?:ly)?\b/i,
   /\bgame[- ]chang(?:er|ing)\b/i, /\bwhich matters more than it sounds\b/i,
@@ -83,7 +83,8 @@ function units(src) {
       .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
       .replace(/`[^`]*`/g, 'X')
       .replace(/<[^>]+>/g, '')
-      .replace(/\*\*|__/g, '');
+      .replace(/\*\*|__/g, '')
+      .replace(/\*/g, '');   // *italic* at a sentence start would block the split
     buf.push(t.trim());
   }
   flush();
@@ -91,7 +92,11 @@ function units(src) {
 }
 
 const words = (t) => t.split(/\s+/).filter(Boolean).length;
-const sentences = (t) => t.split(/(?<=[.!?])\s+(?=[A-Z0-9"'X[(])/).map((s) => s.trim()).filter(Boolean);
+const sentences = (t) =>
+  t.replace(/\b(e\.g|i\.e|vs|etc|cf)\./gi, '$1')
+    .split(/(?<=[.!?])\s+(?=[A-Za-z0-9"'X[(`])/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 
 function lint(file) {
   const rel = relative(ROOT, file);

@@ -1,0 +1,97 @@
+---
+title: "Tile maps: collision, autotiling and shadows"
+sidebar_label: "Tile maps"
+description: "Tile maps: solid, one-way, animated and light-blocking tiles, one voxel collider, autotiling from an ordered rule table, isometric and hex, Tiled import."
+sidebar_position: 19
+---
+
+# Tile maps
+
+A `tilemap` node draws a grid of cells over a `tileset`. The tileset says what
+each tile is: solid, one-way, animated, light-blocking. The map builds the
+collider, picks its tiles from the terrain you paint, and casts the shadows.
+
+## Collision
+
+The tileset marks solid tiles, and a `tile_collision` component on the map
+builds one parry voxel shape from them, not a row of boxes. A body sliding
+along a wall has no seam to catch on. Slopes are polygons in tile pixels;
+`one_way = true` makes a platform.
+
+```toml
+[tiles.0]
+collision = "full"
+
+[tiles.7]
+collision = [[[0, 16], [16, 16], [16, 8]]]   # a slope, in tile pixels
+one_way = true
+```
+
+`set_cell` marks the map, and the collider is rebuilt once on the next fixed
+step however many cells changed.
+
+## Autotiling
+
+Paint a terrain and the tiles arrange themselves. Underneath is one table of
+`[[rules]]`, read in order; the first match wins.
+
+```toml
+[[rules]]
+terrain = "grass"
+pattern = ["?#?",     # ? any   # this terrain   . anything else
+           "?#.",
+           "?##"]
+tile = 12
+transforms = ["rotate", "mirror"]
+outside = "same"
+```
+
+- `transforms` lets one rule cover eight orientations, so a 47-tile blob is a
+  dozen rules.
+- `outside` says whether the edge of the map counts as the same terrain.
+- Variation is hashed from the cell's coordinate, so a map resolves the same
+  on every machine and after every reload.
+- `mode = "sides"` or `"corners_and_sides"` writes the rules for a bitmask
+  sheet, the layout Godot and Tiled use.
+
+## Animated and occluding tiles
+
+```toml
+[tiles.14]
+animation = { frames = [14, 15, 16], fps = 8 }
+
+[tiles.3]
+occluder = true
+```
+
+Animation runs on the frame clock, outside the digest. An occluding cell
+feeds the [2D light map](./rendering.mdx) only its exposed edges, so fifty
+tiles cast one shadow.
+
+## Cells and layouts
+
+- Cell `0,0` has its top-left corner on the node, and the map keeps an
+  `origin`, so painting reaches in every direction.
+- `layout = "isometric"` or `"hex"` on the tileset. Mesh, collider, picking
+  and the painter share one placement function.
+
+## The Tiles dock
+
+Paint, rectangle, fill, line and pick; a terrain brush that runs through the
+engine's own resolver; and a Set panel that writes solid, one-way or occluder
+back to the tileset file.
+
+## Importing from Tiled
+
+```bash
+balaur import level.tmx --project game
+```
+
+Writes the atlas, a `tileset` per sheet with its grid, spacing, margin,
+per-tile collision and animations, and a scene with one `tilemap` node per
+tile layer.
+
+Not yet: quarter-tile sheets, LDtk import, cells in their own chunked file,
+and a multi-tile stamp. They are on the [roadmap](/docs/roadmap).
+`tilemap`, `tileset` and `tile_collision` are in the
+[reference](/docs/reference/components).

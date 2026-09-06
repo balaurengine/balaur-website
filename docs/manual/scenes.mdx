@@ -18,10 +18,10 @@ free are core systems, and plugins hang their own components off the same
 entities, so "node" is an API surface, not a data structure with a cost.
 
 Scripts reach the tree through 30 operations declared once in the core and
-reached as methods on a node value: `get_node`, `parent`, `children`,
-`add_child`, `set_parent` (which keeps the node where it is in the world),
-`queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
-`translate`, `attach_script`, the component operations, and the rest. Paths
+reached as methods on a node value. Among them: `get_node`, `parent`,
+`children`, `add_child`, `set_parent` (which keeps the node where it is in the
+world), `queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
+`translate`, `attach_script`, and the component operations. Paths
 accept `..`, so `../Target` names a sibling. The full list is in the
 [script modules reference](/docs/reference/modules).
 
@@ -138,6 +138,8 @@ Every shape the engine draws is a mesh, built without a GPU. A collider fitted
 to one collides what is on screen, a ray picks it, and a headless test can
 measure it.
 
+![Every object, one row per category](/img/manual/objects_overview.webp)
+
 A `mesh` asset names one of four things:
 
 ```toml
@@ -156,6 +158,8 @@ The primitives are `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`,
 `ellipse`, `star` and `ngon` in 2D. `shape3d` and `shape2d` draw them straight;
 a `mesh` asset is for when something else (a collider, a boolean, a script)needs the triangles too.
 
+![The primitives row](/img/manual/objects_primitives.webp)
+
 ### Paths
 
 A `path2d` or `path3d` is a run of cubic control points with a `closed`
@@ -173,6 +177,8 @@ depth = 0.5
 bevel = 0.08
 ```
 
+![An arch extruded, a goblet revolved, a rail swept](/img/manual/objects_paths.webp)
+
 ### Booleans and cloners
 
 `boolean3d` draws a node's children joined, cut out of one another, or only
@@ -181,6 +187,8 @@ in declaration order. The operands stay in the tree, hidden and editable, and
 moving one recomputes the result. `boolean2d` is the same over filled
 outlines.
 
+![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
+
 ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
 
 `cloner` draws the node's whole subtree many times over: `linear` with a
@@ -188,6 +196,8 @@ outlines.
 ring when it is zero, or `grid` with `counts`. A `seed` and a `random` range
 scatter the copies. The tree, physics and scripts still see one node, and each
 mesh is one draw call however many copies there are.
+
+![A row, a ring and a scattered grid](/img/manual/objects_cloner.webp)
 
 ### Vertex colours and morph targets
 
@@ -202,6 +212,8 @@ shader = "shaders/painted.wesl"
 features = { vertex_color = true }
 ```
 
+![A word as a mesh, and a triangle coloured per vertex](/img/manual/objects_text.webp)
+
 `examples/objects` shows all of it, one row per category.
 
 ## Import settings
@@ -214,6 +226,8 @@ How a file is read is stated beside the file. `art/hero.png.toml` settles
 filter = "nearest"   # pixel art, drawn crisp instead of blurred
 srgb = true          # false for a normal map or a mask, which carry data
 ```
+
+![The same 32-pixel sprite at ten times its size, filtered linearly and with nearest](/img/manual/import_settings.webp)
 
 The double extension is deliberate: the sidecar sorts beside its image in a
 file listing, and `hero.toml` would collide with a scene or a clip of the same

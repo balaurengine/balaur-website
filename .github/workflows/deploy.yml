@@ -54,6 +54,10 @@ jobs:
           node-version-file: .nvmrc
       - name: yarn install
         run: corepack enable && yarn --immutable
+      # A post over 300 words of prose, a 35-word sentence, or an em dash in
+      # prose is a red build: scripts/lint-prose.mjs holds the numbers.
+      - name: yarn lint
+        run: yarn lint
       - name: yarn build
         run: yarn build
       # Requires Pages to be enabled with Source: GitHub Actions in repo settings.

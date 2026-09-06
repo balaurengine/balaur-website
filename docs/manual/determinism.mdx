@@ -53,7 +53,7 @@ change?" checks possible.
 ## Scripting and determinism
 
 Rune numbers are IEEE-754 doubles and 64-bit integers that never mix;
-`+ - * /` and `sqrt` are exactly specified and reproducible everywhere; and the
+`+ - * /` and `sqrt` are exactly specified and reproducible everywhere. The
 VM is a single-threaded interpreter with no native codegen, so evaluation order
 is fixed. The known hazards:
 
@@ -98,8 +98,10 @@ has the rules of thumb and the hazards that remain your problem.
 
 Every play-in-editor run records what the game was fed: keys, mouse,
 gamepads, network replies, and the Session dock lists them, ten per game,
-under the editor's own data directory. Open one and the scene is rebuilt from
-the document, the recording is fed into it, and the game plays itself: lanes
+under the editor's own data directory.
+
+Open one and the scene is rebuilt from
+the document, the recording is fed into it, and the game plays itself. Lanes
 show the ticks keys and buttons went down, network requests came back, the log
 spoke and the debugger stopped, with everything recorded at the playhead's tick
 in the rows below. Drag the ruler to scrub: forward is the engine's, backward

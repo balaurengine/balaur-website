@@ -1,7 +1,7 @@
 ---
 title: "Quality: the checks every change passes"
 sidebar_label: "Quality"
-description: "What keeps Balaur honest: rustfmt and clippy on three platforms, house lints, ~1,200 tests, every example run twenty ways, and determinism traces."
+description: "What holds Balaur to its claims: rustfmt and clippy on three platforms, house lints, ~1,200 tests, every example run twenty ways, and determinism traces."
 image: "/img/social/quality.png"
 sidebar_position: 6
 ---
@@ -36,7 +36,7 @@ Formatting is checked and Clippy runs with warnings denied, on Linux, macOS
 and Windows: platform code is compiled nowhere else.
 
 Then once more per feature that is off by default, since code behind an off
-feature is not compiled at all: the windowed backend (wgpu, egui, the macOS
+feature is not compiled at all. Those are the windowed backend (wgpu, egui, the macOS
 dock-icon path), extensions (the dlopen path and the cdylib), and the Apple
 stores. Plus one example extension kept outside the workspace, the only thing
 proving an extension builds without the engine's build tree.
@@ -61,7 +61,7 @@ House rules, over every Rust and Rune file:
 | naming | the mechanical half of the naming rules, a dozen separate checks |
 | two Rune traps | shapes that compile and then misbehave |
 
-A **ratchet** keeps it honest without a flag day: a baseline file records the
+A **ratchet** holds the line without a flag day: a baseline file records the
 violations predating each rule, per file, and anything above that count fails.
 Deleting a line from the baseline is progress; nothing may be added by hand.
 
@@ -125,14 +125,14 @@ three platforms:
 - export, twice: the two packs must match.
 - play: the exported pack, with no sources and no compiler present.
 - edit, sixteen times: the editor is itself a Balaur project, so it is
-  booted headless against every example and driven through undo, layout,
+  booted headless against every example. It is driven through undo, layout,
   rigging, the polygon tool, plugins, the clipboard, the assets dock, picking,
   script properties, prefab instances, placement, the profiler, session
   recording and the theme switch.
 
 Every pass is held to two bars: a clean exit and a clean log. A logged
 error fails the run, and so does an editor scene node the editor cannot
-resolve: an invariant that, when it broke, silently cost the inspector, the
+resolve. When that invariant broke, it silently cost the inspector, the
 gizmos and every transform read while nothing else failed.
 
 Headless covers loading, mirroring and asset rebinding, not drawing. Drawing
@@ -144,8 +144,8 @@ catalogue, regenerated and diffed before any change to the editor's shell.
 Hand-written docs go stale silently, so the ones that can be derived are.
 Rustdoc builds with warnings denied, mostly to catch dead intra-doc links. The
 generated docs (the script API, components, assets, crates, behaviour) are
-regenerated from a booted engine on every push and the build fails on any diff;
-the third-party notices file is regenerated and diffed the same way. This site
+regenerated from a booted engine on every push, and the build fails on any diff.
+The third-party notices file is regenerated and diffed the same way. This site
 builds its [reference](./reference/index.md) from that data, so the published
 docs cannot describe an engine that does not exist.
 
@@ -170,7 +170,7 @@ reason recorded.
 Releases carry `SHA256SUMS` and build-provenance attestations, verifiable with
 `gh attestation verify`. Every push also exports a game through the same
 published actions a player's own repository calls, against the engine that run
-just built: an action that stopped working fails here rather than on the day
+just built. An action that stopped working fails here rather than on the day
 someone else runs it.
 
 ## What review is left to do

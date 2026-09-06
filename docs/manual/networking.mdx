@@ -24,7 +24,7 @@ own feature: building without `http` drops the HTTP and TLS stack, without
 
 All I/O runs on background threads. Completions cross back over a channel and
 enter the simulation once per tick, at the start of the frame, recorded in a
-snapshot: the same model as input, so recording the snapshot per tick is all a
+snapshot. That is the same model as input, so recording the snapshot per tick is all a
 replay of a networked session needs. Nothing blocks the frame, and handlers
 never run from an I/O thread.
 

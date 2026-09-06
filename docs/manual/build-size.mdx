@@ -23,11 +23,12 @@ pack is on top, and it is the game's own bytes.
 
 ## Where the bytes go
 
-One module carries the whole engine and nothing in it loads lazily: the
-renderer (wgpu with both its WebGPU and WebGL2 backends, naga, winit), the UI
-(egui and its four default fonts, plus a second text shaper for marked-up
-text), physics in both dimensions (rapier and parry), the Rune compiler and VM,
-every audio codec rodio turns on, and every image format kiss3d turns on.
+One module carries the whole engine, and nothing in it loads lazily. In it:
+the renderer (wgpu with both its WebGPU and WebGL2 backends, naga, winit) and
+the UI (egui and its four default fonts, plus a second text shaper for
+marked-up text). Physics in both dimensions (rapier and parry), the Rune
+compiler and VM, every audio codec rodio turns on, and every image format
+kiss3d turns on.
 
 Code is about three quarters of the module. The rest is data, and half the
 data is assets that dependencies bake in:
@@ -72,6 +73,8 @@ Fonts outweigh images in most projects, and the engine outweighs both. Four
 keys in `[export]` act on what the report shows, and each is off until you
 turn it on:
 
+![Where a pack's bytes are, and what lossless re-encoding takes off](/img/manual/export_size.webp)
+
 ```toml
 [export]
 strip = true            # drop an asset no scene, script or keep glob names
@@ -85,7 +88,7 @@ audio = "flac"          # write uncompressed WAV as lossless FLAC
 Anything under `fonts/` survives a strip whatever the references say: the UI
 finds faces by listing that directory, so no scene ever names one.
 
-Every mode here is lossless, and none of them changes a pixel count: a sprite
+Every mode here is lossless, and none of them changes a pixel count. A sprite
 is sized from its image header, so a re-encoded texture is the same sprite and
 the game computes the same world. `balaur export --report` prints the table and
 writes nothing, so you can see the saving before taking it.

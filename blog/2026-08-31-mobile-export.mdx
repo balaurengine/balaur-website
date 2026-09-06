@@ -21,8 +21,8 @@ signed macOS bundle.
   `assets/`. The engine reads the pack from the bundle instead of from its
   own file.
 - A signed Mac. A flat fused binary cannot be validly signed: appending
-  bytes is exactly what a signature cannot cover, so `--app`
-  builds a `.app` with the pack as a sealed resource and signs it, ad hoc
+  bytes is exactly what a signature cannot cover. `--app` builds a `.app`
+  with the pack as a sealed resource and signs it, ad hoc
   or with `--sign "Developer ID Application: …"`.
 - Templates on demand. Exporting for a platform you are not on offers to
   download that platform's runtime from the engine's own release tag,
@@ -39,6 +39,6 @@ balaur export my-game --target macos-universal --app   # -> a signed .app
 ```
 
 A pack is bytecode, scenes and assets in sorted key order, so the same
-sources give the same bytes on any machine, and a packed run is pure
+sources give the same bytes on any machine. A packed run is pure
 interpretation, which is what lets it land on platforms that forbid JIT.
 [Shipping a game](/docs/manual/shipping) has every flag.

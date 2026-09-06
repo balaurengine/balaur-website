@@ -77,7 +77,7 @@ answer for a tool.
 Two ways to see what a shader is doing:
 
 - A line's value. Click a line number in the shader's gutter and the
-  viewport draws what that line computes for every pixel that reaches it: a
+  viewport draws what that line computes for every pixel that reaches it. A
   `vec2` as red and green, an `f32` as grey, a `vec4` as colour. The line has
   to declare a value with its type written (`let dist: f32 = ...`) or a
   constructor. Click again to put the picture back.
@@ -89,7 +89,7 @@ Two ways to see what a shader is doing:
 
 Rendering observes the simulation and feeds nothing back, so a shader is
 outside the digest, and `time()` is render time rather than the tick. The parts
-of a shader that *are* logic can still be tested: a function marked `@const`
+of a shader that *are* logic can still be tested. A function marked `@const`
 runs on the CPU in headless tests, and a call to a name nothing declares fails
 to link rather than reaching a GPU.
 

@@ -57,7 +57,7 @@ which symbols the library exports:
 
 The Rust path is refused unless the extension's fingerprint matches the host's
 exactly, checked through a fixed-size tag *before* anything Rust-shaped
-crosses, so a mismatched build fails with a message naming the differences
+crosses. A mismatched build fails with a message naming the differences
 rather than crashing later.
 
 The C path keeps its state behind its own pointer and receives a table of host

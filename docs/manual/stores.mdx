@@ -9,8 +9,7 @@ sidebar_position: 11
 # Stores
 
 `platform` is one module over every store. A script that unlocks an achievement
-says the same thing on Game Center as it will on Play Games and on Steam, and
-what only one platform has stays in that platform's own module: `apple` today.
+says the same thing on Game Center as it will on Play Games and on Steam. What only one platform has stays in that platform's own module: `apple` today.
 
 With no store loaded (the editor, a desktop run, a replay) every call answers
 `kind = "unsupported"` rather than failing, so a script written against
@@ -63,7 +62,7 @@ worked.
 ## Achievements and rollback
 
 An achievement cannot be un-awarded, and a [rollback](./determinism.mdx) game
-can re-run a predicted tick with different inputs, so a call that changes the
+can re-run a predicted tick with different inputs. So a call that changes the
 store waits until the tick that made it can no longer be re-run. Reads never
 wait; repeating one costs a round trip and nothing else. A game with no
 rollback session is unaffected, because there every tick is final the moment it
@@ -131,7 +130,7 @@ pub fn on_apple(this, e) {
 ```
 
 A purchase is not finished when it lands. StoreKit re-delivers an unfinished
-transaction on every launch, that is how it avoids losing one, so
+transaction on every launch; that is how it avoids losing one. So
 `finish_purchase` is a call of its own, made after the server that checked the
 `jws` has granted what was bought.
 
