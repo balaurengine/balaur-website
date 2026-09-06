@@ -1,5 +1,5 @@
 ---
-title: "Text in the world — text2d, text3d and the shaper"
+title: "Text in the world: text2d, text3d and the shaper"
 sidebar_label: "Text in the world"
 description: "A name over a character and a score on a sign in Balaur: the text2d and text3d components, outline and shadow, markup, bitmap fonts, and a measurement every platform agrees on."
 sidebar_position: 18
@@ -103,7 +103,7 @@ real geometry with colliders fitted to them.
 
 A pixel font ships as the artist drew it. Point `font` at an AngelCode `.fnt`
 and the engine reads its page and every glyph's box, then lays the text out by
-advance and kerning — there is nothing to shape, because a bitmap font has one
+advance and kerning. There is nothing to shape, because a bitmap font has one
 glyph per character and no contextual forms.
 
 ```toml
@@ -124,8 +124,13 @@ it. Enter keeps the text, Escape drops it.
 ## What it costs
 
 A block is one mesh per colour it draws in, plus one for the outline and one
-for the shadow — not one node per letter. Sizes are rasterised in buckets, so
-two sizes a hair apart share their glyphs in the atlas.
+for the shadow: not one node per letter.
+
+Glyphs are rasterised at the size the block covers on screen, quantised to
+buckets 8.7% apart. Walking towards a sign re-shapes it a few times rather than
+magnifying a bitmap, and two blocks at nearly the same size share their glyphs
+in the atlas. The cost is that a glyph is scaled by up to 8.7%, where a
+distance field would scale exactly.
 
 [`examples/text`](https://github.com/balaurengine/balaur/tree/main/examples/text)
 is a tour of all of it.
