@@ -277,6 +277,11 @@ The editor's Events view writes these rows, and *Convert to script* writes the
 Rune they mean, one function per hook. A node may carry both; the bindings run
 first.
 
+Pointer events need a window: what the pointer is over comes from the frame the
+renderer drew, and a headless run has no viewport to unproject against. Key,
+action, scroll and variable events fire headless, so a replayed session
+exercises them in CI.
+
 ## Import settings
 
 How a file is read is stated beside the file. `art/hero.png.toml` settles
