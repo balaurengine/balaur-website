@@ -1,0 +1,42 @@
+---
+description: "Balaur devlog: a sprite component — a textured 2D quad sized in pixels per unit, with flipbook sheets, atlas regions, flips, a tint and a material."
+slug: sprites
+title: Sprites
+authors: [dragos]
+image: /img/manual/sprite_inspector.png
+keywords: [sprite component, sprite sheet, texture atlas, 2d sprites, balaur]
+---
+
+A `sprite` is a textured 2D quad on a node: a texture, a size in pixels
+per unit, and the sheet or atlas cell it draws.
+
+{/* truncate */}
+
+
+## What landed
+
+- **The component.** `texture` and `pixels_per_unit` size the quad from
+  the image; `half_extents` overrides the size in world units.
+- **Flipbooks.** `columns` and `rows` cut a sheet into a grid, and `frame`
+  picks a cell, left to right then top to bottom — so an animation clip
+  keys `frame` like any other property.
+- **Atlas cells.** `region_origin` and `region_size`, in texture pixels,
+  draw one rectangle of a larger image and size the quad from it.
+- **The rest.** `flip_x`, `flip_y`, a `color` tint, and a `material` for a
+  sprite that wants a shader of its own.
+
+```toml
+[[nodes]]
+name = "Hero"
+
+[nodes.sprite]
+texture = "art/hero.png"
+pixels_per_unit = 32
+columns = 8
+rows = 1
+frame = 0
+```
+
+Sprites draw in z order with the other 2D shapes, and a 2D light map lights
+them without a material. The
+[component reference](/docs/reference/components/sprite) lists every key.

@@ -1,0 +1,45 @@
+---
+description: "Balaur devlog: the first commit — a node tree over an ECS, scenes as TOML, scripts that hot reload with their state kept, every subsystem a plugin, an editor that is itself a Balaur project, and export to a bytecode pack."
+slug: the-initial-engine
+title: The initial engine
+authors: [dragos]
+image: /img/manual/hello_open.png
+keywords: [rust game engine, open source game engine, hot reload, ecs, balaur]
+---
+
+The first commit: eight crates, one example, and the two things the engine
+is built around — hot reload that keeps state, and determinism.
+
+{/* truncate */}
+
+## What landed
+
+- **Nodes over an ECS.** A game is a tree of named nodes with scripts
+  attached; under it every node is an entity, and every subsystem —
+  physics, rendering, audio, input, UI — is a plugin over the same data.
+- **Scenes as TOML.** A scene file declares nodes, and plugins extend its
+  vocabulary: `body` and `collider` come from the physics crate, not the
+  core.
+- **Hot reload.** Saving a script swaps its code into the running game in
+  milliseconds, with all live state kept. Always on in dev mode, provided
+  by the core.
+- **The editor is a project.** `balaur edit` runs an editor written in the
+  engine's own scripts, so editing an editor script hot reloads the editor.
+- **Export.** `balaur export` precompiles scripts into a `.bpak`, and
+  `balaur play` runs from bytecode with no compiler present.
+- **Headless by default.** Without the `window` feature everything runs
+  without a display: tests, servers, CI.
+
+```toml
+[[nodes]]
+name = "Ball"
+position = [0.0, 6.0, 0.0]
+script = "scripts/ball"
+body = "dynamic"                                # from balaur_physics
+collider = { shape = "ball", radius = 0.5 }     # from balaur_physics
+```
+
+Scripts were Luau on day one; they are Rune now. Cross-platform
+determinism was written down as non-negotiable before any of it was
+measured, and every subsystem since has been vetted against it.
+[Principles](/docs/principles) is the current form of that list.

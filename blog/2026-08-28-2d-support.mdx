@@ -1,0 +1,52 @@
+---
+description: "Balaur devlog: a rapier2d world beside the 3D one, 2D shapes drawn in z order, a 2D grid, camera and gizmo in the editor, and examples/angrynerds."
+slug: 2d-support
+title: 2D support
+authors: [dragos]
+image: /img/manual/editor_overview.png
+keywords: [2d game engine, rapier2d, 2d physics, 2d editor gizmo, balaur]
+---
+
+import Clip from '@site/src/components/Clip';
+
+A second physics world on rapier2d, 2D drawing in z order, a 2D gizmo in
+the editor, and a slingshot game to prove it.
+
+{/* truncate */}
+
+
+## What landed
+
+- **A rapier2d world.** `body2d` and `collider2d` beside `body3d` and
+  `collider3d`, over the same scene tree. Both worlds step on the fixed
+  60 Hz tick with Rapier's `enhanced-determinism` on, and the 2D world has
+  the same bit-for-bit test the 3D one had.
+- **2D drawing.** Shapes draw in z order, so the glasses sit on the pig
+  rather than under it.
+- **The editor knows.** A scene with 2D components gets a 2D grid, a
+  pan-and-zoom camera and a 2D gizmo: drag an axis, a plane, or the ring.
+- **examples/angrynerds.** A slingshot, towers, and pigs with glasses, in
+  one scene and one script.
+
+```toml
+[[nodes]]
+name = "Bird"
+position = [-8, 2.2, 0]
+body2d = "kinematic"
+
+[nodes.shape2d]
+kind = "circle"
+radius = 0.4
+```
+
+<Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
+
+## Why a second world
+
+A 2D game on a 3D physics engine is a 3D game with two axes locked, and
+every tunnelling bug, joint limit and raycast filter knows it. rapier2d is
+Rapier's own 2D solver, shapes and determinism. Nothing about the 3D path
+changed.
+
+`balaur edit examples/angrynerds`, or [play it in the browser](/examples/?play=angrynerds).
+Manual: [Physics](/docs/manual/physics), [The editor](/docs/manual/editor).

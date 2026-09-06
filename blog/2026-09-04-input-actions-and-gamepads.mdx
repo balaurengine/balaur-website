@@ -1,0 +1,45 @@
+---
+description: "Balaur devlog: input actions declared in project.toml and rebound at run time, gamepads with named buttons and axes, rumble, gyro and touchpad on PlayStation pads, and an overlay that draws what the game is fed."
+slug: input-actions-and-gamepads
+title: Input actions and gamepads
+authors: [dragos]
+image: /img/manual/input_overlay.png
+keywords: [input actions, gamepad support, rumble, gyro, input rebinding]
+---
+
+import Clip from '@site/src/components/Clip';
+
+A game asks for `"jump"`, not for `Space`. Actions are declared in
+`project.toml`, bound to keys, buttons and sticks, and read as one snapshot
+per frame.
+
+{/* truncate */}
+
+<Clip name="input_overlay" alt="The editor's input overlay while examples/hello plays: key chips, the actions they drive, the pointer and a click ripple" />
+
+## What landed
+
+- **Actions.** `action_value` is −1 to 1 — a key answers 0 or 1, a stick or
+  a key pair the whole range — and `action_pressed`, `action_just_pressed`
+  and `action_just_released` are the edges. `input::bind` rebinds an
+  action and saves it to the user data directory; `reset_bindings` goes
+  back to what the project declared.
+- **Gamepads.** `input::gamepads()` lists the pads; every query takes a pad
+  id and a named constant, `PAD_SOUTH`, `AXIS_LEFT_STICK_X`.
+- **Rumble, gyro, touchpad.** `gamepad_rumble(pad, #{ strong, weak,
+  duration })` runs the two motors. A PlayStation pad also reports
+  `gamepad_gyro`, `gamepad_acceleration` and `gamepad_touches`, decoded from
+  its own HID reports over USB or Bluetooth.
+- **The overlay.** A chip per key and button held, the actions they drive,
+  and a ring from every press. It reads the same snapshot the game reads,
+  so during a replay the cursor follows the recording.
+
+```toml
+[input.actions]
+jump = ["Space", "gamepad:South"]
+move_x = ["keys:A,D", "axis:LeftStickX"]
+fire = ["mouse:left"]
+```
+
+All of it lands in the recorded snapshot, so a motion-controlled session
+replays exactly. [Input](/docs/manual/input) has the full surface.

@@ -1,0 +1,33 @@
+---
+description: "Balaur devlog: a Profiler dock that draws the last frame as a bar per stage against the 16.7 ms a 60 Hz frame has, from engine::timings(), and --timings for a headless run."
+slug: profiler
+title: Profiler dock
+authors: [dragos]
+image: /img/manual/editor_profiler.png
+keywords: [game profiler, frame timings, performance budget, editor dock]
+---
+
+`engine::timings()` is the last frame as a span per stage. The Profiler
+dock draws it against the 16.7 ms a 60 Hz frame has.
+
+{/* truncate */}
+
+
+## What landed
+
+- **Stages.** `first`, `pre_update`, `update`, `fixed_update`,
+  `scene_sync`, `last`, and physics as `physics3d/step` and
+  `physics2d/step`: what each cost this frame, in order.
+- **The dock.** Open it while playing and every frame redraws the bars. A
+  stage past its share of the budget stands out; a budget is what the
+  number is set against.
+- **Headless.** `balaur run my-game --timings` prints the same stages when
+  the run ends: mean, worst, and share of a 60 Hz frame. What CI can watch.
+- **Scripts.** `engine::timings()` hands a tool the same table, so a game
+  can draw its own.
+
+```bash
+balaur run examples/angrynerds --headless --fixed-tick --frames 600 --timings
+```
+
+[The editor](/docs/manual/editor#docks-palette-themes) lists the docks.

@@ -1,13 +1,14 @@
 ---
-description: "Balaur devlog: ten 3D primitives, bezier paths extruded and swept, booleans, a cloner, and text as geometry — every one a mesh built without a GPU."
+description: "Balaur devlog: ten 3D primitives and six 2D ones, bezier paths extruded, revolved and swept, booleans in both dimensions, a cloner, text as geometry, and vertex colours and morph targets from glTF."
 slug: every-shape-is-a-mesh
-title: Every shape is a mesh
+title: New primitive shapes
 authors: [dragos]
 image: /img/manual/objects_overview.png
+keywords: [3d primitives, procedural mesh, csg booleans, bezier paths, cloner, text mesh]
 ---
 
-Every shape is now a mesh built without a GPU. The triangles a collider is
-fitted to are the triangles on screen.
+Ten 3D primitives and six 2D ones, paths given thickness, booleans in both
+dimensions, a cloner, and a word as a mesh.
 
 {/* truncate */}
 
@@ -31,6 +32,13 @@ fitted to are the triangles on screen.
 
   ![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
 
+- **In 2D.** `shape2d` gained `ellipse`, `star` and `ngon`, and `boolean2d`
+  joins, cuts and intersects filled outlines the same way. The 2D booleans
+  run on `i_overlay`, which works in fixed-point integers and so lands on
+  the same vertices on every platform.
+
+  ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
+
 - **Cloner.** Linear, radial, grid. `seed` and `random` scatter the copies. A
   thousand copies are one draw call, custom materials included.
 
@@ -52,6 +60,9 @@ fitted to are the triangles on screen.
 - Tests measure meshes: closed, outward-facing, the exact volume a boolean should have.
 - Deterministic by construction: `libm` for the curves, and a BSP that is dot
   products and lerps with no transcendental to pin.
+- The meshers are the engine's own, not a renderer's and not parry's: core
+  builds the triangles, and physics fits its colliders to them. Parry stays
+  where it belongs, under the colliders and the `geometry3d` toolkit.
 
 ```toml
 [[assets]]
@@ -71,7 +82,8 @@ mesh = "#ring"
 
 ## Try it
 
-- `examples/objects`: five rows, one per category, and the camera walks them.
+- `examples/objects`: five rows, one per category, then the 2D layer, and
+  the camera walks them.
   It runs [in the browser](/examples/?play=objects) too.
 - The [manual](/docs/manual/scenes#objects) and the generated
   [asset](/docs/reference/assets) and [component](/docs/reference/components)

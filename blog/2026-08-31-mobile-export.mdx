@@ -1,0 +1,44 @@
+---
+description: "Balaur devlog: balaur export targets iOS and Android beside the desktop fuse, builds a signed macOS .app, fetches a missing runtime template from the release, and balaur update replaces an install from the checksums."
+slug: mobile-export
+title: Mobile export and signing
+authors: [dragos]
+image: /img/manual/export_sheet.png
+keywords: [ios export, android export, macos code signing, game export, runtime template]
+---
+
+`balaur export` fused a pack onto a runtime for Linux, macOS or Windows.
+Now the same command writes an iOS `.app`, an Android APK layout, and a
+signed macOS bundle.
+
+{/* truncate */}
+
+
+## What landed
+
+- **Mobile targets.** `--target ios` writes a `.app` with `game.bpak`
+  beside the executable; `--target android` an APK layout with it under
+  `assets/`. The engine reads the pack from the bundle instead of from its
+  own file.
+- **A signed Mac.** A flat fused binary cannot be validly signed —
+  appending bytes is exactly what a signature cannot cover — so `--app`
+  builds a `.app` with the pack as a sealed resource and signs it, ad hoc
+  or with `--sign "Developer ID Application: …"`.
+- **Templates on demand.** Exporting for a platform you are not on offers to
+  download that platform's runtime from the engine's own release tag,
+  checked against `SHA256SUMS`, into a per-user cache. `--no-download`
+  for CI.
+- **`balaur update`.** Replaces the whole install — binary, bundled editor,
+  runtime template — with the latest published build, verified against the
+  release's checksums. `--check` only reports.
+
+```bash
+balaur export my-game --target ios                     # -> my-game.app
+balaur export my-game --target android                 # -> my-game-android/
+balaur export my-game --target macos-universal --app   # -> a signed .app
+```
+
+A pack is bytecode, scenes and assets in sorted key order, so the same
+sources give the same bytes on any machine, and a packed run is pure
+interpretation, which is what lets it land on platforms that forbid JIT.
+[Shipping a game](/docs/manual/shipping) has every flag.

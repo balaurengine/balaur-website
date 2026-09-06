@@ -1,0 +1,37 @@
+---
+description: "Balaur devlog: the editor runs in a browser tab on the same WebAssembly module the examples play on, keeps the project in IndexedDB across a refresh, opens a folder from your machine, and exports a pack in the tab."
+slug: editor-in-the-browser
+title: The editor in the browser
+authors: [dragos]
+image: /img/manual/editor_web.png
+keywords: [browser game editor, webassembly game engine, webgpu, indexeddb]
+---
+
+The editor is a Balaur project, and the engine compiles to WebAssembly. So
+the editor on the web is the same module the [examples](/examples) play
+on, with a canvas under it and somewhere to keep the files.
+
+{/* truncate */}
+
+
+## What landed
+
+- **Play.** The examples run in the tab — WebGPU, nothing to install.
+- **The editor.** [balaurengine.org/editor](/editor) opens on one of them,
+  or on a folder from your machine, and gives the project back as a zip.
+- **Projects that survive a refresh.** Kept in IndexedDB, textures and
+  sounds included, rather than filling a `localStorage` quota.
+- **Export in a tab.** A `.bpak`, and a web bundle zipped beside the module
+  the page is already running. Native targets still need a linker.
+- **A lazy shell.** The browser editor spent 7.2 ms of every frame
+  rebuilding a shell nobody had touched. `ui::set_lazy` runs the pass only
+  when input, a log line, a reload or an animation asks; an idle frame is
+  4.8 ms now.
+
+## What is not in the tab
+
+An account and a project kept on Gamend rather than in one browser, native
+export — a linker and a signing toolchain — and the debugger.
+[PLAN-web-editor.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-web-editor.md)
+has the order. [Build size](/docs/manual/build-size) is what the module
+weighs and how to make a smaller one.

@@ -1,0 +1,52 @@
+---
+description: "Balaur devlog: the Godot benchmark suites' physics and scene-tree cases run body for body in Balaur, the numbers beside Godot's, and the node performance work they prompted."
+slug: benchmarks
+title: Benchmarks
+authors: [dragos]
+image: /img/benchmarks/3d_pyramid.png
+keywords: [game engine benchmarks, godot comparison, rapier performance, scene tree performance, physics benchmark]
+---
+
+`examples/benchmark` is the Godot benchmark suites' physics and scene-tree
+cases, body for body, run headless, in the editor or on the web. On the
+twelve physics cases Balaur is the quickest engine: about 3× Godot Jolt,
+11–18× Godot Physics.
+
+{/* truncate */}
+
+![The 3D physics cases, one bar per engine](/img/benchmarks/chart_3d.svg)
+
+![The 2D physics cases, one bar per engine](/img/benchmarks/chart_2d.svg)
+
+## The suite
+
+- **Physics.** Pyramid, mixed pile, joint grid, smash, query storm, drop —
+  in 2D and 3D, the same scenes the
+  [godot-rapier suite](https://github.com/Ughuuu/benchmarks-repo)
+  publishes. 300 timed steps at 60 Hz after a settle; the median tick is
+  the number.
+- **Nodes.** `add_children`, `delete_children` in order, reverse and
+  random, `get_node`, against Godot's own published run.
+- **`scripts/bench_compare.py`** writes the tables and charts from a run
+  beside Godot's results, so the [benchmarks page](/docs/benchmarks) is a
+  script's output, not a claim.
+
+## What it changed
+
+- `raycast` visited every collider along the ray; it stops at the nearest
+  hit now.
+- Creating a body propagated the whole tree; it composes the node's pose
+  from its ancestors instead.
+- A frame's queued frees run as one pass per parent, so freeing a whole
+  container is linear.
+- Children are indexed by name, so a path lookup is one hash per segment,
+  and freeing a node with no components asks no plugin anything.
+
+Adding children is quicker than Godot; deleting and looking up are not
+yet, and the table says so. Rapier is under both Balaur and Godot Rapier,
+so the gap between those two columns is the engine around the physics.
+
+```bash
+balaur run examples/benchmark --headless --fixed-tick -- --case=3d/pyramid
+python3 scripts/bench_compare.py --shots --godot-results <benchmarks-repo>/results
+```

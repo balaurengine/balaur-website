@@ -1,0 +1,53 @@
+---
+description: "Balaur devlog: shaders in WESL linked to WGSL at run time, material assets whose params are read off the shader, relinking on save, and channels that draw UVs, normals or depth instead of the picture."
+slug: shaders-and-materials
+title: Shaders and materials
+authors: [dragos]
+image: /img/manual/shader_preview.png
+keywords: [wesl, wgsl shaders, material assets, wgpu, shader hot reload]
+---
+
+import Clip from '@site/src/components/Clip';
+
+A shader language with imports, and materials that relink the moment the
+shader is saved.
+
+{/* truncate */}
+
+<Clip name="shader_preview" alt="A material in the inspector, its shader open in the code editor, the UV channel drawn instead of the picture, and a save that relinks the sprite in place" />
+
+## What landed
+
+- **Shaders.** WESL — WGSL plus imports, `@if` variants and dead-code
+  elimination — linked to WGSL at run time. A 2D shader imports
+  `package::sprite`; a 3D one imports `package::mesh` and calls `shade(in)`
+  for the scene's lights.
+- **Materials.** A `material` asset names a shader and its `[params]`, read
+  off the linked shader rather than declared twice. `sprite`, `shape2d`,
+  `shape3d` and `mesh` take one; a node without one draws with the
+  built-in material.
+- **Relink on save.** Save the shader and every material naming it relinks
+  and every node drawing with it is rebuilt. One that will not link is
+  reported with the line the author wrote, and the node keeps the built-in
+  material meanwhile.
+- **Channels.** `render::set_channel("uv")` draws the scene's UVs instead
+  of its colour; `normals`, `depth` and `albedo` are the others.
+
+```toml
+# materials/glow.toml
+type = "material"
+shader = "shaders/glow.wesl"
+
+[params]
+speed = 2.0
+rings = 5.0
+tint = "#ffb347"
+```
+
+Rendering observes the simulation and feeds nothing back, so a shader is
+outside the digest and `time()` is render time, not the tick. A function
+marked `@const` still runs on the CPU in headless tests.
+
+`examples/shaders` is a glow material on a sprite beside a plain one, and
+it [runs in the browser](/examples/?play=shaders).
+[Shaders and materials](/docs/manual/shaders) in the manual.

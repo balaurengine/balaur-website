@@ -1,0 +1,39 @@
+---
+description: "Balaur devlog: one TOML file per language under strings/, plural forms picked by the locale's rules, a fallback locale, and a missing key that shows itself."
+slug: localization
+title: Localization
+authors: [dragos]
+image: /img/manual/locale_settings.png
+keywords: [game localization, plural forms, translation files, locale fallback]
+---
+
+`strings/<locale>.toml`, one file per language, and `strings::tr` to read
+one with the right plural form.
+
+{/* truncate */}
+
+
+## What landed
+
+- **Files.** A key maps to a string, or to the plural forms of one.
+  `{name}` in a string is replaced by the argument called `name`, and an
+  `n` argument also picks the plural form the locale's language calls for.
+- **Fallback.** A key missing from the current locale is looked for in the
+  project's fallback locale, one step, not a chain. Missing from both, the
+  key itself comes back — visible in the game rather than blank, because a
+  missing string is a bug to notice and an empty label is a bug to miss.
+- **Switching.** `strings::set_locale`, `strings::locales` for what the
+  project ships, and `strings::system_locale` for what the OS says.
+
+```toml
+# strings/en.toml
+"menu.play" = "Play"
+"menu.items" = { one = "{n} item", other = "{n} items" }
+```
+
+```rune
+let label = strings::tr("menu.items", #{ n: 3 });   // "3 items"
+```
+
+The `strings` module is in the
+[script modules reference](/docs/reference/modules).

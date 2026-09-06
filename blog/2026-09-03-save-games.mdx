@@ -1,0 +1,42 @@
+---
+description: "Balaur devlog: save games written atomically per user, stamped with a version, and migrated one version step at a time by a script."
+slug: save-games
+title: Save games
+authors: [dragos]
+image: /img/manual/save_settings.png
+keywords: [save games, save file migration, versioned saves, user data directory]
+---
+
+`save::write(slot, data)` and `save::read(slot)`: a table per user, written
+so a crash cannot truncate it, and migrated when the game moves on.
+
+{/* truncate */}
+
+
+## What landed
+
+- **Slots.** A slot is a name — letters, digits, `-` and `_` — checked
+  rather than trusted. `save::slots()` lists them and `save::remove(slot)`
+  deletes one. Files live under the platform's user-data directory, so game
+  code never hardcodes an OS path.
+- **Atomic.** A file is written beside its target and renamed over it, so a
+  crash mid-save leaves the previous file whole.
+- **Versioned.** Every file carries the build's `[save] version`. Reading an
+  older one calls the migration script's `migrate_save(version, data)` once
+  per version step — 1 to 2, then 2 to 3 — so a migration only knows how the
+  shape changed between two adjacent versions. A file from a newer build is
+  refused rather than misread.
+
+```toml
+# project.toml
+[save]
+version = 3
+migrate = "scripts/saves.rn"
+```
+
+```rune
+save::write("slot1", #{ level: 4, coins: 120 });
+let data = save::read("slot1");
+```
+
+[Shipping a game](/docs/manual/shipping#save-games) has the details.
