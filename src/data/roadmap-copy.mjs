@@ -81,8 +81,6 @@ group are ordered by it.
       `<>A <code>light3d</code> component with shadows; an <code>environment</code> with sky, image-based lighting, fog, exposure, tonemap and grading; a PBR material with texture maps that needs no shader written and is imported from glTF; glass, mirrors and reflection probes; vignette, grain and the other finishing passes as post-process materials. The only 3D light today is hard-coded.</>`,
     'Lit normal-mapped sprites':
       `<>2D lights and shadows are built. A normal map on <code>sprite</code> needs the light map to carry a direction as well as a colour. Occluding tiles moved to the tile-map plan.</>`,
-    'Text in the world':
-      `<>A name over a character and a score on a sign: <code>text2d</code> and <code>text3d</code> shaped by the same engine the widgets use, outline and shadow, bitmap fonts, and an immediate <code>draw_text_2d</code> for tools.</>`,
     'Particles in 3D':
       `<>A <code>particles3d</code> emitter, and in both dimensions: emission from a sphere, box, cone, ring or mesh, randomness, animated sheets, attractors, colliders, trails and sub-emitters, with a compute stepper where the GPU has one.</>`,
     'Culling and level of detail':
@@ -141,6 +139,8 @@ group are ordered by it.
       `<>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>`,
     'Sealed packs and stripped binaries':
       `'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.'`,
+    'Export size':
+      `'A shipped game weighs what the source tree weighs: every file with an asset extension, named by a scene or not, as the bytes the author saved. Planned: a size report from the export, files nothing names dropped, PNGs recompressed or written as lossless WebP, fonts subset to the strings the game shows, WAV written as FLAC. Atlases and GPU-compressed textures are not size levers and stay with texture import settings.'`,
     'Console export':
       `'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.'`,
     'XR':
