@@ -372,9 +372,9 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Shipping",
-        title: 'Suspend and resume',
-        text: <>A phone call, a locked screen, an alt-tab, a console's suspend. Hooks a script answers, audio released and taken back, a save on the way out, and a tick that pauses rather than catching up on return. Nothing in the tree answers a <code>Suspended</code> event today.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mobile-export.md',
+        title: 'A web module that loads in parts',
+        text: <>The engine module is most of a web game's download, and nothing inside it loads lazily. Split it, so a game fetches the physics, audio or networking it uses and no more, and let a pack arrive in pieces beside it.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
       },
       {
         group: "Shipping",
@@ -450,12 +450,36 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.8',
     state: 'planned',
-    title: "Consoles and headsets",
+    title: "The machine a game runs on",
     items: [
       {
         group: "Gameplay and audio",
+        title: 'Touch controls a phone needs',
+        text: <>Touches are already recorded and replayed; nothing draws a control over them. A <code>touch_button</code> and a <code>touch_stick</code> widget kind, pinch, swipe and long-press recognisers, and a keyboard height a layout can read, so a text field is never hidden under the keyboard.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
+      },
+      {
+        group: "Gameplay and audio",
         title: 'A controller-only shell',
-        text: <>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand.</>,
+        text: <>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand. The screens asking for it are a console, a tvOS box and an Android TV.</>,
+      },
+      {
+        group: "Shipping",
+        title: 'What a phone lends a game',
+        text: <>The share sheet, the camera and the photo library, geolocation, biometrics, the clipboard, keep-awake and vibration, behind one module with a desktop answer or an honest unsupported. These are the gaps a phone game hits first, and the plan for 2D games lists every one of them.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-2d-games.md',
+      },
+      {
+        group: "Shipping",
+        title: 'A game on a small machine',
+        text: <>An ARM Linux build is already an export target, and nothing has ever run one. A Raspberry Pi wants the GL backend rather than Vulkan, a build that needs no desktop compositor, and a frame budget somebody has actually measured on the board.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md',
+      },
+      {
+        group: "Shipping",
+        title: 'Suspend and resume',
+        text: <>A phone call, a locked screen, an alt-tab, a console's suspend. Hooks a script answers, audio released and taken back, a save on the way out, and a tick that pauses rather than catching up on return. Nothing in the tree answers a <code>Suspended</code> event today.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mobile-export.md',
       },
       {
         group: "Shipping",
@@ -465,7 +489,115 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Shipping",
         title: 'XR',
-        text: 'OpenXR on desktop and standalone headsets, WebXR in the browser: stereo views, tracked poses, controller and hand input.',
+        text: <>OpenXR on desktop and standalone headsets, WebXR in a browser, and a phone's own AR through ARKit and ARCore, all behind one seam: stereo views, tracked poses, controller and hand input, and a camera the scene composites onto.</>,
+      },
+    ],
+  },
+  {
+    id: '0.9',
+    state: 'planned',
+    title: "A world, not a scene",
+    items: [
+      {
+        group: "Scripts and assets",
+        title: 'Procedural noise',
+        text: <>Value, perlin, simplex and worley, with fbm over them, seeded the way <code>rng</code> is and computed on the same libm every platform shares. A generated world comes out identical on every machine and inside a replay. The cloner scatters with a private one today, and no script can reach a noise function at all.</>,
+      },
+      {
+        group: "Scripts and assets",
+        title: 'A world bigger than a float',
+        text: <>Origin rebasing on the fixed step, so a world runs past the precision a 32-bit float has left, with the scene streamed in chunks around the camera. A 64-bit world is not planned. Rebasing lands in the digest, which makes it a decision the tick takes rather than the renderer.</>,
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Sound that fills a room',
+        text: <>A bus is a gain tree today. This makes it a graph: reverb, EQ, a compressor and a limiter, music ducked under speech, HRTF so a sound sits at a head rather than between two speakers, and long music streamed instead of decoded whole.</>,
+      },
+      {
+        group: "Rendering",
+        title: 'Terrain sculpting and foliage',
+        text: <>The <code>heightfield</code> asset and its mesher exist; no tool touches either. Brushes that raise and flatten ground, splat maps for the textures between, and grass and trees scattered by painting rather than placed one at a time.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voxels.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Occlusion culling',
+        text: <>What stands behind a wall is drawn today. A software depth rasteriser skips it, over the frustum and distance culling 0.3 brings. It was held back until a scene asked for it, and a scene big enough to ask is what this milestone is about.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Global illumination',
+        text: <>Light that bounces, computed while the game runs: a screen-space pass, or a field of probes over a signed distance field. Nothing in the renderer's fork does it, and it is the gap named most often against Godot's SDFGI and Unreal's Lumen. Baked lightmaps stay out.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
+      },
+    ],
+  },
+  {
+    id: '1.0',
+    state: 'planned',
+    title: "The editor makes the content",
+    items: [
+      {
+        group: "Editor",
+        title: 'More than one window',
+        text: <>A second window from the operating system: a dock torn off the editor onto another monitor, or a game drawing on a second display. kiss3d owns the single window there is, which is the same obstacle standing in XR's way, so the two are one piece of work.</>,
+      },
+      {
+        group: "Editor",
+        title: 'A shader graph',
+        text: <>The same canvas the Rune graph brings, emitting WESL instead of Rune. A material's <code>[params]</code> are already read off the linked shader, so a graph writes a file the pipeline compiles the ordinary way. Every large engine has one, and this one costs a second emitter rather than a second renderer.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md',
+      },
+      {
+        group: "Editor",
+        title: 'Modelling in the viewport',
+        text: <>Every shape the engine draws is already a <code>mesh</code> asset built without a GPU, so a modelling tool edits data that exists rather than a new format. Push and pull a face, bevel an edge, subdivide, unwrap with <code>xatlas</code>. Unreal calls this Modeling Mode and Unity ships ProBuilder; nothing here moves a vertex yet.</>,
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Behaviour trees',
+        text: <>A tree asset ticked on the fixed step and inside the digest, its leaves the navigation agents and the binding actions a scene already has, drawn on the same canvas the Rune graph brings. What an enemy does has been a script's job; this is the other way of saying it.</>,
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Dialogue',
+        text: <>A conversation is content, and nothing in the tree holds one. A <code>dialogue</code> plugin over an ink-shaped script: lines addressed by key so the translation table reaches them, the conversation stepped on the fixed tick and inside the digest, a choice raised as an event, and a view that edits the branches.</>,
+      },
+      {
+        group: "Gameplay and audio",
+        title: 'Translations as a pipeline',
+        text: <>Strings per locale, interpolation, plurals and the system locale are built. The workflow around them is not: importing from a spreadsheet or a gettext <code>.po</code>, swapping an asset per locale, a dock that names every missing key, and pseudolocalisation, which finds the strings nobody wrapped before a translator does.</>,
+      },
+    ],
+  },
+  {
+    id: '1.1',
+    state: 'planned',
+    title: "Other people's parts",
+    items: [
+      {
+        group: "Scripts and assets",
+        title: 'More importers',
+        text: <>Spine and DragonBones, whose 2D skeletal animation is exactly what <code>bone2d</code> and the skinned polygons already draw; layered PSD files; and <code>.blend</code> read by calling Blender, the way Godot does. Aseprite, Tiled, LDtk and glTF are built already.</>,
+      },
+      {
+        group: "Scripts and assets",
+        title: 'A package manager',
+        text: <>Dependencies named in the project file, added with one command, and pinned in a lockfile that carries a hash per entry. A package is files, plus a native or WebAssembly extension when it needs one, so a plugin, a script library and an art pack all install the same way. A plugin template and a build matrix come with it.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-plugins.md',
+      },
+      {
+        group: "Scripts and assets",
+        title: 'Extensions in WebAssembly',
+        text: <>A third tier beside the Rust and C ones. A <code>.wasm</code> module runs over <code>wasmtime</code> on a desktop and over the browser's own engine on the web, so an extension is sandboxed and a web build can carry one at all. <code>dlopen</code> reaches neither a browser nor a console.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-plugins.md',
+      },
+      {
+        group: "Tools and services",
+        title: 'A library others publish to',
+        text: <>The library dock reads one list, the one shipped with the editor. This is the catalogue anyone can publish to, over the same manifest, with a hash per entry and a name saying who wrote it. An engine's asset store, in files rather than in a storefront.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-collaboration.md',
       },
     ],
   },

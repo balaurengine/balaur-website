@@ -64,6 +64,46 @@ hide_table_of_contents: true
       `<>The library dock ships materials, skies and models; this adds scripts. Fifteen short files with <code>exports()</code>, dropped onto a node and tuned in the inspector without opening one: movement in 2D and 3D, orbit, first-person, third-person and click-to-move cameras, follow, patrol, a spawner, a timer, health, a pickup, parallax. A copy lands in the project, so changing one is editing your own file.</>`,
     'FBX import':
       `<>The meshes, rigs and clips that never ship as glTF: <code>balaur import</code> over the <code>ufbx</code> crate. Mixamo is the case that forces it, since its downloads are FBX and a rig from there is one the retargeter already handles.</>`,
+    'Modelling in the viewport':
+      `<>Every shape the engine draws is already a <code>mesh</code> asset built without a GPU, so a modelling tool edits data that exists rather than a new format. Push and pull a face, bevel an edge, subdivide, unwrap with <code>xatlas</code>. Unreal calls this Modeling Mode and Unity ships ProBuilder; nothing here moves a vertex yet.</>`,
+    'A shader graph':
+      `<>The same canvas the Rune graph brings, emitting WESL instead of Rune. A material's <code>[params]</code> are already read off the linked shader, so a graph writes a file the pipeline compiles the ordinary way. Every large engine has one, and this one costs a second emitter rather than a second renderer.</>`,
+    'More than one window':
+      `<>A second window from the operating system: a dock torn off the editor onto another monitor, or a game drawing on a second display. kiss3d owns the single window there is, which is the same obstacle standing in XR's way, so the two are one piece of work.</>`,
+    'Extensions in WebAssembly':
+      `<>A third tier beside the Rust and C ones. A <code>.wasm</code> module runs over <code>wasmtime</code> on a desktop and over the browser's own engine on the web, so an extension is sandboxed and a web build can carry one at all. <code>dlopen</code> reaches neither a browser nor a console.</>`,
+    'A world bigger than a float':
+      `<>Origin rebasing on the fixed step, so a world runs past the precision a 32-bit float has left, with the scene streamed in chunks around the camera. A 64-bit world is not planned. Rebasing lands in the digest, which makes it a decision the tick takes rather than the renderer.</>`,
+    'Translations as a pipeline':
+      `<>Strings per locale, interpolation, plurals and the system locale are built. The workflow around them is not: importing from a spreadsheet or a gettext <code>.po</code>, swapping an asset per locale, a dock that names every missing key, and pseudolocalisation, which finds the strings nobody wrapped before a translator does.</>`,
+    'Sound that fills a room':
+      `<>A bus is a gain tree today. This makes it a graph: reverb, EQ, a compressor and a limiter, music ducked under speech, HRTF so a sound sits at a head rather than between two speakers, and long music streamed instead of decoded whole.</>`,
+    'Touch controls a phone needs':
+      `<>Touches are already recorded and replayed; nothing draws a control over them. A <code>touch_button</code> and a <code>touch_stick</code> widget kind, pinch, swipe and long-press recognisers, and a keyboard height a layout can read, so a text field is never hidden under the keyboard.</>`,
+    'Global illumination':
+      `<>Light that bounces, computed while the game runs: a screen-space pass, or a field of probes over a signed distance field. Nothing in the renderer's fork does it, and it is the gap named most often against Godot's SDFGI and Unreal's Lumen. Baked lightmaps stay out.</>`,
+    'Occlusion culling':
+      `<>What stands behind a wall is drawn today. A software depth rasteriser skips it, over the frustum and distance culling 0.3 brings. It was held back until a scene asked for it, and a scene big enough to ask is what this milestone is about.</>`,
+    'Terrain sculpting and foliage':
+      `<>The <code>heightfield</code> asset and its mesher exist; no tool touches either. Brushes that raise and flatten ground, splat maps for the textures between, and grass and trees scattered by painting rather than placed one at a time.</>`,
+    'A library others publish to':
+      `<>The library dock reads one list, the one shipped with the editor. This is the catalogue anyone can publish to, over the same manifest, with a hash per entry and a name saying who wrote it. An engine's asset store, in files rather than in a storefront.</>`,
+    'A game on a small machine':
+      `<>An ARM Linux build is already an export target, and nothing has ever run one. A Raspberry Pi wants the GL backend rather than Vulkan, a build that needs no desktop compositor, and a frame budget somebody has actually measured on the board.</>`,
+    'A web module that loads in parts':
+      `<>The engine module is most of a web game's download, and nothing inside it loads lazily. Split it, so a game fetches the physics, audio or networking it uses and no more, and let a pack arrive in pieces beside it.</>`,
+    'Dialogue':
+      `<>A conversation is content, and nothing in the tree holds one. A <code>dialogue</code> plugin over an ink-shaped script: lines addressed by key so the translation table reaches them, the conversation stepped on the fixed tick and inside the digest, a choice raised as an event, and a view that edits the branches.</>`,
+    'Behaviour trees':
+      `<>A tree asset ticked on the fixed step and inside the digest, its leaves the navigation agents and the binding actions a scene already has, drawn on the same canvas the Rune graph brings. What an enemy does has been a script's job; this is the other way of saying it.</>`,
+    'Procedural noise':
+      `<>Value, perlin, simplex and worley, with fbm over them, seeded the way <code>rng</code> is and computed on the same libm every platform shares. A generated world comes out identical on every machine and inside a replay. The cloner scatters with a private one today, and no script can reach a noise function at all.</>`,
+    'A package manager':
+      `<>Dependencies named in the project file, added with one command, and pinned in a lockfile that carries a hash per entry. A package is files, plus a native or WebAssembly extension when it needs one, so a plugin, a script library and an art pack all install the same way. A plugin template and a build matrix come with it.</>`,
+    'More importers':
+      `<>Spine and DragonBones, whose 2D skeletal animation is exactly what <code>bone2d</code> and the skinned polygons already draw; layered PSD files; and <code>.blend</code> read by calling Blender, the way Godot does. Aseprite, Tiled, LDtk and glTF are built already.</>`,
+    'What a phone lends a game':
+      `<>The share sheet, the camera and the photo library, geolocation, biometrics, the clipboard, keep-awake and vibration, behind one module with a desktop answer or an honest unsupported. These are the gaps a phone game hits first, and the plan for 2D games lists every one of them.</>`,
     'Extensions, tier two':
       `'Native extensions that add components and systems, and call back into scripts.'`,
     'Falling sand':
@@ -79,7 +119,7 @@ hide_table_of_contents: true
     'Pause, time scale and smooth frames':
       `<>A pause that holds the game and keeps the menu alive, a <code>process</code> mode per subtree, slow motion and fast forward, motion interpolated between fixed steps so a 144 Hz display sees every frame move, and a tick rate setting.</>`,
     'A controller-only shell':
-      `<>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand.</>`,
+      `<>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand. The screens asking for it are a console, a tvOS box and an Android TV.</>`,
     'Interactivity without a script':
       `<>Built, bar the rigs. Hover, click, key, action, scroll and resize hooks on any drawn node; <code>states</code> naming a look; typed <code>[variables]</code> on the scene; and <code>[[nodes.bindings]]</code> rows the Events view writes, each one a call a script could make and convertible to one. A <code>when</code> is a comparison over the variables, so the editor reads it and diffs it. Orbit, first-person, third-person and click-to-move rigs as presets are what is left.</>`,
     'Navigation':
@@ -159,6 +199,6 @@ hide_table_of_contents: true
     'Console export':
       `'Switch, PlayStation and Xbox. The export and the pack shape travel; each console’s graphics, input and store layer is an NDA SDK that is none of the crates the engine runs on.'`,
     'XR':
-      `'OpenXR on desktop and standalone headsets, WebXR in the browser: stereo views, tracked poses, controller and hand input.'`,
+      `<>OpenXR on desktop and standalone headsets, WebXR in a browser, and a phone's own AR through ARKit and ARCore, all behind one seam: stereo views, tracked poses, controller and hand input, and a camera the scene composites onto.</>`,
   },
 };
