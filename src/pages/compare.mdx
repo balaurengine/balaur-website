@@ -54,14 +54,14 @@ A 2D hello world, release build, macOS on an Apple M1.
 
 | | Balaur | Godot 4.7 | Bevy 0.19 | Fyrox 1.0 |
 | --- | ---: | ---: | ---: | ---: |
-| desktop binary | 43 MB | 79 MB | 51 MB | **29 MB** |
-| web module, brotli | 4.6 MB | 6.6 MB | 4.8 MB | **3.6 MB** |
+| desktop binary | 44 MB | 79 MB | 51 MB | **29 MB** |
+| web module, brotli | 5.4 MB | 6.6 MB | 4.8 MB | **3.6 MB** |
 
 Fyrox is the smallest on both counts. Balaur is about half of Godot on the desktop.
 
 ### How build size was measured
 
-Desktop figures are arm64 and stripped. Godot's is its official release export template, thinned from a universal binary with `lipo`, and a game is that template plus its pack. Balaur's is the windowed runtime template at commit `4355043`. Bevy is `DefaultPlugins` with a camera and one sprite. Fyrox is an `Executor` and one empty plugin.
+Desktop figures are arm64 and stripped. Godot's is its official release export template, thinned from a universal binary with `lipo`, and a game is that template plus its pack. Balaur's is the windowed runtime template from the nightly of 2026-09-07. Bevy is `DefaultPlugins` with a camera and one sprite. Fyrox is an `Executor` and one empty plugin.
 
 Every engine was built at `lto = "fat"` and `codegen-units = 1`, the settings Balaur's workspace already carries. A stock Bevy or Fyrox project uses Cargo's defaults and lands higher, at 77 MB and 37 MB.
 

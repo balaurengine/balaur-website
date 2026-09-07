@@ -27,8 +27,8 @@ on every deploy.
 One module carries the whole engine, and nothing in it loads lazily. In it:
 
 - the renderer: wgpu with both its WebGPU and WebGL2 backends, naga, winit;
-- the UI: egui and its four default fonts, plus a second text shaper for
-  marked-up text;
+- the UI: egui and its four default fonts, its `vello_cpu` rasteriser, and a
+  second text shaper for marked-up text;
 - physics in both dimensions, rapier and parry;
 - the Rune compiler and VM;
 - every audio codec rodio turns on, and every image format kiss3d turns on.
@@ -37,22 +37,31 @@ Code is about three quarters of the module and data the rest.
 
 | section | share |
 | --- | ---: |
-| code | 74% |
-| data | 25% |
+| code | 76% |
+| data | 24% |
 
-Where that code goes, read off a build that keeps its symbols. Around a
-quarter of the symbols name no crate, so each line is a floor, not a total.
+Where that code goes, read off the same build with its symbols kept. Every
+function is charged to the crate it is defined in, and 2% of the code names no
+crate at all.
 
 | | MB |
 | --- | ---: |
-| Rune, the compiler and the VM | 2.2 |
-| egui's CPU rasteriser, through `epaint` | 1.5 |
-| the WESL compiler, which runs at load | 1.4 |
-| text shaping and font parsing, two stacks | 1.3 |
+| the engine's own crates | 2.4 |
+| egui's CPU rasteriser, through `epaint` | 1.9 |
+| Rune, the compiler and the VM | 1.6 |
+| the renderer: wgpu, naga, winit | 1.3 |
+| text shaping and font parsing, two stacks | 1.1 |
+| the WESL compiler, which runs at load | 0.9 |
 | physics in 3D | 0.8 |
-| physics in 2D | 0.5 |
-| image codecs | 0.4 |
-| audio codecs | 0.2 |
+| physics in 2D | 0.7 |
+| image codecs | 0.5 |
+| audio codecs | 0.4 |
+
+Those ten are three quarters of the code. What is left is `core`, `alloc` and
+the serialisation crates: generic code no one feature pays for. The rasteriser
+is the surprise, and the reason is a version bump: `epaint` 0.36 draws through
+`vello_cpu`, so the interface now costs more than the renderer it is drawn
+over.
 
 A game pays for all of it whichever features it uses, because the template is
 prebuilt. Half the data is assets that dependencies bake in.
@@ -64,8 +73,8 @@ prebuilt. Half the data is assets that dependencies bake in.
 | kiss3d's debug-text font, Work Sans | 0.1 MB | 0.05 MB |
 
 The other half is tables: Unicode data for two text shapers, codec tables,
-shader sources. Figures are from the nightly of 2026-09-05, and they move with
-the dependency versions.
+shader sources. Every figure on this page is from the module above and moves
+with the dependency versions.
 
 ## What your own game weighs
 

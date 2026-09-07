@@ -13,7 +13,19 @@ const out = 'src/play-size.json';
 
 const {v} = JSON.parse(readFileSync('src/play-version.json', 'utf8'));
 const have = existsSync(out) ? JSON.parse(readFileSync(out, 'utf8')) : null;
-if (have?.v === v) process.exit(0);
+const engine = existsSync(version) ? readFileSync(version, 'utf8').trim() : null;
+
+// The hash covers the bundle's bytes, not the commit that built it, so a
+// nightly whose changes miss the web build lands here as the same `v` under a
+// new name. The sizes are still right, and only the label the page prints has
+// moved: rewrite that rather than paying for brotli again.
+if (have?.v === v) {
+  if (have.engine !== engine) {
+    writeFileSync(out, JSON.stringify({...have, engine}, null, 2) + '\n');
+    console.log(`play size unchanged; engine is now ${engine}`);
+  }
+  process.exit(0);
+}
 if (!existsSync(wasm)) {
   console.warn(`no ${wasm}; keeping ${out}`);
   process.exit(0);
@@ -22,7 +34,7 @@ if (!existsSync(wasm)) {
 const bytes = readFileSync(wasm);
 const size = {
   v,
-  engine: existsSync(version) ? readFileSync(version, 'utf8').trim() : null,
+  engine,
   raw: bytes.length,
   gzip: gzipSync(bytes, {level: 9}).length,
   brotli: brotliCompressSync(bytes, {
