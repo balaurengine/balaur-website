@@ -45,19 +45,30 @@ function Header() {
           </Link>
           <Link
             className={clsx('button button--outline button--lg', styles.heroGhost)}
-            to="/features">
-            Features
-          </Link>
-          <Link
-            className={clsx('button button--outline button--lg', styles.heroGhost)}
-            to="/docs/principles">
-            Principles
-          </Link>
-          <Link
-            className={clsx('button button--outline button--lg', styles.heroGhost)}
             to="/download">
             Download
           </Link>
+        </div>
+        {/* The rest of the site as chips, so a phone reaches every main page
+            without opening the menu. */}
+        <div className={clsx(styles.buttons, styles.heroLinks)}>
+          {[
+            {to: '/features', label: 'Features'},
+            {to: '/docs/roadmap', label: 'Roadmap'},
+            {to: '/editor', label: 'Editor in the browser'},
+            {to: '/examples', label: 'Examples'},
+            {to: '/benchmark', label: 'Benchmarks'},
+            {to: '/compare', label: 'Compare'},
+            {to: '/docs/principles', label: 'Principles'},
+            {to: '/blog', label: 'Devlog'},
+          ].map(({to, label}) => (
+            <Link
+              key={to}
+              className={clsx('button button--outline', styles.heroGhost, styles.heroLink)}
+              to={to}>
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
