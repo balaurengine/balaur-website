@@ -155,10 +155,11 @@ if !ok {
 ## Tooling
 
 The engine knows its own API, so an editor can ask it what completes at a
-caret. `script::complete`, `script::hover`, `script::definition`,
-`script::symbols`, `script::references`, `script::rename` and `script::format`
-answer that, and two clients read them: the editor's Script persona, and
-`balaur lsp`, which speaks the Language Server Protocol on stdin and stdout.
+caret. `script::complete`, `script::hover`, `script::signature`,
+`script::definition`, `script::symbols`, `script::references`, `script::find`,
+`script::rename`, `script::replace` and `script::format` answer that, and two
+clients read them: the editor's Script persona, and `balaur lsp`, which speaks
+the Language Server Protocol on stdin and stdout.
 
 ![The completion popup: a module path, and the functions and constants under it](/img/manual/script_completion.webp)
 
@@ -175,12 +176,12 @@ What completes depends on what the caret sits after.
 Hover gives a function's signature and its doc line. Signature help names the
 argument being typed. `⌘B` jumps to a definition: a `pub fn` in the project
 opens its file at its line, and engine API opens the Docs dock, since there is
-no file to land in. `⌥⇧F` formats the buffer with Rune's own formatter, and
-`⌘⇧R` renames.
+no file to land in. `⌥⇧F` formats the buffer with Rune's own formatter, `⌘⇧R` renames
+an identifier and `⌘⇧F` replaces text.
 
-A rename is textual. Rune keeps no cross-file index, so it walks the files a
-script's `mod` declarations reach, matches the identifier as a token, and lists
-every match before writing anything.
+Both are textual. Rune keeps no cross-file index, so they walk the files a
+script's `mod` declarations reach and list every match before writing anything.
+A rename matches the identifier as a token; a replace matches the text.
 
 ```bash
 balaur fmt .           # lay every script out
@@ -190,8 +191,8 @@ balaur fmt . --check   # name the files that would change; exits 1 if any do
 ### Another editor
 
 `balaur lsp <project>` is the same answers over LSP: diagnostics, completion,
-hover, signature help, go-to-definition, document symbols, references, rename
-and formatting. The engine repository ships a VS Code extension in
+hover, signature help, go-to-definition, document and workspace symbols,
+references, rename and formatting. The engine repository ships a VS Code extension in
 `editors/code`, and its README carries the Neovim and Zed recipes.
 
 ## Events
