@@ -1,8 +1,8 @@
 # Roadmap
 
-What each milestone carries. A **0.1** row is built and waiting on a tag; every
-other row does not exist yet. `CHANGELOG.md` is the per-feature record of what
-0.1 holds, and `docs/PLAN-*.md` is how each unbuilt item gets there.
+What each milestone carries, and the only record of what a version holds. A
+**0.1** row is built and waiting on a tag; every other row does not exist yet,
+and the `docs/PLAN-*.md` it links to is how it gets there.
 
 Every row carries a version; nothing waits in a pile without one. A milestone
 in parentheses, `(0.2)`, is in-tree work the public page does not carry. A
@@ -34,21 +34,20 @@ item, `**Title** — one line`, a milestone from the table above, and a link to 
 plan or `no plan` — and keep a title stable once the site has it.
 
 The engine is at **0.1.0**, one version for the workspace, and nothing is tagged
-yet. A release is a `v*` tag whose notes are that version's changelog section:
-move `Unreleased` into a dated section, bump `[workspace.package] version`, and
-rewrite that milestone's rows as what landed rather than striking them, so a
-shipped tab keeps its history.
+yet. A release is a `v*` tag: bump `[workspace.package] version`, and rewrite
+that milestone's rows as what landed rather than striking them, so a shipped tab
+keeps its history and the tag's notes are the rows themselves.
 
 ## Editor
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **The editor** — a stage shell of tabbed, resizable docks built from the engine's own widgets. Undo, copy and paste, a searchable inspector, prefab overrides, ray picking, a profiler dock, and the Rig, Polygon and Tiles tools. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **The editor** — a stage shell of tabbed, resizable docks built from the engine's own widgets. Undo, copy and paste, a searchable inspector, prefab overrides, ray picking, a profiler dock, and the Rig, Polygon and Tiles tools. | 0.1 | no plan |
 | **Tile maps** — a tileset that says what each tile is, voxel collision from its solid cells, autotiling from an ordered rule table, animated and occluding tiles, isometric and hexagonal layouts, and Tiled and LDtk import. Quarter-tile terrains draw a cell as four quarters, each picked by the cells touching that corner, so a five-tile sheet covers all 47 neighbourhoods. | 0.1 | [PLAN-tilemap.md](PLAN-tilemap.md) |
-| **Script completion and hover** — completion, hover, signature help, go-to-definition, document and workspace symbols, references, rename, find and replace, and formatting, in the Script persona, in `balaur lsp` and in a VS Code extension. A Docs dock renders the reference from the live engine. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Script completion and hover** — completion, hover, signature help, go-to-definition, document and workspace symbols, references, rename, find and replace, and formatting, in the Script persona, in `balaur lsp` and in a VS Code extension. A Docs dock renders the reference from the live engine. | 0.1 | no plan |
 | **Semantic tokens, inlay hints and code actions** — the LSP surface the script tooling left out: colouring from the compiler rather than a TextMate grammar, inferred types shown inline, and a quick fix on a diagnostic. Held until completion, hover and rename are in use and the gaps are known rather than guessed. | 0.7 | no plan |
 | **Curve editor and onion skin** — tangent handles on keys, and ghosted neighbouring frames in the timeline. | 0.3 | [PLAN-editor.md#curve-editor-and-onion-skin](PLAN-editor.md#curve-editor-and-onion-skin) |
-| **Selection, alignment and a library** — multi-select and box select, group, align, distribute, hide, lock, isolate, outliner facet chips, drag-in import, light and camera gizmos, view modes and camera bookmarks, a Pen tool over `path2d`, a material panel, an authoring Events view, a Cost dock, and `editor/library` with `balaur new --template`. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Selection, alignment and a library** — multi-select and box select, group, align, distribute, hide, lock, isolate, outliner facet chips, drag-in import, light and camera gizmos, view modes and camera bookmarks, a Pen tool over `path2d`, a material panel, an authoring Events view, a Cost dock, and `editor/library` with `balaur new --template`. | 0.1 | no plan |
 | **Network dock and Play as two** — two peers started from the editor, with the link and its stats in a dock. | 0.4 | [PLAN-sessions.md#3-steps](PLAN-sessions.md#3-steps) |
 | **The editor in a browser** — a project kept on Gamend rather than only in the browser, and native targets exported from a tab. The canvas, `fs` behind a backend, the editor as a page, IndexedDB projects, a folder opened from a machine and the two exports are 0.1's. | 0.6 | [PLAN-web-editor.md](PLAN-web-editor.md) |
 | **A green `main`** — the three things the engine promises, held to rather than asserted: the same inputs give the same bits on every machine, a bad file is an error and never a crash, and what the documents say is what the code does. | (0.2) | [PLAN-hardening.md](PLAN-hardening.md) |
@@ -56,14 +55,14 @@ shipped tab keeps its history.
 | **More than one window** — a second OS window: a dock torn off the editor, a game on a second display. kiss3d owns the only window there is, which is the same thing standing in XR's way. | 1.0 | no plan |
 | **A shader graph** — the canvas the Rune graph brings, emitting WESL instead of Rune, with `[params]` still read off the linked shader. This reverses `PLAN-shaders.md`'s not-planned line, which held while there was no canvas to draw on. | 1.0 | [PLAN-shaders.md](PLAN-shaders.md) |
 | **Modelling in the viewport** — push and pull a face, bevel an edge, subdivide, and unwrap with `xatlas`, editing the `mesh` asset every shape already is. Primitives, paths and booleans are built and headless, so the tool edits data the engine draws. A `path3d` pen belongs here too: the Pen tool edits `path2d` and nothing draws a curve in the 3D viewport. Unreal calls it Modeling Mode and Unity ships ProBuilder; nothing here moves a vertex. | 1.0 | no plan |
-| **A graph that writes Rune** — a `graphs/*.toml` asset whose save emits the `.rn` beside it, a node palette generated from `api.json`, and a canvas over `egui-snarl` 0.12 as a `graph` widget kind. The binding rows grow an order, an `else`, a `wait` and an expression first. A graph runtime is **not planned**: the emitted script is what the digest, the debugger and hot reload see. | 0.5 | [PLAN-authoring-without-code.md](PLAN-authoring-without-code.md) |
+| **A graph that writes Rune** — a `graphs/*.toml` asset whose save emits the `.rn` beside it, a node palette generated from `api.json`, and a canvas over `egui-snarl` 0.12 as a `graph` widget kind. It is what 0.1's binding rows are a rung of, and it supersedes them: the same hooks and the same variables, with the generated palette in place of their twelve actions. A graph runtime is **not planned**: the emitted script is what the digest, the debugger and hot reload see. | 0.5 | [PLAN-authoring-without-code.md](PLAN-authoring-without-code.md) |
 
 ## Scripts and assets
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **Rune scripting** — one deterministic language with a `math` module, exported properties, component handles on nodes, a Debug Adapter Protocol debugger, hot reload, named events between scripts, and a self-documenting API that `balaur api` prints. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
-| **Scenes, assets and packs** — prefabs with per-path overrides, stable `id://` references that survive a rename, import settings beside each file, sprite sheets, Aseprite, Tiled and LDtk import, and sha256-verified binary packs. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Rune scripting** — one deterministic language with a `math` module, exported properties, component handles on nodes, a Debug Adapter Protocol debugger, hot reload, named events between scripts, and a self-documenting API that `balaur api` prints. | 0.1 | no plan |
+| **Scenes, assets and packs** — prefabs with per-path overrides, stable `id://` references that survive a rename, import settings beside each file, sprite sheets, Aseprite, Tiled and LDtk import, and sha256-verified binary packs. | 0.1 | no plan |
 | **Texture import settings** — repeat, mipmaps, anisotropy and premultiplied alpha, which wait on a sampler the renderer does not expose, plus GPU compression at export and atlases. The sidecar, `[import.<kind>]` defaults, nearest filtering, linear-data textures and the editor's Import section are 0.1's. | 0.2 | [PLAN-textures.md](PLAN-textures.md) |
 | **FBX import** — `balaur import` over the `ufbx` crate, for the meshes, rigs and clips that never ship as glTF. Mixamo is the case: its downloads are FBX, and a rig there is a rig the retargeter already handles. | 0.7 | no plan |
 | **Asset streaming** — a load that runs off the tick, a scene added to one already running, an asset dropped when nothing names it. A pack is held whole in memory today; `ExternalIo`, the `assets` cache and pack hashing are the pieces. | 0.6 | no plan |
@@ -80,8 +79,8 @@ shipped tab keeps its history.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **Rapier in 2D and 3D** — bodies, joints with motors and breaking, character controllers, the query pipeline, collision events, every collider shape including editable voxels, ray-cast vehicles, layers, and a multithreaded solver. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
-| **Rigs and animation** — 2D and 3D skeletons with `look_at`, `two_bone_ik`, `fabrik`, `ccdik` and `jiggle`, GPU skinning, deform and morph tracks, retargeting through a `bone_map`, ragdolls, and tweens. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Rapier in 2D and 3D** — bodies, joints with motors and breaking, character controllers, the query pipeline, collision events, every collider shape including editable voxels, ray-cast vehicles, layers, and a multithreaded solver. | 0.1 | no plan |
+| **Rigs and animation** — 2D and 3D skeletons with `look_at`, `two_bone_ik`, `fabrik`, `ccdik` and `jiggle`, GPU skinning, deform and morph tracks, retargeting through a `bone_map`, ragdolls, and tweens. | 0.1 | no plan |
 | **Falling sand** — a 2D cellular grid of sand, water, lava and fire, with its rules in a `cell_set` table and one texture per chunk to draw it. Bodies couple through parry's 2D `Voxels` collider, which `collider2d` already has. Not physics and not in rapier: a `balaur_cells` plugin behind a feature that is off in `default`. On the fixed step and in the digest. A grid inside a networked simulation, 3D, GPU compute and a rule written in script are **not planned**. | 0.7 | no plan |
 | **Soft bodies, tearing, fluids** — and granular materials, waiting on the solvers landing in Rapier itself. | 0.7 | [PLAN-physics.md](PLAN-physics.md) |
 | **Animation blending** — blend trees and state machines. A rig is otherwise complete: `look_at`, `two_bone_ik`, `fabrik`, `ccdik` and `jiggle` in 2D and 3D, retargeting through a `bone_map`, deform tracks, and ragdolls. What is missing is running two clips at once. | 0.2 | [PLAN-animation-and-resources.md](PLAN-animation-and-resources.md) |
@@ -95,13 +94,13 @@ shipped tab keeps its history.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **Widgets, text and the batteries** — fourteen widget kinds with containers, themes and focus, over cosmic-text shaping with bidi and CJK. Beside them: text in the world, audio buses, positional audio, input actions with rebinding, saves with migrations, and localisation. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
-| **Interactivity without a script** — hooks, states, scene variables and event bindings: a scene reacts with no `.rn` beside it. `modifier2d` and `modifier3d` carry a `follow` kind with `lag` and `offset`, and the library dock has a Rigs shelf of five. A `when` is a comparison over the variables; the Rune expression it grows into is 0.5's graph row. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Widgets, text and the batteries** — fourteen widget kinds with containers, themes and focus, over cosmic-text shaping with bidi and CJK. Beside them: text in the world, audio buses, positional audio, input actions with rebinding, saves with migrations, and localisation. | 0.1 | no plan |
+| **Interactivity without a script** — hooks, states and scene variables, and the binding rows the Events view authors over them: a scene reacts with no `.rn` beside it. This is the first rung of 0.5's authoring surface, not a surface of its own. The hooks and the variables are what the graph is drawn on, as its entry and variable nodes; the rows are the smallest thing that could sit above them, and the graph replaces them rather than growing them. `modifier2d` and `modifier3d` carry a `follow` kind with `lag` and `offset`, and the library dock has a Rigs shelf of five. | 0.1 | no plan |
 | **Navigation** — a `navmesh` asset, paths over it through `polyanya`, `agent2d` and `agent3d` with ORCA avoidance, obstacles and links, a 2D baker over `i_overlay` and a 3D baker ported from Recast, grid paths over a tile map — all on the fixed step and in the digest. Behaviour over a path is a script's job until 1.0's behaviour trees. | 0.5 | [PLAN-navigation.md](PLAN-navigation.md) |
 | **Voice in a session** — capture, Opus, a jitter buffer, push-to-talk and voice activity, echo cancellation, positional voice on a bus, a browser path. Voice never enters the simulation, the digest or a recording. | 0.5 | [PLAN-voice.md](PLAN-voice.md) |
 | **Motion and haptics beyond one pad** — Switch Pro and Joy-Con gyro, per-unit sensor calibration, adaptive triggers and light bars, waveform haptics, device motion on a phone, pads on iOS and Android. Rumble and DualSense and DualShock 4 sensors are built. | 0.5 | [PLAN-input.md](PLAN-input.md) |
 | **More widget kinds** — as games ask for them, and demand-driven by design: the `widget` tree, its theme and its focus order are built, so a kind is a schema and a draw. | (0.5) | no plan |
-| **Behaviour trees** — a tree asset ticked on the fixed step and in the digest, with the navigation agents and the twelve binding actions as its leaves, drawn on the canvas the Rune graph brings. This is where behaviour over a path stops being only a script's job. | 1.0 | no plan |
+| **Behaviour trees** — a tree asset ticked on the fixed step and in the digest, with the navigation agents and the script API's own calls as its leaves, drawn on the canvas the Rune graph brings. This is where behaviour over a path stops being only a script's job. | 1.0 | no plan |
 | **Dialogue** — a `dialogue` plugin over an ink-shaped script. Lines addressed by key, so `strings.tr` translates them. A conversation stepped on the fixed tick and in the digest, choices raised as events, and a view that edits the branches. Nothing in the tree says a line of dialogue today; `inkling` and Yarn Spinner are the shapes to copy. | 1.0 | no plan |
 | **Touch controls a phone needs** — `touch_button` and `touch_stick` widget kinds, pinch, swipe and long-press recognisers over `input::touches()`, and `render.keyboard_height()` so a field is never under the keyboard. Touches are recorded already; nothing draws a control. | 0.8 | [PLAN-input.md](PLAN-input.md) |
 | **Sound that fills a room** — effects on a bus: reverb, EQ, a compressor and a limiter. `audio.duck` for music under speech, HRTF for a head rather than a stereo pan, and long music streamed rather than decoded whole. `bus.rs` is a gain tree today, and this reverses its not-planned line. | 0.9 | no plan |
@@ -112,7 +111,7 @@ shipped tab keeps its history.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **What draws today** — sprites, atlases, tile maps, 2D lights and shadows, `light3d` with shadows and an `environment` for sky, fog, exposure and tonemap, `package::pbr` over six texture slots, WESL shaders and materials, bloom, SSAO, SSR and depth of field, post-process materials on `camera.post`, sixteen primitives, path assets stroked and extruded, booleans, a `cloner`, and particles. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **What draws today** — sprites, atlases, tile maps, 2D lights and shadows, `light3d` with shadows and an `environment` for sky, fog, exposure and tonemap, `package::pbr` over six texture slots, WESL shaders and materials, bloom, SSAO, SSR and depth of field, post-process materials on `camera.post`, sixteen primitives, path assets stroked and extruded, booleans, a `cloner`, and particles. | 0.1 | no plan |
 | **The 3D look** — what the lights, the `environment` and `package::pbr` 0.1 ships do not reach: image-based lighting and SSAO bound, `pbr.wesl` as the built-in a node with no material draws, glTF import keeping factors and maps, alpha modes and glass, mirrors and probes, finishing passes, a path-traced still, layer stacks. Baked lightmaps are **not planned**. | 0.2 | [PLAN-3d-rendering.md](PLAN-3d-rendering.md) |
 | **Lit normal-mapped sprites** — 2D lights and shadows are built; the normal map is what is left. | 0.3 | [PLAN-rendering.md](PLAN-rendering.md) |
 | **Particles in 3D** — `particles3d`, and in both dimensions: emission shapes, randomness, sheets, attractors, colliders, trails, sub-emitters, mesh and lit particles, a compute stepper. The instanced draw path is built; renames `particles` to `particles2d`. | 0.3 | [PLAN-particles.md](PLAN-particles.md) |
@@ -120,7 +119,7 @@ shipped tab keeps its history.
 | **Voxels and terrain** — block types in a `voxel_set`, a greedy chunk mesher with baked ambient occlusion, a chunked binary grid file, a Voxels tool with a plane lock and a slice view, `.vox` and mesh-voxelisation import, and heightfield meshing beside it. The physics half is built; nothing draws or edits a grid. | 0.3 | [PLAN-voxels.md](PLAN-voxels.md) |
 | **More than one view** — a `viewport` component for split screen, a camera rendered to a texture referenced as `view:<path>`, picture-in-picture. The material panel's preview sphere is the editor's case for it. | 0.3 | [PLAN-views-and-culling.md](PLAN-views-and-culling.md) |
 | **Video playback** — a movie on a texture with its audio on a bus. Nothing decodes a container; render-side only, and a video never feeds simulation state. | 0.3 | no plan |
-| **Post-process materials** — `camera.post` is an ordered list, and a name the engine does not know is a `material` drawn over the whole frame. `tonemap` in the list is the boundary: before it a pass works in linear light and is what blooms, after it on the finished picture. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Post-process materials** — `camera.post` is an ordered list, and a name the engine does not know is a `material` drawn over the whole frame. `tonemap` in the list is the boundary: before it a pass works in linear light and is what blooms, after it on the finished picture. | 0.1 | no plan |
 | **Terrain sculpting and foliage** — brushes over the `heightfield` asset, splat maps for the textures between them, and grass and trees scattered by painting rather than placed by hand. The asset and its mesher are `PLAN-voxels.md`'s; no tool touches either. | 0.9 | [PLAN-voxels.md](PLAN-voxels.md) |
 | **Occlusion culling** — what stands behind a wall skipped, over a software depth rasteriser. Frustum, distance and `render.in_view` are 0.3; this is the pass `PLAN-views-and-culling.md` held back until a scene asked for it. | 0.9 | [PLAN-views-and-culling.md](PLAN-views-and-culling.md) |
 | **Global illumination** — light that bounces, in real time: a screen-space pass or an SDF probe field, since nothing in the kiss3d fork does it. Godot has SDFGI and Unreal has Lumen. Baked lightmaps stay **not planned**, and 2D's answer is still the light map. | 0.9 | [PLAN-3d-rendering.md](PLAN-3d-rendering.md) |
@@ -130,7 +129,7 @@ shipped tab keeps its history.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **The deterministic core** — a fixed 60 Hz step, a per-tick digest checked across operating systems in CI, record and replay, rollback with stable ids across spawns, lockstep sessions, and three transports behind one trait. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **The deterministic core** — a fixed 60 Hz step, a per-tick digest checked across operating systems in CI, record and replay, rollback with stable ids across spawns, lockstep sessions, and three transports behind one trait. | 0.1 | no plan |
 | **WebTransport in the browser** — native QUIC datagrams, binary frames, run-time stable ids and rollback are built; the browser side is not. | 0.4 | [PLAN-networking.md#2-transports](PLAN-networking.md#2-transports) |
 | **Sessions from a script** — host, join, leave, a roster whose slots are bound to links; `peer`, `host` and headless `server` roles; server-ordered inputs and digest verification on the server; spectators; bincode on the wire. `NetSession` is built and reachable only from Rust tests. | 0.2 | [PLAN-sessions.md](PLAN-sessions.md) |
 | **Late join, reconnect and host migration** — under lockstep, out of the snapshot ring. | 0.4 | [PLAN-sessions.md#3-steps](PLAN-sessions.md#3-steps) |
@@ -157,7 +156,7 @@ side each step belongs to.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **Apple and the `platform` module** — sign-in, achievements, leaderboards, cloud saves and presence behind one module, with Game Center, iCloud, in-app purchase, notifications, and an export that writes `Info.plist` and signs. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Apple and the `platform` module** — sign-in, achievements, leaderboards, cloud saves and presence behind one module, with Game Center, iCloud, in-app purchase, notifications, and an export that writes `Info.plist` and signs. | 0.1 | no plan |
 | **An MCP server** — `balaur mcp` over stdio with the project, `check`, a headless run and a screenshot as tools, and `balaur edit --mcp` exposing the palette to an agent. Files are the API; generation stays an extension. | 0.5 | [PLAN-mcp.md](PLAN-mcp.md) |
 | **Projects in the cloud** — files on a Gamend account with a version per save, share links with roles, presence in the viewport, comments anchored to nodes, a lock per scene, and a CRDT over the node table if a team asks. | 0.7 | [PLAN-collaboration.md](PLAN-collaboration.md) |
 | **Accessibility** — a screen reader over the widget tree, text scaling, captions, colour-blind-safe defaults. The retained tree carries text, `focusable` and a focus order, and egui can emit an AccessKit tree. | 0.6 | no plan |
@@ -174,7 +173,7 @@ waits for its tick to settle.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **Export, the web and the CLI** — `balaur export` for native and web with a size report, `strip` and re-encoding per asset kind, `balaur test`, a browser editor over IndexedDB, and a benchmark suite measured beside Godot's. | 0.1 | [CHANGELOG.md](https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md) |
+| **Export, the web and the CLI** — `balaur export` for native and web with a size report, `strip` and re-encoding per asset kind, `balaur test`, a browser editor over IndexedDB, and a benchmark suite measured beside Godot's. | 0.1 | no plan |
 | **The shell a phone has** — `engine.open_url` and the `open_url` binding work on every desktop and in a browser tab, and on neither phone: iOS wants `UIApplication.openURL:` and Android an `ACTION_VIEW` intent, so both report that they have no opener. `engine.reveal` is desktop-only and stays there. | 0.8 | [PLAN-mobile-export.md](PLAN-mobile-export.md) |
 | **Signed releases** — signed binaries per platform, cut by the release workflow. | 0.2 | [PLAN-release.md#binary-releases](PLAN-release.md#binary-releases) |
 | **One-click deploy** — a game on a URL or on a phone from one command or one button. `balaur export` builds and signs; nothing sends the result anywhere. | 0.6 | [PLAN-deploy.md](PLAN-deploy.md) |

@@ -82,6 +82,20 @@
   border-left: 4px solid var(--ifm-color-primary);
   border-radius: 10px;
   background: var(--balaur-card-bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* A built card leads with the picture: full bleed to the card's edges, above
+   the padding the text keeps. */
+.shot {
+  display: block;
+  width: calc(100% + 3rem);
+  max-width: none; /* over the theme's `img {max-width: 100%}`, which is the padding box */
+  height: auto;
+  margin: -1.75rem -1.5rem 1.25rem;
+  border-bottom: 1px solid var(--balaur-card-border);
 }
 
 /* Later milestones keep the card but lighten the rule down its side; a built
@@ -123,4 +137,21 @@
   line-height: 1.5;
   color: var(--ifm-color-emphasis-800);
   margin: 0;
+}
+
+/* Where a built item was written up. Several rows have more than one post, so
+   they wrap. `auto` at the top puts them at the foot of the card, however
+   tall the row's tallest card makes it. */
+.posts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  margin: auto 0 0;
+  padding-top: 0.9rem;
+  font-size: 0.88rem;
+}
+
+.posts a::before {
+  content: '↳ ';
+  color: var(--ifm-color-emphasis-600);
 }

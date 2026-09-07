@@ -1,0 +1,51 @@
+---
+description: "The first tagged release. Fifteen roadmap rows are built: the editor, Rune, Rapier in both dimensions, rendering, determinism and export."
+slug: balaur-0-1-0
+title: Balaur 0.1.0
+date: 2026-09-07T18:00
+authors: [dragos]
+image: /img/manual/editor_overview.png
+keywords: [balaur 0.1.0, game engine release, rust game engine, deterministic engine]
+---
+
+0.1.0 is tagged. The [roadmap](/docs/roadmap#0.1) carries the full list:
+fifteen rows, each with a picture and the posts it was written up in.
+
+{/* truncate */}
+
+## What it holds
+
+- **The editor.** Tabbed, resizable docks built from the engine's own
+  widgets, so the editor is a Balaur application.
+
+  ![The editor on examples/angrynerds: the node tree, the viewport, the inspector and the dock tabs](/img/manual/editor_overview.webp)
+
+- **Rune scripting.** One deterministic language, hot reload in milliseconds
+  with the state kept, and a debugger over the Debug Adapter Protocol.
+
+  ![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.webp)
+
+- **Rapier in 2D and 3D.** Bodies, joints, character controllers, queries and
+  every collider shape rapier has, behind one script API.
+
+  ![The Physics persona's collider overlays over the towers of examples/angrynerds](/img/manual/physics_collapse.webp)
+
+- **Rendering.** Sprites, tile maps, 2D lights and shadows, `light3d` and an
+  `environment`, PBR, WESL shaders, and sixteen primitives.
+
+  ![Three occluders under one directional light, each casting a parallel shadow strip](/img/manual/rendering_directional.webp)
+
+- **Determinism.** A fixed 60 Hz step, and a digest per tick that CI compares
+  across operating systems. Record, replay, roll back.
+
+  ![The Session dock playing a recorded run back, with nobody at the mouse](/img/manual/determinism_replay.webp)
+
+- **Export.** Native and web targets with a size report, iOS and Android, and
+  the editor itself in a browser tab.
+
+  ![The Export sheet: the ios, android, macos-universal, windows and web targets](/img/manual/export_sheet.webp)
+
+## Where to get it
+
+[Download](/download) has a build per platform, and `balaur update` replaces
+an install. What 0.2 adds is on the [roadmap](/docs/roadmap#0.2).

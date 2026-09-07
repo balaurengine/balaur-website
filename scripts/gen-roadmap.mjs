@@ -11,6 +11,12 @@
 // rename one on either side without the other and this script fails rather
 // than dropping a card.
 //
+// A built item also carries a screenshot and the posts that announced it, from
+// the `shots` table in the same copy file. That pairing is checked both ways:
+// every item in a `built` milestone needs one, and every post under blog/ has
+// to be named by an item or listed in `essays` — so a feature ships with a
+// picture and a post, and a post is about something the roadmap has a row for.
+//
 // Usage:
 //   node scripts/gen-roadmap.mjs            write docs/roadmap.mdx
 //   node scripts/gen-roadmap.mjs --check    fail if the file is not what this
@@ -20,12 +26,13 @@
 // reference/roadmap.md, which scripts/sync-docs.sh fetches and this repository
 // commits — so a build with no network still has one.
 
-import {readFileSync, writeFileSync, existsSync} from 'node:fs';
+import {readdirSync, readFileSync, writeFileSync, existsSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'docs/roadmap.mdx');
+const BLOG = join(ROOT, 'blog');
 const SYNCED = join(ROOT, 'reference/roadmap.md');
 const PLAN_BASE = 'https://github.com/balaurengine/balaur/blob/main/docs/';
 
@@ -108,8 +115,26 @@ function parseRoadmap(md, milestones) {
   return milestones;
 }
 
-function render(milestones, copy) {
+// Every post under blog/, by slug. The title is the card's link text, so a
+// renamed post reaches the roadmap without the slug being typed twice.
+function parseBlog() {
+  const posts = new Map();
+  for (const file of readdirSync(BLOG).filter((f) => f.endsWith('.mdx')).sort()) {
+    const src = readFileSync(join(BLOG, file), 'utf8');
+    const slug = /^slug: (.+)$/m.exec(src);
+    const title = /^title: (.+)$/m.exec(src);
+    if (!slug || !title) fail(`blog/${file}: needs a slug and a title`);
+    posts.set(slug[1].trim(), title[1].trim().replace(/^["']|["']$/g, ''));
+  }
+  return posts;
+}
+
+function render(milestones, copy, posts) {
   const known = new Set();
+  const cited = new Set(copy.essays);
+  for (const slug of cited) {
+    if (!posts.has(slug)) fail(`essays names "${slug}", which is not a post under blog/`);
+  }
   const out = [
     copy.frontmatter.trimEnd(),
     '',
@@ -134,6 +159,26 @@ function render(milestones, copy) {
       out.push(`        title: '${item.title.replace(/'/g, "\\'")}',`);
       out.push(`        text: ${text.trim()},`);
       if (item.plan) out.push(`        plan: '${item.plan}',`);
+      // A built row is a record, so it shows the thing and says where it was
+      // written up; an unbuilt one has neither to show.
+      const shot = copy.shots[item.title];
+      if (milestone.state === 'built' && !shot) {
+        fail(`"${item.title}" is built with no shot — add it to \`shots\` in src/data/roadmap-copy.mjs`);
+      }
+      if (shot && milestone.state !== 'built') fail(`"${item.title}" is not built, so it cannot have a shot`);
+      if (shot) {
+        if (!shot.image || !shot.alt) fail(`the shot for "${item.title}" needs an image and an alt`);
+        if (!shot.posts?.length) fail(`the shot for "${item.title}" needs the post that announced it`);
+        out.push(`        image: ${JSON.stringify(shot.image)},`);
+        out.push(`        alt: ${JSON.stringify(shot.alt)},`);
+        out.push('        posts: [');
+        for (const slug of shot.posts) {
+          if (!posts.has(slug)) fail(`"${item.title}" names the post "${slug}", which is not under blog/`);
+          cited.add(slug);
+          out.push(`          {slug: ${JSON.stringify(slug)}, title: ${JSON.stringify(posts.get(slug))}},`);
+        }
+        out.push('        ],');
+      }
       out.push('      },');
     }
     out.push('    ],');
@@ -143,6 +188,16 @@ function render(milestones, copy) {
   if (copy.outro) out.push(copy.outro.trim(), '');
   const stale = Object.keys(copy.items).filter((t) => !known.has(t));
   if (stale.length) fail(`copy for items the roadmap no longer has: ${stale.join(', ')}`);
+  const staleShots = Object.keys(copy.shots).filter((t) => !known.has(t));
+  if (staleShots.length) fail(`shots for items the roadmap no longer has: ${staleShots.join(', ')}`);
+  // The other direction: a post is about a roadmap row, or it is one of the
+  // few that are records rather than features and says so in `essays`.
+  const loose = [...posts.keys()].filter((slug) => !cited.has(slug));
+  if (loose.length) {
+    fail(`no roadmap item names these posts: ${loose.join(', ')}
+  Either add the post to that item's \`shots\` entry, or, if it is not about
+  one feature, list its slug in \`essays\` in src/data/roadmap-copy.mjs.`);
+  }
   return out.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 }
 
@@ -150,7 +205,7 @@ const src = sourcePath();
 if (!existsSync(src)) fail(`no ${src}; run scripts/sync-docs.sh, or set BALAUR_REPO`);
 const md = readFileSync(src, 'utf8');
 const {default: copy} = await import('../src/data/roadmap-copy.mjs');
-const body = render(parseRoadmap(md, parseMilestones(md)), copy);
+const body = render(parseRoadmap(md, parseMilestones(md)), copy, parseBlog());
 
 if (process.argv.includes('--check')) {
   const have = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';

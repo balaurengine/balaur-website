@@ -10,6 +10,11 @@ export type RoadmapItem = {
   text: ReactNode;
   /** The engine's plan document for this item; kept as data, not rendered. */
   plan?: string;
+  /** A screenshot of the thing. Only a built item has one. */
+  image?: string;
+  alt?: string;
+  /** The posts that announced it, in the order they were written. */
+  posts?: {slug: string; title: string}[];
 };
 
 export type RoadmapMilestone = {
@@ -82,7 +87,9 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
             }}
             type="button"
             role="tab"
-            id={`${slug(milestone.id)}-tab`}
+            // The milestone's own id, so `/docs/roadmap#0.4` is an anchor that
+            // exists rather than only a hash the effect above reads.
+            id={milestone.id}
             aria-controls={slug(milestone.id)}
             aria-selected={milestone.id === shown.id}
             tabIndex={milestone.id === shown.id ? 0 : -1}
@@ -95,7 +102,7 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
         ))}
       </div>
 
-      <div className={styles.panel} role="tabpanel" id={slug(shown.id)} aria-labelledby={`${slug(shown.id)}-tab`}>
+      <div className={styles.panel} role="tabpanel" id={slug(shown.id)} aria-labelledby={shown.id}>
         <Heading as="h2" className={styles.milestone}>
           {shown.title}
         </Heading>
@@ -105,11 +112,30 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
         <div className={styles.grid}>
           {shown.items.map((item) => (
             <div className={`${styles.card} ${weight(shown, index)}`} key={item.title}>
+              {item.image && (
+                <img
+                  className={styles.shot}
+                  src={item.image}
+                  alt={item.alt}
+                  width={1600}
+                  height={1000}
+                  loading="lazy"
+                />
+              )}
               <p className={styles.group}>{item.group}</p>
               <Heading as="h3" className={styles.title}>
                 {item.title}
               </Heading>
               <p className={styles.text}>{item.text}</p>
+              {item.posts && (
+                <p className={styles.posts}>
+                  {item.posts.map((post) => (
+                    <a key={post.slug} href={`/blog/${post.slug}`}>
+                      {post.title}
+                    </a>
+                  ))}
+                </p>
+              )}
             </div>
           ))}
         </div>
