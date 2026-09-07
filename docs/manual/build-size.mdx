@@ -30,8 +30,30 @@ marked-up text). Physics in both dimensions (rapier and parry), the Rune
 compiler and VM, every audio codec rodio turns on, and every image format
 kiss3d turns on.
 
-Code is about three quarters of the module. The rest is data, and half the
-data is assets that dependencies bake in:
+Code is about three quarters of the module and data the rest:
+
+| section | share |
+| --- | ---: |
+| code | 74% |
+| data | 25% |
+
+Where that code goes, read off a build that keeps its symbols. Around a
+quarter of the module's symbols name no crate, so each line is a floor rather
+than a total:
+
+| | MB |
+| --- | ---: |
+| Rune, the compiler and the VM | 2.2 |
+| egui's CPU rasteriser, through `epaint` | 1.5 |
+| the WESL compiler, which runs at load | 1.4 |
+| text shaping and font parsing, two stacks | 1.3 |
+| physics in 3D | 0.8 |
+| physics in 2D | 0.5 |
+| image codecs | 0.4 |
+| audio codecs | 0.2 |
+
+A game pays for all of it whichever features it uses, because the template is
+prebuilt. Half the data is assets that dependencies bake in:
 
 | Baked in by a dependency | Raw | Brotli |
 | --- | --- | --- |
