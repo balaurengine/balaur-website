@@ -54,8 +54,8 @@ A 2D hello world, release build, macOS on an Apple M1.
 
 | | Balaur | Godot 4.7 | Bevy 0.19 | Fyrox 1.0 |
 | --- | ---: | ---: | ---: | ---: |
-| desktop binary | 45 MB | 83 MB | 53 MB | **30 MB** |
-| web module, brotli | 4.8 MB | 6.9 MB | 5.0 MB | **3.7 MB** |
+| desktop binary | 43 MB | 79 MB | 51 MB | **29 MB** |
+| web module, brotli | 4.6 MB | 6.6 MB | 4.8 MB | **3.6 MB** |
 
 Fyrox is the smallest on both counts. Balaur is about half of Godot on the desktop.
 
@@ -63,11 +63,11 @@ Fyrox is the smallest on both counts. Balaur is about half of Godot on the deskt
 
 Desktop figures are arm64 and stripped. Godot's is its official release export template, thinned from a universal binary with `lipo`, and a game is that template plus its pack. Balaur's is the windowed runtime template at commit `4355043`. Bevy is `DefaultPlugins` with a camera and one sprite. Fyrox is an `Executor` and one empty plugin.
 
-Every engine was built at `lto = "fat"` and `codegen-units = 1`, the settings Balaur's workspace already carries. A stock Bevy or Fyrox project uses Cargo's defaults and lands higher, at 81 MB and 38 MB.
+Every engine was built at `lto = "fat"` and `codegen-units = 1`, the settings Balaur's workspace already carries. A stock Bevy or Fyrox project uses Cargo's defaults and lands higher, at 77 MB and 37 MB.
 
 Godot and Balaur ship a prebuilt template carrying the whole engine. Bevy and Fyrox link what the game references.
 
-Web figures are brotli, after `wasm-opt -Oz`. Godot's is the 4.7 web export template. Balaur's is the module measured on every deploy, broken down on the [build size page](/docs/manual/build-size).
+Sizes are mebibytes, the unit the [build size page](/docs/manual/build-size) uses. Web figures are brotli, after `wasm-opt -Oz`. Godot's is the 4.7 web export template. Balaur's is the module measured on every deploy, broken down on the [build size page](/docs/manual/build-size).
 
 ## When to pick which
 

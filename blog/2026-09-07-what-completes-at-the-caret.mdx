@@ -20,16 +20,17 @@ the same list the reference is printed from.
 - **Completion.** `physics2d::` gives that module's 66 functions and 48
   constants. `node.body2d.` gives what acts on that component, plus the six a
   handle always answers. `this.` gives the script's `exports()` and `pub fn`s.
-- **Hover and signature help.** A function's signature, and the line the
-  reference prints for it.
+- **Hover and signature help.** A signature, and the reference's own line.
 - **Go-to-definition.** `⌘B`. A project `pub fn` opens its file at its line;
-  engine API has no file, so it opens the Docs dock.
-- **A Docs dock.** The reference, module by module, read from the running
-  engine rather than a file, so a plugin's own module is in it.
-- **Formatting.** `balaur fmt .`, with `--check` naming what would change and
-  exiting 1. `⌥⇧F` in the editor.
-- **Rename.** `⌘⇧R`, across the files a script's `mod` declarations reach,
-  every match listed before anything is written.
+  engine API opens the **Docs dock**, which reads the reference from the
+  running engine, so a plugin's own module is in it.
+- **Formatting.** `balaur fmt .`, `--check` names what would change and exits
+  1. `⌥⇧F` in the editor.
+- **Rename and replace.** `⌘⇧R` renames an identifier, `⌘⇧F` replaces text,
+  both across the files a script's `mod` declarations reach and both listing
+  every match before anything is written.
+- **Symbols.** This file's, and the project's: `workspace/symbol` searches
+  every script a scene attaches.
 - **A VS Code extension.** `editors/code` spawns `balaur lsp`, so it shows
   what the Script persona shows. Zed and Neovim get a recipe each.
 
