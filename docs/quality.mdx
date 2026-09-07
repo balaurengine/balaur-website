@@ -131,7 +131,7 @@ catalogue, diffed before any change to the editor's shell.
 
 - Feature tests and performance tests stay apart.
 - Budgets assert orders of magnitude, never percentages. A CI runner is shared
-  and throttled, and a gate that cries wolf gets ignored.
+  and throttled, so a percentage gate fires on noise.
 - Every ceiling is ten times a measured run, written in one place.
 - They catch an accidental O(n²), a lock held across a frame, or a compile
   moved into the hot path. A five percent regression is what the
@@ -154,7 +154,7 @@ catalogue, diffed before any change to the editor's shell.
 
 ## What review is left to do
 
-Everything above is mechanical, which is the point. Review spends its
+Everything above is mechanical. Review spends its
 attention on what a script cannot check:
 
 - whether the change serves the [principles](./principles.mdx);

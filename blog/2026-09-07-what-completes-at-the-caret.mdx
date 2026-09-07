@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: completion, hover, go-to-definition, rename and formatting, in the editor and over balaur lsp, from the engine's own API."
+description: "Completion, hover, go-to-definition, rename and formatting, in the editor and over balaur lsp, from the engine's own API."
 slug: what-completes-at-the-caret
 title: Completion, hover and go to definition
 authors: [dragos]
@@ -41,16 +41,16 @@ the editor and over `balaur lsp`, read from the engine's own API.
 - **1 ms after `::`, 1 ms on a component handle, 3 ms on a bare prefix**, on
   `editor/scripts/model.rn`, 1429 lines.
 - **The bare prefix was 50 ms.** It listed a file's functions through a
-  compiled unit, and a buffer mid-edit usually does not compile, so it paid in
-  full and answered with nothing. It walks the `mod` graph as text now.
+  compiled unit, which a buffer mid-edit usually does not have. It walks the
+  `mod` graph as text now.
 
-## Rune's own server is not reusable
+## What came from Rune's own server
 
 - **Its completion is `pub(super)`.** The one public entry owns its stdin
   loop, and the feature pulls in tokio, syntect, handlebars and rust-embed.
 - **`rune::fmt` came across**, costing nothing beyond `alloc`.
-- **One needed the fork.** `Context::iter_functions` was `pub(crate)`; opening
-  it up is what completes `"".len()`.
+- **The fork opens one symbol.** `Context::iter_functions` was `pub(crate)`,
+  and it is what completes `"".len()`.
 
 Semantic tokens, inlay hints and code actions are not planned. The
 [scripting manual](/docs/manual/scripting#tooling) has the full list.

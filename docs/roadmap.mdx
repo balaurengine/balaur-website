@@ -398,7 +398,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Editor",
         title: 'Semantic tokens, inlay hints and code actions',
-        text: <>The rest of the language-server surface: colouring that comes from the compiler rather than a TextMate grammar, an inferred type shown inline beside a binding, and a quick fix offered on a diagnostic. Held back on purpose until completion, hover and rename have been used enough that the gaps are known rather than guessed.</>,
+        text: <>The rest of the language-server surface: colouring that comes from the compiler rather than a TextMate grammar, an inferred type shown inline beside a binding, and a quick fix offered on a diagnostic. Held back until completion, hover and rename have been used enough to show where the gaps are.</>,
       },
       {
         group: "Scripts and assets",
@@ -477,13 +477,13 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Shipping",
         title: 'What a phone lends a game',
-        text: <>The share sheet, the camera and the photo library, geolocation, biometrics, the clipboard, keep-awake and vibration, behind one module with a desktop answer or an honest unsupported. These are the gaps a phone game hits first, and the plan for 2D games lists every one of them.</>,
+        text: <>The share sheet, the camera and the photo library, geolocation, biometrics, the clipboard, keep-awake and vibration, behind one module with a desktop answer or an <code>unsupported</code>. These are the gaps a phone game hits first, and the plan for 2D games lists every one of them.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-2d-games.md',
       },
       {
         group: "Shipping",
         title: 'A game on a small machine',
-        text: <>An ARM Linux build is already an export target, and nothing has ever run one. A Raspberry Pi wants the GL backend rather than Vulkan, a build that needs no desktop compositor, and a frame budget somebody has actually measured on the board.</>,
+        text: <>An ARM Linux build is already an export target, and nothing has ever run one. A Raspberry Pi wants the GL backend rather than Vulkan, a build that needs no desktop compositor, and a frame budget measured on the board.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md',
       },
       {
@@ -533,7 +533,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Rendering",
         title: 'Occlusion culling',
-        text: <>What stands behind a wall is drawn today. A software depth rasteriser skips it, over the frustum and distance culling 0.3 brings. It was held back until a scene asked for it, and a scene big enough to ask is what this milestone is about.</>,
+        text: <>What stands behind a wall is drawn today. A software depth rasteriser skips it, over the frustum and distance culling 0.3 brings. It waits on a scene large enough to need it.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
       },
       {
@@ -568,12 +568,12 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Gameplay and audio",
         title: 'Behaviour trees',
-        text: <>A tree asset ticked on the fixed step and inside the digest, its leaves the navigation agents and the binding actions a scene already has, drawn on the same canvas the Rune graph brings. What an enemy does has been a script's job; this is the other way of saying it.</>,
+        text: <>A tree asset ticked on the fixed step and inside the digest, its leaves the navigation agents and the binding actions a scene already has, drawn on the same canvas the Rune graph brings. What an enemy does is a script's job today.</>,
       },
       {
         group: "Gameplay and audio",
         title: 'Dialogue',
-        text: <>A conversation is content, and nothing in the tree holds one. A <code>dialogue</code> plugin over an ink-shaped script: lines addressed by key so the translation table reaches them, the conversation stepped on the fixed tick and inside the digest, a choice raised as an event, and a view that edits the branches.</>,
+        text: <>Nothing in the tree holds a conversation. A <code>dialogue</code> plugin over an ink-shaped script: lines addressed by key so the translation table reaches them, the conversation stepped on the fixed tick and inside the digest, a choice raised as an event, and a view that edits the branches.</>,
       },
       {
         group: "Gameplay and audio",
@@ -607,7 +607,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Tools and services",
         title: 'A library others publish to',
-        text: <>The library dock reads one list, the one shipped with the editor. This is the catalogue anyone can publish to, over the same manifest, with a hash per entry and a name saying who wrote it. An engine's asset store, in files rather than in a storefront.</>,
+        text: <>The library dock reads one list, the one shipped with the editor. This is the catalogue anyone can publish to, over the same manifest, with a hash per entry and a name saying who wrote it. An asset store made of files.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-collaboration.md',
       },
     ],

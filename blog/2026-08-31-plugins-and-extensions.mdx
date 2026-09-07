@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: one Plugin trait. Linked in behind a cargo feature it is a module; built as a shared library in extensions/ it is an extension."
+description: "One Plugin trait. Linked in behind a cargo feature it is a module; built as a shared library in extensions/ it is an extension."
 slug: plugins-and-extensions
 title: Plugins and extensions
 authors: [dragos]
@@ -52,7 +52,7 @@ impl Plugin for Greeter {
 }
 ```
 
-## Refuse before crashing
+## The ABI tag
 
 Rust has no stable ABI, so a library built by a different compiler is
 undefined behaviour, not a version error. The first symbol an extension

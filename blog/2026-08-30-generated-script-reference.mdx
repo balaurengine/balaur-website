@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: the script API reference is read out of a booted engine (every module, function, constant, component and asset type) and CI fails when it drifts."
+description: "The script API reference is read out of a booted engine (every module, function, constant, component and asset type) and CI fails when it drifts."
 slug: generated-script-reference
 title: Generated script reference
 authors: [dragos]
@@ -25,12 +25,8 @@ function, constant, component and asset type. CI fails when it drifts.
   [assets](/docs/reference/assets) references are that output, one page
   per module, with what each function acts on.
 
-## What the first run found
+## rng, fs and toml
 
-It said `rng`, `fs` and `toml` were declared for one language only. True,
-and wrong: a Rune game had no seeded random at all, in an engine whose
-README calls determinism non-negotiable. All three are declared neutrally
-now, and a test pins the same seed to the same sequence.
-
-A reference produced by reading the API back cannot describe something
-that is not there.
+All three were declared for one language only, so a Rune game had no seeded
+random. They are declared neutrally now, and a test pins the same seed to the
+same sequence.

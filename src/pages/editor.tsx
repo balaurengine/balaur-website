@@ -416,22 +416,28 @@ export default function EditorPage(): ReactNode {
         </div>
 
         <Heading as="h2">What works</Heading>
+        <ul>
+          <li>
+            The tree, the viewport and its gizmos, the inspector, the docks, the personas and the script editor: the
+            same Rune scripts the desktop editor runs.
+          </li>
+          <li>A save writes into the tab&rsquo;s filesystem and the editor reloads from it. Sound plays.</li>
+          <li>
+            Every edit is kept as you go, and <strong>Download project</strong> takes it back out as a zip.
+          </li>
+          <li>
+            The Export sheet writes the two builds a tab can finish by itself: a <code>.bpak</code>, and a web bundle
+            ready to unpack on any static host. Every other target needs a linker, so run{' '}
+            <code>balaur export --target</code> on a machine.
+          </li>
+          <li>
+            Not yet: a project kept on a server rather than in this browser, and a debugger. Both are on the{' '}
+            <Link to="/docs/roadmap">roadmap</Link>.
+          </li>
+        </ul>
         <p>
-          The tree, the viewport and its gizmos, the inspector, the docks, the personas and the script editor all
-          work: they are the same Rune scripts the desktop editor runs. A save writes into the tab's filesystem and
-          the editor reloads from it. Sound plays. Everything you edit is kept as you go, and{' '}
-          <strong>Download project</strong> takes it back out as a zip.
-        </p>
-        <p>
-          The Export sheet offers the two builds a tab can finish by itself: a <code>.bpak</code>, and a web bundle
-          ready to unpack on any static host. Every other target needs a linker, so run{' '}
-          <code>balaur export --target</code> on a machine.
-        </p>
-        <p>
-          Not yet: a project kept on a server rather than in this browser, and a debugger. The{' '}
-          <Link to="/docs/roadmap">roadmap</Link> tracks both. For the whole toolchain behind it,{' '}
-          <Link to="/docs/getting-started">build the editor</Link>. The <Link to="/examples">examples</Link> run the
-          same projects as games.
+          For the whole toolchain behind it, <Link to="/docs/getting-started">build the editor</Link>. The{' '}
+          <Link to="/examples">examples</Link> run the same projects as games.
         </p>
       </main>
     </Layout>

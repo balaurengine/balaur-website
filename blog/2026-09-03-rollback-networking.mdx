@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: rollback between two engines that exchange only inputs, a digest per tick to catch a desync, and one Transport trait over websockets and QUIC."
+description: "Rollback between two engines that exchange only inputs, a digest per tick to catch a desync, and one Transport trait over websockets and QUIC."
 slug: rollback-networking
 title: Rollback networking
 authors: [dragos]
@@ -24,8 +24,7 @@ catch a desync. One `Transport` trait over websockets and QUIC.
   Scripts see `rollback::input` and `rollback::is_resimulating`.
 - A digest per tick, exchanged. A peer publishes the hash of a tick
   only once every player's input for it has arrived, and a desync names the
-  tick. Windows CI caught the first version comparing a prediction against
-  a prediction on any link slower than the confirm lag.
+  tick. Two predictions are never compared with each other.
 - One `Transport`. Websockets, and QUIC through `balaur_webtransport`,
   where a datagram is a real one: a lost input costs a misprediction, not a
   stall. `balaur_http`, `balaur_websocket` and `balaur_webtransport` are

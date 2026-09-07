@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: FABRIK, CCDIK and jiggle in 2D and 3D, deform tracks, retargeting through a bone map, ragdolls from a rig, and the editor panels for all of it."
+description: "FABRIK, CCDIK and jiggle in 2D and 3D, deform tracks, retargeting through a bone map, ragdolls from a rig, and the editor panels for all of it."
 slug: rigging-panels
 title: IK, retargeting and ragdolls
 authors: [dragos]
@@ -38,20 +38,5 @@ and trace.
 - **The panels.** A Weights dock with Bind, Unbind, Normalise, Auto and
   Smooth. Mirror in both tools. Trace, over a texture's alpha. Bone names in
   the viewport.
-
-## Two bugs in the jiggle solver
-
-Both need a hard shove. The test that found them teleports the rig three
-units sideways in one frame.
-
-- **It read its own answer.** A jiggle bone springs toward the pose the clip
-  wrote. Read that off the bone and you read the spring's last answer, because
-  the spring wrote it. The two agree at any angle, upside down included, so
-  one shove left the chain inverted.
-
-- **The point was held too tightly.** It started out kept on the bone's own
-  circle. But a point flung past the origin sits opposite the pose, where the
-  pull is along the radius the projection cancels. It is a direction, not a
-  joint.
 
 The [Animation manual](/docs/manual/animation) has the tables and the TOML.

@@ -47,7 +47,7 @@ hide_table_of_contents: true
     'Script completion and hover':
       `<>Type <code>physics2d::</code> and the list is that module's 66 functions and 48 constants, each with the line the reference prints. Type <code>node.body2d.</code> and it is what acts on that component. Hover names a function's signature and what it does; go-to-definition opens the file, or the Docs dock when the definition is the engine's. <code>balaur fmt</code> lays a project out, rename rewrites every file a script's <code>mod</code> declarations reach, and the same server answers a VS Code, Zed or Neovim client.</>`,
     'Semantic tokens, inlay hints and code actions':
-      `<>The rest of the language-server surface: colouring that comes from the compiler rather than a TextMate grammar, an inferred type shown inline beside a binding, and a quick fix offered on a diagnostic. Held back on purpose until completion, hover and rename have been used enough that the gaps are known rather than guessed.</>`,
+      `<>The rest of the language-server surface: colouring that comes from the compiler rather than a TextMate grammar, an inferred type shown inline beside a binding, and a quick fix offered on a diagnostic. Held back until completion, hover and rename have been used enough to show where the gaps are.</>`,
     'Curve editor and onion skin':
       `'Tangent handles on keys and ghosted neighbouring frames in the timeline.'`,
     'Selection, alignment and a library':
@@ -85,19 +85,19 @@ hide_table_of_contents: true
     'Global illumination':
       `<>Light that bounces, computed while the game runs: a screen-space pass, or a field of probes over a signed distance field. Nothing in the renderer's fork does it, and it is the gap named most often against Godot's SDFGI and Unreal's Lumen. Baked lightmaps stay out.</>`,
     'Occlusion culling':
-      `<>What stands behind a wall is drawn today. A software depth rasteriser skips it, over the frustum and distance culling 0.3 brings. It was held back until a scene asked for it, and a scene big enough to ask is what this milestone is about.</>`,
+      `<>What stands behind a wall is drawn today. A software depth rasteriser skips it, over the frustum and distance culling 0.3 brings. It waits on a scene large enough to need it.</>`,
     'Terrain sculpting and foliage':
       `<>The <code>heightfield</code> asset and its mesher exist; no tool touches either. Brushes that raise and flatten ground, splat maps for the textures between, and grass and trees scattered by painting rather than placed one at a time.</>`,
     'A library others publish to':
-      `<>The library dock reads one list, the one shipped with the editor. This is the catalogue anyone can publish to, over the same manifest, with a hash per entry and a name saying who wrote it. An engine's asset store, in files rather than in a storefront.</>`,
+      `<>The library dock reads one list, the one shipped with the editor. This is the catalogue anyone can publish to, over the same manifest, with a hash per entry and a name saying who wrote it. An asset store made of files.</>`,
     'A game on a small machine':
-      `<>An ARM Linux build is already an export target, and nothing has ever run one. A Raspberry Pi wants the GL backend rather than Vulkan, a build that needs no desktop compositor, and a frame budget somebody has actually measured on the board.</>`,
+      `<>An ARM Linux build is already an export target, and nothing has ever run one. A Raspberry Pi wants the GL backend rather than Vulkan, a build that needs no desktop compositor, and a frame budget measured on the board.</>`,
     'A web module that loads in parts':
       `<>The engine module is most of a web game's download, and nothing inside it loads lazily. Split it, so a game fetches the physics, audio or networking it uses and no more, and let a pack arrive in pieces beside it.</>`,
     'Dialogue':
-      `<>A conversation is content, and nothing in the tree holds one. A <code>dialogue</code> plugin over an ink-shaped script: lines addressed by key so the translation table reaches them, the conversation stepped on the fixed tick and inside the digest, a choice raised as an event, and a view that edits the branches.</>`,
+      `<>Nothing in the tree holds a conversation. A <code>dialogue</code> plugin over an ink-shaped script: lines addressed by key so the translation table reaches them, the conversation stepped on the fixed tick and inside the digest, a choice raised as an event, and a view that edits the branches.</>`,
     'Behaviour trees':
-      `<>A tree asset ticked on the fixed step and inside the digest, its leaves the navigation agents and the binding actions a scene already has, drawn on the same canvas the Rune graph brings. What an enemy does has been a script's job; this is the other way of saying it.</>`,
+      `<>A tree asset ticked on the fixed step and inside the digest, its leaves the navigation agents and the binding actions a scene already has, drawn on the same canvas the Rune graph brings. What an enemy does is a script's job today.</>`,
     'Procedural noise':
       `<>Value, perlin, simplex and worley, with fbm over them, seeded the way <code>rng</code> is and computed on the same libm every platform shares. A generated world comes out identical on every machine and inside a replay. The cloner scatters with a private one today, and no script can reach a noise function at all.</>`,
     'A package manager':
@@ -107,7 +107,7 @@ hide_table_of_contents: true
     'The shell a phone has':
       `<>Opening a link works on every desktop and in a browser tab, and on neither phone: iOS wants its own open call and Android an intent, so both answer today that they have no opener. Revealing a file in a file manager is a desktop idea and stays one.</>`,
     'What a phone lends a game':
-      `<>The share sheet, the camera and the photo library, geolocation, biometrics, the clipboard, keep-awake and vibration, behind one module with a desktop answer or an honest unsupported. These are the gaps a phone game hits first, and the plan for 2D games lists every one of them.</>`,
+      `<>The share sheet, the camera and the photo library, geolocation, biometrics, the clipboard, keep-awake and vibration, behind one module with a desktop answer or an <code>unsupported</code>. These are the gaps a phone game hits first, and the plan for 2D games lists every one of them.</>`,
     'Extensions, tier two':
       `'Native extensions that add components and systems, and call back into scripts.'`,
     'Falling sand':

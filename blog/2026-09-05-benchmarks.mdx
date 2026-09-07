@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: the Godot benchmark suites' physics and scene-tree cases run body for body in Balaur, the numbers beside Godot's, and the work they prompted."
+description: "The Godot benchmark suites' physics and scene-tree cases run body for body in Balaur, the numbers beside Godot's, and the work they prompted."
 slug: benchmarks
 title: Benchmarks
 authors: [dragos]
@@ -28,8 +28,8 @@ twelve physics cases Balaur is the quickest engine: about 3× Godot Jolt,
 - Nodes. `add_children`, `delete_children` in order, reverse and
   random, `get_node`, against Godot's own published run.
 - `scripts/bench_compare.py` writes the tables and charts from a run
-  beside Godot's results, so the [benchmarks page](/docs/benchmarks) is a
-  script's output, not a claim.
+  beside Godot's results, and the [benchmarks page](/docs/benchmarks) is that
+  script's output.
 
 ## What it changed
 
@@ -42,8 +42,7 @@ twelve physics cases Balaur is the quickest engine: about 3× Godot Jolt,
 - Children are indexed by name, so a path lookup is one hash per segment,
   and freeing a node with no components asks no plugin anything.
 
-- Adding children is quicker than Godot. Deleting and looking up are not yet,
-  and the table says so.
+- Adding children is quicker than Godot. Deleting and looking up are not yet.
 - Rapier is under both Balaur and Godot Rapier, so the gap between those two
   columns is the engine around the physics.
 

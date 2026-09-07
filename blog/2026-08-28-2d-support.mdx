@@ -1,5 +1,5 @@
 ---
-description: "Balaur blog: a rapier2d world beside the 3D one, 2D shapes drawn in z order, a 2D grid, camera and gizmo in the editor, and examples/angrynerds."
+description: "A rapier2d world beside the 3D one, 2D shapes drawn in z order, a 2D grid, camera and gizmo in the editor, and examples/angrynerds."
 slug: 2d-support
 title: 2D support
 authors: [dragos]
@@ -41,12 +41,10 @@ radius = 0.4
 
 <Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
 
-## Why a second world
+## Why rapier2d
 
-A 2D game on a 3D physics engine is a 3D game with two axes locked. Every
-tunnelling bug, joint limit and raycast filter knows it. rapier2d is
-Rapier's own 2D solver, shapes and determinism. Nothing about the 3D path
-changed.
+rapier2d is Rapier's own 2D solver, shapes and determinism, rather than the 3D
+solver with two axes locked. Nothing about the 3D path changed.
 
 `balaur edit examples/angrynerds`, or [play it in the browser](/examples/?play=angrynerds).
 Manual: [Physics](/docs/manual/physics), [The editor](/docs/manual/editor).

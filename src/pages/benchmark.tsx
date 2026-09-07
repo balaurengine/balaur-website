@@ -54,8 +54,9 @@ export default function Benchmark(): ReactNode {
       <main className={styles.main}>
         <Heading as="h1">Run the benchmarks</Heading>
         <p className={styles.lede}>
-          The project the <Link to="/docs/benchmarks">published numbers</Link> come from, built to WebAssembly. Pick
-          a case, watch it build, and read the median tick beside what rapier took inside it.
+          <code>examples/benchmark</code>, the project the{' '}
+          <Link to="/docs/benchmarks">published numbers</Link> come from, built to WebAssembly. Each case reports its
+          median physics tick and rapier&rsquo;s step inside it.
         </p>
         <div className={styles.stage}>
           <canvas id="balaur-canvas" className={styles.canvas} width={1600} height={1000} tabIndex={0} />
@@ -81,29 +82,32 @@ export default function Benchmark(): ReactNode {
           )}
         </div>
         <p className={styles.note}>
-          Needs WebGPU. The heavier cases build ten thousand bodies and take a few seconds before they settle.
+          Needs WebGPU. The heavier cases build ten thousand bodies and take a few seconds to settle.
         </p>
         <Heading as="h2">How to read these numbers</Heading>
-        <p>
-          They are the browser&rsquo;s. A web build is single-threaded, so the solver that runs on seven threads on a
-          desktop runs on one here, and the browser paces frames to the display rather than to a fixed tick. Read them
-          as this machine in this tab; the <Link to="/docs/benchmarks">published table</Link> is the comparison
-          against Godot, from a headless run at a fixed 60 Hz on a quiet machine.
-        </p>
-        <p>
-          Everything else is the same engine: the same scenes, the same rapier, the same scripts. Each case reports a
-          whole physics tick, rapier&rsquo;s own step inside it, and what the script cost crossing the seam, read
-          from{' '}
-          <Link to="/docs/reference/modules/engine">
-            <code>engine.timings()</code>
-          </Link>
-          , the profiler the editor&rsquo;s dock draws.
-        </p>
-        <p>
-          To run it on your own machine, where the numbers mean something:{' '}
-          <code>balaur run examples/benchmark --headless --fixed-tick -- --case=3d/pyramid</code>, or open it in the{' '}
-          <Link to="/editor">editor</Link> and press a case.
-        </p>
+        <ul>
+          <li>
+            A web build is single-threaded. The solver that runs on seven threads on a desktop runs on one here.
+          </li>
+          <li>The browser paces frames to the display rather than to a fixed tick.</li>
+          <li>
+            The <Link to="/docs/benchmarks">published table</Link> is the comparison against Godot: a headless run at
+            a fixed 60 Hz.
+          </li>
+          <li>
+            Same scenes, same rapier, same scripts as that run. The tick, rapier&rsquo;s step and the script cost
+            crossing the seam are read from{' '}
+            <Link to="/docs/reference/modules/engine">
+              <code>engine.timings()</code>
+            </Link>
+            , the profiler the editor&rsquo;s dock draws.
+          </li>
+          <li>
+            On your own machine:{' '}
+            <code>balaur run examples/benchmark --headless --fixed-tick -- --case=3d/pyramid</code>, or open it in
+            the <Link to="/editor">editor</Link> and press a case.
+          </li>
+        </ul>
       </main>
     </Layout>
   );
