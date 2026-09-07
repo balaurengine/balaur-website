@@ -258,7 +258,6 @@ const config: Config = {
           position: 'left',
           items: [
             {type: 'docSidebar', sidebarId: 'docsSidebar', label: 'Documentation'},
-            {to: '/docs/getting-started', label: 'Getting started'},
             {type: 'docSidebar', sidebarId: 'referenceSidebar', label: 'Reference'},
             {to: '/blog', label: 'Blog'},
           ],
