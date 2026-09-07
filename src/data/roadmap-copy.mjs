@@ -52,6 +52,8 @@ hide_table_of_contents: true
       `<>Built. The selection is a set: shift and ⌘ click, box select in both viewports, and a gizmo drag that moves, turns and scales the whole set. Group, align, distribute, hide, lock, isolate; outliner facet chips; a dropped file becoming a node; light, camera and frustum gizmos; a view-mode chip and camera bookmarks; a Pen tool over <code>path2d</code>; a material panel with texture slots; a Cost dock; and a Library of materials, lighting setups and templates behind <code>balaur new --template</code>. No sky ships yet.</>`,
     'Network dock and Play as two':
       `'Round trip, loss, rollbacks per second and the desync tick per link, and a second instance of the project launched headless and joined over loopback with the fault settings on.'`,
+    'A graph that writes Rune':
+      `<>Boxes and wires that emit a script. A <code>graphs/*.toml</code> asset writes the <code>.rn</code> beside it, so the digest, the debugger, hot reload and the language server all see ordinary Rune and nothing learns a second language. The palette is generated from the API reference, and the canvas is <code>egui-snarl</code> on the egui the widgets already use.</>`,
     'The editor in a browser':
       `'Shipped: the canvas, play and hot reload as on the desktop, a project the browser keeps across a refresh, a folder opened from your machine and taken back out as a zip, and the two builds a tab can finish by itself — a pack and a web bundle. Left: a project kept on a server rather than in one browser, and the native builds, which need a linker no browser has.'`,
     'Texture import settings':
@@ -60,18 +62,24 @@ hide_table_of_contents: true
       `'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.'`,
     'Scripts you can take':
       `<>The library dock ships materials, skies and models; this adds scripts. Fifteen short files with <code>exports()</code>, dropped onto a node and tuned in the inspector without opening one: movement in 2D and 3D, orbit, first-person, third-person and click-to-move cameras, follow, patrol, a spawner, a timer, health, a pickup, parallax. A copy lands in the project, so changing one is editing your own file.</>`,
+    'FBX import':
+      `<>The meshes, rigs and clips that never ship as glTF: <code>balaur import</code> over the <code>ufbx</code> crate. Mixamo is the case that forces it, since its downloads are FBX and a rig from there is one the retargeter already handles.</>`,
     'Extensions, tier two':
       `'Native extensions that add components and systems, and call back into scripts.'`,
     'Falling sand':
       `<>A Noita-shaped grid in 2D: sand pours, water flows, lava sets fire to wood and cools to stone, each cell following a rule table in a <code>cell_set</code> rather than a script of its own. It is not physics, so it is not in rapier and not in the default build — a <code>balaur_cells</code> plugin behind a feature that is off, on the fixed step and in the digest. Bodies couple through parry's 2D voxel collider, which <code>collider2d</code> already has and which a script already digs into.</>`,
     'Soft bodies, tearing, fluids':
       `'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.'`,
+    'Root motion':
+      `<>A clip that moves the character instead of sliding under it. The root bone's delta per tick is handed to <code>character2d</code> and <code>character3d</code> rather than written straight to the transform. Blending lands in 0.2; nothing reads a root track yet.</>`,
     'Animation blending':
       `'Blend trees and state machines that mix clips by weight. A rig is otherwise complete — five modifier kinds in 2D and 3D, retargeting, deform tracks and ragdolls — and what is missing is running two clips at once.'`,
     'A sequencer':
       `'Cutscenes and cameras on a timeline, with tracks that call something rather than only move it.'`,
     'Pause, time scale and smooth frames':
       `<>A pause that holds the game and keeps the menu alive, a <code>process</code> mode per subtree, slow motion and fast forward, motion interpolated between fixed steps so a 144 Hz display sees every frame move, and a tick rate setting.</>`,
+    'A controller-only shell':
+      `<>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand.</>`,
     'Interactivity without a script':
       `<>Built, bar the rigs. Hover, click, key, action, scroll and resize hooks on any drawn node; <code>states</code> naming a look; typed <code>[variables]</code> on the scene; and <code>[[nodes.bindings]]</code> rows the Events view writes, each one a call a script could make and convertible to one. A <code>when</code> is a comparison over the variables, so the editor reads it and diffs it. Orbit, first-person, third-person and click-to-move rigs as presets are what is left.</>`,
     'Navigation':
@@ -94,6 +102,8 @@ hide_table_of_contents: true
       `<>A <code>viewport</code> component: split screen, a camera rendered to a texture any sprite or material can read, picture-in-picture, and a camera with a projection, field of view and clip planes an author sets.</>`,
     'Video playback':
       `'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.'`,
+    'Decals and volumetric fog':
+      `<>A texture projected onto whatever is under it, for a scorch mark, a puddle or a poster, and fog that light shafts through. Neither exists in either dimension today: <code>environment</code> carries flat fog, and the pass a decal wants is the kiss3d fork's.</>`,
     'Post-process materials':
       `'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.'`,
     'WebTransport in the browser':
@@ -136,6 +146,10 @@ hide_table_of_contents: true
       `'Play Games Services, Sign in with Google, Play Billing, Play Integrity and Play Asset Delivery on Android, over the same module. An application id, an app bundle and 16 KB page alignment come first: without them Play refuses the upload, store or no store.'`,
     'Signed releases':
       `'The nightly and tagged builds, their runtime templates and the updater exist. What is missing is a download per platform that is signed and notarized, so it opens without a warning.'`,
+    'Suspend and resume':
+      `<>A phone call, a locked screen, an alt-tab, a console's suspend. Hooks a script answers, audio released and taken back, a save on the way out, and a tick that pauses rather than catching up on return. Nothing in the tree answers a <code>Suspended</code> event today.</>`,
+    'Per-platform project settings':
+      `<>One <code>project.toml</code>, with <code>[application.android]</code> and its siblings over it: window mode, tick rate, feature set and asset variant per target, resolved when the export runs rather than branched inside a script.</>`,
     'One-click deploy':
       `'Deploy to the web or to a phone from one command or one button: the game built, signed and put somewhere a player can reach it — a URL, itch.io, a device on the cable, TestFlight, Play or Steam. Today an export leaves a bundle on your disk and stops.'`,
     'Embedding on a page':

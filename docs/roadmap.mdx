@@ -190,6 +190,12 @@ import Roadmap from '@site/src/components/Roadmap';
         text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#post-process-materials',
       },
+      {
+        group: "Rendering",
+        title: 'Decals and volumetric fog',
+        text: <>A texture projected onto whatever is under it, for a scorch mark, a puddle or a poster, and fog that light shafts through. Neither exists in either dimension today: <code>environment</code> carries flat fog, and the pass a decal wants is the kiss3d fork's.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
+      },
     ],
   },
   {
@@ -269,6 +275,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Tile maps',
         text: <>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
+      },
+      {
+        group: "Editor",
+        title: 'A graph that writes Rune',
+        text: <>Boxes and wires that emit a script. A <code>graphs/*.toml</code> asset writes the <code>.rn</code> beside it, so the digest, the debugger, hot reload and the language server all see ordinary Rune and nothing learns a second language. The palette is generated from the API reference, and the canvas is <code>egui-snarl</code> on the egui the widgets already use.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-authoring-without-code.md',
       },
       {
         group: "Scripts and assets",
@@ -360,6 +372,12 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Shipping",
+        title: 'Suspend and resume',
+        text: <>A phone call, a locked screen, an alt-tab, a console's suspend. Hooks a script answers, audio released and taken back, a save on the way out, and a tick that pauses rather than catching up on return. Nothing in the tree answers a <code>Suspended</code> event today.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mobile-export.md',
+      },
+      {
+        group: "Shipping",
         title: 'Embedding on a page',
         text: <>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
@@ -378,6 +396,11 @@ import Roadmap from '@site/src/components/Roadmap';
     title: "What a bigger game asks for",
     items: [
       {
+        group: "Scripts and assets",
+        title: 'FBX import',
+        text: <>The meshes, rigs and clips that never ship as glTF: <code>balaur import</code> over the <code>ufbx</code> crate. Mixamo is the case that forces it, since its downloads are FBX and a rig from there is one the retargeter already handles.</>,
+      },
+      {
         group: "Physics and animation",
         title: 'Falling sand',
         text: <>A Noita-shaped grid in 2D: sand pours, water flows, lava sets fire to wood and cools to stone, each cell following a rule table in a <code>cell_set</code> rather than a script of its own. It is not physics, so it is not in rapier and not in the default build — a <code>balaur_cells</code> plugin behind a feature that is off, on the fixed step and in the digest. Bodies couple through parry's 2D voxel collider, which <code>collider2d</code> already has and which a script already digs into.</>,
@@ -387,6 +410,11 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Soft bodies, tearing, fluids',
         text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Root motion',
+        text: <>A clip that moves the character instead of sliding under it. The root bone's delta per tick is handed to <code>character2d</code> and <code>character3d</code> rather than written straight to the transform. Blending lands in 0.2; nothing reads a root track yet.</>,
       },
       {
         group: "Networking",
@@ -412,6 +440,11 @@ import Roadmap from '@site/src/components/Roadmap';
         text: <>A project on a Gamend account with a version per save, a share link with a role, who else is in the scene and what they have selected, comments pinned to nodes, and editing together — under a lock per scene first, over a CRDT if a team asks.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-collaboration.md',
       },
+      {
+        group: "Shipping",
+        title: 'Per-platform project settings',
+        text: <>One <code>project.toml</code>, with <code>[application.android]</code> and its siblings over it: window mode, tick rate, feature set and asset variant per target, resolved when the export runs rather than branched inside a script.</>,
+      },
     ],
   },
   {
@@ -419,6 +452,11 @@ import Roadmap from '@site/src/components/Roadmap';
     state: 'planned',
     title: "Consoles and headsets",
     items: [
+      {
+        group: "Gameplay and audio",
+        title: 'A controller-only shell',
+        text: <>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand.</>,
+      },
       {
         group: "Shipping",
         title: 'Console export',
