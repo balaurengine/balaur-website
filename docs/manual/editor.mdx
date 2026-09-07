@@ -117,8 +117,12 @@ Eleven docks sit under the viewport.
   frame has, from `engine::timings()`.
 - Cost: what the frame draws, from `render::stats()`: draws, triangles,
   texture bytes and a cloner's copies, per node.
-- Library: stock materials, lighting setups and project templates. Clicking a
-  material copies it in and points the selected node at it.
+- Library: stock materials, skies, models, lighting setups and project
+  templates. Clicking a material copies it in and points the selected node at
+  it. A sky is copied under `skies/` and named on the scene's environment; a
+  model or a lighting setup is instanced as a prefab. The skies are gradients
+  and the models are primitives, so the library is kilobytes and carries no
+  third-party licence.
 
 ![The Cost dock: seventeen draws and 3758 triangles, with a bar per node and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
 

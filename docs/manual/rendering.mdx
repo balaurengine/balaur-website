@@ -163,9 +163,11 @@ fog_color = "#9fb4c8"
 fog_density = 0.012
 ```
 
-A sky draws behind the scene and can be turned off with `show_sky` while its
+`sky` is a project-relative equirectangular image: `.hdr`, `.exr` or `.png`.
+It draws behind the scene and can be turned off with `show_sky` while its
 orientation and intensity still apply. Image-based lighting from the sky is
-not bound yet; the scene is lit by its `light3d` nodes and its ambient.
+not bound yet; the scene is lit by its `light3d` nodes and its ambient. The
+editor's Library dock ships three gradient skies to start from.
 
 ## A physically based material
 
