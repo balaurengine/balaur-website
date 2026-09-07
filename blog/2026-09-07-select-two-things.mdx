@@ -1,21 +1,21 @@
 ---
 description: "Balaur blog: a selection set with box select and align, lights and an environment a scene owns, a PBR material, and a scene that reacts with no script."
 slug: select-two-things
-title: Select two things and line them up
+title: Multi-select, lights and PBR materials
 authors: [dragos]
 image: /img/manual/editor_selection.png
 keywords: [game engine editor, multi select, box select, pbr material, 3d lights, event bindings]
 ---
 
-Ten minutes in a design tool: select two things, line them up, hide one, drop
-an image in, pick a material from a list. The editor let you do none of it.
-`S.sel` was one index.
+A selection set with box select, group, align and distribute. `light3d` and an
+`environment` a scene owns. A `pbr` material. Scenes that react with no
+script.
 
 {/* truncate */}
 
 ![The library dock, with a torus selected in the objects example](/img/manual/editor_selection.webp)
 
-## The selection is a set
+## Selection sets
 
 - **Box select and modifiers.** Shift and ⌘ click, a marquee on empty
   viewport in both 2D and 3D. A gizmo drag moves, turns and scales the whole
@@ -27,7 +27,7 @@ an image in, pick a material from a list. The editor let you do none of it.
 - **The inspector edits the set.** A property write reaches every selected
   node carrying that component.
 
-## A scene lights itself
+## Lights and environment
 
 - **`light3d`.** Point, directional and spot, with shadows and light layers.
   A scene with none keeps the engine's own key light; the first one retires
@@ -37,7 +37,7 @@ an image in, pick a material from a list. The editor let you do none of it.
 - **`package::pbr`.** GGX, Smith and Schlick over the frame's lights. Six
   texture slots, and a one-pixel neutral for every slot a material omits.
 
-## A scene reacts without a script
+## Event bindings
 
 `examples/hello` opens a door on the third click and carries no code for it.
 `[variables]` holds the count, `states` names the door's two looks, and two

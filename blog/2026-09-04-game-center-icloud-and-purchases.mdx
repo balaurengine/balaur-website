@@ -7,16 +7,15 @@ image: /img/social/stores.png
 keywords: [game center, icloud saves, storekit, in-app purchases, sign in with apple]
 ---
 
-`platform` is one module over every store. A script that unlocks an
-achievement says the same thing on Game Center as it will on Play Games
-and on Steam. Today the store behind it is Apple's.
+One `platform` module over every store: sign-in, achievements, leaderboards,
+cloud saves, purchases. Game Center, iCloud and StoreKit behind it.
 
 {/* truncate */}
 
 ```mermaid
 flowchart LR
   S["script"] --> P["platform: sign-in, achievements, leaderboards, cloud saves, purchases"]
-  P --> A["Game Center · iCloud · StoreKit: the apple module, today"]
+  P --> A["Game Center · iCloud · StoreKit: the apple module"]
   P --> G["Play Games (planned)"]
   P --> ST["Steam (planned)"]
   P --> N["no store loaded: every call answers unsupported"]

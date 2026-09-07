@@ -4,17 +4,14 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import {PageMetadata} from '@docusaurus/theme-common';
 import SoftwareJsonLd from '@site/src/components/SoftwareJsonLd';
+import releases from '@site/src/data/releases.json';
 import styles from './download.module.css';
 
 const REPO = 'balaurengine/balaur';
 // Two channels: the newest published version, and the `nightly` prerelease
-// every merge to the engine's main branch replaces.
+// every merge to the engine's main branch replaces. Both are read at build
+// time by scripts/gen-releases.mjs, not by the reader's browser.
 type Channel = 'stable' | 'nightly';
-const RELEASE_API = (channel: Channel) =>
-  channel === 'stable'
-    ? `https://api.github.com/repos/${REPO}/releases/latest`
-    : `https://api.github.com/repos/${REPO}/releases/tags/nightly`;
-const RELEASES_URL = `https://github.com/${REPO}/releases`;
 const COMMIT_URL = `https://github.com/${REPO}/commit`;
 
 type Asset = {
@@ -34,12 +31,6 @@ type Release = {
   target_commitish: string;
   assets: Asset[];
 };
-
-type State =
-  | {kind: 'loading'}
-  | {kind: 'none'}
-  | {kind: 'error'}
-  | {kind: 'release'; release: Release};
 
 const EDITOR_PLATFORMS: {key: string; label: string; detail: string; os: string | null}[] = [
   {key: 'macos-universal', label: 'macOS', detail: 'Universal: Apple Silicon and Intel', os: 'mac'},
@@ -215,10 +206,8 @@ function ReleaseView({release}: {release: Release}) {
         <>
           <Heading as="h2">Runtime templates and other builds</Heading>
           <p>
-            For exporting to <em>a platform other than the one you are on</em>.
-            <code>balaur export</code> fetches a missing one itself,
-            checksum-verified. For offline installs, drop one into{' '}
-            <code>templates/</code> beside the editor binary. See{' '}
+            For exporting to another platform. <code>balaur export</code>{' '}
+            fetches these itself; download one for an offline install. See{' '}
             <Link to="/docs/manual/shipping">Shipping a game</Link>.
           </p>
           <ul className={styles.assetList}>
@@ -244,28 +233,7 @@ function ReleaseView({release}: {release: Release}) {
 
 export default function Download(): ReactNode {
   const [channel, setChannel] = useState<Channel>('stable');
-  const [state, setState] = useState<State>({kind: 'loading'});
-
-  useEffect(() => {
-    let cancelled = false;
-    setState({kind: 'loading'});
-    fetch(RELEASE_API(channel), {headers: {Accept: 'application/vnd.github+json'}})
-      .then((res) => {
-        if (res.status === 404) return null;
-        if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
-        return res.json();
-      })
-      .then((release: Release | null) => {
-        if (cancelled) return;
-        setState(release?.tag_name ? {kind: 'release', release} : {kind: 'none'});
-      })
-      .catch(() => {
-        if (!cancelled) setState({kind: 'error'});
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [channel]);
+  const release = (releases as {stable: Release | null; nightly: Release | null})[channel];
 
   return (
     <Layout
@@ -275,18 +243,6 @@ export default function Download(): ReactNode {
       <PageMetadata image="/img/social/download.png" />
       <main className="container margin-vert--lg">
         <Heading as="h1">Download</Heading>
-        <p>
-          One binary that is also the <code>balaur</code> CLI and every game's
-          runtime. It ships with the editor project, the runtime template for
-          its own platform, and <code>include/balaur_extension.h</code>, the
-          header C extensions are built against.
-        </p>
-        <p>
-          {channel === 'stable'
-            ? 'A numbered release: the build to write a game against.'
-            : 'The nightly, rebuilt on every merge to main. It has whatever landed that day, proven by nothing but CI.'}{' '}
-          The <Link to="/editor">web editor</Link> runs a recent nightly.
-        </p>
 
         <div className={styles.channels} role="group" aria-label="Release channel">
           {(['stable', 'nightly'] as Channel[]).map((c) => (
@@ -303,57 +259,15 @@ export default function Download(): ReactNode {
           ))}
         </div>
 
-        {state.kind === 'loading' && (
+        {release ? (
+          <ReleaseView release={release} />
+        ) : (
           <div className={styles.stateCard}>
-            <p style={{margin: 0}}>Checking {channel === 'stable' ? 'releases' : 'the nightly'}…</p>
+            <Heading as="h2">
+              {channel === 'stable' ? 'No numbered release yet' : 'No nightly yet'}
+            </Heading>
           </div>
         )}
-
-        {state.kind === 'none' && channel === 'stable' && (
-          <div className={styles.stateCard}>
-            <Heading as="h2">No numbered release yet</Heading>
-            <p>
-              The first tagged version is not out. The nightly is rebuilt on
-              every push to <code>main</code> and is what there is to download
-              today.
-            </p>
-            <p style={{marginBottom: 0}}>
-              <button
-                type="button"
-                className="button button--primary"
-                onClick={() => setChannel('nightly')}>
-                Take the nightly
-              </button>
-            </p>
-          </div>
-        )}
-
-        {state.kind === 'none' && channel === 'nightly' && (
-          <div className={styles.stateCard}>
-            <Heading as="h2">No nightly yet</Heading>
-            <p>
-              CI publishes one on every push to <code>main</code>, and it
-              appears here on its own. Until then the engine builds from source
-              with a Rust toolchain: see{' '}
-              <Link to="/docs/getting-started">Getting started</Link>.
-            </p>
-            <p style={{marginBottom: 0}}>
-              <a href={RELEASES_URL}>Releases on GitHub</a>
-            </p>
-          </div>
-        )}
-
-        {state.kind === 'error' && (
-          <div className={styles.stateCard}>
-            <Heading as="h2">Could not reach GitHub</Heading>
-            <p style={{marginBottom: 0}}>
-              GitHub did not answer. See the{' '}
-              <a href={RELEASES_URL}>releases page</a> directly.
-            </p>
-          </div>
-        )}
-
-        {state.kind === 'release' && <ReleaseView release={state.release} />}
       </main>
     </Layout>
   );

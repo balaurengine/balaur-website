@@ -9,9 +9,8 @@ keywords: [rollback netcode, deterministic lockstep, quic, websocket, multiplaye
 
 import Clip from '@site/src/components/Clip';
 
-Two engines exchange inputs and nothing else. Each predicts the other,
-rolls back when it guessed wrong, and compares a digest per tick to catch a
-desync.
+Rollback between two engines that exchange only inputs. A digest per tick to
+catch a desync. One `Transport` trait over websockets and QUIC.
 
 {/* truncate */}
 

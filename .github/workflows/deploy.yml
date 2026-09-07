@@ -58,7 +58,11 @@ jobs:
       # prose is a red build: scripts/lint-prose.mjs holds the numbers.
       - name: yarn lint
         run: yarn lint
+      # The token is for scripts/gen-releases.mjs: a runner shares its IP with
+      # every other job on it, and 60 unauthenticated calls an hour is thin.
       - name: yarn build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: yarn build
       # Requires Pages to be enabled with Source: GitHub Actions in repo settings.
       - uses: actions/configure-pages@v6

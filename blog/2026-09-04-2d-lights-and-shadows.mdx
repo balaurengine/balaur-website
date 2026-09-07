@@ -7,9 +7,8 @@ image: /img/manual/rendering_lights2d.png
 keywords: [2d lighting, 2d shadows, light map, bloom, occluders]
 ---
 
-A 2D scene draws unlit until something lights it. Add one `light2d` and
-everything already drawn is multiplied by a light map: sprites, polygons,
-tile maps, with nothing else having to know.
+`light2d` and `occluder2d` build a light map every sprite, polygon and tile is
+multiplied by. Shadows come from the shapes a node already has.
 
 {/* truncate */}
 

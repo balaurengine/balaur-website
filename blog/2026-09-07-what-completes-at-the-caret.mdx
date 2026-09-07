@@ -1,14 +1,14 @@
 ---
 description: "Balaur blog: completion, hover, go-to-definition, rename and formatting, in the editor and over balaur lsp, from the engine's own API."
 slug: what-completes-at-the-caret
-title: What completes at the caret
+title: Completion, hover and go to definition
 authors: [dragos]
 image: /img/manual/script_completion.png
 keywords: [language server, code completion, lsp, game engine editor, rune scripting, vscode extension]
 ---
 
-The language server published diagnostics and nothing else. It now answers
-what completes at a caret, what is under it, and where that is defined.
+Completion, hover, signature help, go to definition, rename and formatting. In
+the editor and over `balaur lsp`, read from the engine's own API.
 
 {/* truncate */}
 
@@ -30,13 +30,13 @@ what completes at a caret, what is under it, and where that is defined.
 - **A VS Code extension spawns `balaur lsp`.** Zed and Neovim get a recipe
   each.
 
-## Where the completions come from
+## Where the API list comes from
 
 - **The engine records its own API**: 39 modules, 659 functions, 378
   constants, the list `balaur api` prints and the reference is built from.
 - **A lint keeps it complete.** CI fails on a function with no doc line.
 
-## What a keystroke costs
+## Latency
 
 - **1 ms after `::`, 1 ms on a component handle, 3 ms on a bare prefix**, on
   `editor/scripts/model.rn`, 1429 lines.

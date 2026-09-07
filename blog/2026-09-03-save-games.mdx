@@ -7,8 +7,9 @@ image: /img/manual/save_settings.png
 keywords: [save games, save file migration, versioned saves, user data directory]
 ---
 
-`save::write(slot, data)` and `save::read(slot)`: a table per user, written
-so a crash cannot truncate it, and migrated when the game moves on.
+`save::write(slot, data)` and `save::read(slot)`: a table per user, written so
+a crash cannot truncate it, stamped with a version and migrated one step at a
+time.
 
 {/* truncate */}
 

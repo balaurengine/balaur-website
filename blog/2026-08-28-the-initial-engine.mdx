@@ -7,8 +7,8 @@ image: /img/manual/hello_open.png
 keywords: [rust game engine, open source game engine, hot reload, ecs, balaur]
 ---
 
-The first commit: eight crates, one example, and the two things the engine
-is built around: hot reload that keeps state, and determinism.
+The first commit: eight crates, one example. A node tree over an ECS, scenes
+as TOML, scripts that hot reload with state kept, every subsystem a plugin.
 
 {/* truncate */}
 
@@ -39,7 +39,7 @@ body = "dynamic"                                # from balaur_physics
 collider = { shape = "ball", radius = 0.5 }     # from balaur_physics
 ```
 
-Scripts were Luau on day one; they are Rune now. Cross-platform
+Scripts were Luau here; they are Rune now. Cross-platform
 determinism was written down as non-negotiable before any of it was
 measured, and every subsystem since has been vetted against it.
 [Principles](/docs/principles) is the current form of that list.
