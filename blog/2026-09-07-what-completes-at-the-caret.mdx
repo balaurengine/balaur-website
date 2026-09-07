@@ -9,7 +9,7 @@ keywords: [language server, code completion, lsp, game engine editor, rune scrip
 
 The language server published diagnostics and nothing else. It now answers
 what completes at a caret, what is under it, and where that is defined, from
-the same list the reference is printed from.
+the list the reference is printed from.
 
 {/* truncate */}
 
@@ -18,34 +18,36 @@ the same list the reference is printed from.
 ## What landed
 
 - **Completion.** `physics2d::` gives that module's 66 functions and 48
-  constants. `node.body2d.` gives what acts on that component, plus the six a
-  handle always answers. `this.` gives the script's `exports()` and `pub fn`s.
+  constants. `node.body2d.` gives what acts on that component. `this.` gives
+  the script's `exports()` and `pub fn`s.
 - **Hover and signature help.** A signature, and the reference's own line.
-- **Go-to-definition.** `⌘B`. A project `pub fn` opens its file at its line;
-  engine API opens the **Docs dock**, which reads the reference from the
-  running engine, so a plugin's own module is in it.
-- **Formatting.** `balaur fmt .`, `--check` names what would change and exits
-  1. `⌥⇧F` in the editor.
-- **Rename and replace.** `⌘⇧R` renames an identifier, `⌘⇧F` replaces text,
-  both across the files a script's `mod` declarations reach and both listing
-  every match before anything is written.
-- **Symbols.** This file's, and the project's: `workspace/symbol` searches
-  every script a scene attaches.
-- **A VS Code extension.** `editors/code` spawns `balaur lsp`, so it shows
-  what the Script persona shows. Zed and Neovim get a recipe each.
+- **Go-to-definition.** `⌘B`. A project `pub fn` opens its file; engine API
+  opens the **Docs dock**, which reads the reference from the running engine.
+- **Formatting.** `balaur fmt .`, or `⌥⇧F` in the editor.
+- **Rename and replace.** `⌘⇧R` on an identifier, `⌘⇧F` on text, across the
+  files a script's `mod` declarations reach, every match listed first.
+- **Symbols.** This file's, and every script a scene attaches.
+- **A VS Code extension.** `editors/code` spawns `balaur lsp`. Zed and Neovim
+  get a recipe each.
 
 ## Where the completions come from
 
-- **The engine's own record.** 39 modules, 638 functions, 368 constants, as
-  declared. The same list `balaur api` prints and the reference is built from.
+- **The engine's own record.** 39 modules, 638 functions, 368 constants, the
+  list `balaur api` prints and the reference is built from.
 - **A lint keeps it complete.** CI fails on a function with no doc line.
+## What a keystroke costs
+
+- **1 ms after `::`, 1 ms on a component handle, 3 ms on a bare prefix**, on
+  `editor/scripts/model.rn`, 1429 lines.
+- **The bare prefix was 50 ms.** It listed a file's functions through a
+  compiled unit. Mid-edit a buffer usually does not compile, so it paid in
+  full and answered with nothing; it walks the `mod` graph as text now.
 
 ## Rune's own server is not reusable
 
 - **Its completion is `pub(super)`.** The one public entry owns its stdin
   loop, and the feature pulls in tokio, syntect, handlebars and rust-embed.
-- **Two pieces came across.** `Unit::debug_info()` lists a unit's functions,
-  and `rune::fmt` costs nothing beyond `alloc`.
+- **`rune::fmt` came across**, costing nothing beyond `alloc`.
 - **One needed the fork.** `Context::iter_functions` was `pub(crate)`; opening
   it up is what completes `"".len()`.
 
