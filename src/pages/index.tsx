@@ -85,6 +85,9 @@ export default function Home(): ReactNode {
               <Link className={clsx('button button--outline button--lg', styles.heroGhost)} to="/docs/getting-started">
                 Getting started
               </Link>
+              <Link className={clsx('button button--outline button--lg', styles.heroGhost)} to="/docs/roadmap">
+                Roadmap
+              </Link>
             </div>
           </div>
         </section>

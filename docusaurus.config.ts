@@ -252,8 +252,7 @@ const config: Config = {
         {to: '/features', label: 'Features', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
         // Everything there is to read, under one heading: the manual and the
-        // reference are each a sidebar, and the roadmap, changelog and devlog
-        // are the three pages people come back for.
+        // reference are each a sidebar, and the devlog sits with them.
         {
           label: 'Docs',
           position: 'left',
@@ -261,13 +260,13 @@ const config: Config = {
             {type: 'docSidebar', sidebarId: 'docsSidebar', label: 'Documentation'},
             {to: '/docs/getting-started', label: 'Getting started'},
             {type: 'docSidebar', sidebarId: 'referenceSidebar', label: 'Reference'},
-            // A plain link, not type: 'doc'. A doc navbar item is also active
-            // for every other page in the same sidebar, so it would light up
-            // on every page of the manual.
-            {to: '/docs/roadmap', label: 'Roadmap'},
             {to: '/blog', label: 'Devlog'},
           ],
         },
+        // A plain link, not type: 'doc'. A doc navbar item is also active for
+        // every other page in the same sidebar, so it would light up on every
+        // page of the manual.
+        {to: '/docs/roadmap', label: 'Roadmap', position: 'left'},
         {to: '/editor', label: 'Editor', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
         // Hidden until the donation page is ready. The one item that asks for
@@ -373,6 +372,27 @@ const config: Config = {
             {
               label: 'FAQ',
               to: '/faq',
+            },
+          ],
+        },
+        {
+          title: 'Try it',
+          items: [
+            {
+              label: 'Editor in the browser',
+              to: '/editor',
+            },
+            {
+              label: 'Examples',
+              to: '/examples',
+            },
+            {
+              label: 'Benchmarks',
+              to: '/benchmark',
+            },
+            {
+              label: 'Download',
+              to: '/download',
             },
           ],
         },
