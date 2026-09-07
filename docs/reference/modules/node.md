@@ -10,7 +10,9 @@ custom_edit_url: null
 
 What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).
 
-46 functions, 0 constants. Scripts reach it as `node::`.
+48 functions, 0 constants. Scripts reach it as `node::`.
+
+Acts on [`states`](../components/states.md): those functions are also methods on the component's handle, without the node argument.
 
 ## Functions
 
@@ -34,6 +36,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `global_scale()` | — | The node's scale in world space, as of the last transform sync. |
 | `global_visible(node)` | — | What the renderer sees: false when the node or any ancestor is hidden. |
 | `global_z_index(node)` | — | The layer the node actually draws on, with every ancestor's added in. |
+| `go(state: string)` | [`states`](../components/states.md) | Put the node in one of its `states`: the state's table is patched over the components it names, and `on_state_changed(from, to)` follows. A node already in that state is left alone. |
 | `has_component(component: string)` | — | Whether the node carries the named component. |
 | `has_method(method: string)` | — | Whether the node's script declares this method, so a caller can tell "no handler" from "a handler that answered nothing". |
 | `has_tag(node, tag: string)` | — | Whether the node is filed under a name. |
@@ -60,6 +63,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_visible(node, on: bool)` | — | Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides. |
 | `set_z_index(node, z: int, relative: bool)` | — | Put the node and its subtree on a draw layer: higher draws later. Relative by default, adding to the parent's layer; false makes it absolute. |
 | `stable_id()` | — | The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not. |
+| `state()` | [`states`](../components/states.md) | The state the node is in, or "" for the pose the scene gave it. |
 | `tags(node)` | — | The names the node is filed under, sorted. |
 | `translate(x: float, y: float, z: float)` | — | Move the node by an offset in its parent's space, given as three numbers or one vector. |
 | `visible(node)` | — | Whether the node itself is set to draw; an ancestor may still hide it. |

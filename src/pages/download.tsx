@@ -7,10 +7,13 @@ import SoftwareJsonLd from '@site/src/components/SoftwareJsonLd';
 import styles from './download.module.css';
 
 const REPO = 'balaurengine/balaur';
-// The build the page offers. `nightly` is the prerelease every merge to the
-// engine's main branch replaces; a version tag here pins the page to it.
-const RELEASE_TAG = 'nightly';
-const RELEASE_API = `https://api.github.com/repos/${REPO}/releases/tags/${RELEASE_TAG}`;
+// Two channels: the newest published version, and the `nightly` prerelease
+// every merge to the engine's main branch replaces.
+type Channel = 'stable' | 'nightly';
+const RELEASE_API = (channel: Channel) =>
+  channel === 'stable'
+    ? `https://api.github.com/repos/${REPO}/releases/latest`
+    : `https://api.github.com/repos/${REPO}/releases/tags/nightly`;
 const RELEASES_URL = `https://github.com/${REPO}/releases`;
 const COMMIT_URL = `https://github.com/${REPO}/commit`;
 
@@ -41,6 +44,7 @@ type State =
 const EDITOR_PLATFORMS: {key: string; label: string; detail: string; os: string | null}[] = [
   {key: 'macos-universal', label: 'macOS', detail: 'Universal: Apple Silicon and Intel', os: 'mac'},
   {key: 'windows-x64', label: 'Windows', detail: 'x64', os: 'win'},
+  {key: 'windows-arm64', label: 'Windows', detail: 'arm64', os: null},
   {key: 'linux-x64', label: 'Linux', detail: 'x64', os: 'linux'},
   {key: 'linux-arm64', label: 'Linux', detail: 'arm64', os: null},
 ];
@@ -151,8 +155,10 @@ function ReleaseView({release}: {release: Release}) {
   const [os, setOS] = useState<string | null>(null);
   useEffect(() => setOS(detectOS()), []);
 
-  const editorAsset = (key: string) =>
-    release.assets.find((a) => a.name.startsWith(`balaur-editor-${key}`));
+  const editorAsset = (key: string) => {
+    const named = release.assets.filter((a) => a.name.startsWith(`balaur-editor-${key}`));
+    return named.find((a) => a.name.endsWith('.dmg')) ?? named[0];
+  };
   const otherAssets = release.assets.filter(
     (a) => !a.name.startsWith('balaur-editor-'),
   );
@@ -237,11 +243,13 @@ function ReleaseView({release}: {release: Release}) {
 }
 
 export default function Download(): ReactNode {
+  const [channel, setChannel] = useState<Channel>('stable');
   const [state, setState] = useState<State>({kind: 'loading'});
 
   useEffect(() => {
     let cancelled = false;
-    fetch(RELEASE_API, {headers: {Accept: 'application/vnd.github+json'}})
+    setState({kind: 'loading'});
+    fetch(RELEASE_API(channel), {headers: {Accept: 'application/vnd.github+json'}})
       .then((res) => {
         if (res.status === 404) return null;
         if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
@@ -257,7 +265,7 @@ export default function Download(): ReactNode {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [channel]);
 
   return (
     <Layout
@@ -274,18 +282,53 @@ export default function Download(): ReactNode {
           header C extensions are built against.
         </p>
         <p>
-          No numbered release yet. This is the nightly, rebuilt on every merge
-          to <code>main</code>. The <Link to="/editor">web editor</Link> runs a
-          recent one.
+          {channel === 'stable'
+            ? 'A numbered release: the build to write a game against.'
+            : 'The nightly, rebuilt on every merge to main. It has whatever landed that day, proven by nothing but CI.'}{' '}
+          The <Link to="/editor">web editor</Link> runs a recent nightly.
         </p>
+
+        <div className={styles.channels} role="group" aria-label="Release channel">
+          {(['stable', 'nightly'] as Channel[]).map((c) => (
+            <button
+              key={c}
+              type="button"
+              aria-pressed={channel === c}
+              className={
+                channel === c ? `${styles.channel} ${styles.channelOn}` : styles.channel
+              }
+              onClick={() => setChannel(c)}>
+              {c === 'stable' ? 'Stable' : 'Nightly'}
+            </button>
+          ))}
+        </div>
 
         {state.kind === 'loading' && (
           <div className={styles.stateCard}>
-            <p style={{margin: 0}}>Checking the nightly…</p>
+            <p style={{margin: 0}}>Checking {channel === 'stable' ? 'releases' : 'the nightly'}…</p>
           </div>
         )}
 
-        {state.kind === 'none' && (
+        {state.kind === 'none' && channel === 'stable' && (
+          <div className={styles.stateCard}>
+            <Heading as="h2">No numbered release yet</Heading>
+            <p>
+              The first tagged version is not out. The nightly is rebuilt on
+              every push to <code>main</code> and is what there is to download
+              today.
+            </p>
+            <p style={{marginBottom: 0}}>
+              <button
+                type="button"
+                className="button button--primary"
+                onClick={() => setChannel('nightly')}>
+                Take the nightly
+              </button>
+            </p>
+          </div>
+        )}
+
+        {state.kind === 'none' && channel === 'nightly' && (
           <div className={styles.stateCard}>
             <Heading as="h2">No nightly yet</Heading>
             <p>
@@ -304,8 +347,8 @@ export default function Download(): ReactNode {
           <div className={styles.stateCard}>
             <Heading as="h2">Could not reach GitHub</Heading>
             <p style={{marginBottom: 0}}>
-              The nightly could not be fetched. See the{' '}
-              <a href={RELEASES_URL}>releases page on GitHub</a> directly.
+              GitHub did not answer. See the{' '}
+              <a href={RELEASES_URL}>releases page</a> directly.
             </p>
           </div>
         )}

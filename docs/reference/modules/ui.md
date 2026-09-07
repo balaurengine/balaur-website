@@ -27,7 +27,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `central_rect() -> float, float, float, float` | — | The x, y, width and height of the surface being drawn into, in design pixels. |
 | `circle_button(string, any?) -> bool` | — | Draw a round button holding one glyph, `d` design pixels across; true on the frame it was clicked. `disabled` greys it out and swallows the click. |
 | `clipboard() -> string` | — | The text pasted this frame, empty otherwise: the platform clipboard is not readable on demand. |
-| `code_editor(string, string, any?) -> string, bool, int?` | — | Draw an editable, highlighted buffer with a gutter; returns the text, whether it changed, and any line clicked. |
+| `code_editor(string, string, any?) -> string, bool, int?, any` | — | Draw an editable, highlighted buffer with a gutter; returns the text, whether it changed, any line clicked, and the caret as `#{ x, y, index }`. |
 | `code_line(string, any, any?)` | — | Draw one read-only code row from a list of `{ text, color, strong }` spans, with a gutter label on the left. |
 | `color(any?) -> [float], bool` | — | Draw a colour picker over `value`, an `[r, g, b, a]` of unit floats; returns the colour and whether it changed. |
 | `cursor_y() -> float` | — | How far down the current panel the next widget will land, in design pixels: the same origin `rect_stroke` measures from. |

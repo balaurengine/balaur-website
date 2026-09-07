@@ -175,7 +175,7 @@ section carries the two rest-pose verbs.
 ### Modifiers
 
 A `modifier2d` runs after the clip every frame, so a clip poses the rig and a
-modifier has the last word. `modifier3d` is the same five kinds over `bone3d`.
+modifier has the last word. `modifier3d` is the same six kinds over `bone3d`.
 
 | `kind` | What it does |
 | --- | --- |
@@ -184,6 +184,7 @@ modifier has the last word. `modifier3d` is the same five kinds over `bone3d`.
 | `fabrik` | Reaches with a chain of any length. Converges from any pose. `iterations`, `tolerance`. |
 | `ccdik` | The same reach, one bone at a time, and the only one that can hold an `angle_limit` per bone. |
 | `jiggle` | No target: a spring per bone toward the pose the clip left it in, so a chain trails a walk and settles when it stops. `stiffness`, `damping`, `mass`, `gravity`, `use_gravity`. |
+| `follow` | Moves the node itself to its target plus `offset`, `lag` seconds behind. It closes the same share of the gap on every fixed tick, so the path is the same at any frame rate. |
 
 `chain` says how many bones a chain solver walks, counting the driven one.
 Zero walks to the deepest tip.
@@ -193,6 +194,19 @@ Zero walks to the deepest tip.
 kind = "two_bone_ik"
 bone = "Shoulder"
 target = "Target"
+```
+
+`follow` is the one that drives a node rather than a bone, so a camera trails
+what it watches with no script. Its memory is the node's own transform, which
+means a rollback puts a follower back where the snapshot had it.
+
+```toml
+# A camera that trails the player a fifth of a second behind.
+[nodes.modifier3d]
+kind = "follow"
+target = "../Player"
+lag = 0.2
+offset = [0, 3, 8]
 ```
 
 ```toml

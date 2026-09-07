@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # <span class="ref-icon ref-icon--3d" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,129.09V232a8,8,0,0,1-3.84-1l-88-48.16a8,8,0,0,1-4.16-7V80.2a8,8,0,0,1,.7-3.27Z" opacity="0.2"/><path d="M223.68,66.15,135.68,18h0a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32h0l80.34,44L128,120,47.66,76ZM40,90l80,43.78v85.79L40,175.82Zm96,129.57V133.82L216,90v85.78Z"/></svg></span>`mesh`
 
-`3d` · `render` · 4 properties · 3D
+`3d` · `render` · 6 properties · 3D
 
 Authored 3D geometry from a `mesh` asset, drawn at the node and deformed by the rig `skeleton` names when the asset carries a skin.
 
@@ -18,7 +18,9 @@ In a scene, `mesh` is the node key that applies it. A script reaches the same pr
 
 | property | type | default | description |
 | --- | --- | --- | --- |
+| `layers` | int | `-1` | Light-layer bitmask; a `light3d` lights this when their masks share a bit. -1 is every layer |
 | `material` | asset · [`material`](../assets/material.md) | — | The material this draws with; empty draws with the built-in one |
+| `shadows` | bool | `true` | Whether this casts a shadow from the lights that cast |
 | `skeleton` | string | — | Node path to the rig a skinned mesh deforms with, relative to this node; empty means this node |
 | `source` | asset · [`mesh`](../assets/mesh.md) | — | The mesh asset this node draws |
 | `texture` | string | — | Image file, project-relative; empty draws the colour alone |

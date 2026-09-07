@@ -23,6 +23,24 @@ import Roadmap from '@site/src/components/Roadmap';
         plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
       },
       {
+        group: "Editor",
+        title: 'Tile maps',
+        text: <>A tileset says what each tile is, and the map draws it: collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk. Quarter-tile sheets draw a cell as four quarters picked by the cells touching each corner, so a five-tile sheet covers all 47 neighbourhoods.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
+      },
+      {
+        group: "Editor",
+        title: 'Script completion and hover',
+        text: <>Type <code>physics2d::</code> and the list is that module's 66 functions and 48 constants, each with the line the reference prints. Type <code>node.body2d.</code> and it is what acts on that component. Hover names a function's signature and what it does; go-to-definition opens the file, or the Docs dock when the definition is the engine's. <code>balaur fmt</code> lays a project out, rename rewrites every file a script's <code>mod</code> declarations reach, and the same server answers a VS Code, Zed or Neovim client.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
+      },
+      {
+        group: "Editor",
+        title: 'Selection, alignment and a library',
+        text: <>Built. The selection is a set: shift and ⌘ click, box select in both viewports, and a gizmo drag that moves, turns and scales the whole set. Group, align, distribute, hide, lock, isolate; outliner facet chips; a dropped file becoming a node; light, camera and frustum gizmos; a view-mode chip and camera bookmarks; a Pen tool over <code>path2d</code>; a material panel with texture slots; a Cost dock; and a Library of materials, skies, models, rigs, lighting setups and templates behind <code>balaur new --template</code>.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
+      },
+      {
         group: "Scripts and assets",
         title: 'Rune scripting',
         text: <>One language, chosen for being deterministic: Rune, with a <code>math</code> module that answers the same on every platform. Exported properties, component handles on nodes, hot reload, named events between scripts, modules loaded from disk or a pack, and a debugger with breakpoints, stepping and frames over the Debug Adapter Protocol. The API documents itself, and <code>balaur api</code> prints it.</>,
@@ -53,9 +71,21 @@ import Roadmap from '@site/src/components/Roadmap';
         plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
       },
       {
+        group: "Gameplay and audio",
+        title: 'Interactivity without a script',
+        text: <>Built, bar the rigs. Hover, click, key, action, scroll and resize hooks on any drawn node; <code>states</code> naming a look; typed <code>[variables]</code> on the scene; and <code>[[nodes.bindings]]</code> rows the Events view writes, each one a call a script could make and convertible to one. A <code>when</code> is a comparison over the variables, so the editor reads it and diffs it. Orbit, first-person, third-person and click-to-move rigs as presets are what is left.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
+      },
+      {
         group: "Rendering",
         title: 'What draws today',
         text: <>Sprites, atlases and tile maps; 2D lights and shadows; WESL shaders and material assets, including ones that read the screen; bloom, SSAO, SSR and depth of field; ten 3D primitives and six 2D ones, every one a mesh built headless; path assets stroked, extruded, revolved and swept; booleans; a <code>cloner</code>; and textured particles.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
+      },
+      {
+        group: "Rendering",
+        title: 'Post-process materials',
+        text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/CHANGELOG.md',
       },
       {
@@ -83,18 +113,6 @@ import Roadmap from '@site/src/components/Roadmap';
     state: 'building',
     title: "Nothing blocks an ordinary game",
     items: [
-      {
-        group: "Editor",
-        title: 'Script completion and hover',
-        text: <>Type <code>physics2d::</code> and the list is that module's 66 functions and 48 constants, each with the line the reference prints. Type <code>node.body2d.</code> and it is what acts on that component. Hover names a function's signature and what it does; go-to-definition opens the file, or the Docs dock when the definition is the engine's. <code>balaur fmt</code> lays a project out, rename rewrites every file a script's <code>mod</code> declarations reach, and the same server answers a VS Code, Zed or Neovim client. Semantic tokens, inlay hints and code actions are not planned.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-script-tooling.md',
-      },
-      {
-        group: "Editor",
-        title: 'Selection, alignment and a library',
-        text: <>Built. The selection is a set: shift and ⌘ click, box select in both viewports, and a gizmo drag that moves, turns and scales the whole set. Group, align, distribute, hide, lock, isolate; outliner facet chips; a dropped file becoming a node; light, camera and frustum gizmos; a view-mode chip and camera bookmarks; a Pen tool over <code>path2d</code>; a material panel with texture slots; a Cost dock; and a Library of materials, lighting setups and templates behind <code>balaur new --template</code>. No sky ships yet.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor-ergonomics.md',
-      },
       {
         group: "Scripts and assets",
         title: 'Texture import settings',
@@ -186,12 +204,6 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Rendering",
-        title: 'Post-process materials',
-        text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#post-process-materials',
-      },
-      {
-        group: "Rendering",
         title: 'Decals and volumetric fog',
         text: <>A texture projected onto whatever is under it, for a scorch mark, a puddle or a poster, and fog that light shafts through. Neither exists today: <code>environment</code> carries flat fog, and neither pass is in the kiss3d fork's list, so both are ours to write.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
@@ -272,12 +284,6 @@ import Roadmap from '@site/src/components/Roadmap';
     items: [
       {
         group: "Editor",
-        title: 'Tile maps',
-        text: <>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
-      },
-      {
-        group: "Editor",
         title: 'A graph that writes Rune',
         text: <>Boxes and wires that emit a script. A <code>graphs/*.toml</code> asset writes the <code>.rn</code> beside it, so the digest, the debugger, hot reload and the language server all see ordinary Rune and nothing learns a second language. The palette is generated from the API reference, and the canvas is <code>egui-snarl</code> on the egui the widgets already use.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-authoring-without-code.md',
@@ -293,12 +299,6 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Extensions, tier two',
         text: 'Native extensions that add components and systems, and call back into scripts.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-c-api.md#what-tier-1-does-not-do',
-      },
-      {
-        group: "Gameplay and audio",
-        title: 'Interactivity without a script',
-        text: <>Built, bar the rigs. Hover, click, key, action, scroll and resize hooks on any drawn node; <code>states</code> naming a look; typed <code>[variables]</code> on the scene; and <code>[[nodes.bindings]]</code> rows the Events view writes, each one a call a script could make and convertible to one. A <code>when</code> is a comparison over the variables, so the editor reads it and diffs it. Orbit, first-person, third-person and click-to-move rigs as presets are what is left.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-interactivity.md',
       },
       {
         group: "Gameplay and audio",
@@ -396,6 +396,11 @@ import Roadmap from '@site/src/components/Roadmap';
     title: "What a bigger game asks for",
     items: [
       {
+        group: "Editor",
+        title: 'Semantic tokens, inlay hints and code actions',
+        text: <>The rest of the language-server surface: colouring that comes from the compiler rather than a TextMate grammar, an inferred type shown inline beside a binding, and a quick fix offered on a diagnostic. Held back on purpose until completion, hover and rename have been used enough that the gaps are known rather than guessed.</>,
+      },
+      {
         group: "Scripts and assets",
         title: 'FBX import',
         text: <>The meshes, rigs and clips that never ship as glTF: <code>balaur import</code> over the <code>ufbx</code> crate. Mixamo is the case that forces it, since its downloads are FBX and a rig from there is one the retargeter already handles.</>,
@@ -462,6 +467,12 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Gameplay and audio",
         title: 'A controller-only shell',
         text: <>What a console and a television ask of an interface. Directional focus between widgets rather than <code>focus_next</code> alone, an on-screen keyboard for a text field, safe-area insets applied to the layout instead of only reported by <code>render.safe_area</code>, and button glyphs that follow the pad in hand. The screens asking for it are a console, a tvOS box and an Android TV.</>,
+      },
+      {
+        group: "Shipping",
+        title: 'The shell a phone has',
+        text: <>Opening a link works on every desktop and in a browser tab, and on neither phone: iOS wants its own open call and Android an intent, so both answer today that they have no opener. Revealing a file in a file manager is a desktop idea and stays one.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-mobile-export.md',
       },
       {
         group: "Shipping",

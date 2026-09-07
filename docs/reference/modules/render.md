@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.
 
-63 functions, 20 constants. Scripts reach it as `render::`.
+64 functions, 30 constants. Scripts reach it as `render::`.
 
 Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -77,6 +77,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `shape2d(node) -> string, float, float` | [`shape2d`](../components/shape2d.md) | The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape. |
 | `shape3d(node) -> string, float, float, float` | [`shape3d`](../components/shape3d.md) | The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape. |
 | `sprite(node) -> string, int, int, int` | [`sprite`](../components/sprite.md) | The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite. |
+| `stats() -> any` | — | What this frame draws: `{ draws, triangles, texture_bytes, textures, nodes }`, where `nodes` is a row per node that drew, each `{ node, draws, triangles, texture_bytes, copies }`. Presentation, never simulation: nothing in the digest reads it. |
 | `terrain(node, int, int) -> int` | [`tilemap`](../components/tilemap.md) | The terrain value painted at a column and row, or -1 where nothing was painted. |
 | `text(node) -> string` | [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md) | The text a node draws, as it was last set — not the localized string a `text_key` resolves to. |
 | `text_size(string, any?) -> float, float` | — | The width and height `text` shapes to, in font pixels, with the project's own fonts and never a system face — so a headless run and a windowed one answer the same. A width is presentation: writing one into state puts presentation in the digest. |
@@ -90,8 +91,13 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- |
 | `CAMERA_2D` | `2d` |
 | `CAMERA_3D` | `3d` |
+| `FOG_EXPONENTIAL` | `exponential` |
+| `FOG_EXPONENTIAL_SQUARED` | `exponential_squared` |
+| `FOG_LINEAR` | `linear` |
+| `FOG_NONE` | `none` |
 | `LIGHT_DIRECTIONAL` | `directional` |
 | `LIGHT_POINT` | `point` |
+| `LIGHT_SPOT` | `spot` |
 | `SHAPE_BALL` | `ball` |
 | `SHAPE_CAPSULE` | `capsule` |
 | `SHAPE_CIRCLE` | `circle` |
@@ -108,3 +114,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `SHAPE_STAR` | `star` |
 | `SHAPE_TORUS` | `torus` |
 | `SHAPE_TUBE` | `tube` |
+| `TONEMAP_ACES` | `aces` |
+| `TONEMAP_AGX` | `agx` |
+| `TONEMAP_NEUTRAL` | `neutral` |
+| `TONEMAP_NONE` | `none` |
+| `TONEMAP_REINHARD` | `reinhard` |

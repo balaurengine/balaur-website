@@ -55,6 +55,7 @@ struct Params { speed: f32, rings: f32, tint: vec4<f32> }
 | --- | --- |
 | `package::sprite` | The 2D contract: frame and object uniforms, vertex inputs, `vertex` and `place`, `sample_albedo`, `tint`, `time` |
 | `package::mesh` | The 3D contract, with `shade(in)` for the scene's lights and fog |
+| `package::post` | A pass over the whole frame: `fullscreen`, `frame(uv)` and `texel()` |
 
 A shader is its own two entry points and nothing else.
 
@@ -66,6 +67,34 @@ A shader is its own two entry points and nothing else.
   omits is zero.
 - `[features]` are the `@if` flags that pick a variant at link time.
 - A plugin can register shader modules a project's shader imports.
+
+## A pass over the whole frame
+
+A material named on [`camera.post`](./rendering.mdx#your-own-passes) is drawn over
+the frame instead of over a node. It imports `package::post`, takes no mesh
+and no texture of its own, and keeps its `Params` at `@group(1)`.
+
+```wesl
+import package::post::{PostInput, fullscreen, frame};
+
+struct Params { amount: f32 }
+@group(1) @binding(0) var<uniform> params: Params;
+
+@vertex fn vs_main(@builtin(vertex_index) index: u32) -> PostInput {
+    return fullscreen(index);
+}
+
+@fragment fn fs_main(in: PostInput) -> @location(0) vec4<f32> {
+    let c: vec4<f32> = frame(in.uv);
+    return vec4<f32>(mix(c.rgb, vec3<f32>(1.0) - c.rgb, params.amount), 1.0);
+}
+```
+
+- `frame(uv)` is what the pass was handed: the film in linear light before
+  `tonemap`, the finished picture after it.
+- `texel()` is the size of one texel, for a pass that reads its neighbours.
+- The same material may sit on both sides of `tonemap`. It is compiled once
+  per side, because the two write different formats.
 
 ## In the editor
 

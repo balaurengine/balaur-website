@@ -102,6 +102,30 @@ bloom_intensity = 0.7   # how much is added back
 - Unlike `ambient`, `post` is not per-dimension. The effects run over the
   whole film, so the last current camera of either kind sets them.
 
+### Your own passes
+
+`post` is a list in the order it runs, and a name the engine does not know is
+a `material` drawn over the whole frame.
+
+```toml
+[nodes.camera]
+post = ["fog", "tonemap", "bloom", "materials/grade.toml"]
+```
+
+- Where the engine's own passes run is fixed by the pipeline: `ssao` and
+  `ssr` feed shading, and `bloom` rides the tonemap. Naming one switches it
+  on and nothing more.
+- What the order decides is your materials, and `tonemap` says which side of
+  it each falls on. Before it a pass reads the film in linear light, and what
+  it writes is what blooms. After it a pass reads the tonemapped picture.
+- A list that never names `tonemap` has it at the head, so a plain list of
+  materials is a chain over the finished frame.
+- A pass that will not compile is reported and left out, so a typo costs that
+  pass and not the frame.
+
+See [Shaders](./shaders.mdx#a-pass-over-the-whole-frame) for what a post
+  material imports.
+
 ## What the light map reaches
 
 - The multiply lands on everything already drawn: sprites, polygons, tile

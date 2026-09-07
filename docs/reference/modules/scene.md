@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The node tree: its root, lookup by path, spawning and instancing. Also the component and preset vocabulary an editor builds its palette from.
 
-16 functions, 0 constants. Scripts reach it as `scene::`.
+22 functions, 0 constants. Scripts reach it as `scene::`.
 
 ## Functions
 
@@ -19,6 +19,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | function | acts on | what it does |
 | --- | --- | --- |
 | `apply_preset(node: node, name: string)` | — | Add every component a preset names to the node; a part that fails leaves the parts before it in place. |
+| `bindable_events()` | — | Every event a `[[nodes.bindings]]` row may answer, in the order an editor offers them. |
+| `binding_actions()` | — | Every action a binding row may do, in the order an editor offers them. |
 | `component_properties(name: string, params: any)` | — | What a component's `apply` would receive for `params`: the schema's defaults with a shorthand or a partial table merged over them. This is how a tool compares two spellings of the same component. |
 | `component_schema(name: string)` | — | A component type's property schema as a table; nil for a name nothing registered. |
 | `component_tags(name: string)` | — | The facets a component type is filed under, for filtering a palette; nil for a name nothing registered. |
@@ -29,8 +31,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `preset_info(name: string)` | — | A preset's description, tags and the components it adds; nil for a name nothing registered. |
 | `presets()` | — | The names of every registered preset. |
 | `root()` | — | The tree's root node. |
+| `set_variable(name: string, value: any)` | — | Write a scene variable, coerced to the type it was declared with. Every node declaring `on_variable_changed` hears about it at the end of the tick; writing the value it already holds says nothing. |
 | `source(path: string)` | — | A scene file's raw TOML text, project-relative and found inside the pack in a packed run; nil when missing. |
 | `spawn(name: string, parent: node?)` | — | Create one empty named node under the given parent, or under the root when none is given. |
+| `switch(path: string, options: map?)` | — | Replace the scene with another one at the end of this tick, so a script asking inside `update` is not freeing the tree it runs in. `fade` is seconds the renderer crosses over; reset is a switch to the same file. |
 | `tagged(tag: string)` | — | Every node filed under a tag, in tree order; what a scene's `tags` key and `node.add_tag` feed. |
 | `unmet_expectations(node: node)` | — | Components on the node whose expectations nothing satisfies, as `{ component, expects }`; advisory only. |
+| `variable(name: string)` | — | A scene variable's value, or nil for a name nothing declared. A scene declares them under `[variables]`. |
+| `variables()` | — | Every declared variable as `{ name, type, value, persist }`, in name order. |
 | `with_component(component: string)` | — | Every node carrying the named component, in tree order. What a script asks instead of walking the tree itself. |

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Files on disk, project-relative unless the path is absolute, so a script cannot wander the filesystem by accident. This is the disk itself: a packed build's contents are reached through `assets` and `scene.source`.
 
-8 functions, 0 constants. Scripts reach it as `fs::`.
+9 functions, 0 constants. Scripts reach it as `fs::`.
 
 ## Functions
 
@@ -18,6 +18,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
+| `copy(from: string, to: string)` | — | Copy a file byte for byte, creating the destination's parent first. What `read` and `write` cannot do for an image or a model. |
 | `exists(path: string)` | — | Whether a project-relative path has anything at it, file or directory. |
 | `list(path: string)` | — | A directory's entries as `{ name, is_dir }`, sorted, dotfiles skipped; empty for a directory that is not there. |
 | `mkdir(path: string)` | — | Create a project-relative directory and every parent it needs. |

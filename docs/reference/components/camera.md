@@ -24,5 +24,5 @@ In a scene, `camera` is the node key that applies it. A script reaches the same 
 | `current` | bool | `true` | Whether this camera drives the view; the last current one wins |
 | `kind` | enum | `3d` | Which camera this node drives One of `3d`, `2d`. |
 | `look_at` | vec3 | `[0,0,0]` | World point the 3D camera looks at |
-| `post` | flags | `[]` | Screen-space effects the frame resolves through; `ssao`, `ssr` and `dof` are 3D only One of `bloom`, `ssao`, `ssr`, `dof`. |
+| `post` | strings | `[]` | The frame's passes, in order. bloom, ssao, ssr, dof, tonemap name the engine's own -- `ssao`, `ssr` and `dof` are 3D only, and where each physically runs is fixed by the pipeline. Any other name is a `material` asset drawn over the whole frame, and those run in the order given. `tonemap` is where the film becomes a picture: a material before it works in linear light and is what blooms, one after it works on the finished frame, and a list that does not name it has it at the head |
 | `zoom` | float | `60` | 2D zoom in logical pixels per world unit At least 0.01. |

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Prose lints for the devlog and the manual. They encode one rule: a post is
+// Prose lints for the blog and the manual. They encode one rule: a post is
 // facts, not prose. Every number here was set from the posts that read right
 // (blog/2026-09-04-gpu-skinning.mdx, audio-buses.mdx): a post is under 300
 // words of prose, a sentence under 35 words, a paragraph under 60, and at
@@ -45,7 +45,7 @@ const HEURISTIC_TYPES = new Set([
 ]);
 
 const PROFILES = {
-  // The devlog: short by rule.
+  // The blog: short by rule.
   blog: {words: 300, sentence: 35, paragraph: 60, paragraphs: 4, truncate: true},
   // The manual: as long as it needs to be, but in short sentences.
   docs: {words: Infinity, sentence: 35, paragraph: 90, paragraphs: Infinity, truncate: false},

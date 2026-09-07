@@ -17,7 +17,7 @@ export default function NotFoundContent({className}: Props): ReactNode {
         <meta name="robots" content="noindex, follow" />
         <meta
           name="description"
-          content="Nothing at this address. Links to the Balaur manual, the reference, the examples and the devlog, and where to report a broken link."
+          content="Nothing at this address. Links to the Balaur manual, the reference, the examples and the blog, and where to report a broken link."
         />
       </Head>
       <div className="row">
@@ -37,7 +37,7 @@ export default function NotFoundContent({className}: Props): ReactNode {
               <Link to="/examples">Examples</Link> — the projects that ship with the engine
             </li>
             <li>
-              <Link to="/blog">Devlog</Link> — what shipped, and when
+              <Link to="/blog">Blog</Link> — what shipped, and when
             </li>
             <li>
               <Link to="/">Home</Link>

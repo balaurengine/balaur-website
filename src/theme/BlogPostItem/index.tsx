@@ -11,7 +11,7 @@ import styles from './styles.module.css';
 type Props = WrapperProps<typeof BlogPostItemType>;
 
 // A post is the only page on the site two levels deep without a sidebar: the
-// trail is its one link back up to the devlog, and what Google renders in
+// trail is its one link back up to the blog, and what Google renders in
 // place of the URL in a result. Its own component because useBlogMetadata()
 // only resolves on a post's route — the list page renders BlogPostItem too.
 function PostBreadcrumbs(): ReactNode {

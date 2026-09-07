@@ -49,18 +49,14 @@ function Header() {
             Download
           </Link>
         </div>
-        {/* The rest of the site as chips, so a phone reaches every main page
-            without opening the menu. */}
+        {/* The four pages a first visit asks for, as chips, so a phone reaches
+            them without opening the menu. */}
         <div className={clsx(styles.buttons, styles.heroLinks)}>
           {[
             {to: '/features', label: 'Features'},
             {to: '/docs/roadmap', label: 'Roadmap'},
-            {to: '/editor', label: 'Editor in the browser'},
-            {to: '/examples', label: 'Examples'},
-            {to: '/benchmark', label: 'Benchmarks'},
             {to: '/compare', label: 'Compare'},
-            {to: '/docs/principles', label: 'Principles'},
-            {to: '/blog', label: 'Devlog'},
+            {to: '/blog', label: 'Blog'},
           ].map(({to, label}) => (
             <Link
               key={to}

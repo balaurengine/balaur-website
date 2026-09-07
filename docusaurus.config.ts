@@ -32,7 +32,7 @@ const config: Config = {
   themes: [
     '@docusaurus/theme-mermaid',
     [
-      // Search over the docs, the reference, the pages and the devlog, built
+      // Search over the docs, the reference, the pages and the blog, built
       // into the site at build time — no service, no account, works offline.
       '@easyops-cn/docusaurus-search-local',
       {
@@ -148,7 +148,7 @@ const config: Config = {
       alternateName: 'Balaur Engine',
       url: `${url}/`,
       description:
-        'Documentation, devlog and downloads for Balaur, a deterministic 2D and 3D game engine in Rust.',
+        'Documentation, blog and downloads for Balaur, a deterministic 2D and 3D game engine in Rust.',
       inLanguage: 'en',
       publisher: {'@type': 'Organization', name: 'Balaur', url: `${url}/`},
       potentialAction: {
@@ -174,14 +174,14 @@ const config: Config = {
             'https://github.com/balaurengine/balaur-website/tree/main/',
         },
         blog: {
-          blogTitle: 'Devlog',
+          blogTitle: 'Blog',
           blogDescription:
-            'The Balaur devlog: what shipped in the engine and the thinking behind it.',
+            'The Balaur blog: what shipped in the engine and the thinking behind it.',
           // With a handful of posts the archive, tag and author pages are
           // near-duplicates of the list; tags are off the posts and the
           // author page is off in authors.yml for the same reason.
           archiveBasePath: null,
-          // The devlog is a running list of what shipped; the sidebar is the
+          // The blog is a running list of what shipped; the sidebar is the
           // only index of it now that the archive page is off, so show it all.
           blogSidebarCount: 'ALL',
           blogSidebarTitle: 'All posts',
@@ -206,7 +206,7 @@ const config: Config = {
           // The authors list is generated whenever authors.yml exists; with
           // one author it is a duplicate of /blog, so it is not advertised.
           // /search is a form with no content of its own and is noindexed in
-          // src/theme/SearchPage; the paginated devlog pages are the same
+          // src/theme/SearchPage; the paginated blog pages are the same
           // posts as /blog, which is the page that should rank.
           ignorePatterns: ['/blog/authors/**', '/search/', '/blog/page/**'],
         },
@@ -252,7 +252,7 @@ const config: Config = {
         {to: '/features', label: 'Features', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
         // Everything there is to read, under one heading: the manual and the
-        // reference are each a sidebar, and the devlog sits with them.
+        // reference are each a sidebar, and the blog sits with them.
         {
           label: 'Docs',
           position: 'left',
@@ -260,7 +260,7 @@ const config: Config = {
             {type: 'docSidebar', sidebarId: 'docsSidebar', label: 'Documentation'},
             {to: '/docs/getting-started', label: 'Getting started'},
             {type: 'docSidebar', sidebarId: 'referenceSidebar', label: 'Reference'},
-            {to: '/blog', label: 'Devlog'},
+            {to: '/blog', label: 'Blog'},
           ],
         },
         // A plain link, not type: 'doc'. A doc navbar item is also active for
@@ -379,7 +379,7 @@ const config: Config = {
           title: 'Try it',
           items: [
             {
-              label: 'Editor in the browser',
+              label: 'Editor',
               to: '/editor',
             },
             {
@@ -409,11 +409,11 @@ const config: Config = {
             //   to: '/donate',
             // },
             {
-              label: 'Devlog',
+              label: 'Blog',
               to: '/blog',
             },
             {
-              label: 'Devlog RSS',
+              label: 'Blog RSS',
               href: 'pathname:///blog/rss.xml',
             },
             {

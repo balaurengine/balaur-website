@@ -52,7 +52,7 @@ normally a high nineties in production.
 ## Writing rules for site copy
 
 Headlines, feature lines, card text and page intros. The engine repo's
-`AGENTS.md` still governs the manual and the devlog; these are the extra rules
+`AGENTS.md` still governs the manual and the blog; these are the extra rules
 for the marketing pages, and they are read, not linted.
 
 1. **Never define by negation.** Say what it is, never what it lacks or
@@ -114,7 +114,7 @@ before cutting.
 `scripts/lint-prose.mjs` runs in CI before the build, and a post over any of
 these is a red PR. The fix is to cut, never to widen a limit.
 
-- A devlog post: at most 300 words of prose, 35 words in a sentence, 60 in a
+- A blog post: at most 300 words of prose, 35 words in a sentence, 60 in a
   paragraph, and 4 paragraphs outside bullets. A `{/* truncate */}` marker.
 - A manual page: the same sentence rule, 90 words in a paragraph, no word cap.
 - Everywhere: no em dash except as the lead of a list item

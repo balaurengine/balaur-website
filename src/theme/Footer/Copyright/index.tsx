@@ -29,7 +29,7 @@ export default function CopyrightWrapper(props: Props): ReactNode {
   const social = [
     {label: 'Discord', href: discordUrl, Icon: DiscordLogo, external: true},
     {label: 'GitHub', href: repoUrl, Icon: GithubLogo, external: true},
-    {label: 'Devlog RSS feed', href: rssUrl, Icon: Rss, external: false},
+    {label: 'Blog RSS feed', href: rssUrl, Icon: Rss, external: false},
   ];
 
   return (
