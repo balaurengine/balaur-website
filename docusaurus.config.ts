@@ -148,7 +148,7 @@ const config: Config = {
       alternateName: 'Balaur Engine',
       url: `${url}/`,
       description:
-        'Documentation, blog and downloads for Balaur, a deterministic 2D and 3D game engine in Rust.',
+        'Documentation, blog and downloads for Balaur, a deterministic 2D and 3D game engine.',
       inLanguage: 'en',
       publisher: {'@type': 'Organization', name: 'Balaur', url: `${url}/`},
       potentialAction: {

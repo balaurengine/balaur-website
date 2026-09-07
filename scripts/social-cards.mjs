@@ -22,7 +22,7 @@ const out = join(root, 'static', 'img', 'social');
 // slug: [title, one line, path shown in the corner]. The title is the page's
 // own heading; the line is its pitch, shorter than its description.
 const CARDS = {
-  home: ['A 2D & 3D game engine in Rust', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
+  home: ['A 2D & 3D game engine', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
   'editor-web': ['The editor, in your browser', 'The same editor the desktop build ships, on WebAssembly. Open a scene, move a node, edit a script.', '/editor'],
   code: ['For game developers', 'Nodes and scenes you know, scripts live in milliseconds, TOML scenes, one binary to ship.', '/code'],
   animate: ['For animators', 'Bones, mesh skinning with painted weights, IK and a timeline — on the rig that ships in the game.', '/animate'],
@@ -30,7 +30,7 @@ const CARDS = {
   benchmark: ['Run the benchmarks', 'The benchmark project in your browser: pick a case, watch it build, read what the profiler measured.', '/benchmark'],
   examples: ['Examples', 'Seven projects that ship with the engine: what each one shows, the command that opens it, and three to play in the browser.', '/examples'],
   compare: ['Compare', 'Balaur next to Godot, Bevy and Fyrox — honestly, as of September 2026.', '/compare'],
-  about: ['About', 'A deterministic engine in Rust, built by two people — the one who maintains Godot Rapier Physics, and the one who writes Rapier.', '/about'],
+  about: ['About', 'A deterministic engine built by two people — the one who maintains Godot Rapier Physics, and the one who writes Rapier.', '/about'],
   community: ['Community', 'Discord, discussions and issues — and how to help, with code or without it.', '/community'],
   donate: ['Support Balaur', 'Free and MIT, always. Sponsoring pays for the test hardware, developer accounts, signing and CI.', '/donate'],
   privacy: ['Privacy', 'No analytics, no tracking, no cookies, no account — and an engine that never phones home.', '/privacy'],
@@ -40,7 +40,7 @@ const CARDS = {
   features: ['Features', 'TOML scenes, Rune scripts with hot reload, deterministic 2D & 3D physics, animation, networking — and one file to ship.', '/features'],
   download: ['Download', 'One binary for macOS, Windows and Linux: the editor, the CLI and every game’s runtime.', '/download'],
   roadmap: ['Roadmap', 'What the engine does not do yet, and will.', '/docs/roadmap'],
-  docs: ['Documentation', 'A node-based game engine in Rust, deterministic, with scripts that reload in milliseconds. The manual and the reference.', '/docs'],
+  docs: ['Documentation', 'A node-based game engine, deterministic, with scripts that reload in milliseconds. The manual and the reference.', '/docs'],
   principles: ['Principles', 'Fast to run, fast to iterate, easy to use — and how the project is run.', '/docs/principles'],
   architecture: ['Architecture', 'Scripts, the language-neutral seam, the ECS core, and the plugins every subsystem is built as.', '/docs/architecture'],
   quality: ['Quality', 'Every check a change passes: lints, tests, determinism traces, generated docs.', '/docs/quality'],

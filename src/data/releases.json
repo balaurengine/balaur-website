@@ -2,102 +2,127 @@
   "stable": null,
   "nightly": {
     "tag_name": "nightly",
-    "name": "Balaur nightly (6e1b882)",
-    "body": "Desktop builds of the Balaur editor and the runtime templates games are\nexported onto.\n\n### Assets\n\n- **`balaur-editor-<platform>`** — the editor. Unpack it and run `balaur edit\n  <project>`. `editor/`, `templates/` and `include/balaur_extension.h` (the\n  header C extensions build against) ship inside.\n- **`balaur-runtime-<platform>`** — a desktop runtime template on its own, for\n  offline installs. `balaur export --target` offers to download a missing one,\n  verified against `SHA256SUMS`.\n- **`balaur-template-ios` / `-android` / `-web.tar.gz`** — mobile and web\n  templates. Unpack into `templates/` first.\n- **`balaur-example-debug.apk`** — a game exported with the Android template,\n  signed with Android's debug identity and `adb install`-able. For trying the\n  runtime on a device; ship your own, signed with your own keystore.\n- **`balaur_bg.wasm` / `balaur.js`** — the web runtime loose, for a page of\n  your own.\n- **`balaur-play.tar.gz`** — the web runtime with the editor's project and\n  the example games packed for it: what balaurengine.org/editor and /examples\n  run (scripts/package_play.sh).\n\n### Exporting\n\n```\nbalaur export my-game --target linux-x64   # or macos-universal, windows-x64\nbalaur export my-game --target ios         # -> my-game.app\nbalaur export my-game --target android     # -> my-game-android/, an APK layout\nbalaur export my-game --target web         # -> a directory a static host serves\n```\n\nDesktop targets write one executable: no engine install, no separate `.bpak`.\nThe macOS build is universal, and so is a game exported onto it. Templates for\nother platforms go in `templates/` next to the binary, or where\n`BALAUR_TEMPLATES` points.\n\nEvery signature is applied by `balaur export` itself, with an identity that is\nyours: `--sign <identity>` on Apple and Windows targets, `--notarize` to send a\nmacOS build to Apple's notary service, `--profile` and `--ipa` for iOS, `--apk`\nto assemble and sign an Android build. On macOS `--sign` implies `--app`,\nbecause a flat fused binary is exactly what a signature cannot cover. Name the\nidentities once in the project's `[export]` table and every export uses them;\nthe passwords behind them are read from the environment.\n\nWithout an identity a build still exports, unsigned. Every asset here carries\nbuild provenance: `gh attestation verify <file> -R ${GITHUB_REPOSITORY:-balaurengine/balaur}` says\nwhich workflow run produced it.\n\n`balaur update` brings an installed editor to the latest release.",
+    "name": "Balaur nightly (2517e45)",
+    "body": "- `balaur-editor-macos-universal.dmg` — `Balaur.app`, signed and notarized\n- `balaur-editor-<platform>` — the editor, as an archive\n- `balaur-runtime-<platform>` — one desktop runtime template\n- `balaur-template-ios` / `-android` / `-web.tar.gz` — mobile and web templates\n- `balaur-example-debug.apk` — an example game, debug-signed\n- `balaur_bg.wasm` / `balaur.js` — the web runtime, loose\n- `balaur-play.tar.gz` — the web runtime with the editor and the examples\n- `SHA256SUMS` / `VERSION`",
     "html_url": "https://github.com/balaurengine/balaur/releases/tag/nightly",
-    "published_at": "2026-09-06T08:33:10Z",
+    "published_at": "2026-09-07T18:39:22Z",
     "prerelease": true,
-    "target_commitish": "6e1b8824e8a47c8cce43d922184a9fd32f0ded71",
+    "target_commitish": "2517e45d2c629a75ce2b6a4ae2e2c4bb296ae95a",
     "assets": [
       {
         "name": "balaur-editor-linux-arm64.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-editor-linux-arm64.tar.gz",
-        "size": 44503127
+        "size": 49567910
       },
       {
         "name": "balaur-editor-linux-x64.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-editor-linux-x64.tar.gz",
-        "size": 47297957
+        "size": 52689361
+      },
+      {
+        "name": "balaur-editor-macos-universal.dmg",
+        "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-editor-macos-universal.dmg",
+        "size": 103393575
       },
       {
         "name": "balaur-editor-macos-universal.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-editor-macos-universal.tar.gz",
-        "size": 83390904
+        "size": 92960279
+      },
+      {
+        "name": "balaur-editor-windows-arm64.zip",
+        "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-editor-windows-arm64.zip",
+        "size": 44667052
       },
       {
         "name": "balaur-editor-windows-x64.zip",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-editor-windows-x64.zip",
-        "size": 43533157
+        "size": 48609423
+      },
+      {
+        "name": "balaur-example-debug.aab",
+        "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-example-debug.aab",
+        "size": 76108180
       },
       {
         "name": "balaur-example-debug.apk",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-example-debug.apk",
-        "size": 47804953
+        "size": 191959780
       },
       {
         "name": "balaur-example-ios.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-example-ios.tar.gz",
-        "size": 19045505
+        "size": 21120133
       },
       {
         "name": "balaur-example-web.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-example-web.tar.gz",
-        "size": 7810397
+        "size": 8011551
       },
       {
         "name": "balaur-play.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-play.tar.gz",
-        "size": 8954453
+        "size": 9764197
       },
       {
         "name": "balaur-runtime-linux-arm64",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-runtime-linux-arm64",
-        "size": 57066024
+        "size": 62476360
       },
       {
         "name": "balaur-runtime-linux-x64",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-runtime-linux-x64",
-        "size": 61657040
+        "size": 67694784
       },
       {
         "name": "balaur-runtime-macos-universal",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-runtime-macos-universal",
-        "size": 104433968
+        "size": 115628928
+      },
+      {
+        "name": "balaur-runtime-windows-arm64.exe",
+        "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-runtime-windows-arm64.exe",
+        "size": 54027776
       },
       {
         "name": "balaur-runtime-windows-x64.exe",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-runtime-windows-x64.exe",
-        "size": 58326016
+        "size": 64159232
       },
       {
         "name": "balaur-template-android.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-template-android.tar.gz",
-        "size": 18064977
+        "size": 76150794
       },
       {
         "name": "balaur-template-ios.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-template-ios.tar.gz",
-        "size": 19044855
+        "size": 21119510
+      },
+      {
+        "name": "balaur-template-web-threads.tar.gz",
+        "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-template-web-threads.tar.gz",
+        "size": 7971919
       },
       {
         "name": "balaur-template-web.tar.gz",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur-template-web.tar.gz",
-        "size": 7808450
+        "size": 8012050
       },
       {
         "name": "balaur.js",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur.js",
-        "size": 198020
+        "size": 198328
       },
       {
         "name": "balaur_bg.wasm",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/balaur_bg.wasm",
-        "size": 20882572
+        "size": 21386744
       },
       {
         "name": "SHA256SUMS",
         "browser_download_url": "https://github.com/balaurengine/balaur/releases/download/nightly/SHA256SUMS",
-        "size": 1647
+        "size": 2136
       },
       {
         "name": "VERSION",

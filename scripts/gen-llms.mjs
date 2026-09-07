@@ -54,7 +54,7 @@ const line = (d) => `- [${d.title}](${d.url})${d.description ? `: ${d.descriptio
 const index = [
   '# Balaur',
   '',
-  '> Balaur is a 2D & 3D node-based game engine written in Rust, fully deterministic, with Rune scripts that hot reload in milliseconds and an editor that is itself a Balaur project. Free and open source, MIT.',
+  '> Balaur is a 2D & 3D node-based game engine, fully deterministic, with Rune scripts that hot reload in milliseconds and an editor that is itself a Balaur project. Written in Rust. Free and open source, MIT.',
   '',
   `Site: ${site}/ · Source: https://github.com/balaurengine/balaur · Full text: ${site}/llms-full.txt`,
   '',

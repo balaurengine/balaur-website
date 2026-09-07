@@ -33,11 +33,12 @@ function Header() {
         <Heading as="h1" className={styles.heroHeading}>
           <span className={clsx('hero__title', styles.heroTitle)}>{siteConfig.title}</span>{' '}
           <span className={clsx('hero__subtitle', styles.heroSubtitle)}>
-            A deterministic 2D &amp; 3D game engine in Rust.
+            A deterministic 2D &amp; 3D game engine.
           </span>
         </Heading>
         <p className={styles.heroMission}>
           Node-based scenes, and scripts that reload in milliseconds.
+          Written in Rust.
         </p>
         <div className={styles.buttons}>
           <Link className="button button--primary button--lg" to="/docs/intro">
@@ -74,8 +75,8 @@ function Header() {
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="A deterministic 2D & 3D game engine in Rust"
-      description="Balaur is a node-based game engine in Rust: 2D and 3D, Rune scripts with hot reload, deterministic physics and replay, and an editor built in Balaur.">
+      title="A deterministic 2D & 3D game engine"
+      description="Balaur is a node-based 2D and 3D game engine: Rune scripts with hot reload, deterministic physics and replay, and an editor built in Balaur.">
       <SoftwareJsonLd />
       <Header />
       <main>

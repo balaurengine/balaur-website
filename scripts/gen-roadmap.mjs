@@ -1,21 +1,20 @@
 #!/usr/bin/env node
-// Writes docs/roadmap.mdx from two sources that own different halves of it.
+// Writes docs/roadmap.mdx from the engine's docs/ROADMAP.md.
 //
-// The engine's docs/ROADMAP.md owns the structure — which milestones exist,
-// which items are in them, in what order, behind which plan — because that is
-// the list the engine's own contributors keep. This repository owns the prose,
-// in src/data/roadmap-copy.mjs: the frontmatter and each card's paragraph,
-// keyed by title.
+// That file is the source of truth for the whole card: which milestones exist,
+// which items are in them, in what order, behind which plan, and the sentence
+// each one reads. A card is one sentence and at most 25 words, checked here, so
+// the engine file cannot grow a paragraph the page then has to carry.
 //
-// So a roadmap item lands here by being added there, and a title is the join:
-// rename one on either side without the other and this script fails rather
-// than dropping a card.
+// This repository owns only what is about the site: the page's frontmatter, and
+// the screenshot and posts a built item shows, in src/data/roadmap-copy.mjs.
+// The title is the join, so renaming one on either side without the other fails
+// rather than dropping a card.
 //
-// A built item also carries a screenshot and the posts that announced it, from
-// the `shots` table in the same copy file. That pairing is checked both ways:
-// every item in a `built` milestone needs one, and every post under blog/ has
-// to be named by an item or listed in `essays` — so a feature ships with a
-// picture and a post, and a post is about something the roadmap has a row for.
+// The post pairing is checked both ways: every item in a `built` milestone
+// needs a `shots` entry, and every post under blog/ has to be named by one or
+// listed in `essays` — so a feature ships with a picture and a post, and a post
+// is about something the roadmap has a row for.
 //
 // Usage:
 //   node scripts/gen-roadmap.mjs            write docs/roadmap.mdx
@@ -81,9 +80,8 @@ function parseMilestones(md) {
 
 // One row: `| **Title** — text | 0.2 | [PLAN-x.md](PLAN-x.md) |`, where the
 // milestone is one from the table above, or that milestone in parentheses for
-// work the engine tracks and this page does not. The text column is the
-// engine's own one-liner; the card's paragraph is this repository's, so the
-// column is read and dropped.
+// work the engine tracks and this page does not. The text after the dash is
+// what the card says, so it is measured and turned into JSX here.
 function parseRoadmap(md, milestones) {
   const by = new Map(milestones.map((m) => [m.id, m]));
   let group = null;
@@ -108,7 +106,10 @@ function parseRoadmap(md, milestones) {
     const link = /^\[[^\]]+\]\(([^)]+)\)$/.exec(plan);
     if (!link && plan !== 'no plan') fail(`${i + 1}: the plan is a link or "no plan", got ${plan}`);
     const url = link && (/^https?:/.test(link[1]) ? link[1] : PLAN_BASE + link[1]);
-    by.get(milestone).items.push({group, title: title[1].replace(/`/g, ''), plan: url});
+    const name = title[1].replace(/`/g, '');
+    const text = item.slice(title[0].length);
+    measure(name, text, i + 1);
+    by.get(milestone).items.push({group, title: name, text: jsx(text), plan: url});
   });
   const empty = milestones.filter((m) => !m.items.length).map((m) => m.id);
   if (empty.length) fail(`a milestone with no items: ${empty.join(', ')}`);
@@ -128,6 +129,40 @@ function parseBlog() {
   }
   return posts;
 }
+
+// A card is a glance, not a page. The long form of an item is the plan it links
+// to and, for a built one, the posts beneath it — never the row itself.
+const SENTENCES = 1;
+const WORDS = 25;
+
+function measure(title, source, line) {
+  const text = source.replace(/`/g, '').trim();
+  const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean).length;
+  const words = text.split(/\s+/).length;
+  const over = (what, n, max) =>
+    fail(`${line}: "${title}" is ${n} ${what}; a row is at most ${max}. Cut it in docs/ROADMAP.md.`);
+  if (sentences > SENTENCES) over('sentences', sentences, SENTENCES);
+  if (words > WORDS) over('words', words, WORDS);
+}
+
+// A row is markdown in a table cell; a card is JSX. Only `code` spans are used,
+// and everything outside them is escaped, so a row can hold a `<` or a brace
+// without breaking the page it is pasted into.
+const escape = (s) =>
+  s.replace(/[&<>{}]/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '{': '&#123;', '}': '&#125;'})[c]);
+
+// The row reads on from its title, so it starts lowercase; the card puts the
+// title in a heading above, so the paragraph under it starts a sentence. A row
+// opening on a code span (`balaur export` …) is left alone: that is a name.
+const jsx = (text) =>
+  '<>' +
+  text
+    .trim()
+    .replace(/^[a-z]/, (c) => c.toUpperCase())
+    .split(/`([^`]+)`/)
+    .map((part, i) => (i % 2 ? `<code>${escape(part)}</code>` : escape(part)))
+    .join('') +
+  '</>';
 
 function render(milestones, copy, posts) {
   const known = new Set();
@@ -151,13 +186,11 @@ function render(milestones, copy, posts) {
     out.push(`    title: ${JSON.stringify(milestone.title)},`);
     out.push('    items: [');
     for (const item of milestone.items) {
-      const text = copy.items[item.title];
-      if (!text) fail(`no copy for "${item.title}" — add it to src/data/roadmap-copy.mjs`);
       known.add(item.title);
       out.push('      {');
       out.push(`        group: ${JSON.stringify(item.group)},`);
       out.push(`        title: '${item.title.replace(/'/g, "\\'")}',`);
-      out.push(`        text: ${text.trim()},`);
+      out.push(`        text: ${item.text},`);
       if (item.plan) out.push(`        plan: '${item.plan}',`);
       // A built row is a record, so it shows the thing and says where it was
       // written up; an unbuilt one has neither to show.
@@ -186,8 +219,6 @@ function render(milestones, copy, posts) {
   }
   out.push(']} />', '');
   if (copy.outro) out.push(copy.outro.trim(), '');
-  const stale = Object.keys(copy.items).filter((t) => !known.has(t));
-  if (stale.length) fail(`copy for items the roadmap no longer has: ${stale.join(', ')}`);
   const staleShots = Object.keys(copy.shots).filter((t) => !known.has(t));
   if (staleShots.length) fail(`shots for items the roadmap no longer has: ${staleShots.join(', ')}`);
   // The other direction: a post is about a roadmap row, or it is one of the
