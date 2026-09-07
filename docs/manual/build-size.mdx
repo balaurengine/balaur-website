@@ -12,25 +12,28 @@ import Features from './_features.mdx';
 
 A web game is a download before it is a game, and the engine module is most of
 that download. This is the module behind [the editor](/editor) and the playable
-[examples](/examples) on this site, measured on every deploy:
+[examples](/examples), measured on every deploy.
 
 <PlaySize />
 
-Which number a player waits for depends on the host: brotli when it compresses
-`.wasm` (check the `content-encoding` header), gzip when it only does that, raw
-when it does neither. The raw size is what the browser compiles either way. The
-pack is on top, and it is the game's own bytes.
+- Which number a player waits for depends on the host: brotli when it
+  compresses `.wasm` (check the `content-encoding` header), gzip when it only
+  does that, raw when it does neither.
+- The raw size is what the browser compiles either way.
+- The pack is on top, and it is the game's own bytes.
 
 ## Where the bytes go
 
 One module carries the whole engine, and nothing in it loads lazily. In it:
-the renderer (wgpu with both its WebGPU and WebGL2 backends, naga, winit) and
-the UI (egui and its four default fonts, plus a second text shaper for
-marked-up text). Physics in both dimensions (rapier and parry), the Rune
-compiler and VM, every audio codec rodio turns on, and every image format
-kiss3d turns on.
 
-Code is about three quarters of the module and data the rest:
+- the renderer: wgpu with both its WebGPU and WebGL2 backends, naga, winit;
+- the UI: egui and its four default fonts, plus a second text shaper for
+  marked-up text;
+- physics in both dimensions, rapier and parry;
+- the Rune compiler and VM;
+- every audio codec rodio turns on, and every image format kiss3d turns on.
+
+Code is about three quarters of the module and data the rest.
 
 | section | share |
 | --- | ---: |
@@ -38,8 +41,7 @@ Code is about three quarters of the module and data the rest:
 | data | 25% |
 
 Where that code goes, read off a build that keeps its symbols. Around a
-quarter of the module's symbols name no crate, so each line is a floor rather
-than a total:
+quarter of the symbols name no crate, so each line is a floor, not a total.
 
 | | MB |
 | --- | ---: |
@@ -53,7 +55,7 @@ than a total:
 | audio codecs | 0.2 |
 
 A game pays for all of it whichever features it uses, because the template is
-prebuilt. Half the data is assets that dependencies bake in:
+prebuilt. Half the data is assets that dependencies bake in.
 
 | Baked in by a dependency | Raw | Brotli |
 | --- | --- | --- |
@@ -62,13 +64,13 @@ prebuilt. Half the data is assets that dependencies bake in:
 | kiss3d's debug-text font, Work Sans | 0.1 MB | 0.05 MB |
 
 The other half is tables: Unicode data for two text shapers, codec tables,
-shader sources. Figures are from the nightly of 2026-09-05 and move with the
-dependency versions.
+shader sources. Figures are from the nightly of 2026-09-05, and they move with
+the dependency versions.
 
 ## What your own game weighs
 
-The engine module is one download; the pack beside it is the other. Every
-export prints what it built, so the decision comes with a number attached:
+The engine module is one download, and the pack beside it is the other. Every
+export prints what it built, so a decision comes with a number attached.
 
 ```text
 pack 2.0 MB
@@ -91,11 +93,11 @@ assets/balaur-logo.png                             20.2 KB
 0 files nothing references, 0 B
 ```
 
-Fonts outweigh images in most projects, and the engine outweighs both. On the
-engine's own assets, subsetting takes a 421 KB face to 29 KB, and the image
-pass takes a small sprite from 1.1 KB to 0.5 KB. Four
-keys in `[export]` act on what the report shows, and each is off until you
-turn it on:
+- Fonts outweigh images in most projects, and the engine outweighs both.
+- On the engine's own assets, subsetting takes a 421 KB face to 29 KB, and the
+  image pass takes a small sprite from 1.1 KB to 0.5 KB.
+- Four keys in `[export]` act on what the report shows, each off until you
+  turn it on.
 
 ![Where a pack's bytes are, and what lossless re-encoding takes off](/img/manual/export_size.webp)
 
@@ -109,11 +111,11 @@ font_keep = ["fonts/ui-*"]  # ...but ship these whole
 audio = "flac"              # write uncompressed WAV as lossless FLAC
 ```
 
-Anything under `fonts/` survives a strip whatever the references say: the UI
-finds faces by listing that directory, so no scene ever names one.
+Anything under `fonts/` survives a strip whatever the references say, because
+the UI finds faces by listing that directory and no scene ever names one.
 
-Two more keys give up fidelity for size, and they are named separately so a
-lossless setting can never quietly become a lossy one:
+Two more keys give up fidelity for size. They are named separately, so a
+lossless setting can never quietly become a lossy one.
 
 ```toml
 [export]
@@ -123,46 +125,50 @@ audio = "vorbis"        # an Ogg Vorbis stream instead of the original PCM
 audio_quality = 0.5     # libvorbis quality, -0.1 to 1.0
 ```
 
-One picture can opt out of whatever the project chose, or ask for something
-else, in its own [import settings](/docs/manual/scenes#import-settings):
+One picture opts out, or asks for something else, in its own
+[import settings](/docs/manual/scenes#import-settings).
 
 ```toml
 # art/logo.png.toml
 recode = "keep"     # this one ships exactly as drawn
 ```
 
-Every mode except `quantised` and `vorbis` is lossless, and none of them
-changes a pixel count. A sprite
-is sized from its image header, so a re-encoded texture is the same sprite and
-the game computes the same world. `balaur export --report` prints the table and
-writes nothing, so you can see the saving before taking it.
+- Every mode except `quantised` and `vorbis` is lossless, and none changes a
+  pixel count.
+- A sprite is sized from its image header, so a re-encoded texture is the same
+  sprite and the game computes the same world.
+- `balaur export --report` prints the table and writes nothing, so a saving is
+  visible before it is taken.
 
-Two things the report will not do for you. Packing textures into an atlas is
-not a size lever: it saves each file's header and little else, and the renderer
-draws one call per node either way. GPU-compressed textures (BC, ETC2, ASTC)
-cut video memory and upload time, not the download, since a block-compressed
-image on disk is larger than the PNG it came from.
+Two things the report will not do:
+
+- An atlas is not a size lever. It saves each file's header and little else,
+  and the renderer draws one call per node either way.
+- GPU-compressed textures (BC, ETC2, ASTC) cut video memory and upload time,
+  not the download. A block-compressed image on disk is larger than the PNG it
+  came from.
 
 ## Building a smaller template
 
-`balaur export --target web` copies a *template*: the glue and module
+`balaur export --target web` copies a template, the glue and module
 `scripts/package_template.sh web` builds in the engine repository, and puts
 the pack and a page beside them. Build one with fewer features and hand it to
-the exporter:
+the exporter.
 
 ```bash
 WEB_FEATURES=window,web scripts/package_template.sh web
 balaur export my-game --target web --template dist/balaur-template-web
 ```
 
-The script wants the `wasm32-unknown-unknown` target, the `wasm-bindgen` CLI
-at the version in `Cargo.lock` (it checks), `wasm-opt` from binaryen, and
-`brotli` for the size line it prints. It refuses a module under 5 MB, which is
-what a build whose entry point was optimised away looks like.
-
-On a browser build only two features weigh anything: `audio` and `window`, and
-a game without a window is not a game. Everything else keeps its native stack
-off the wasm target and costs only the plugin's own code.
+- The script wants the `wasm32-unknown-unknown` target, the `wasm-bindgen` CLI
+  at the version in `Cargo.lock` (it checks), `wasm-opt` from binaryen, and
+  `brotli` for the size line it prints.
+- It refuses a module under 5 MB, which is what a build whose entry point was
+  optimised away looks like.
+- On a browser build only `audio` and `window` weigh anything, and a game
+  without a window is not a game.
+- Everything else keeps its native stack off the wasm target and costs only
+  the plugin's own code.
 
 ## Features
 
@@ -172,6 +178,7 @@ off the wasm target and costs only the plugin's own code.
 
 The levers below are dependency lines in the engine, not switches. Each is
 named so a fork can flip it, with a size where one has been measured.
+
 
 - egui's default fonts. `egui` is built with `default_fonts` on, by
   `balaur_ui` and by kiss3d, and the UI plugin falls back to them when a project

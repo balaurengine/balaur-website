@@ -10,9 +10,9 @@ import Clip from '@site/src/components/Clip';
 
 # Determinism
 
-Identical inputs must produce a bit-for-bit identical simulation on every
-platform. That is what makes replays, lockstep networking and "did the content
-change?" checks possible.
+Identical inputs produce a bit-for-bit identical simulation on every platform.
+That is what makes replays, lockstep networking and content-change checks
+possible.
 
 :::tip[For multiplayer and simulation]
 
@@ -52,10 +52,12 @@ change?" checks possible.
 
 ## Scripting and determinism
 
-Rune numbers are IEEE-754 doubles and 64-bit integers that never mix;
-`+ - * /` and `sqrt` are exactly specified and reproducible everywhere. The
-VM is a single-threaded interpreter with no native codegen, so evaluation order
-is fixed. The known hazards:
+- Rune numbers are IEEE-754 doubles and 64-bit integers that never mix.
+- `+ - * /` and `sqrt` are exactly specified and reproducible everywhere.
+- The VM is a single-threaded interpreter with no native codegen, so
+  evaluation order is fixed.
+
+The known hazards:
 
 | Hazard | Status |
 | --- | --- |
@@ -67,18 +69,17 @@ is fixed. The known hazards:
 
 ## Checking, recording, replaying
 
-Pin the step and write a hash of the world each tick:
+Pin the step and write a hash of the world each tick.
 
 ```bash
 balaur run my-game --fixed-tick --trace-digest run-a.txt
 ```
 
-Two runs that differ parted at the first differing line. Run it on two
-machines and `diff` the files. That is the whole cross-platform check, and CI
-does it for every example on Linux, macOS and Windows.
-
-A recorded session stores input, not state, minutes of play is kilobytes, and
-replaying it re-checks every tick:
+- Two runs that differ parted at the first differing line.
+- Run it on two machines and `diff` the files. That is the whole cross-platform
+  check, and CI does it for every example on Linux, macOS and Windows.
+- A recorded session stores input, not state, so minutes of play is kilobytes.
+  Replaying it re-checks every tick.
 
 ```bash
 balaur run my-game --fixed-tick --record session.blr
@@ -86,38 +87,39 @@ balaur replay session.blr --verify          # stops at the first tick that disag
 balaur replay session.blr --entries-at 25   # that tick, one digest per node and component
 ```
 
-Network replies are recorded too, and a replay never touches the network.
-Rollback runs the same machinery in the other direction: a snapshot restores a
-tick and the simulation re-runs the same inputs forward. The engine's
-[determinism guide](https://github.com/balaurengine/balaur/blob/main/docs/DETERMINISM.md)
-has the rules of thumb and the hazards that remain your problem.
+- Network replies are recorded too, and a replay never touches the network.
+- Rollback runs the same machinery in the other direction: a snapshot restores
+  a tick, and the simulation re-runs the same inputs forward.
+- The engine's
+  [determinism guide](https://github.com/balaurengine/balaur/blob/main/docs/DETERMINISM.md)
+  has the rules of thumb and the hazards that remain your problem.
 
 ## In the editor
 
 <Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse; the recording is scrubbed, paused and played on" />
 
-Every play-in-editor run records what the game was fed: keys, mouse,
-gamepads, network replies, and the Session dock lists them, ten per game,
-under the editor's own data directory.
-
-Open one and the scene is rebuilt from
-the document, the recording is fed into it, and the game plays itself. Lanes
-show the ticks keys and buttons went down, network requests came back, the log
-spoke and the debugger stopped, with everything recorded at the playhead's tick
-in the rows below. Drag the ruler to scrub: forward is the engine's, backward
-rebuilds the world and runs from the start, and *Pause* holds the simulation
-still.
-
-The *verify* toggle hashes the world every tick while recording, so a replay
-can say where it parted from what was recorded rather than merely running. A
-recording whose scripts have been edited still plays, and the dock says so
-since it can no longer promise to reproduce what was seen. *Export* copies one
-into the project, where `balaur replay --verify` reads the same file, so a
-session caught in the editor is what goes on a bug report.
+- Every play-in-editor run records what the game was fed: keys, mouse,
+  gamepads, network replies. The Session dock lists them, ten per game, under
+  the editor's own data directory.
+- Open one and the scene is rebuilt from the document, the recording is fed
+  into it, and the game plays itself.
+- Lanes show the ticks keys and buttons went down, network requests came back,
+  the log spoke and the debugger stopped. Everything recorded at the
+  playhead's tick is in the rows below.
+- Drag the ruler to scrub. Forward is the engine's, backward rebuilds the
+  world and runs from the start, and *Pause* holds the simulation still.
+- The *verify* toggle hashes the world every tick while recording, so a replay
+  can say where it parted rather than merely running.
+- A recording whose scripts have been edited still plays, and the dock says
+  so, since it can no longer promise to reproduce what was seen.
+- *Export* copies one into the project, where `balaur replay --verify` reads
+  the same file. A session caught in the editor is what goes on a bug report.
 
 ## Verified, not asserted
 
-The demo project's ball touches down at the same simulation time in headless
-and windowed runs, and from the exported pack. Pack export writes in sorted key
-order, so the same sources give the same bytes on any machine: CI exports every
-example twice per platform and compares digests across the matrix.
+- The demo project's ball touches down at the same simulation time in headless
+  and windowed runs, and from the exported pack.
+- Pack export writes in sorted key order, so the same sources give the same
+  bytes on any machine.
+- CI exports every example twice per platform and compares digests across the
+  matrix.

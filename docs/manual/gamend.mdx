@@ -8,15 +8,15 @@ sidebar_position: 10
 
 # Gamend
 
-The `balaur_gamend` plugin connects scripts to a Gamend backend: login, REST
-endpoints, realtime rooms and server hooks: through the `gamend` module. It is
-on by default; building without the `gamend` feature drops it.
+The `balaur_gamend` plugin connects scripts to a Gamend backend through the
+`gamend` module: login, REST endpoints, realtime rooms and server hooks. It is
+on by default, and building without the `gamend` feature drops it.
 
-Delivery is the same contract as [networking](./networking.mdx): all I/O on
-worker threads, completions entering the simulation once per tick, dispatched
-to handler methods or waking `await` tokens, in arrival order. Handlers never
-run from an I/O thread, so a recorded snapshot replays a whole online
-session.
+- Delivery is the same contract as [networking](./networking.mdx): all I/O on
+  worker threads, completions entering the simulation once per tick.
+- Dispatched to handler methods or waking `await` tokens, in arrival order.
+- Handlers never run from an I/O thread, so a recorded snapshot replays a
+  whole online session.
 
 ```mermaid
 sequenceDiagram
@@ -46,10 +46,12 @@ pub fn on_gamend_event(this, e) {
 }
 ```
 
-One-shot operations (`login`, `rest`, `call_hook`, `join`, `push`, `leave`)wake their returned id and, when a node is given, also dispatch to its handler.
-Socket events are a stream, so they only dispatch. Every event map carries a
-`kind` (`login`, `rest`, `reply`, `error`, `open`, `message`, `closed`), so one
-handler takes them all.
+- One-shot operations (`login`, `rest`, `call_hook`, `join`, `push`, `leave`)
+  wake their returned id and, when a node is given, also dispatch to its
+  handler.
+- Socket events are a stream, so they only dispatch.
+- Every event map carries a `kind`: `login`, `rest`, `reply`, `error`, `open`,
+  `message`, `closed`. One handler takes them all.
 
 The full function list is in the
 [script modules reference](/docs/reference/modules).

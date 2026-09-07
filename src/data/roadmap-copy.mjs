@@ -103,7 +103,7 @@ hide_table_of_contents: true
     'Video playback':
       `'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.'`,
     'Decals and volumetric fog':
-      `<>A texture projected onto whatever is under it, for a scorch mark, a puddle or a poster, and fog that light shafts through. Neither exists in either dimension today: <code>environment</code> carries flat fog, and the pass a decal wants is the kiss3d fork's.</>`,
+      `<>A texture projected onto whatever is under it, for a scorch mark, a puddle or a poster, and fog that light shafts through. Neither exists today: <code>environment</code> carries flat fog, and neither pass is in the kiss3d fork's list, so both are ours to write.</>`,
     'Post-process materials':
       `'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.'`,
     'WebTransport in the browser':

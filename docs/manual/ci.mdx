@@ -8,8 +8,8 @@ sidebar_position: 17
 # Continuous integration
 
 Three actions, each named for what comes out of it. A game pins one version,
-the engine's, and gets the engine, its runtime templates and the actions that
-know its flags from the same tag.
+the engine's, and gets the engine, its runtime templates and the actions from
+that same tag.
 
 | `uses:` | Produces |
 | --- | --- |
@@ -18,7 +18,7 @@ know its flags from the same tag.
 | `balaurengine/balaur/.github/actions/build-engine@v0.2.0` | the editor and runtime templates built from source, for features the published build does not carry |
 
 `setup` installs the release its own ref names, so `@v0.2.0` installs v0.2.0
-and the version is written down once; `@main` follows the rolling nightly.
+and the version is written once. `@main` follows the rolling nightly.
 
 ## A build on every tag
 
@@ -41,15 +41,15 @@ jobs:
           targets: "linux-x64 windows-x64 web"
 ```
 
-That is the whole file for an unsigned build: no secret, no account, no Rust
-toolchain. `setup` downloads the engine and `export-game` runs it.
+The whole file for an unsigned build: no secret, no account, no Rust
+toolchain. `setup` downloads the engine, and `export-game` runs it.
 
 ## Signing
 
-Every signature is applied by `balaur export` itself, never a step beside it,
-so a build CI signed can be reproduced by hand. An action's job is to put each
-credential where that platform's own tool looks and hand the exporter the
-identity's *name*.
+- Every signature is applied by `balaur export` itself, never a step beside
+  it, so a build CI signed can be reproduced by hand.
+- An action's job is to put each credential where that platform's own tool
+  looks, and hand the exporter the identity's name.
 
 ```yaml
       - uses: balaurengine/balaur/.github/actions/export-game@v0.2.0
@@ -64,8 +64,8 @@ identity's *name*.
           notary-issuer: ${{ secrets.ASC_ISSUER_ID }}
 ```
 
-Every file-shaped secret: a `.p12`, a `.p8`, a `.mobileprovision`, a `.jks`, a
-`.pfx`: is stored base64-encoded, because a GitHub secret holds text:
+Every file-shaped secret is stored base64-encoded, because a GitHub secret
+holds text: a `.p12`, a `.p8`, a `.mobileprovision`, a `.jks`, a `.pfx`.
 
 ```bash
 base64 -i certificate.p12 | pbcopy      # macOS
@@ -106,9 +106,9 @@ your own. The job needs two extra permissions:
 
 ## A custom engine
 
-The published templates carry `window` and `extensions`, plus `apple` on macOS.
-A game needing a different set: a smaller web build, or one without the
-networking stack: builds the engine itself:
+The published templates carry `window` and `extensions`, plus `apple` on
+macOS. A game wanting a different set, a smaller web build or one without the
+networking stack, builds the engine itself.
 
 ```yaml
       - uses: actions/checkout@v7
@@ -121,14 +121,15 @@ networking stack: builds the engine itself:
           features: "window,extensions,audio"
 ```
 
-[Build size](./build-size.mdx) says what each feature costs. `build-engine`
-produces the same `balaur-editor-*`, `balaur-runtime-*` and `balaur-template-*`
-files a release holds, so a later `export-game` picks them up through
-`BALAUR_TEMPLATES`.
+- [Build size](./build-size.mdx) says what each feature costs.
+- `build-engine` produces the same `balaur-editor-*`, `balaur-runtime-*` and
+  `balaur-template-*` files a release holds, so a later `export-game` picks
+  them up through `BALAUR_TEMPLATES`.
 
 ## What a run costs
 
-A macOS or iOS export needs a `macos-*` runner, billed at ten times a Linux
-minute; Linux, Windows, Android and web all export on a Linux runner. Group
-targets by the host they need rather than giving each its own job, so a game
-with four targets spends one Mac job's minutes rather than four.
+- A macOS or iOS export needs a `macos-*` runner, billed at ten times a Linux
+  minute.
+- Linux, Windows, Android and web all export on a Linux runner.
+- Group targets by the host they need rather than giving each its own job, so
+  a game with four targets spends one Mac job's minutes rather than four.

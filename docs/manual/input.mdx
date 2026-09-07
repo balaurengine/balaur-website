@@ -10,18 +10,17 @@ import Clip from '@site/src/components/Clip';
 
 # Input
 
-Input is backend-agnostic: the windowed backend pumps OS events into one
-snapshot per frame, and scripts read that snapshot through the `input` module.
-Headless runs read neutral state. Because the whole frame's input is one
-snapshot, recording it per tick is all a replay system needs.
+- The windowed backend pumps OS events into one snapshot per frame, and
+  scripts read that snapshot through the `input` module.
+- Headless runs read neutral state.
+- The whole frame's input is one snapshot, so recording it per tick is all a
+  replay system needs.
 
 <Clip name="input_overlay" alt="The editor's input overlay while examples/hello plays: key chips, the actions they drive, the pointer and a click ripple" />
 
 ## Actions
 
-A game asks for `"jump"`, not for `Space`. Actions are declared in
-`project.toml`, each bound to any number of keys, buttons, sticks or key
-pairs:
+A game asks for `"jump"`, not for `Space`.
 
 ```toml
 [input.actions]
@@ -35,13 +34,15 @@ if input::action_just_pressed("jump") { /* ... */ }
 let x = input::action_value("move_x");   // -1 to 1
 ```
 
-`action_value` is -1 to 1: a key answers 0 or 1, a stick or `keys:A,D` the
-whole range, and `action_pressed`, `action_just_pressed` and
-`action_just_released` are the edges. `input::bind(name, bindings)` rebinds an
-action and saves it to the user data directory; `reset_bindings` goes back to
-what the project declared. Actions are derived from the raw snapshot every
-frame, so a recording holds the keys pressed and a replay reproduces the
-actions from them.
+- An action takes any number of keys, buttons, sticks or key pairs.
+- `action_value` runs -1 to 1: a key answers 0 or 1, a stick or `keys:A,D` the
+  whole range.
+- `action_pressed`, `action_just_pressed` and `action_just_released` are the
+  edges.
+- `input::bind(name, bindings)` rebinds an action and saves it to the user
+  data directory. `reset_bindings` goes back to what the project declared.
+- Actions are derived from the raw snapshot every frame, so a recording holds
+  the keys pressed and a replay reproduces the actions from them.
 
 ## Keyboard and mouse
 
@@ -51,13 +52,10 @@ if input::is_mouse_down(input::MOUSE_LEFT) { /* ... */ }
 let (mx, my) = input::mouse_position();
 ```
 
-`is_down`, `just_pressed` and `just_released` cover keys by named constant; the
-mouse adds position, per-frame delta, button edges and scroll delta.
+`is_down`, `just_pressed` and `just_released` cover keys by named constant.
+The mouse adds position, per-frame delta, button edges and scroll delta.
 
 ## Gamepads
-
-`input::gamepads()` lists the connected pads; every query takes a pad id and
-a named constant:
 
 ```rune
 for pad in input::gamepads() {
@@ -66,18 +64,12 @@ for pad in input::gamepads() {
 }
 ```
 
-Buttons are `PAD_*` constants, axes `AXIS_*` (sticks, triggers, d-pad), and
-`input::gamepad_name(pad)` names the hardware.
+- `input::gamepads()` lists the connected pads, and every query takes a pad id
+  and a named constant.
+- Buttons are `PAD_*`, axes `AXIS_*` (sticks, triggers, d-pad).
+- `input::gamepad_name(pad)` names the hardware.
 
 ## Rumble, motion and the touchpad
-
-`input::gamepad_rumble(pad, #{ strong: 1.0, weak: 0.5, duration: 0.25 })` runs
-the pad's two motors at 0 to 1 for that many seconds and returns whether it
-started; `input::gamepad_stop_rumble(pad)` cuts one short and
-`input::gamepad_can_rumble(pad)` says whether there are motors at all.
-
-A PlayStation pad also reports motion and a touchpad, decoded from its own HID
-reports over USB or Bluetooth:
 
 ```rune
 let turn = input::gamepad_gyro(pad);          // radians per second
@@ -87,31 +79,38 @@ for touch in input::gamepad_touches(pad) {
 }
 ```
 
-A pad with no gyroscope or touchpad reads zero and an empty list, the answer an
-absent pad gives. All of it lands in the recorded snapshot, so a replay
+| Call | What it does |
+| --- | --- |
+| `gamepad_rumble(pad, #{ strong, weak, duration })` | Runs the two motors at 0 to 1 for that many seconds; answers whether it started |
+| `gamepad_stop_rumble(pad)` | Cuts one short |
+| `gamepad_can_rumble(pad)` | Whether there are motors at all |
+| `gamepad_gyro`, `gamepad_acceleration`, `gamepad_touches` | A PlayStation pad's motion and touchpad, decoded from its own HID reports over USB or Bluetooth |
+
+A pad with no gyroscope or touchpad reads zero and an empty list, the answer
+an absent pad gives. All of it lands in the recorded snapshot, so a replay
 reproduces a motion-controlled session exactly.
 
 ## Touch and dropped files
 
-`input::touches()` returns the touch points active this frame, with
-`input::touches_started()` and `input::touches_ended()` for the edges.
-`input::dropped_files()` returns the paths of files dropped onto the window
-this frame: how a tool accepts a drag-and-drop.
+- `input::touches()` returns the touch points active this frame, with
+  `touches_started()` and `touches_ended()` for the edges.
+- `input::dropped_files()` returns the paths of files dropped onto the window
+  this frame, which is how a tool accepts a drag and drop.
 
 ## Seeing input
 
-The editor's input overlay draws what the game is being fed this frame. A chip
-per key and mouse button held down, the actions they drive, a cursor at the
-pointer, and a ring spreading from every press. It reads the same snapshot the
-game reads, so during a replay the cursor follows the recording rather than
-your hand. Turn it on from the command palette (*Show input overlay*) or start
-the editor with `--state input`.
-
-The actions come from the game's own `project.toml`: the editor is itself a
-Balaur project, so it declares the game's actions when it opens one. Without
-that, every action a played game asked for would read zero.
+- The editor's input overlay draws what the game is being fed this frame. A
+  chip per key and mouse button held, the actions they drive, a cursor at the
+  pointer, a ring spreading from every press.
+- It reads the same snapshot the game reads, so during a replay the cursor
+  follows the recording rather than your hand.
+- Turn it on from the command palette (*Show input overlay*), or start the
+  editor with `--state input`.
+- The actions come from the game's own `project.toml`. The editor is itself a
+  Balaur project, so it declares the game's actions when it opens one, and
+  without that every action a played game asked for would read zero.
 
 ## The full surface
 
-Every function and all named constants (keys, mouse buttons, pad buttons,
-axes) are in the [script modules reference](/docs/reference/modules).
+Every function and all named constants, keys, mouse buttons, pad buttons and
+axes, are in the [script modules reference](/docs/reference/modules).

@@ -8,9 +8,6 @@ sidebar_position: 15
 
 # Shipping a game
 
-A game ships in two steps: `balaur export` turns the project into one pack,
-and a pack either runs on a runtime or is fused onto one.
-
 ```mermaid
 flowchart LR
   A["scripts · scenes · assets · manifest"] -->|"balaur export"| B[".bpak: bytecode, scenes, assets; sorted keys, so the same sources give the same bytes"]
@@ -20,84 +17,77 @@ flowchart LR
 
 ## Packs
 
-`balaur export` compiles every script to bytecode, with the same compiler
-configuration dev mode uses, and bundles scripts, scenes and the manifest into
-one `.bpak`:
-
 ```bash
 balaur export my-game        # writes my-game.bpak
 balaur play my-game.bpak     # run from bytecode only
 ```
 
-A packed run builds no compiler and no file watcher, and no script sources
-exist in the shipped build. A pack is written in sorted key order, so exporting
-the same sources twice gives the same bytes on any machine: which is what
-makes reproducible builds and content-change checks possible.
-
-TOML assets (animation clips and every other registered asset type) are bundled
-too and resolve by the same references, so a packed run loads them exactly as a
-dev run does. Binary assets (textures, models, audio) ship in the same pack,
-each verified against its SHA-256 when loaded.
-
-Packed execution is pure interpretation of precompiled bytecode, so it ships on
-platforms with JIT restrictions; CI cross-compiles to iOS, Android and
-WebAssembly on every push to keep that true.
+- Every script is compiled to bytecode with the same compiler configuration
+  dev mode uses, and bundled with the scenes and the manifest.
+- A packed run builds no compiler and no file watcher, and no script sources
+  exist in the shipped build.
+- A pack is written in sorted key order, so exporting the same sources twice
+  gives the same bytes on any machine. Reproducible builds and content-change
+  checks follow from that.
+- TOML assets, animation clips and every other registered type, resolve by the
+  same references a dev run uses.
+- Binary assets ride in the same pack, each verified against its SHA-256 when
+  loaded.
+- Packed execution is pure interpretation of precompiled bytecode, so it ships
+  where JIT is restricted. CI cross-compiles to iOS, Android and WebAssembly
+  on every push to keep that true.
 
 ## Fused executables
-
-A pack is data and still needs an engine to run it. To ship something a player
-can just open, fuse it onto a *runtime template*, the engine binary published
-for each platform:
 
 ```bash
 balaur export my-game --target linux-x64     # or macos-universal, windows-x64
 ```
 
-The result is one executable. Fusing appends the pack to the template binary
-and writes a trailer; ELF, Mach-O and PE all ignore trailing bytes, so the file
-still runs. On startup the engine reads its own executable: a pack inside means
-it is a shipped game and it boots that, nothing means it is the CLI. One binary
-is therefore the editor, the CLI and every game's runtime.
+- Fusing appends the pack to a runtime template, the engine binary published
+  per platform, and writes a trailer. ELF, Mach-O and PE all ignore trailing
+  bytes, so the file still runs.
+- On startup the engine reads its own executable. A pack inside means a
+  shipped game; nothing means the CLI. One binary is the editor, the CLI and
+  every game's runtime.
+- Your own platform's template ships with the editor download, in
+  `templates/`.
 
-The template for your own platform ships with the editor download in
-`templates/`. For another platform, `balaur export` offers to download it from
-the engine's own release tag, verified against the release's `SHA256SUMS`, into a per-user cache (`<data dir>/balaur/templates/<version>`, never inside a
-project). The version pinning is deliberate: a pack must only meet the runtime
-its compiler shipped with. `--download` skips the prompt and `--no-download`
-forbids fetching, for CI; the manual routes still work: drop a
-`balaur-runtime-*` binary into `templates/`, point `BALAUR_TEMPLATES` at a
-directory, or pass `--template <file>`.
+| Getting another platform's template | How |
+| --- | --- |
+| Download | `balaur export` offers it from the engine's release tag, verified against `SHA256SUMS`, into a per-user cache (`<data dir>/balaur/templates/<version>`, never inside a project) |
+| Without a prompt | `--download`, or `--no-download` to forbid fetching, for CI |
+| By hand | drop a `balaur-runtime-*` binary into `templates/`, point `BALAUR_TEMPLATES` at a directory, or pass `--template <file>` |
+
+The version pinning is deliberate: a pack must only meet the runtime its
+compiler shipped with.
 
 Two practical notes:
 
-- A flat fused binary cannot be validly code-signed: appending is exactly
-  what a signature cannot cover. For a signed macOS game, export a bundle:
-  `balaur export my-game --target macos-universal --app` builds a `.app`
-  with the pack as a sealed resource and signs it ad-hoc;
+- A flat fused binary cannot be validly code-signed, because appending is
+  exactly what a signature cannot cover. For a signed macOS game, export a
+  bundle: `balaur export my-game --target macos-universal --app` builds a
+  `.app` with the pack as a sealed resource and signs it ad-hoc, and
   `--sign "Developer ID Application: …"` uses a real identity.
 - The exporter sets the execute bits on its output, because templates that
-  came through a zip or CI artifact store usually lost theirs.
+  came through a zip or a CI artifact store usually lost theirs.
 
 ## Mobile
-
-Neither mobile OS runs a bare executable, so the same command produces a
-different shape of output:
 
 ```bash
 balaur export my-game --target ios       # -> my-game.app
 balaur export my-game --target android   # -> my-game-android/ (an APK layout)
 ```
 
-The pack rides inside the bundle as a resource: `game.bpak` beside the
-executable in an `.app`, `assets/game.bpak` in an APK, and the engine reads
-it from there instead of out of its own file.
-
-Signing is `balaur export`'s own, with a certificate or keystore that is
-yours. On iOS: `--sign <identity>` and `--profile <file>`, plus `--ipa` for the
-shape App Store Connect takes. On Android, `--apk` assembles and signs with the
-keystore `[export] android_keystore` names, or Android's debug identity when
-the project names none. Without those flags a build comes out unsigned, which
-installs on no device.
+- Neither mobile OS runs a bare executable, so the pack rides inside the
+  bundle: `game.bpak` beside the executable in an `.app`, `assets/game.bpak`
+  in an APK.
+- Signing is `balaur export`'s own, with your certificate or keystore. On iOS,
+  `--sign <identity>` and `--profile <file>`, plus `--ipa` for the shape App
+  Store Connect takes.
+- On Android, `--apk` assembles and signs with the keystore
+  `[export] android_keystore` names, or Android's debug identity when the
+  project names none.
+- Without those flags a build comes out unsigned, which installs on no device.
 
 ## Web
 
@@ -105,17 +95,16 @@ installs on no device.
 balaur export my-game --target web       # -> my-game-web/
 ```
 
-A directory for a static host: the wasm-bindgen glue, the engine module, the
-pack, and a page that loads them. A `web/index.html` in the project replaces
-the page. The module is the same for every game and is most of what a player
-downloads; what is in it, and how to build a smaller one, is in
-[Build size](./build-size.mdx).
+- A directory for a static host: the wasm-bindgen glue, the engine module, the
+  pack, and a page that loads them.
+- A `web/index.html` in the project replaces the page.
+- The module is the same for every game and is most of what a player
+  downloads. See [Build size](./build-size.mdx).
 
 ## Apple
 
-An `.app` (for iOS, or for macOS with `--app`) is written from the `[apple]`
-table, because every Apple service resolves against the bundle rather than the
-code:
+Every Apple service resolves against the bundle rather than the code, so an
+`.app` is written from the `[apple]` table.
 
 ```toml
 [apple]
@@ -130,36 +119,31 @@ capabilities = ["game-center", "icloud-kv", "in-app-purchase"]
 ITSAppUsesNonExemptEncryption = false
 ```
 
-The exporter writes the whole `Info.plist` from that table, plus a
-`<game>.entitlements` holding one key per capability. It refuses what it cannot
-make work: a capability with no `bundle_id`, an `icloud-kv` with no `team`
-(nothing expands `$(TeamIdentifierPrefix)` outside Xcode), or a deployment
-target below the version a capability's API needs. Signing stays yours:
-
 ```bash
 codesign --entitlements my-game.entitlements --sign "Apple Distribution: …" my-game.app
 ```
 
-A macOS `.app` is signed as it is exported, entitlements included, so `--sign`
-is the whole step there. What the capabilities are for is in
-[Stores](./stores.mdx); running all of this on a runner is
-[Continuous integration](./ci.mdx).
+- The exporter writes the whole `Info.plist` from that table, plus a
+  `<game>.entitlements` holding one key per capability.
+- It refuses what it cannot make work: a capability with no `bundle_id`, an
+  `icloud-kv` with no `team` (nothing expands `$(TeamIdentifierPrefix)`
+  outside Xcode), or a deployment target below what a capability's API needs.
+- A macOS `.app` is signed as it is exported, entitlements included, so
+  `--sign` is the whole step there.
+- What the capabilities are for is in [Stores](./stores.mdx). Running this on
+  a runner is [Continuous integration](./ci.mdx).
 
 ## Keeping the install current
 
-`balaur update` replaces the whole install: the binary, the bundled editor
-and its runtime template, which only work as a set, with the latest published
-build, verified against the release's checksums. A tagged release updates to
-the newest release, a nightly follows the rolling nightly, and a source build
-refuses and points at git. `--check` only reports; `--tag` picks a release.
+`balaur update` replaces the whole install, which only works as a set: the
+binary, the bundled editor and its runtime template.
+
+- Verified against the release's checksums.
+- A tagged release updates to the newest release, a nightly follows the
+  rolling nightly, and a source build refuses and points at git.
+- `--check` only reports. `--tag` picks a release.
 
 ## Save games
-
-`save::write(slot, data)` stores a table per user under the platform's
-user-data directory and `save::read(slot)` brings it back; `save::slots()`
-lists them, `save::remove(slot)` deletes one. A slot name: letters, digits,
-`-` and `_`: is checked rather than trusted, and a file is written beside its
-target and renamed over it, so a crash mid-save cannot leave a truncated one.
 
 ```toml
 [save]
@@ -167,16 +151,24 @@ version = 3                     # what this build writes
 migrate = "scripts/saves.rn"    # brings an older file forward
 ```
 
-Every file is stamped with the build's `version`. Reading an older one calls
-the migration script's `migrate_save(version, data)` once per step: 1 to 2,
-then 2 to 3, so a migration only ever knows how the shape changed between two
-adjacent versions. A file written by a newer build is refused rather than
-misread. Anything else a game keeps per user (settings, key rebindings) goes
-through `engine::user_data_dir()`, so game code never hardcodes an OS path.
+| Call | What it does |
+| --- | --- |
+| `save::write(slot, data)` | stores a table per user, under the platform's user-data directory |
+| `save::read(slot)` | brings it back |
+| `save::slots()` | lists them |
+| `save::remove(slot)` | deletes one |
+
+- A slot name is letters, digits, `-` and `_`, checked rather than trusted.
+- A file is written beside its target and renamed over it, so a crash mid-save
+  cannot leave a truncated one.
+- Every file is stamped with the build's `version`. Reading an older one calls
+  `migrate_save(version, data)` once per step, 1 to 2 then 2 to 3, so a
+  migration only knows how the shape changed between two adjacent versions.
+- A file written by a newer build is refused rather than misread.
+- Anything else kept per user, settings or key rebindings, goes through
+  `engine::user_data_dir()`, so game code never hardcodes an OS path.
 
 ## Embedding
-
-For a custom binary, embed the pack directly:
 
 ```rust
 fn main() -> anyhow::Result<()> {
@@ -184,5 +176,5 @@ fn main() -> anyhow::Result<()> {
 }
 ```
 
-This needs a Rust toolchain on the machine doing the shipping; fused export
-exists so editor users do not.
+Embedding needs a Rust toolchain on the machine doing the shipping. Fused
+export exists so editor users do not.

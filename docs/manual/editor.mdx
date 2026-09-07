@@ -8,9 +8,9 @@ sidebar_position: 13
 
 # The editor
 
-The editor is a regular Balaur project: its scripts draw the whole interface
-through the `ui` module, and editing one hot reloads the editor itself. Nothing
-in it is privileged: every binding it uses is available to any project.
+A regular Balaur project. Its scripts draw the whole interface through the
+`ui` module, and editing one hot reloads the editor itself. Nothing in it is
+privileged: every binding it uses is available to any project.
 
 ```bash
 cargo run -p balaur_cli --features window -- edit my-game
@@ -20,20 +20,21 @@ cargo run -p balaur_cli --features window -- edit my-game
 
 ## How it works
 
-The editor parses the game's scene TOML into a document model and mirrors it
-as a real node subtree, so the viewport shows the actual scene and physics
-builds the actual bodies (paused until play). Edits are written back as TOML,
-and every one is undoable (`Ctrl+Z` / `Ctrl+Shift+Z`).
-
-Play-in-editor attaches the game's scripts to the mirrored nodes and
-unpauses: the real game code runs against the real scene inside the editor, and
-every run is recorded (see
-[Determinism](./determinism.mdx#in-the-editor)). Stop rebuilds the mirror from
-the document.
+- The game's scene TOML is parsed into a document model and mirrored as a real
+  node subtree, so the viewport shows the actual scene and physics builds the
+  actual bodies, paused until play.
+- Edits are written back as TOML, and every one is undoable (`Ctrl+Z`,
+  `Ctrl+Shift+Z`).
+- Play-in-editor attaches the game's scripts to the mirrored nodes and
+  unpauses, so the real game code runs against the real scene.
+- Every run is recorded. See
+  [Determinism](./determinism.mdx#in-the-editor).
+- Stop rebuilds the mirror from the document.
 
 ## Personas
 
-The top bar switches between five personas, each arranging the same panels: node tree, viewport or code, docks, inspector: around one job.
+The top bar switches between five personas. Each arranges the same panels,
+node tree, viewport or code, docks and inspector, around one job.
 
 <div className="persona-gallery">
   <figure><img src="/img/manual/persona_scene.webp" alt="The Scene persona: the node tree, the viewport with its gizmo on the selected Bird, and the inspector" width="1600" height="1000" loading="lazy" /><figcaption>Scene</figcaption></figure>
@@ -84,8 +85,8 @@ skinned polygon's points, triangulation, UVs and weights. Both are under
 [Skeletons and skins](./animation.mdx#skeletons-and-skins).
 
 Pen edits a `path2d` asset in place: click adds an anchor, drag pulls its
-handles, alt breaks the pair, right-click removes an anchor, and clicking the
-first anchor closes the path.
+handles, alt breaks the pair, right-click removes one, and clicking the first
+anchor closes the path.
 
 ## Dropping a file in
 
@@ -126,42 +127,45 @@ Eleven docks sit under the viewport.
 
 ![The Cost dock: seventeen draws and 3758 triangles, with a bar per node and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
 
-The command palette (`⌘K`) is the single overlay: nodes, commands and
-personas, and there is a dark and a light theme. *Show input overlay* draws
-the keys, buttons and pointer the game is being fed; see
-[Input](./input.mdx#seeing-input).
+- The command palette (`⌘K`) is the single overlay: nodes, commands and
+  personas.
+- There is a dark theme and a light one.
+- *Show input overlay* draws the keys, buttons and pointer the game is being
+  fed. See [Input](./input.mdx#seeing-input).
 
 ## Driving it from the command line
 
 The editor starts in any state you name. That is how it is tested, and how
-every picture in this manual was taken:
+every picture in this manual was taken.
 
 ```bash
 balaur edit examples/rig --offscreen --frames 100 \
   --state "anim,select:Thigh,tool:bone,shot=thigh.png"
 ```
 
-`--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
-`ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`,
-`zoom:<percent>`, `palette`, `light`, `play` and `input`. `shot=<file>`
-captures one frame, and `frames=<dir>` captures every other frame into a
-numbered directory. `show:<name>` runs one of the scripted sequences behind this
-manual's clips, which feed input through `input::feed_key`, `feed_mouse` and
-`feed_mouse_button`: the same seam an automated test uses. Offscreen frames
-advance on the fixed 1/60 step, so frame 90 is the same picture every time.
-
-The engine repository's `scripts/showcase.sh` takes every image and clip on
-this site that way, so a change to the editor re-takes them all.
+- `--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
+  `ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`,
+  `zoom:<percent>`, `palette`, `light`, `play`, `input`.
+- `shot=<file>` captures one frame. `frames=<dir>` captures every other frame
+  into a numbered directory.
+- `show:<name>` runs one of the scripted sequences behind this manual's clips,
+  which feed input through `input::feed_key`, `feed_mouse` and
+  `feed_mouse_button`, the same seam an automated test uses.
+- Offscreen frames advance on the fixed 1/60 step, so frame 90 is the same
+  picture every time.
+- The engine repository's `scripts/showcase.sh` takes every image and clip on
+  this site that way, so a change to the editor re-takes them all.
 
 ## Extending the editor
 
 A plugin is a Rune file adding docks, windows, palette commands, inspector
-sections, property editors, viewport overlays and start-up states. It goes in
-`editor/plugins/` to ship with the editor, or in a project's `editor/`
-directory to belong to that game alone. Both load at start-up, in name order.
+sections, property editors, viewport overlays and start-up states.
 
-A plugin declares `register()`, returning what it adds, and optionally
-`state()`, whose object becomes its own slice at `S.plugins.<name>`:
+- `editor/plugins/` ships it with the editor. A project's `editor/` directory
+  keeps it to that game.
+- Both load at start-up, in name order.
+- A plugin declares `register()`, returning what it adds, and optionally
+  `state()`, whose object becomes its own slice at `S.plugins.<name>`.
 
 ```rune
 // mygame/editor/counter.rn
@@ -195,8 +199,8 @@ pub fn draw(S, k) {
 
 `S` is the editor's whole state, the same object every built-in module gets:
 the document (`S.doc`), the live mirror, the selection (`S.sel`), history and
-the theme. The one rule is to call the history recorder before mutating the
-document, so undo keeps working.
+the theme. One rule: call the history recorder before mutating the document,
+so undo keeps working.
 
 Each list is optional.
 
@@ -208,11 +212,12 @@ Each list is optional.
 - `states` map a name to `run(S)`, so a plugin carries its own start-up state
   and therefore its own test.
 
-Nothing is sandboxed: a plugin runs in the editor's host with the editor's
-capabilities: the right first cut for a tool a project writes for itself.
+Nothing is sandboxed. A plugin runs in the editor's host with the editor's
+capabilities, which is the right first cut for a tool a project writes for
+itself.
 
 ## Why it is built this way
 
-The editor dogfoods the scripting surface. Everything it needs: filesystem
-access, TOML parsing, scene instantiation, script reload, camera control, debug
-drawing: is an ordinary script binding, reusable by any tool or game.
+The editor dogfoods the scripting surface. Everything it needs is an ordinary
+script binding, reusable by any tool or game: filesystem access, TOML parsing,
+scene instantiation, script reload, camera control, debug drawing.

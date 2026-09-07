@@ -10,16 +10,14 @@ import Clip from '@site/src/components/Clip';
 
 # Physics
 
-Physics is a plugin wrapping [Rapier](https://rapier.rs): rapier3d for
-`body3d` / `collider3d`, rapier2d for `body2d` / `collider2d`. The two worlds
-live side by side over the same scene tree, both built with Rapier's
-`enhanced-determinism` feature and stepped on a fixed 60 Hz accumulator.
+A plugin wrapping [Rapier](https://rapier.rs): rapier3d for `body3d` and
+`collider3d`, rapier2d for `body2d` and `collider2d`. Both worlds live side by
+side over the same scene tree, built with Rapier's `enhanced-determinism`
+feature and stepped on a fixed 60 Hz accumulator.
 
 <Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
 
 ## Declaring bodies
-
-In a scene file:
 
 ```toml
 [[nodes]]
@@ -29,10 +27,6 @@ body3d = "dynamic"                 # dynamic | kinematic | static
 collider3d = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
 ```
 
-Colliders take `kind` (`ball` / `cuboid` in 3D, `circle` / `rect` in 2D, and a
-dozen more each) with the matching dimensions, plus `restitution`, `friction`
-and `density`. The same vocabulary works from a script:
-
 ```rune
 physics3d::add_body(this.node, physics3d::BODY_DYNAMIC);
 physics3d::add_ball_collider(this.node, 0.5);
@@ -41,37 +35,40 @@ physics2d::add_body(this.node, physics2d::BODY_DYNAMIC);
 physics2d::add_collider(this.node, #{ kind: physics2d::SHAPE_RECT, half_extents: [0.5, 0.5] });
 ```
 
-## Two ways to call, one function
+- A collider takes `kind` (`ball` and `cuboid` in 3D, `circle` and `rect` in
+  2D, and a dozen more each) with the matching dimensions.
+- Plus `restitution`, `friction` and `density`.
+- The scene vocabulary and the script vocabulary are the same words.
 
-Every function above takes the node first, so it is also a method on the
-node's component handle. These two lines are the same call:
+## Two ways to call, one function
 
 ```rune
 physics2d::apply_impulse(this.node, 1.0, 0.0);
 this.node.body2d.apply_impulse(1.0, 0.0);
 ```
 
-`node.body2d` binds the node to whichever module drives that component, so the
-dimension stops being something you repeat: the same `apply_impulse` on a
-`body3d` handle reaches `physics3d`. Handles also carry `get()`, `set(table)`,
-`has()` and `remove()`. A method no module declared for that component is an
-error naming it: `node.sprite.apply_impulse` does not silently do nothing.
-
-Each component's methods are on its reference page, for example
-[`body2d`](/docs/reference/components/body2d).
+- Every function takes the node first, so it is also a method on the node's
+  component handle. Those two lines are one call.
+- `node.body2d` binds the node to whichever module drives that component, so
+  the dimension stops being something you repeat: the same `apply_impulse` on
+  a `body3d` handle reaches `physics3d`.
+- Handles also carry `get()`, `set(table)`, `has()` and `remove()`.
+- A method no module declared for that component is an error naming it.
+  `node.sprite.apply_impulse` does not silently do nothing.
+- Each component's methods are on its reference page, for example
+  [`body2d`](/docs/reference/components/body2d).
 
 ## Driving the simulation
 
-Bodies, colliders, joints, velocities and queries live in `physics3d` and
-`physics2d`: one module per world, mirroring the `body3d` / `body2d` split.
-`physics2d` adds `max_contact_impulse(node)`, the strongest impact a body took
-this frame, for impact-driven gameplay such as destruction or damage.
+| Module | What is in it |
+| --- | --- |
+| `physics3d`, `physics2d` | Bodies, colliders, joints, velocities and queries: one module per world, mirroring the `body3d` and `body2d` split |
+| `physics2d` only | `max_contact_impulse(node)`, the strongest impact a body took this frame, for destruction or damage |
+| `physics` | What spans both worlds: `set_paused`, `is_paused`, `clear`, `set_sleeping_allowed`, `sleeping_allowed`, the debug draw, the solver's tuning and counters |
 
-The `physics` module holds only what spans both worlds: `set_paused`,
-`is_paused`, `clear`, `set_sleeping_allowed`, `sleeping_allowed`, the debug
-draw, and the solver's tuning and counters. So a tool can treat "physics" as
-one simulation: the editor pauses it until play, and its Physics persona draws
-every body's collider and centre of mass over the scene, playing or not.
+A tool can therefore treat physics as one simulation. The editor pauses it
+until play, and its Physics persona draws every body's collider and centre of
+mass over the scene, playing or not.
 
 <figure><img src="/img/manual/physics_overlays.webp" alt="The Physics persona's collider and centre-of-mass overlays over examples/angrynerds, the Bird selected" width="1600" height="1000" loading="lazy" /></figure>
 
@@ -80,7 +77,7 @@ The full function lists are in the
 
 ## Determinism
 
-Physics steps on a fixed 60 Hz accumulator, never the variable frame delta,
-and iterates order-sensitive collections deterministically. Two runs with
-identical inputs match bit for bit, and a repository test asserts it. See
-[Determinism](./determinism.mdx).
+- Physics steps on a fixed 60 Hz accumulator, never the variable frame delta.
+- Order-sensitive collections iterate deterministically.
+- Two runs with identical inputs match bit for bit, and a repository test
+  asserts it. See [Determinism](./determinism.mdx).

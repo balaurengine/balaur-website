@@ -13,28 +13,29 @@ import Clip from '@site/src/components/Clip';
 ## Nodes are entities
 
 A node is an ECS entity with `Name`, `Parent`, `Children`, `Transform` and
-`GlobalTransform`. Node paths (`"A/B/C"`), transform propagation and recursive
-free are core systems, and plugins hang their own components off the same
-entities, so "node" is an API surface, not a data structure with a cost.
+`GlobalTransform`.
 
-Scripts reach the tree through 30 operations declared once in the core and
-reached as methods on a node value. Among them: `get_node`, `parent`,
-`children`, `add_child`, `set_parent` (which keeps the node where it is in the
-world), `queue_free`, `position` / `set_position`, `rotation_euler`, `scale`,
-`translate`, `attach_script`, and the component operations. Paths
-accept `..`, so `../Target` names a sibling. The full list is in the
-[script modules reference](/docs/reference/modules).
-
-`queue_free` and other structural changes are deferred to the end of the
-frame, so iteration is never invalidated mid-frame.
+- Node paths (`"A/B/C"`), transform propagation and recursive free are core
+  systems.
+- Plugins hang their own components on the same entities, so "node" is an API
+  surface, not a data structure with a cost.
+- Scripts reach the tree through 30 operations, declared once in the core and
+  reached as methods on a node value. Among them: `get_node`, `parent`,
+  `children`, `add_child`, `set_parent`, `queue_free`, `position`,
+  `set_position`, `rotation_euler`, `scale`, `translate`, `attach_script`, and
+  the component operations. `set_parent` keeps the node where it is in the
+  world.
+- Paths accept `..`, so `../Target` names a sibling. The full list is in the
+  [script modules reference](/docs/reference/modules).
+- `queue_free` and other structural changes are deferred to the end of the
+  frame, so iteration is never invalidated mid-frame.
 
 ![The node tree of examples/hello, with the Platform node's components in the inspector](/img/manual/scenes_tree.webp)
 
 ## Scene files
 
-A scene is a flat list of `[[nodes]]` entries with `name`, optional `parent`
-(by id), `position`, `script`, and any component keys the registered plugins
-contribute.
+A flat list of `[[nodes]]` entries with `name`, an optional `parent` by id,
+`position`, `script`, and any component keys the registered plugins contribute.
 
 ```toml
 [[nodes]]
@@ -48,15 +49,14 @@ collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
 ```
 
-Scene keys are applied in plugin registration order, which is deterministic.
-Scripts can instantiate scenes at run time with `scene::instantiate` and spawn
-nodes with `scene::spawn`.
+- Scene keys are applied in plugin registration order, which is deterministic.
+- At run time, `scene::instantiate` places a scene and `scene::spawn` makes a
+  node.
 
 ## Prefabs
 
-A prefab is a scene file; a node instantiates one with `instance`, and the
-file's roots become that node's children. The node keeps its own name,
-transform and components, so its position moves the whole prefab.
+A prefab is a scene file. A node instantiates one with `instance`, and the
+file's roots become that node's children.
 
 ```toml
 [[nodes]]
@@ -69,43 +69,40 @@ position = [-0.5, 5, 1.5]
 color = [0.9, 0.3, 0.25, 1]
 ```
 
-`overrides` is keyed by path from the instance node and holds scene keys:
-components, the transform, and a `script` whose `props` merge over the
-prefab's. An override patches one property and leaves the rest of the
-component alone. Ids inside an instance are prefixed by the instance's own
-(`n_crate_b/n_lid`), so two instances of one file stay distinguishable in a
-replay's digest. A prefab that contains itself is an error naming the cycle.
+- The node keeps its own name, transform and components, so its position moves
+  the whole prefab.
+- `overrides` is keyed by path from the instance node and holds scene keys:
+  components, the transform, and a `script` whose `props` merge over the
+  prefab's.
+- An override patches one property and leaves the rest of the component alone.
+- Ids inside an instance are prefixed by the instance's own
+  (`n_crate_b/n_lid`), so two instances of one file stay distinguishable in a
+  replay's digest.
+- A prefab that contains itself is an error naming the cycle.
 
-In the editor a prefab is placed from the command palette, one command per
+In the editor: a prefab is placed from the command palette, one command per
 scene file. An instance's nodes appear in the tree in place, one shade
-quieter; editing one writes an override on the instance node, and an edit back
-to the prefab's own value removes it. Adding or deleting a node inside an
-instance is refused, with the prefab to open instead.
+quieter. Editing one writes an override, and an edit back to the prefab's own
+value removes it. Adding or deleting a node inside an instance is refused,
+with the prefab offered to open instead.
 
 ## Components
 
-Plugins declare named, schema-described components. A schema gives each
-property a `type` from a closed set: `float`, `bool`, `string`, `enum`,
-`vec2`, `vec3`, `color`, `asset`, plus defaults, enum options, an optional
-scalar shorthand (`body = "dynamic"`), and `readonly` markers the inspector
-honours. A malformed schema fails at boot naming the component and property,
-rather than at the first inspector row.
+Plugins declare named, schema-described components. A property's `type` comes
+from a closed set: `float`, `bool`, `string`, `enum`, `vec2`, `vec3`, `color`,
+`asset`, plus defaults, enum options, an optional scalar shorthand
+(`body = "dynamic"`), and `readonly` markers the inspector honours. A
+malformed schema fails at boot naming the component and property.
 
-One registration buys three things at once:
+One registration buys three things:
 
-- The scene-file key. `collider = { kind = "ball", radius = 0.5 }` works
-  because the physics plugin registered `collider3d`.
-- The runtime API. `node.set_component`, `get_component`,
-  `has_component`, `remove_component`, `component_names`, plus
-  `scene::component_types()` and `scene::component_schema(name)` for
-  discovery.
-- Editor support. The "Add component" palette and the property inspectors
-  are generated from the registry, so third-party components are addable and
-  editable with no editor changes.
+| | |
+| --- | --- |
+| The scene-file key | `collider = { kind = "ball", radius = 0.5 }` works because the physics plugin registered `collider3d` |
+| The runtime API | `node.set_component`, `get_component`, `has_component`, `remove_component`, `component_names`, plus `scene::component_types()` and `scene::component_schema(name)` |
+| Editor support | The Add component palette and the property inspectors are generated from the registry, so a third-party component is addable and editable with no editor changes |
 
 <Clip name="scenes_inspect" alt="Selecting nodes in the tree; the inspector follows, a scale is dragged, and undone" />
-
-The components registered by the standard plugins:
 
 | Component | Plugin | Purpose |
 | --- | --- | --- |
@@ -124,13 +121,12 @@ The components registered by the standard plugins:
 | `sound` | audio | A sound file with volume and looping |
 | `widget` | ui | HUD element (label / button / panel) anchored to the screen |
 
-There is deliberately no class hierarchy: no `Node2D` inheriting from `Node`,
-no `RigidBody` subtype. A node *is* whatever its components make it. The
-generated [component reference](/docs/reference/components) lists every
-registered component with every property, default and option.
-
-A tagged-union property is always called `kind` (`kind = "ball"`), so `type`
-always means the datatype.
+- No class hierarchy: no `Node2D` inheriting from `Node`, no `RigidBody`
+  subtype. A node is whatever its components make it.
+- A tagged-union property is always `kind` (`kind = "ball"`), so `type` always
+  means the datatype.
+- The generated [component reference](/docs/reference/components) lists every
+  component with every property, default and option.
 
 ## Objects
 
@@ -139,8 +135,6 @@ to one collides what is on screen, a ray picks it, and a headless test can
 measure it.
 
 ![Every object, one row per category](/img/manual/objects_overview.webp)
-
-A `mesh` asset names one of four things:
 
 ```toml
 [[assets]]
@@ -153,19 +147,15 @@ kind = "extrude"              # ...or a path given thickness
 positions = [[0, 0, 0]]       # ...or the vertices themselves
 ```
 
-The primitives are `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`,
-`torus`, `pyramid`, `prism` and `tube` in 3D, and `circle`, `rect`, `capsule`,
-`ellipse`, `star` and `ngon` in 2D. `shape3d` and `shape2d` draw them straight;
-a `mesh` asset is for when something else (a collider, a boolean, a script)needs the triangles too.
+- 3D primitives: `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`,
+  `torus`, `pyramid`, `prism`, `tube`.
+- 2D primitives: `circle`, `rect`, `capsule`, `ellipse`, `star`, `ngon`.
+- `shape3d` and `shape2d` draw them straight. A `mesh` asset is for when
+  something else, a collider, a boolean or a script, needs the triangles too.
 
 ![The primitives row](/img/manual/objects_primitives.webp)
 
 ### Paths
-
-A `path2d` or `path3d` is a run of cubic control points with a `closed`
-flag. `extrude` gives a closed outline thickness with an optional `bevel`,
-`lathe` revolves a profile around y, and `sweep` carries a cross-section
-along a rail. A `shape2d` polyline whose `mesh` names a `path2d` strokes it.
 
 ```toml
 [[assets]]
@@ -177,34 +167,39 @@ depth = 0.5
 bevel = 0.08
 ```
 
+| Kind | What it makes |
+| --- | --- |
+| `path2d`, `path3d` | A run of cubic control points with a `closed` flag |
+| `extrude` | A closed outline given thickness, with an optional `bevel` |
+| `lathe` | A profile revolved around y |
+| `sweep` | A cross-section carried along a rail |
+
+A `shape2d` polyline whose `mesh` names a `path2d` strokes it.
+
 ![An arch extruded, a goblet revolved, a rail swept](/img/manual/objects_paths.webp)
 
 ### Booleans and cloners
-
-`boolean3d` draws a node's children joined, cut out of one another, or only
-where they overlap: `op` is `union`, `difference` or `intersection`, applied
-in declaration order. The operands stay in the tree, hidden and editable, and
-moving one recomputes the result. `boolean2d` is the same over filled
-outlines.
 
 ![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
 
 ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
 
-`cloner` draws the node's whole subtree many times over: `linear` with a
-`count` and a `step`, `radial` with a `radius` and an `angle` that closes the
-ring when it is zero, or `grid` with `counts`. A `seed` and a `random` range
-scatter the copies. The tree, physics and scripts still see one node, and each
-mesh is one draw call however many copies there are.
+- `boolean3d` draws a node's children joined, cut out of one another, or only
+  where they overlap: `op` is `union`, `difference` or `intersection`, applied
+  in declaration order. `boolean2d` is the same over filled outlines.
+- The operands stay in the tree, hidden and editable, and moving one
+  recomputes the result.
 
 ![A row, a ring and a scattered grid](/img/manual/objects_cloner.webp)
 
-### Vertex colours and morph targets
+- `cloner` draws the node's whole subtree many times: `linear` with a `count`
+  and a `step`, `radial` with a `radius` and an `angle` that closes the ring
+  when it is zero, or `grid` with `counts`.
+- A `seed` and a `random` range scatter the copies.
+- The tree, physics and scripts still see one node, and each mesh is one draw
+  call however many copies there are.
 
-A glTF's `COLOR_0` and its blend shapes survive the import. A morph weight is
-an ordinary component property, so a clip drives one as `mesh/morph.<name>`
-with the tracks it already has. Vertex colours reach a shader through a
-material that asks for them:
+### Vertex colours and morph targets
 
 ```toml
 type = "material"
@@ -212,15 +207,20 @@ shader = "shaders/painted.wesl"
 features = { vertex_color = true }
 ```
 
+- A glTF's `COLOR_0` and its blend shapes survive the import.
+- A morph weight is an ordinary component property, so a clip drives one as
+  `mesh/morph.<name>` with the tracks it already has.
+- Vertex colours reach a shader through a material that asks for them.
+
 ![A word as a mesh, and a triangle coloured per vertex](/img/manual/objects_text.webp)
 
 `examples/objects` shows all of it, one row per category.
 
 ## Reacting without a script
 
-A scene can be interactive before anyone writes code for it. Three keys do it:
-typed values the scene owns, named looks a node can be in, and a table saying
-what one event does.
+Three keys make a scene interactive before anyone writes code for it: typed
+values the scene owns, named looks a node can be in, and a table saying what
+one event does.
 
 ```toml
 [variables]
@@ -259,33 +259,25 @@ value = "open"
 
 `examples/hello` carries exactly this and no code for it.
 
-- **Events.** Pointer enter, exit, down, up, click, drag and drop; key down
-  and up; a declared action; scroll; resize; a variable or a state changing;
-  a collision starting or stopping. Each also reaches a node's script as
-  `on_<event>`, bindings first.
-- **Actions.** `state`, `set_variable`, `add_variable`, `play`, `sound`,
-  `spawn`, `free`, `switch`, `open_url`, `emit`, `call`, `visible`. Every one
-  is a call a script could make.
-- **`when`.** A comparison over the scene's variables, joined with `&&` and
-  `||`. It is data in a file, so the editor reads it, shows it and diffs it;
-  anything a comparison cannot say is a script.
-- **States.** A state is a table of component properties, patched over what
-  the node already has, so it says only what differs. `node.go("hover")` from
-  a script does the same thing, and `on_state_changed(from, to)` follows.
+| | |
+| --- | --- |
+| Events | Pointer enter, exit, down, up, click, drag, drop; key down and up; a declared action; scroll; resize; a variable or a state changing; a collision starting or stopping. Each also reaches a node's script as `on_<event>`, bindings first |
+| Actions | `state`, `set_variable`, `add_variable`, `play`, `sound`, `spawn`, `free`, `switch`, `open_url`, `emit`, `call`, `visible`. Every one is a call a script could make |
+| `when` | A comparison over the scene's variables, joined with `&&` and `\|\|`. It is data in a file, so the editor reads it, shows it and diffs it |
+| States | A table of component properties patched over what the node has, so it says only what differs. `node.go("hover")` does the same from a script, and `on_state_changed(from, to)` follows |
 
-The editor's Events view writes these rows, and *Convert to script* writes the
-Rune they mean, one function per hook. A node may carry both; the bindings run
-first.
-
-Pointer events need a window: what the pointer is over comes from the frame the
-renderer drew, and a headless run has no viewport to unproject against. Key,
-action, scroll and variable events fire headless, so a replayed session
-exercises them in CI.
+- The Events view writes these rows, and *Convert to script* writes the Rune
+  they mean, one function per hook.
+- A node may carry both. The bindings run first.
+- Pointer events need a window: what the pointer is over comes from the frame
+  the renderer drew, and a headless run has no viewport to unproject against.
+- Key, action, scroll and variable events fire headless, so a replayed session
+  exercises them in CI.
 
 ## Import settings
 
 How a file is read is stated beside the file. `art/hero.png.toml` settles
-`art/hero.png`, the way Godot writes an `.import`:
+`art/hero.png`, the way Godot writes an `.import`.
 
 ```toml
 # art/hero.png.toml
@@ -295,32 +287,26 @@ srgb = true          # false for a normal map or a mask, which carry data
 
 ![The same 32-pixel sprite at ten times its size, filtered linearly and with nearest](/img/manual/import_settings.webp)
 
-The double extension is deliberate: the sidecar sorts beside its image in a
-file listing, and `hero.toml` would collide with a scene or a clip of the same
-name.
-
-A whole project usually wants one answer, so `project.toml` sets the default
-for every file of a kind, and a sidecar overrides it key by key:
-
 ```toml
+# project.toml: the default for every file of a kind
 [import.texture]
 filter = "nearest"
 ```
 
-A file's kind comes from its extension: `texture`, `audio`, `font` or `model`.
-
-One key here is read by the exporter rather than the engine: `recode` says how
-this file is re-encoded when a game ships, overriding the project's
-[export](/docs/manual/build-size) mode for this file alone.
-
-The editor writes these for you. Select a picture in the Assets dock and the
-Import tab, beside the Inspector, shows one row per key, each saying whether the
-value is the file's own, the project's or the engine's default. Clearing a row
-drops the key and deletes a sidecar that has nothing left in it.
+- The double extension is deliberate: the sidecar sorts beside its image, and
+  `hero.toml` would collide with a scene or a clip of the same name.
+- A sidecar overrides the project default key by key.
+- A file's kind comes from its extension: `texture`, `audio`, `font`, `model`.
+- `recode` is read by the exporter rather than the engine, and overrides the
+  project's [export](/docs/manual/build-size) mode for one file.
 
 ![The Import tab showing filter and srgb for a selected picture](/img/manual/import_dock.webp)
 
-Settings change pixels, never sizes. A sprite takes its extent from the image
-header, so a headless run resolves settings for nothing and computes the same
-world as a windowed one. That is why downscaling art for a phone is an
-[export](/docs/manual/build-size) key rather than an import one.
+- The editor writes these for you. Select a picture in the Assets dock, and
+  the Import tab shows one row per key, each saying whether the value is the
+  file's own, the project's or the engine's default.
+- Clearing a row drops the key, and deletes a sidecar with nothing left in it.
+- Settings change pixels, never sizes. A sprite takes its extent from the
+  image header, so a headless run computes the same world as a windowed one.
+  Downscaling art for a phone is an [export](/docs/manual/build-size) key for
+  that reason.
