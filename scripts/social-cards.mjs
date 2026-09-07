@@ -46,8 +46,6 @@ const CARDS = {
   quality: ['Quality', 'Every check a change passes: lints, tests, determinism traces, generated docs.', '/docs/quality'],
   'built-on': ['Built on', 'The Rust libraries under the engine, and what each one does for it.', '/docs/built-on'],
   reference: ['Reference', 'Every component, asset type and script module, read from a booted engine.', '/docs/reference'],
-  changelog: ['Changelog', 'What each release of the engine added.', '/docs/changelog'],
-  crates: ['Crates', 'The Rust workspace, crate by crate.', '/docs/crates'],
   benchmarks: ['Benchmarks', 'Balaur beside Godot on the same scenes: what a tick costs, and what the engine adds over rapier.', '/docs/benchmarks'],
   scenes: ['Scenes and nodes', 'Nodes are entities. Scenes are plain TOML.', '/docs/manual/scenes'],
   scripting: ['Scripting', 'Rune scripts, hot reload in milliseconds, and a debugger in the editor.', '/docs/manual/scripting'],

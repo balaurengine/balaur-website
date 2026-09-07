@@ -55,8 +55,8 @@ const DESCRIPTION_MAX = 160;
 
 // Written by a generator or synced from the engine repo; a fix goes there.
 const SKIP = [
-  /^docs\/reference\//, /^docs\/roadmap\.mdx$/, /^docs\/crates\.md$/,
-  /^docs\/changelog\.md$/, /^docs\/benchmarks\.md$/, /^docs\/manual\/_features\.mdx$/,
+  /^docs\/reference\//, /^docs\/roadmap\.mdx$/,
+  /^docs\/benchmarks\.md$/, /^docs\/manual\/_features\.mdx$/,
 ];
 
 // Throat-clearing and filler. A match is an error; the fix is to delete it.

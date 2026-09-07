@@ -4,7 +4,8 @@
 // docs/roadmap.mdx, so a new item is added there and its paragraph here.
 //
 // Every value is source pasted into the generated MDX verbatim: `items` holds
-// each card's JSX — a quoted string, or a fragment where it needs <code>.
+// each card's JSX — a quoted string, or a fragment where it needs <code>. The
+// page is its tabs: no intro, and a milestone is its heading and its cards.
 
 export default {
   frontmatter: `---
@@ -15,29 +16,10 @@ image: "/img/social/roadmap.png"
 hide_table_of_contents: true
 ---`,
 
-  intro: `What is built, and what comes after it, one tab per milestone. **0.1**
-is the engine as it stands, built and waiting on a tag; 0.2 is what is being
-built now; **Later** is the pile with no version against it, wanted and waiting
-on someone with a game that needs it. Nothing here is a date.
-
-The [features page](/features) is 0.1 feature by feature, and the
-[changelog](./changelog.md) is the same list as one line each.`,
-
   // Closes the page, under the tabs.
   outro: `[Discord](https://discord.gg/v649emcpAu) ·
 [Issues](https://github.com/balaurengine/balaur/issues) ·
 [Discussions](https://github.com/balaurengine/balaur/discussions)`,
-
-  // The line under each milestone's heading, above its cards.
-  milestones: {
-    '0.1': `<>Everything below already runs. It is one version for the whole workspace, tagged nowhere yet, so there is no download that carries a number: the ten cards here are what a <code>v0.1.0</code> would contain. The <a href="/docs/changelog">changelog</a> lists it feature by feature.</>`,
-    '0.2': `'The list you hit making an ordinary game: two clips at once, a viewport that selects more than one node, a 3D light you place yourself, a session a script can host, and a build signed for the platform it runs on.'`,
-    '0.3': `<>Everything you see. 2D lights get normal maps, particles reach 3D, the camera culls what is behind it and draws to more than one view, and the timeline grows the curve handles and the sequencer a cutscene needs.</>`,
-    '0.4': `<>Two machines playing the same game. Rollback, stable ids and QUIC datagrams are built and reachable only from Rust; this is the milestone that puts them behind <code>session</code> in a script, in a browser, and on a Gamend lobby. Server work lives in the <a href="https://github.com/appsinacup/gamend">Gamend repository</a>; the plan is kept beside the engine's so the two sides agree.</>`,
-    '0.5': `'Making a game without opening a script: hooks and states on any node, paths an agent walks, a tile map finished, voice and a controller that does more than rumble, and an agent driving the editor over MCP.'`,
-    '0.6': `<>Getting the thing out. One command puts a build on a URL or a phone, a pack ships sealed, Steam and Google Play join Apple behind the <code>platform</code> module, and a project loads while the game runs rather than whole.</>`,
-    'Later': `'Wanted, planned, and waiting on a game that asks. Nothing here is refused; each one moves into a numbered milestone the moment somebody needs it.'`,
-  },
 
   items: {
     'The editor':
@@ -76,6 +58,8 @@ The [features page](/features) is 0.1 feature by feature, and the
       `<>A pixel-art sprite can ask for hard edges today: a settings file sits beside the picture, <code>[import.texture]</code> sets the project's default, and filtering and colour space reach the upload. The editor has an Import tab beside the Inspector for the file the Assets dock has selected, saying for each key whether the value is the file's own, the project's or the engine's. Still to come: repeat, mipmaps, anisotropy and premultiplied alpha, which wait on the renderer exposing a whole sampler, and GPU-compressed textures at export.</>`,
     'Asset streaming':
       `'A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it — instead of a pack held whole in memory.'`,
+    'Scripts you can take':
+      `<>The library dock ships materials, skies and models; this adds scripts. Fifteen short files with <code>exports()</code>, dropped onto a node and tuned in the inspector without opening one: movement in 2D and 3D, orbit, first-person, third-person and click-to-move cameras, follow, patrol, a spawner, a timer, health, a pickup, parallax. A copy lands in the project, so changing one is editing your own file.</>`,
     'Extensions, tier two':
       `'Native extensions that add components and systems, and call back into scripts.'`,
     'Falling sand':

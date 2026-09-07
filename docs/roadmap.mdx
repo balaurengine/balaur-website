@@ -10,20 +10,11 @@ import Roadmap from '@site/src/components/Roadmap';
 
 # Roadmap
 
-What is built, and what comes after it, one tab per milestone. **0.1**
-is the engine as it stands, built and waiting on a tag; 0.2 is what is being
-built now; **Later** is the pile with no version against it, wanted and waiting
-on someone with a game that needs it. Nothing here is a date.
-
-The [features page](/features) is 0.1 feature by feature, and the
-[changelog](./changelog.md) is the same list as one line each.
-
 <Roadmap milestones={[
   {
     id: '0.1',
     state: 'built',
-    title: "The engine as it stands, waiting on a tag",
-    lead: <>Everything below already runs. It is one version for the whole workspace, tagged nowhere yet, so there is no download that carries a number: the ten cards here are what a <code>v0.1.0</code> would contain. The <a href="/docs/changelog">changelog</a> lists it feature by feature.</>,
+    title: "The engine as it stands",
     items: [
       {
         group: "Editor",
@@ -91,7 +82,6 @@ The [features page](/features) is 0.1 feature by feature, and the
     id: '0.2',
     state: 'building',
     title: "Nothing blocks an ordinary game",
-    lead: 'The list you hit making an ordinary game: two clips at once, a viewport that selects more than one node, a 3D light you place yourself, a session a script can host, and a build signed for the platform it runs on.',
     items: [
       {
         group: "Editor",
@@ -146,8 +136,7 @@ The [features page](/features) is 0.1 feature by feature, and the
   {
     id: '0.3',
     state: 'planned',
-    title: "The picture: what draws, and what authors it",
-    lead: <>Everything you see. 2D lights get normal maps, particles reach 3D, the camera culls what is behind it and draws to more than one view, and the timeline grows the curve handles and the sequencer a cutscene needs.</>,
+    title: "Everything you see",
     items: [
       {
         group: "Editor",
@@ -192,6 +181,11 @@ The [features page](/features) is 0.1 feature by feature, and the
       },
       {
         group: "Rendering",
+        title: 'Video playback',
+        text: 'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.',
+      },
+      {
+        group: "Rendering",
         title: 'Post-process materials',
         text: 'A shader of your own on the camera chain, beside the bloom, SSAO and depth of field already there.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-shaders.md#post-process-materials',
@@ -202,7 +196,6 @@ The [features page](/features) is 0.1 feature by feature, and the
     id: '0.4',
     state: 'planned',
     title: "Multiplayer, end to end",
-    lead: <>Two machines playing the same game. Rollback, stable ids and QUIC datagrams are built and reachable only from Rust; this is the milestone that puts them behind <code>session</code> in a script, in a browser, and on a Gamend lobby. Server work lives in the <a href="https://github.com/appsinacup/gamend">Gamend repository</a>; the plan is kept beside the engine's so the two sides agree.</>,
     items: [
       {
         group: "Editor",
@@ -270,13 +263,18 @@ The [features page](/features) is 0.1 feature by feature, and the
     id: '0.5',
     state: 'planned',
     title: "A game built without writing a script",
-    lead: 'Making a game without opening a script: hooks and states on any node, paths an agent walks, a tile map finished, voice and a controller that does more than rumble, and an agent driving the editor over MCP.',
     items: [
       {
         group: "Editor",
         title: 'Tile maps',
         text: <>What is left of tile maps: quarter-tile sheets, where a cell is drawn as four half-tiles picked by its own corners, which is how the five-tile sheets people download are meant to be read. Everything else landed — collision as one voxel shape, autotiling from an ordered rule table with templates, animated and light-blocking tiles, per-tile data, isometric and hexagonal layouts, the brushes and the Set panel, cells a level may keep in its own file, and <code>balaur import</code> for Tiled and LDtk.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
+      },
+      {
+        group: "Scripts and assets",
+        title: 'Scripts you can take',
+        text: <>The library dock ships materials, skies and models; this adds scripts. Fifteen short files with <code>exports()</code>, dropped onto a node and tuned in the inspector without opening one: movement in 2D and 3D, orbit, first-person, third-person and click-to-move cameras, follow, patrol, a spawner, a timer, health, a pickup, parallax. A copy lands in the project, so changing one is editing your own file.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-authoring-without-code.md',
       },
       {
         group: "Scripts and assets",
@@ -324,8 +322,7 @@ The [features page](/features) is 0.1 feature by feature, and the
   {
     id: '0.6',
     state: 'planned',
-    title: "A game gets out: export, stores, the browser",
-    lead: <>Getting the thing out. One command puts a build on a URL or a phone, a pack ships sealed, Steam and Google Play join Apple behind the <code>platform</code> module, and a project loads while the game runs rather than whole.</>,
+    title: "A game gets out",
     items: [
       {
         group: "Editor",
@@ -363,6 +360,12 @@ The [features page](/features) is 0.1 feature by feature, and the
       },
       {
         group: "Shipping",
+        title: 'Embedding on a page',
+        text: <>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
+      },
+      {
+        group: "Shipping",
         title: 'Sealed packs and stripped binaries',
         text: 'Today every texture, sound and scene comes out of a shipped game as the original file, scripts as bytecode on native and source on the web, and the binary keeps its symbols. Planned: a stripped binary, bytecode on the web, and a pack sealed with ChaCha20-Poly1305 — a speed bump by name, since the key ships with the game. DRM wrappers, anti-cheat and anti-debugging are not coming; a result that matters is checked by a server.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-protection.md',
@@ -370,10 +373,9 @@ The [features page](/features) is 0.1 feature by feature, and the
     ],
   },
   {
-    id: 'Later',
+    id: '0.7',
     state: 'planned',
-    title: "When a game asks",
-    lead: 'Wanted, planned, and waiting on a game that asks. Nothing here is refused; each one moves into a numbered milestone the moment somebody needs it.',
+    title: "What a bigger game asks for",
     items: [
       {
         group: "Physics and animation",
@@ -385,11 +387,6 @@ The [features page](/features) is 0.1 feature by feature, and the
         title: 'Soft bodies, tearing, fluids',
         text: 'Deformable bodies, cloth that tears, liquids and granular materials, built in Rapier and exposed as components.',
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md',
-      },
-      {
-        group: "Rendering",
-        title: 'Video playback',
-        text: 'A movie on a texture with its audio on a bus. Render-side only — a video never feeds simulation state.',
       },
       {
         group: "Networking",
@@ -415,12 +412,13 @@ The [features page](/features) is 0.1 feature by feature, and the
         text: <>A project on a Gamend account with a version per save, a share link with a role, who else is in the scene and what they have selected, comments pinned to nodes, and editing together — under a lock per scene first, over a CRDT if a team asks.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-collaboration.md',
       },
-      {
-        group: "Shipping",
-        title: 'Embedding on a page',
-        text: <>A <code>&lt;balaur-viewer&gt;</code> element and an npm runtime with a React wrapper, a page API to set variables and hear events over the bridge that already exists, a web module sized to what the game uses instead of one that carries everything, a progressive web app option on the export, and image, video and glTF export from the editor.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-embed.md',
-      },
+    ],
+  },
+  {
+    id: '0.8',
+    state: 'planned',
+    title: "Consoles and headsets",
+    items: [
       {
         group: "Shipping",
         title: 'Console export',

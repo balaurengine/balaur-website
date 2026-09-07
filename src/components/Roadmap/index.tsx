@@ -17,13 +17,12 @@ export type RoadmapMilestone = {
   id: string;
   state: 'built' | 'building' | 'planned';
   title: string;
-  lead?: ReactNode;
   items: RoadmapItem[];
 };
 
 /** Said once beside the milestone's heading; `planned` is the default and mute. */
 const STATE_LABEL: Record<string, string> = {
-  built: 'Built, not yet tagged',
+  built: 'Built',
   building: 'Being built now',
 };
 
@@ -103,7 +102,6 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
         {STATE_LABEL[shown.state] && (
           <p className={`${styles.state} ${styles[shown.state]}`}>{STATE_LABEL[shown.state]}</p>
         )}
-        {shown.lead && <p className={styles.lead}>{shown.lead}</p>}
         <div className={styles.grid}>
           {shown.items.map((item) => (
             <div className={`${styles.card} ${weight(shown, index)}`} key={item.title}>

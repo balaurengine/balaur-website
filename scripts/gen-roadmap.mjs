@@ -4,8 +4,8 @@
 // The engine's docs/ROADMAP.md owns the structure — which milestones exist,
 // which items are in them, in what order, behind which plan — because that is
 // the list the engine's own contributors keep. This repository owns the prose,
-// in src/data/roadmap-copy.mjs: the frontmatter, the intro, each milestone's
-// opening line and each card's paragraph, all keyed by title.
+// in src/data/roadmap-copy.mjs: the frontmatter and each card's paragraph,
+// keyed by title.
 //
 // So a roadmap item lands here by being added there, and a title is the join:
 // rename one on either side without the other and this script fails rather
@@ -117,18 +117,13 @@ function render(milestones, copy) {
     '',
     '# Roadmap',
     '',
-    copy.intro.trim(),
-    '',
     '<Roadmap milestones={[',
   ];
   for (const milestone of milestones) {
-    const lead = copy.milestones[milestone.id];
-    if (!lead) fail(`no copy for milestone "${milestone.id}" — add it to src/data/roadmap-copy.mjs`);
     out.push('  {');
     out.push(`    id: '${milestone.id}',`);
     out.push(`    state: '${milestone.state}',`);
     out.push(`    title: ${JSON.stringify(milestone.title)},`);
-    out.push(`    lead: ${lead.trim()},`);
     out.push('    items: [');
     for (const item of milestone.items) {
       const text = copy.items[item.title];
@@ -148,9 +143,6 @@ function render(milestones, copy) {
   if (copy.outro) out.push(copy.outro.trim(), '');
   const stale = Object.keys(copy.items).filter((t) => !known.has(t));
   if (stale.length) fail(`copy for items the roadmap no longer has: ${stale.join(', ')}`);
-  const ids = new Set(milestones.map((m) => m.id));
-  const staleMilestones = Object.keys(copy.milestones).filter((id) => !ids.has(id));
-  if (staleMilestones.length) fail(`copy for milestones the roadmap no longer has: ${staleMilestones.join(', ')}`);
   return out.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 }
 

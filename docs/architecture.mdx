@@ -8,11 +8,11 @@ sidebar_position: 5
 
 # Architecture
 
-The condensed version. The full document is
+The long version is
 [ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md)
 in the engine repository.
 
-## The layers
+## Layers
 
 ```mermaid
 flowchart TB
@@ -28,57 +28,75 @@ flowchart TB
   S --> R --> M --> D --> P --> C
 ```
 
-Backends depend on core; core never depends on a backend. That direction is
-what keeps core language-free, and the compiler enforces it. The
-[crates reference](./crates.md) lists every workspace crate.
+Backends depend on core. Core never depends on a backend, and the compiler
+enforces the direction.
 
-## Key decisions
+## ECS
 
-ECS: hecs. Minimal, archetype-based, out of the way. Balaur adds its own
-scheduling, hierarchy and resources on top rather than adopting a framework's
-opinions.
+- `hecs`: archetype-based, minimal, no application framework.
+- Scheduling, hierarchy and resources are Balaur's own, on top.
 
-One math crate. All crates share `glamx`: glam plus pose and rotation
-types, re-exporting the rest: the same math rapier and kiss3d use, so there
-are no conversion layers between core, physics and rendering. It is pinned to
-`libm` and `scalar-math`, so every build gets the deterministic math, not only
-the ones with physics in the graph.
+## Math
 
-The `Engine` handle. A cheaply clonable handle over the world, resources,
-command queue and script host, with interior mutability and short borrows.
-Rust systems receive it every frame and script binding closures capture it, so
-both sides of the FFI see the same state with no marshalling. The engine is
-single-threaded by design for now; parallelism can later live inside systems
-without changing this facade.
+- One crate everywhere: `glamx`, which is glam plus `Pose2`, `Pose3` and
+  `Rot2`, re-exporting the rest.
+- The same math rapier and kiss3d use, so no layer converts between core,
+  physics and rendering.
+- Pinned to `libm` and `scalar-math`, so every build gets the deterministic
+  math, not only the builds with physics in the graph.
 
-Scene tree over ECS. A node is an entity with `Name`, `Parent`,
-`Children`, `Transform`, `GlobalTransform`. Node paths, transform propagation
-and recursive free are core systems; plugins hang their components off the
-same entities.
+## The `Engine` handle
 
-Fixed frame schedule. `First → PreUpdate (reload pump) → Update (scripts,
-animation) → FixedUpdate (fixed_update, physics) → PostUpdate (audio) →
-SceneSync (transform propagation) → Render → Last (deferred destruction)`.
-`FixedUpdate` drains one app-owned accumulator into whole 60 Hz steps, zero
-to four per frame, so simulation never sees the measured frame time.
-Structural changes requested by scripts are deferred to `Last`, so iteration
-is never invalidated mid-frame.
+- One cheaply clonable handle over the world, the resources, the command queue
+  and the script host.
+- Interior mutability, short borrows.
+- Rust systems take it every frame; script bindings capture it. Both sides of
+  the FFI see one state, with nothing marshalled between them.
+- Single-threaded by design. Threads can later live inside a system without
+  changing this facade.
 
-The scripting seam. `balaur_script` is traits and a neutral `Value` type,
-with no language in it. A subsystem declares its bindings once against the
-seam and never names a language; a backend implements the host trait and
-consumes those declarations. Rune is the one language this build ships, and
-the seam keeps a second one to a single crate: adding a backend changes
-nothing in physics, input, render, audio or ui.
+## Scene tree
 
-Plugins. Wrapping a Rust crate for scripting is one call per entry point;
-argument and return conversions are inferred. A plugin can also register
-schema-described components, scene-file keys and asset types: one
-registration buys the scene vocabulary, the runtime component API and full
-editor support. `balaur_physics` is the reference implementation. One `Plugin`
-trait covers both shipping modes: linked in behind a cargo feature (`audio`,
-`net`, `gamend`), or built as a shared library and loaded at run time: see
-[Modules and extensions](./manual/extensions.mdx).
+- A node is an entity carrying `Name`, `Parent`, `Children`, `Transform` and
+  `GlobalTransform`.
+- Node paths, transform propagation and recursive free are core systems.
+- Plugins hang their own components on the same entities.
+
+## The frame
+
+```mermaid
+flowchart LR
+  A["First"] --> B["PreUpdate<br/>reload pump"] --> C["Update<br/>scripts, animation"]
+  C --> D["FixedUpdate<br/>fixed_update, physics"] --> E["PostUpdate<br/>audio"]
+  E --> F["SceneSync<br/>transforms"] --> G["Render"] --> H["Last<br/>deferred destruction"]
+```
+
+| Rule | |
+| --- | --- |
+| Fixed step | `FixedUpdate` drains one accumulator into whole 60 Hz steps, zero to four a frame |
+| Never the frame time | The simulation is not shown the measured frame time |
+| Deferred structure | A script's spawn or free waits for `Last`, so no iteration is invalidated mid-frame |
+
+## The script seam
+
+- `balaur_script` is traits and one neutral `Value`. No language in it, and no
+  dependencies.
+- A subsystem declares its bindings once against the seam, and never names a
+  language.
+- A backend implements the host trait and consumes those declarations.
+- Rune is the language this build ships. A second one is one crate, and
+  changes nothing in physics, input, render, audio or ui.
+
+## Plugins
+
+- Wrapping a Rust crate for scripting is one call per entry point, with
+  argument and return conversions inferred.
+- One registration buys the scene vocabulary, the runtime component API and
+  editor support.
+- `balaur_physics` is the reference implementation.
+- One `Plugin` trait covers both shipping modes: linked in behind a cargo
+  feature, or built as a shared library and loaded at run time. See
+  [Modules and extensions](./manual/extensions.mdx).
 
 ## The workspace
 
@@ -104,6 +122,3 @@ trait covers both shipping modes: linked in behind a cargo feature (`audio`,
 | `balaur_export` | Exporting as a library: packs, fused executables, and the Apple and Android bundles the editor and the CLI both write |
 | `balaur_cli` | The `balaur` binary: `new`, `run`, `export`, `play`, `edit`, `import`, `replay`, `api` |
 | `balaur_bench` | Headless benchmarks: where a frame's time goes, and what scripting costs |
-
-Per-crate dependencies and public surface are generated from the workspace on
-every change: see [Crates](./crates.md).

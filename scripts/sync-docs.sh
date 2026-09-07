@@ -2,17 +2,13 @@
 # Sync the generated reference data from the engine repository. `api.json`
 # (what `balaur api` prints, plus component tags and asset docs) lands in
 # reference/ and scripts/gen-reference.mjs turns it into docs/reference/**
-# at build time; `crates.md` lands in the manual as docs/crates.md. The
-# engine generates both with scripts/gen_docs.py and CI fails on drift, so
-# they are always current on its main branch.
+# at build time. The engine generates it with scripts/gen_docs.py and CI fails
+# on drift, so it is always current on its main branch.
 #
 # `features.md` lands in docs/manual/_features.mdx, the partial the Build size
 # page imports: the banner and the title go, since MDX has no HTML comments
 # and the page has its own heading.
-#
-# `CHANGELOG.md` comes from the engine's root rather than docs/generated — it
-# is hand written, one line per feature, and it is the "what shipped" that the
-# roadmap's "what has not" points at.
+
 #
 # `docs/ROADMAP.md` lands in reference/roadmap.md, which scripts/gen-roadmap.mjs
 # turns into docs/roadmap.mdx with the prose in src/data/roadmap-copy.mjs. It is
@@ -49,15 +45,6 @@ mkdir -p "$ROOT/reference"
 fetch api.json "$ROOT/reference/api.json" || true
 
 tmp="$(mktemp)"
-if fetch crates.md "$tmp"; then
-  {
-    printf -- '---\ntitle: "Crates — the Rust workspace, crate by crate"\nsidebar_label: "Crates"\nimage: "/img/social/crates.png"\ndescription: "One section per crate in the Balaur game engine workspace: what each is for and what it depends on."\ncustom_edit_url: null\n---\n\n'
-    cat "$tmp"
-  } >"$ROOT/docs/crates.md"
-fi
-rm -f "$tmp"
-
-tmp="$(mktemp)"
 if fetch features.md "$tmp"; then
   awk 'started || (!/^<!--/ && !/^# / && !/^$/) {started=1; print}' "$tmp" \
     >"$ROOT/docs/manual/_features.mdx"
@@ -85,27 +72,6 @@ if [[ "$benchmarks" == 1 ]]; then
   echo "synced BENCHMARKS.md"
 else
   echo "warning: could not fetch BENCHMARKS.md; keeping the committed copy" >&2
-fi
-rm -f "$tmp"
-
-# The changelog, from the engine's root rather than docs/generated.
-tmp="$(mktemp)"
-if [[ -n "${BALAUR_REPO:-}" ]]; then
-  cp "$BALAUR_REPO/CHANGELOG.md" "$tmp" && changelog=1 || changelog=0
-elif curl -fsSL "$ROOT_URL/CHANGELOG.md" -o "$tmp"; then
-  changelog=1
-else
-  changelog=0
-fi
-if [[ "$changelog" == 1 ]]; then
-  {
-    printf -- '---\ntitle: "Changelog"\nsidebar_label: "Changelog"\nimage: "/img/social/changelog.png"\ndescription: "What each release of the Balaur game engine added, release by release."\ncustom_edit_url: null\n---\n\n'
-    # Its own `# Changelog` heading would repeat the page title.
-    sed '1{/^# Changelog$/d;}' "$tmp"
-  } >"$ROOT/docs/changelog.md"
-  echo "synced CHANGELOG.md"
-else
-  echo "warning: could not fetch CHANGELOG.md; keeping the committed copy" >&2
 fi
 rm -f "$tmp"
 
