@@ -16,10 +16,18 @@
 // listed in `essays` — so a feature ships with a picture and a post, and a post
 // is about something the roadmap has a row for.
 //
+// Two severities. A malformed source is fatal, because there is no page to
+// write without it. Everything else — a row over the sentence or word limit, a
+// missing shot, a post nothing names — is a warning: the page still renders, so
+// a deploy is never held up by prose in a file this repository does not own.
+// `--strict` turns the warnings back into failures, which is how the engine
+// repository holds its own docs/ROADMAP.md to the limits.
+//
 // Usage:
 //   node scripts/gen-roadmap.mjs            write docs/roadmap.mdx
 //   node scripts/gen-roadmap.mjs --check    fail if the file is not what this
 //                                           would write (CI, and `yarn build`)
+//   node scripts/gen-roadmap.mjs --strict   fail on a warning too
 //
 // The engine file comes from BALAUR_REPO if that is set, and otherwise from
 // reference/roadmap.md, which scripts/sync-docs.sh fetches and this repository
@@ -35,9 +43,24 @@ const BLOG = join(ROOT, 'blog');
 const SYNCED = join(ROOT, 'reference/roadmap.md');
 const PLAN_BASE = 'https://github.com/balaurengine/balaur/blob/main/docs/';
 
+// Thrown, not exited: the bottom of the file decides whether a build dies of
+// it or keeps the page it already has.
+class GenError extends Error {}
 const fail = (msg) => {
-  console.error(`gen-roadmap: ${msg}`);
-  process.exit(1);
+  throw new GenError(msg);
+};
+
+const STRICT = process.argv.includes('--strict');
+const CHECK = process.argv.includes('--check');
+let warnings = 0;
+
+// Says what is wrong and carries on. In Actions the annotation puts it on the
+// run's summary, so a warning is seen without a red build.
+const warn = (msg) => {
+  if (STRICT) fail(msg);
+  warnings += 1;
+  console.warn(`gen-roadmap: ${msg}`);
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning::gen-roadmap: ${msg.split('\n')[0]}`);
 };
 
 function sourcePath() {
@@ -113,6 +136,7 @@ function parseRoadmap(md, milestones) {
   });
   const empty = milestones.filter((m) => !m.items.length).map((m) => m.id);
   if (empty.length) fail(`a milestone with no items: ${empty.join(', ')}`);
+  reportOversize();
   return milestones;
 }
 
@@ -135,14 +159,28 @@ function parseBlog() {
 const SENTENCES = 1;
 const WORDS = 25;
 
+// Every row over the limits, reported once at the end rather than a line each:
+// a file that has drifted has drifted in dozens of rows, and a hundred lines
+// of the same warning is a wall nobody reads.
+const oversize = [];
+
 function measure(title, source, line) {
   const text = source.replace(/`/g, '').trim();
   const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean).length;
   const words = text.split(/\s+/).length;
-  const over = (what, n, max) =>
-    fail(`${line}: "${title}" is ${n} ${what}; a row is at most ${max}. Cut it in docs/ROADMAP.md.`);
-  if (sentences > SENTENCES) over('sentences', sentences, SENTENCES);
-  if (words > WORDS) over('words', words, WORDS);
+  if (sentences > SENTENCES || words > WORDS) oversize.push({title, line, sentences, words});
+}
+
+function reportOversize() {
+  if (!oversize.length) return;
+  const worst = [...oversize]
+    .sort((a, b) => b.words - a.words)
+    .slice(0, 3)
+    .map((r) => `${r.line}: "${r.title}", ${r.sentences} sentence${r.sentences > 1 ? 's' : ''} and ${r.words} words`);
+  warn(
+    `${oversize.length} row${oversize.length > 1 ? 's are' : ' is'} over the card limits ` +
+      `(${SENTENCES} sentence, ${WORDS} words). Longest: ${worst.join('; ')}. Cut them in docs/ROADMAP.md.`,
+  );
 }
 
 // A row is markdown in a table cell; a card is JSX. Only `code` spans are used,
@@ -168,7 +206,7 @@ function render(milestones, copy, posts) {
   const known = new Set();
   const cited = new Set(copy.essays);
   for (const slug of cited) {
-    if (!posts.has(slug)) fail(`essays names "${slug}", which is not a post under blog/`);
+    if (!posts.has(slug)) warn(`essays names "${slug}", which is not a post under blog/`);
   }
   const out = [
     copy.frontmatter.trimEnd(),
@@ -196,17 +234,24 @@ function render(milestones, copy, posts) {
       // written up; an unbuilt one has neither to show.
       const shot = copy.shots[item.title];
       if (milestone.state === 'built' && !shot) {
-        fail(`"${item.title}" is built with no shot — add it to \`shots\` in src/data/roadmap-copy.mjs`);
+        warn(`"${item.title}" is built with no shot — add it to \`shots\` in src/data/roadmap-copy.mjs`);
       }
-      if (shot && milestone.state !== 'built') fail(`"${item.title}" is not built, so it cannot have a shot`);
-      if (shot) {
-        if (!shot.image || !shot.alt) fail(`the shot for "${item.title}" needs an image and an alt`);
-        if (!shot.posts?.length) fail(`the shot for "${item.title}" needs the post that announced it`);
+      if (shot && milestone.state !== 'built') warn(`"${item.title}" is not built, so it cannot have a shot`);
+      // An incomplete shot is dropped rather than half-written, so the card
+      // loses its picture and the page still compiles.
+      const whole = shot && shot.image && shot.alt && shot.posts?.length;
+      if (shot && !whole) {
+        warn(`the shot for "${item.title}" needs an image, an alt and the post that announced it`);
+      }
+      if (whole) {
         out.push(`        image: ${JSON.stringify(shot.image)},`);
         out.push(`        alt: ${JSON.stringify(shot.alt)},`);
         out.push('        posts: [');
         for (const slug of shot.posts) {
-          if (!posts.has(slug)) fail(`"${item.title}" names the post "${slug}", which is not under blog/`);
+          if (!posts.has(slug)) {
+            warn(`"${item.title}" names the post "${slug}", which is not under blog/`);
+            continue;
+          }
           cited.add(slug);
           out.push(`          {slug: ${JSON.stringify(slug)}, title: ${JSON.stringify(posts.get(slug))}},`);
         }
@@ -220,29 +265,45 @@ function render(milestones, copy, posts) {
   out.push(']} />', '');
   if (copy.outro) out.push(copy.outro.trim(), '');
   const staleShots = Object.keys(copy.shots).filter((t) => !known.has(t));
-  if (staleShots.length) fail(`shots for items the roadmap no longer has: ${staleShots.join(', ')}`);
+  if (staleShots.length) warn(`shots for items the roadmap no longer has: ${staleShots.join(', ')}`);
   // The other direction: a post is about a roadmap row, or it is one of the
   // few that are records rather than features and says so in `essays`.
   const loose = [...posts.keys()].filter((slug) => !cited.has(slug));
   if (loose.length) {
-    fail(`no roadmap item names these posts: ${loose.join(', ')}
+    warn(`no roadmap item names these posts: ${loose.join(', ')}
   Either add the post to that item's \`shots\` entry, or, if it is not about
   one feature, list its slug in \`essays\` in src/data/roadmap-copy.mjs.`);
   }
   return out.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 }
 
-const src = sourcePath();
-if (!existsSync(src)) fail(`no ${src}; run scripts/sync-docs.sh, or set BALAUR_REPO`);
-const md = readFileSync(src, 'utf8');
-const {default: copy} = await import('../src/data/roadmap-copy.mjs');
-const body = render(parseRoadmap(md, parseMilestones(md)), copy, parseBlog());
-
-if (process.argv.includes('--check')) {
-  const have = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
-  if (have !== body) fail('docs/roadmap.mdx is stale — run `yarn gen-roadmap`');
-  console.log('roadmap.mdx is current');
-} else {
+// A source this cannot read is still not a reason to lose a deploy: the page
+// this wrote last time is committed, so the build keeps it and says so. Only
+// --strict and --check, which are asked for on purpose, die of it — and so
+// does a first run, where there is no page to keep.
+function main() {
+  const src = sourcePath();
+  if (!existsSync(src)) fail(`no ${src}; run scripts/sync-docs.sh, or set BALAUR_REPO`);
+  const md = readFileSync(src, 'utf8');
+  const body = render(parseRoadmap(md, parseMilestones(md)), copy, parseBlog());
+  if (CHECK) {
+    const have = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
+    if (have !== body) fail('docs/roadmap.mdx is stale — run `yarn gen-roadmap`');
+    console.log('roadmap.mdx is current');
+    return;
+  }
   writeFileSync(OUT, body);
   console.log(`wrote docs/roadmap.mdx from ${src}`);
 }
+
+const {default: copy} = await import('../src/data/roadmap-copy.mjs');
+try {
+  main();
+} catch (error) {
+  if (!(error instanceof GenError)) throw error;
+  console.error(`gen-roadmap: ${error.message}`);
+  if (STRICT || CHECK || !existsSync(OUT)) process.exit(1);
+  console.warn('gen-roadmap: keeping the committed docs/roadmap.mdx');
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning::gen-roadmap: ${error.message.split('\n')[0]}`);
+}
+if (warnings) console.warn(`gen-roadmap: ${warnings} warning${warnings > 1 ? 's' : ''}, page written anyway`);

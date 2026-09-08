@@ -10,9 +10,14 @@ A build regenerates these, so an edit to one is lost on the next `yarn build`.
 Change the generator instead.
 
 - `docs/reference/**` and `docs/roadmap.mdx` — `scripts/gen-reference.mjs`,
-  `scripts/gen-roadmap.mjs`. The roadmap's prose half is
-  `src/data/roadmap-copy.mjs`, and a roadmap item with no copy there fails the
-  build on purpose.
+  `scripts/gen-roadmap.mjs`. A roadmap card is a row in the engine's
+  `docs/ROADMAP.md`; this repository owns the page's frontmatter and the shot
+  and posts a built item shows, in `src/data/roadmap-copy.mjs`.
+  **`gen-roadmap.mjs` never fails a build.** A row over the card limits, a
+  missing shot, a post nothing names: warnings. A source it cannot read at all:
+  a warning, and the committed `docs/roadmap.mdx` stays as it is. The limits
+  are enforced where the file is written, by the engine's
+  `scripts/prose_lints.py`. `--strict` runs the same checks here as failures.
 - `static/llms.txt`, `static/llms-full.txt` — `scripts/gen-llms.mjs`.
 - `static/img/{manual,editor}/*.webp` and `static/img/poster/` —
   `scripts/optimize-images.mjs`, from the PNGs the engine's showcase writes.
