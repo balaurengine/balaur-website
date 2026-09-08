@@ -6,25 +6,22 @@ image: "/img/social/compare.png"
 
 # Compare
 
-Godot, because it is the node-and-scene model most game developers know; Bevy and Fyrox, because they are the Rust engines. Dated September 2026, Balaur at 0.1.0: check each project's own site before deciding anything, because they all move fast.
-
-The short version: Balaur is weeks old and the others are years old. To ship a game this year, one of the other three is the safer choice. What Balaur has that they do not: bit-exact determinism with replay and rollback, scripts that reload in milliseconds with state intact, TOML scenes, and an editor that is itself a project in the engine.
-
 ## Side by side
 
 | | Balaur | Godot 4 | Bevy | Fyrox |
 | --- | --- | --- | --- | --- |
 | Engine language | Rust | C++ | Rust | Rust |
-| Game code | Rune scripts (Rust-like); plugins in Rust or C | GDScript, C#; C++ and Rust via GDExtension | Rust, code only | Rust plugins and scripts |
-| Model | A scene tree of named nodes | A scene tree of nodes | ECS, data-driven | Scene graph |
-| Editor | Yes: itself a Balaur project. No binary release yet | Yes, mature | No official editor yet; prototypes in development | Yes (FyroxEd) |
-| Iterating on code | A saved script is live in milliseconds, state intact; a debugger in the editor | Scripts reload on save | Assets hot reload; opt-in system hot patching through the Dioxus CLI | Code hot reload exists, marked experimental and unsafe by its docs |
-| Determinism | Same inputs, same bits on every platform: fixed 60 Hz step, record and replay, rollback | Not bit-exact across platforms | Not a stated goal | Not a stated goal |
+| Game code | Rune scripts; Rust or C plugins | GDScript, C#; Rust or C++ via GDExtension | Rust | Rust |
+| Model | A scene tree of nodes | A scene tree of nodes | ECS | A scene tree of nodes |
+| Scene format | TOML | `.tscn`, text | Rust code, or RON | `.rgs` |
+| Editor | Yes | Yes | No | Yes |
+| Hot reload | Scripts, on save | Scripts, on save | Assets; opt-in code patching | Code, marked experimental |
+| Cross-platform determinism | Yes: fixed 60 Hz step, replay, rollback | No | No | No |
 | 2D and 3D | Both | Both | Both | Both |
-| Platforms | Windows, macOS, Linux and the browser; iOS and Android compile in CI | Desktop, mobile, web; consoles through partners | Desktop, mobile, web | Desktop and web at least |
-| Networking | HTTP, websockets and WebTransport; a Gamend backend for login, rooms and hooks | High-level multiplayer API | Community crates | Community crates |
-| Licence | MIT | MIT | MIT or Apache-2.0 | MIT |
-| Age and maturity | 0.1.0, first release September 2026; no binary yet | 4.x; more than a decade, huge community | 0.19; six years, large plugin ecosystem | 1.0; seven years, calls itself production-ready |
+| Platforms | Desktop, mobile, web | Desktop, mobile, web; consoles through partners | Desktop, mobile, web | Desktop, web |
+| Networking | HTTP, websockets, WebTransport | HTTP, websockets, WebRTC, ENet | Community crates | Community crates |
+| Licence | MIT | MIT | MIT | MIT |
+| Age | 0.1, weeks old | 4.x, over a decade | 0.19, six years | 1.0, seven years |
 
 ## Memory
 
