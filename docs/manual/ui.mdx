@@ -13,8 +13,12 @@ belongs to the game or to a tool.
 
 | Layer | What it is | For |
 | --- | --- | --- |
-| `widget` | A component on a scene node. Retained: saved with the scene, edited in the inspector, previewed in the viewport | A game HUD: a score readout, a menu button |
-| the `ui` module | Immediate-mode egui, redrawn every frame from a script's `draw_ui` | Tools, and the editor itself |
+| `widget` | A component on a scene node. Retained: saved with the scene, edited in the inspector, previewed in the viewport | A game HUD, a settings screen, a whole tool |
+| the `ui` module | Immediate-mode egui, redrawn every frame from a script's `draw_ui` | A canvas that paints itself: a timeline, a weight table |
+
+The editor is built from the first layer now. Its shell, its docks, its
+inspector and its tab rows are `widget` nodes in `editor/scenes/main.toml`,
+and the second layer is what four painting views use.
 
 ## Widgets: game HUDs as scene nodes
 
@@ -87,6 +91,95 @@ this.node.widget.set(w);
 - `visible` hides a widget without losing its state, and
   `ui::set_widget_layer` scopes and toggles the layer.
 
+## The kinds
+
+One component, and `kind` says what it draws.
+
+| Group | Kinds |
+| --- | --- |
+| Text | `label`, `field`, `text_area`, `code` |
+| Controls | `button`, `check`, `dropdown`, `slider`, `drag_value`, `color`, `progress`, `menu` |
+| Data | `list`, `tree`, `table` |
+| Boxes | `panel`, `row`, `column`, `grid`, `flow`, `scroll`, `tab`, `fold`, `dialog` |
+| Other | `image`, `separator`, `draw` |
+
+- **`list`** — rows from `options`, and `text` is the one picked. A row splits
+  on U+001F into an icon, a label, a trailing note and an `#rrggbb` of its
+  own. Above one `columns` the rows flow into a grid of cards, which is
+  `ItemList` in its icon mode; `row_height` is then the card's height.
+- **`tree`** — a `list` whose rows nest. One leading tab is one level, and the
+  fold caret is the kind's own, so a script hands over the whole outline.
+- **`table`** — a row a line, split into one cell a column. `placeholder`
+  holds the column names, split the same way.
+- **`code`** — the file being edited, with the gutter, the syntax colours and
+  the caret. The same editor the `ui` module has always had.
+- **`draw`** — a rect a script fills. The node owns the placement, the script
+  owns what is inside it, and neither has to know the other.
+
+Only the rows on screen are built, so a list of a whole document costs its
+viewport rather than its length.
+
+![A screen of nodes: a card grid, a control row and a wrapping chip flow](/img/manual/ui_kinds.webp)
+
+## Layout
+
+A container hands its children rects; nothing positions itself.
+
+- **`grow`** — the share of the leftover this box takes along the container's
+  direction. Zero takes only what it asks for.
+- **`gap`** — the air between children. **`padding`** is the air inside the
+  container's own edge.
+- **`align`** — where children sit across the container's direction.
+- **`justify`** — how they spread along it: `start`, `center`, `end`,
+  `between`, `around` or `evenly`.
+- **`width`** — the box, with `height`, `min_width` and `min_height` beside
+  it. Zero means hug the content.
+- **`handle`** — how wide a grab the seams between children get. A drag
+  writes the new size onto the neighbour that states one.
+
+The arithmetic is [taffy](https://github.com/DioxusLabs/taffy), the layout
+engine Dioxus and Blitz use. It runs over the whole tree before anything
+draws, so a script can read a rect back with `ui::widget_rect` and place
+something against it in the same frame.
+
+## Themes and roles
+
+A `widget_theme` asset says how each kind looks. A widget takes the theme of
+the nearest ancestor that names one, so a screen is themed by its root.
+
+```toml
+type = "widget_theme"
+
+[colors]
+ink = "#0e1116"
+accent = "#6fa4d8"
+
+[button]
+fill = "ink"
+radius = 6
+padding_x = 10
+
+[button.hover]
+fill = "accent"
+
+[roles.primary]
+fill = "accent"
+color = "#f6f8fb"
+strong = true
+```
+
+- `[colors]` names the fills the rest of the file spells.
+- `[<kind>]` is that kind's look; a kind the file leaves out keeps the
+  built-in one.
+- `[roles.<name>]` is the same table under a name, and a widget takes it with
+  `role = "primary"`. It sits over its kind's.
+- `[<kind>.hover]` and `[<kind>.active]` say how it looks under the pointer.
+- A widget's own `fill`, `stroke`, `radius`, `text_color`, `font_size` and
+  `font` win over all of it.
+
+Also on every widget: `tooltip`, `icon` (a glyph from the theme's icon
+family, drawn before the caption) and `disabled`.
+
 ## The `ui` module: immediate mode
 
 ```rune
@@ -110,6 +203,9 @@ pub fn draw_ui(this) {
 - The set: panels, labels, pills, toggles, sliders, drag values, dropdowns,
   text fields, modals, scroll areas, menus, shortcuts, and `ui::code_editor`,
   an editable Rune-highlighted buffer.
+- Reach for it where the pointer is the input and the picture is not a set of
+  controls: a timeline's lanes, a weight table, a painting tool. A `draw` node
+  is how one of those sits in a tree of widgets.
 - Colours are per call, so a complete theme lives in a script and hot reloads
   with it.
 - Fonts load from `<project>/fonts/*.ttf`, with `heading`, `ui` and `mono`
@@ -118,5 +214,12 @@ pub fn draw_ui(this) {
   and the query functions divide back, so a script authors against the
   design's pixel values at any zoom. HiDPI is separate and automatic.
 
-The editor's entire interface is built with this module. See
+The editor's four painting views are built with this module, inside `draw`
+nodes; the rest of its interface is widget nodes. See
 [The editor](./editor.mdx).
+
+## Try it
+
+`examples/interface` is a whole screen with no `draw_ui` in it: a card grid,
+an outline, a table, a row of every control, and a theme with roles and hover
+states. The one script fills the three views and writes no layout.
