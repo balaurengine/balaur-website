@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Moves a node the way a player expects rather than the way physics would: `physics3d.move_character` slides it along walls, steps it up ledges, keeps it off slopes that are too steep and holds it to the ground over a crest. Needs a `collider3d`; a `body3d` of kind kinematic lets it push what it walks into.
 
-In a scene, `character3d` is the node key that applies it. A script reaches the same properties through `node.character3d.get()` and `node.character3d.set(table)`.
+In a scene, `character3d` is the node key that applies it. A script reaches each property below as a field on `node.character3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.character3d.get()` and `node.character3d.set(table)`.
 
 ## Properties
 

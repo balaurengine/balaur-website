@@ -58,7 +58,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `kinetic_energy(node) -> float` | [`body3d`](../components/body3d.md) | The body's kinetic energy, for a rest test the solver agrees with. |
 | `linear_velocity(node) -> float, float, float` | [`body3d`](../components/body3d.md) | How fast the body is travelling, in units per second. |
 | `locked_axes(node) -> bool, bool, bool, bool, bool, bool` | [`body3d`](../components/body3d.md) | Which translation and rotation axes are frozen. |
-| `mass(node) -> float` | [`body3d`](../components/body3d.md) | The body's total mass, colliders included. |
 | `max_contact_impulse(node) -> float` | [`collider3d`](../components/collider3d.md) | The hardest contact this node took in the last step, zero when nothing touched it: a damage threshold in one number. |
 | `move_character(node, float, float, float) -> any` | [`character3d`](../components/character3d.md) | Move the character by an offset, sliding along walls, climbing steps and staying on the ground: returns `#{ x, y, z, grounded, sliding, collisions }`. Call it from fixed_update. It reads the world the step just wrote. |
 | `nearest_point(any) -> any` | — | The closest point on any collider to a world point. |
@@ -100,6 +99,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `swept_aabb(node) -> float, float, float, float, float, float` | [`collider3d`](../components/collider3d.md) | The box the collider covers over the next step, its motion included: what the broad phase actually tests. |
 | `teleport(node, float, float, float)` | [`body3d`](../components/body3d.md) | Move the body to a world position at once, clearing its velocity: what assigning the node's position cannot do, because the step writes that back every tick. |
 | `time_of_impact(node, node, any) -> any` | — | When two moving colliders would meet, given each one's velocity: `#{ velocity_a = [..], velocity_b = [..], max = 1.0 }`. Nothing when they never do. |
+| `total_mass(node) -> float` | [`body3d`](../components/body3d.md) | The body's total mass, colliders included. The `mass` property is the extra on top of them. |
 | `user_force(node) -> float, float, float` | [`body3d`](../components/body3d.md) | The force the next step will integrate. |
 | `user_torque(node) -> float, float, float` | [`body3d`](../components/body3d.md) | The torque the next step will integrate. |
 | `vehicle_speed(node) -> float` | [`vehicle3d`](../components/vehicle3d.md) | How fast the chassis is going along its forward axis, in units per second. |

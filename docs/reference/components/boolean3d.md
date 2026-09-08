@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Draw this node as its children combined -- joined, cut out of one another, or only where they overlap. The children stay in the tree, hidden and editable, and moving one recomputes the result.
 
-In a scene, `boolean3d` is the node key that applies it. A script reaches the same properties through `node.boolean3d.get()` and `node.boolean3d.set(table)`.
+In a scene, `boolean3d` is the node key that applies it. A script reaches each property below as a field on `node.boolean3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.boolean3d.get()` and `node.boolean3d.set(table)`.
 
 ## Properties
 

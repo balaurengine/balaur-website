@@ -14,6 +14,7 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.1',
     state: 'built',
+    estimate: "September 2026",
     title: "The engine as it stands",
     items: [
       {
@@ -104,8 +105,18 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Gameplay and audio",
+        title: 'Interactivity without a script',
+        text: <>Hooks, states, scene variables and the binding rows the Events view authors over them, so a scene reacts with no <code>.rn</code> beside it.</>,
+        image: "/img/manual/editor_events.webp",
+        alt: "The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three",
+        posts: [
+          {slug: "select-two-things", title: "Multi-select, lights and PBR materials"},
+        ],
+      },
+      {
+        group: "User interface",
         title: 'Widgets, text and the batteries',
-        text: <>Fourteen widget kinds over cosmic-text, with text in the world, audio buses, input actions, saves and localisation beside them.</>,
+        text: <>Nineteen widget kinds over cosmic-text, containers that hand out rects, text in the world, and the batteries: audio buses, input actions, saves, localisation.</>,
         image: "/img/manual/ui_widgets.webp",
         alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",
         posts: [
@@ -114,16 +125,6 @@ import Roadmap from '@site/src/components/Roadmap';
           {slug: "input-actions-and-gamepads", title: "Input actions and gamepads"},
           {slug: "save-games", title: "Save games"},
           {slug: "localization", title: "Localization"},
-        ],
-      },
-      {
-        group: "Gameplay and audio",
-        title: 'Interactivity without a script',
-        text: <>Hooks, states, scene variables and the binding rows the Events view authors over them, so a scene reacts with no <code>.rn</code> beside it.</>,
-        image: "/img/manual/editor_events.webp",
-        alt: "The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three",
-        posts: [
-          {slug: "select-two-things", title: "Multi-select, lights and PBR materials"},
         ],
       },
       {
@@ -185,8 +186,15 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.2',
     state: 'building',
+    estimate: "December 2026",
     title: "Nothing blocks an ordinary game",
     items: [
+      {
+        group: "Scripts and assets",
+        title: 'A bad call caught before it runs',
+        text: <><code>balaur check</code> reads the scene beside the script and resolves a component's method against the table the run time uses.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-script-analysis.md',
+      },
       {
         group: "Scripts and assets",
         title: 'Texture import settings',
@@ -204,6 +212,24 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Pause, time scale and smooth frames',
         text: <>A <code>process</code> mode per subtree, time scale, interpolation between fixed steps, <code>max_fps</code>, vsync, and a tick rate setting.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-time.md',
+      },
+      {
+        group: "User interface",
+        title: 'Lists, trees and tables',
+        text: <><code>list</code>, <code>tree</code> and <code>table</code> kinds with selection, columns, and only the rows in view built, which every dock hand-rolls today.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#data-views',
+      },
+      {
+        group: "User interface",
+        title: 'Menus, popups and tooltips',
+        text: <>A menu bar, a context menu, a tooltip and a toast in a scene, over a pass that draws above the widget tree.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#menus-and-popups',
+      },
+      {
+        group: "User interface",
+        title: 'Text a game can edit',
+        text: <>A multi-line <code>text</code> kind, a <code>code</code> kind with the gutter and colouring the editor has, a numeric <code>spin</code>, and links a label reports.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#text',
       },
       {
         group: "Rendering",
@@ -228,8 +254,14 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.3',
     state: 'planned',
+    estimate: "March 2027",
     title: "Everything you see",
     items: [
+      {
+        group: "Editor",
+        title: 'Semantic tokens, inlay hints and code actions',
+        text: <>Colouring from the compiler, inferred types shown inline, and a quick fix on a diagnostic, held until the gaps in completion are known.</>,
+      },
       {
         group: "Editor",
         title: 'Curve editor and onion skin',
@@ -240,6 +272,12 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Physics and animation",
         title: 'A sequencer',
         text: <>Cutscenes and cameras on a timeline, with tracks that call something rather than only move it.</>,
+      },
+      {
+        group: "User interface",
+        title: 'Aspect and camera containers',
+        text: <>An <code>aspect</code> box that holds a ratio, and a camera's texture drawn as a widget the layout sizes.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#containers',
       },
       {
         group: "Rendering",
@@ -276,17 +314,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Video playback',
         text: <>A movie on a texture with its audio on a bus, render-side only.</>,
       },
-      {
-        group: "Rendering",
-        title: 'Decals and volumetric fog',
-        text: <>A texture projected onto whatever is under it, and fog a light shafts through, both passes of our own.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
-      },
     ],
   },
   {
     id: '0.4',
     state: 'planned',
+    estimate: "July 2027",
     title: "Multiplayer, end to end",
     items: [
       {
@@ -354,6 +387,7 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.5',
     state: 'planned',
+    estimate: "November 2027",
     title: "A game built without writing a script",
     items: [
       {
@@ -387,10 +421,16 @@ import Roadmap from '@site/src/components/Roadmap';
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voice.md',
       },
       {
-        group: "Gameplay and audio",
-        title: 'Motion and haptics beyond one pad',
-        text: <>Switch Pro and Joy-Con gyro, sensor calibration, adaptive triggers, waveform haptics, device motion, and pads on iOS and Android.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
+        group: "User interface",
+        title: 'A graph canvas',
+        text: <>A <code>graph</code> kind of nodes, ports and links a drag connects, with pan and zoom, under both the Rune graph and the shader graph.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#containers',
+      },
+      {
+        group: "User interface",
+        title: 'Pickers, and drag and drop',
+        text: <>A colour wheel and a file chooser as widget kinds, with a payload one widget offers and another takes.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#pickers-and-drag',
       },
       {
         group: "Tools and services",
@@ -408,6 +448,7 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.6',
     state: 'planned',
+    estimate: "April 2028",
     title: "A game gets out",
     items: [
       {
@@ -422,7 +463,7 @@ import Roadmap from '@site/src/components/Roadmap';
         text: <>A load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it.</>,
       },
       {
-        group: "Tools and services",
+        group: "User interface",
         title: 'Accessibility',
         text: <>A screen reader over the widget tree, text scaling, captions, and colour-blind-safe defaults.</>,
       },
@@ -467,28 +508,30 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.7',
     state: 'planned',
+    estimate: "September 2028",
     title: "What a bigger game asks for",
     items: [
-      {
-        group: "Editor",
-        title: 'Semantic tokens, inlay hints and code actions',
-        text: <>Colouring from the compiler, inferred types shown inline, and a quick fix on a diagnostic, held until the gaps in completion are known.</>,
-      },
       {
         group: "Scripts and assets",
         title: 'FBX import',
         text: <><code>balaur import</code> over the <code>ufbx</code> crate, for the meshes, rigs and clips that never ship as glTF.</>,
       },
       {
-        group: "Physics and animation",
-        title: 'Falling sand',
-        text: <>A 2D cellular grid of sand, water, lava and fire, in a <code>balaur_cells</code> plugin on the fixed step and in the digest.</>,
+        group: "Scripts and assets",
+        title: 'Rune compiled to WebAssembly',
+        text: <>A script unit built to a <code>.wasm</code> module ahead of time and run over the same host calls, in place of the interpreter.</>,
       },
       {
         group: "Physics and animation",
-        title: 'Soft bodies, tearing, fluids',
-        text: <>And granular materials, waiting on the solvers landing in Rapier itself.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md',
+        title: 'Soft bodies',
+        text: <><code>softbody2d</code> and <code>softbody3d</code>: a deformable mesh with stiffness, damping and pressure, drawn down the skinning path, on the fixed step.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md#soft-bodies',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Cloth and rope',
+        text: <>A sheet that hangs and a rope of linked segments over the same solver, pinned to a node and cut by a script.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md#cloth-and-rope',
       },
       {
         group: "Physics and animation",
@@ -529,8 +572,15 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.8',
     state: 'planned',
+    estimate: "March 2029",
     title: "The machine a game runs on",
     items: [
+      {
+        group: "Gameplay and audio",
+        title: 'Motion and haptics beyond one pad',
+        text: <>Switch Pro and Joy-Con gyro, sensor calibration, adaptive triggers, waveform haptics, device motion, and pads on iOS and Android.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
+      },
       {
         group: "Gameplay and audio",
         title: 'Touch controls a phone needs',
@@ -538,7 +588,7 @@ import Roadmap from '@site/src/components/Roadmap';
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
       },
       {
-        group: "Gameplay and audio",
+        group: "User interface",
         title: 'A controller-only shell',
         text: <>Directional focus between widgets, an on-screen keyboard, safe-area insets applied to layout, and button glyphs that follow the pad.</>,
       },
@@ -581,6 +631,7 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '0.9',
     state: 'planned',
+    estimate: "September 2029",
     title: "A world, not a scene",
     items: [
       {
@@ -592,6 +643,23 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Scripts and assets",
         title: 'A world bigger than a float',
         text: <>Origin rebasing on the fixed step, so a world runs past the precision <code>f32</code> has left, with the scene streamed in chunks.</>,
+      },
+      {
+        group: "Physics and animation",
+        title: 'Tearing',
+        text: <>A threshold on a soft body: past it the body splits into two bodies and two meshes, mid-step and in the digest.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md#tearing',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Falling sand',
+        text: <>A 2D cellular grid of sand, water, lava and fire, in a <code>balaur_cells</code> plugin on the fixed step and in the digest.</>,
+      },
+      {
+        group: "Physics and animation",
+        title: 'Fluids',
+        text: <><code>fluid2d</code> and <code>fluid3d</code>: particles with a rest density and a viscosity, with emitters and drains, drawn as points before a surface.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md#fluids',
       },
       {
         group: "Gameplay and audio",
@@ -616,11 +684,18 @@ import Roadmap from '@site/src/components/Roadmap';
         text: <>Light that bounces, in real time: a screen-space pass or an SDF probe field, since nothing in the kiss3d fork does it.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
       },
+      {
+        group: "Rendering",
+        title: 'Decals and volumetric fog',
+        text: <>A texture projected onto whatever is under it, and fog a light shafts through, both passes of our own.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
+      },
     ],
   },
   {
     id: '1.0',
     state: 'planned',
+    estimate: "March 2030",
     title: "The editor makes the content",
     items: [
       {
@@ -638,6 +713,18 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Editor",
         title: 'Modelling in the viewport',
         text: <>Push and pull a face, bevel an edge, subdivide and unwrap with <code>xatlas</code>, editing the <code>mesh</code> asset every shape already is.</>,
+      },
+      {
+        group: "Physics and animation",
+        title: 'Gases and smoke',
+        text: <>A buoyant volume that rises, spreads and cools, read by the renderer as a density field rather than as particles.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md#gases-and-smoke',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Granular materials',
+        text: <>Sand, mud and snow as a fluid with friction and a yield stress, in 2D and 3D, on the fixed step.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-physics.md#granular-materials',
       },
       {
         group: "Gameplay and audio",
@@ -659,6 +746,7 @@ import Roadmap from '@site/src/components/Roadmap';
   {
     id: '1.1',
     state: 'planned',
+    estimate: "July 2030",
     title: "Other people's parts",
     items: [
       {

@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Makes the node a 3D bone: the rest position, euler rotation and scale a rig returns to, plus the length its gizmo is drawn with. A skinned mesh names its rig by node path and deforms by the bones under it, in tree order.
 
-In a scene, `bone3d` is the node key that applies it. A script reaches the same properties through `node.bone3d.get()` and `node.bone3d.set(table)`.
+In a scene, `bone3d` is the node key that applies it. A script reaches each property below as a field on `node.bone3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.bone3d.get()` and `node.bone3d.set(table)`.
 
 ## Properties
 

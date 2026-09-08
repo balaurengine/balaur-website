@@ -12,7 +12,7 @@ custom_edit_url: null
 
 What this node does when something happens to it, without a script. Each row is `event`, an optional `when` over the scene's `[variables]`, an `action`, a `target` node path and a `value`. Every action is a call a script could make, and the editor's Events view writes the script when a row outgrows the table.
 
-In a scene, `bindings` is the node key that applies it. A script reaches the same properties through `node.bindings.get()` and `node.bindings.set(table)`.
+In a scene, `bindings` is the node key that applies it. A script reaches each property below as a field on `node.bindings`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.bindings.get()` and `node.bindings.set(table)`.
 
 ## Properties
 

@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Named looks this node can be in. Every key beside `current` and `duration` is a state, and each holds a table per component of the properties that state sets: `[nodes.states.hover.shape3d] color = "#ff8800"`. `node.go("hover")` patches them over what the node already has, so a state says only what differs.
 
-In a scene, `states` is the node key that applies it. A script reaches the same properties through `node.states.get()` and `node.states.set(table)`.
+In a scene, `states` is the node key that applies it. A script reaches each property below as a field on `node.states`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.states.get()` and `node.states.set(table)`.
 
 ## Properties
 

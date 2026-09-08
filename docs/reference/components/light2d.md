@@ -12,7 +12,7 @@ custom_edit_url: null
 
 A 2D light: the node's position places it, its rotation aims a directional one, and everything drawn under it (sprites, polygons, tiles, a 3D scene behind them) is multiplied by the light map the scene's lights build. A scene with no `light2d` draws exactly as it does unlit; the first one added makes everything else fall to the camera's `ambient`. Debug lines and particles draw after the light map and stay unlit.
 
-In a scene, `light2d` is the node key that applies it. A script reaches the same properties through `node.light2d.get()` and `node.light2d.set(table)`.
+In a scene, `light2d` is the node key that applies it. A script reaches each property below as a field on `node.light2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.light2d.get()` and `node.light2d.set(table)`.
 
 ## Properties
 

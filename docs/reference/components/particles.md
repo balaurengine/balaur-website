@@ -12,7 +12,7 @@ custom_edit_url: null
 
 A purely visual 2D emitter at the node: rate, lifetime, speed, cone and gravity. The live particles and the randomness scattering them are backend state the simulation never sees.
 
-In a scene, `particles` is the node key that applies it. A script reaches the same properties through `node.particles.get()` and `node.particles.set(table)`.
+In a scene, `particles` is the node key that applies it. A script reaches each property below as a field on `node.particles`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.particles.get()` and `node.particles.set(table)`.
 
 ## Properties
 

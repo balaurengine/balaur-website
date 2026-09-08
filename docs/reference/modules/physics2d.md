@@ -46,7 +46,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `kinetic_energy(node) -> float` | [`body2d`](../components/body2d.md) | The body's kinetic energy, for a rest test the solver agrees with. |
 | `linear_velocity(node) -> float, float` | [`body2d`](../components/body2d.md) | How fast the body is travelling, in units per second. |
 | `locked_axes(node) -> bool, bool, bool` | [`body2d`](../components/body2d.md) | Whether x, y and rotation are frozen. |
-| `mass(node) -> float` | [`body2d`](../components/body2d.md) | The body's total mass, colliders included. |
 | `max_contact_impulse(node) -> float` | [`body2d`](../components/body2d.md) | The hardest contact this body took in the last step, zero when nothing touched it. |
 | `move_character(node, float, float) -> any` | [`character2d`](../components/character2d.md) | Move the character by an offset, sliding along walls, climbing steps and staying on the ground: returns `#{ x, y, grounded, sliding, collisions }`. Call it from fixed_update. |
 | `nearest_point(any) -> any` | — | The closest point on any collider to a world point. |
@@ -79,6 +78,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `shapecast(any) -> any` | — | Sweep a shape along a direction until it hits something: a thick raycast. |
 | `sleep(node)` | [`body2d`](../components/body2d.md) | Put the body to sleep now. |
 | `teleport(node, float, float)` | [`body2d`](../components/body2d.md) | Move the body to a world position at once, clearing its velocity: what assigning the node's position cannot do, because the step writes that back every tick. |
+| `total_mass(node) -> float` | [`body2d`](../components/body2d.md) | The body's total mass, colliders included. The `mass` property is the extra on top of them. |
 | `user_force(node) -> float, float` | [`body2d`](../components/body2d.md) | The force the next step will integrate. |
 | `user_torque(node) -> float` | [`body2d`](../components/body2d.md) | The torque the next step will integrate. |
 | `velocity_at_point(node, float, float) -> float, float` | [`body2d`](../components/body2d.md) | How fast a world point on the body is moving, spin included. |

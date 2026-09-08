@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Moves a node the way a 2D player expects: `physics2d.move_character` slides it along walls, steps it up ledges, keeps it off slopes that are too steep and holds it to the ground over a crest. Needs a `collider2d`.
 
-In a scene, `character2d` is the node key that applies it. A script reaches the same properties through `node.character2d.get()` and `node.character2d.set(table)`.
+In a scene, `character2d` is the node key that applies it. A script reaches each property below as a field on `node.character2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.character2d.get()` and `node.character2d.set(table)`.
 
 ## Properties
 

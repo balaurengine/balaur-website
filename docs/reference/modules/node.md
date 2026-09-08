@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).
 
-48 functions, 0 constants. Scripts reach it as `node::`.
+50 functions, 0 constants. Scripts reach it as `node::`.
 
 Acts on [`states`](../components/states.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -60,8 +60,10 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_rotation_degrees(x: float, y: float, z: float)` | — | Set the node's local rotation from euler angles in degrees. |
 | `set_rotation_euler(x: float, y: float, z: float)` | — | Set the node's local rotation from euler angles in radians. |
 | `set_scale(x: float, y: float, z: float)` | — | Set the node's scale relative to its parent, as three numbers or one vector. |
+| `set_sibling_index(index: int)` | — | Move the node to that place among its siblings, clamped to the end. Order is draw order in a `row` or a `column`, and tree order in the digest. |
 | `set_visible(node, on: bool)` | — | Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides. |
 | `set_z_index(node, z: int, relative: bool)` | — | Put the node and its subtree on a draw layer: higher draws later. Relative by default, adding to the parent's layer; false makes it absolute. |
+| `sibling_index()` | — | Where the node sits among its parent's children, counting from zero; 0 at the root. |
 | `stable_id()` | — | The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not. |
 | `state()` | [`states`](../components/states.md) | The state the node is in, or "" for the pose the scene gave it. |
 | `tags(node)` | — | The names the node is filed under, sorted. |

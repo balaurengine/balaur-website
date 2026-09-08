@@ -12,7 +12,7 @@ custom_edit_url: null
 
 A filled, textured 2D polygon from a `mesh` asset's points and triangles, deformed by the rig `skeleton` names when the mesh carries skin weights.
 
-In a scene, `polygon` is the node key that applies it. A script reaches the same properties through `node.polygon.get()` and `node.polygon.set(table)`.
+In a scene, `polygon` is the node key that applies it. A script reaches each property below as a field on `node.polygon`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.polygon.get()` and `node.polygon.set(table)`.
 
 ## Properties
 

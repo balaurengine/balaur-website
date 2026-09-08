@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The running app itself: the clock a frame reads, the command line it was started with, the directory it may write to, and the way out.
 
-18 functions, 0 constants. Scripts reach it as `engine::`.
+20 functions, 0 constants. Scripts reach it as `engine::`.
 
 ## Functions
 
@@ -28,9 +28,11 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `platform()` | — | Where this runs: `{ os, web, mobile, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
 | `plugin_version(name: string)` | — | The version of one loaded plugin, or nil when it did not load. |
 | `plugins()` | — | Every plugin this build loaded, named, in load order. |
+| `profile_scripts(on)` | — | Start or stop counting what each script costs. Turning it on clears the tally. |
 | `quit()` | — | Ask the app to shut down; the frame in flight still finishes. |
 | `reload_script(key: string)` | — | Recompile one script by its project-relative key, for a tool editing files outside the watched root. |
 | `reveal(path: string)` | — | Show a file or directory in the system file manager, selected where the platform can. Desktops only: neither a browser tab nor a phone has a file manager to ask. Never recorded, like `open_url`. |
+| `script_costs()` | — | What each script has cost since `profile_scripts(true)`, dearest first: a list of `{ path, calls, instructions }`. Instructions, not seconds, so the number is the same on every machine. |
 | `tick()` | — | Which frame this is, counted whole: what simulation code branches on instead of `time`. |
 | `time()` | — | Seconds of engine time since the app started, accumulated as a float. |
 | `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only: branching a `fixed_update` on wall time desyncs, and nothing records it. |

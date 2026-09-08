@@ -52,6 +52,15 @@
   margin: 1.75rem 0 0.5rem;
 }
 
+/* The state and the month, as two pills; a planned milestone has only the
+   month. */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
 .state {
   display: inline-block;
   padding: 0.15rem 0.55rem;
@@ -61,7 +70,12 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ifm-color-emphasis-700);
-  margin: 0 0 0.75rem;
+  margin: 0;
+}
+
+/* A date is a guess, so it is quieter than the state beside it. */
+.estimate {
+  color: var(--ifm-color-emphasis-600);
 }
 
 .building {

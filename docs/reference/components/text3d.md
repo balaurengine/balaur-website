@@ -12,7 +12,7 @@ custom_edit_url: null
 
 A block of text drawn in the 3D pass on a quad that faces the camera, shaped by the engine's fonts and sized at `pixels_per_unit` font pixels to the world unit.
 
-In a scene, `text3d` is the node key that applies it. A script reaches the same properties through `node.text3d.get()` and `node.text3d.set(table)`.
+In a scene, `text3d` is the node key that applies it. A script reaches each property below as a field on `node.text3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.text3d.get()` and `node.text3d.set(table)`.
 
 ## Properties
 

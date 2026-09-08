@@ -12,7 +12,7 @@ custom_edit_url: null
 
 The shape the node collides with in 2D. On a node with a `body2d` it is that body's shape; on a node without one it is immovable world geometry. A collider on a child node belongs to the nearest body above it, which is how one body carries several shapes.
 
-In a scene, `collider2d` is the node key that applies it. A script reaches the same properties through `node.collider2d.get()` and `node.collider2d.set(table)`.
+In a scene, `collider2d` is the node key that applies it. A script reaches each property below as a field on `node.collider2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.collider2d.get()` and `node.collider2d.set(table)`.
 
 ## Properties
 

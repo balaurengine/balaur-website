@@ -12,7 +12,7 @@ custom_edit_url: null
 
 The shape the node collides with in 3D. On a node with a `body3d` it is that body's shape; on a node without one it is immovable world geometry. A collider on a child node belongs to the nearest body above it, which is how one body carries several shapes.
 
-In a scene, `collider3d` is the node key that applies it. A script reaches the same properties through `node.collider3d.get()` and `node.collider3d.set(table)`.
+In a scene, `collider3d` is the node key that applies it. A script reaches each property below as a field on `node.collider3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.collider3d.get()` and `node.collider3d.set(table)`.
 
 ## Properties
 

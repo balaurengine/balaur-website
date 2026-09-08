@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Plays animation clips on a node: the library to play them from, one to start when the scene loads, and the rate every clip on the node runs at. The `animation` script module drives the playhead from there.
 
-In a scene, `animation` is the node key that applies it. A script reaches the same properties through `node.animation.get()` and `node.animation.set(table)`.
+In a scene, `animation` is the node key that applies it. A script reaches each property below as a field on `node.animation`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.animation.get()` and `node.animation.set(table)`.
 
 ## Properties
 

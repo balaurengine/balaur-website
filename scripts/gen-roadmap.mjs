@@ -75,9 +75,18 @@ const isRule = (line) => /^\|\s*(Item|Milestone|:?-{3,})/.test(line);
 
 const STATES = ['built', 'building', 'planned'];
 
-// The `## Milestones` table: `| **0.2** | building | What it is |`, in tab
-// order. Every item row names one of these, so the two tables cannot drift
-// apart.
+// A month and a year, so an estimate cannot quietly become a quarter or a
+// season the page then has to render.
+const MONTH = /^(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}$/;
+
+// The `## Milestones` table: `| **0.2** | building | December 2026 | What it
+// is |`, in tab order. Every item row names one of these, so the two tables
+// cannot drift apart. The estimate is per milestone, never per item: a card
+// shows the month its tab is aimed at.
+//
+// The estimate column is optional, and a table without it warns rather than
+// failing: the engine's file is fetched from its main branch, so the two
+// repositories have to be able to land this in either order.
 function parseMilestones(md) {
   const out = [];
   let inside = false;
@@ -90,14 +99,19 @@ function parseMilestones(md) {
     }
     if (!inside || !line.startsWith('| ') || isRule(line)) continue;
     const row = cells(line);
-    if (row.length !== 3) fail(`a milestone needs three columns, got ${row.length}`);
-    const [id, state, title] = row;
+    if (row.length !== 3 && row.length !== 4) fail(`a milestone needs three or four columns, got ${row.length}`);
+    const [id, state, ...rest] = row;
+    const estimate = rest.length === 2 ? rest[0] : null;
+    const title = rest[rest.length - 1];
     const bare = /^\*\*(.+?)\*\*$/.exec(id);
     if (!bare) fail(`a milestone is "**0.2**", got ${id}`);
     if (!STATES.includes(state)) fail(`a milestone state is ${STATES.join(', ')}, got "${state}"`);
-    out.push({id: bare[1], state, title, items: []});
+    if (estimate && !MONTH.test(estimate)) fail(`an estimate is "December 2026", got "${estimate}"`);
+    out.push({id: bare[1], state, estimate, title, items: []});
   }
   if (!out.length) fail('no `## Milestones` table');
+  const undated = out.filter((m) => !m.estimate).map((m) => m.id);
+  if (undated.length) warn(`no estimate on ${undated.join(', ')}; those tabs show no month`);
   return out;
 }
 
@@ -221,6 +235,7 @@ function render(milestones, copy, posts) {
     out.push('  {');
     out.push(`    id: '${milestone.id}',`);
     out.push(`    state: '${milestone.state}',`);
+    if (milestone.estimate) out.push(`    estimate: ${JSON.stringify(milestone.estimate)},`);
     out.push(`    title: ${JSON.stringify(milestone.title)},`);
     out.push('    items: [');
     for (const item of milestone.items) {

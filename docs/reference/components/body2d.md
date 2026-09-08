@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Makes the node a 2D rigid body rapier simulates, in the xy plane: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. Add a `collider2d` for it to collide with anything.
 
-In a scene, `body2d` is the node key that applies it. A script reaches the same properties through `node.body2d.get()` and `node.body2d.set(table)`.
+In a scene, `body2d` is the node key that applies it. A script reaches each property below as a field on `node.body2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.body2d.get()` and `node.body2d.set(table)`.
 
 ## Properties
 
@@ -62,7 +62,6 @@ From [`physics2d`](../modules/physics2d.md):
 | `kinetic_energy() -> float` | The body's kinetic energy, for a rest test the solver agrees with. |
 | `linear_velocity() -> float, float` | How fast the body is travelling, in units per second. |
 | `locked_axes() -> bool, bool, bool` | Whether x, y and rotation are frozen. |
-| `mass() -> float` | The body's total mass, colliders included. |
 | `max_contact_impulse() -> float` | The hardest contact this body took in the last step, zero when nothing touched it. |
 | `next_position() -> float, float` | The position a kinematic body has been told to move to. |
 | `predict_position(float) -> float, float` | Where the body will be after `dt` seconds at its current velocity. |
@@ -80,6 +79,7 @@ From [`physics2d`](../modules/physics2d.md):
 | `set_lock_translation(bool, bool)` | Freeze the body's movement along x and y. |
 | `sleep()` | Put the body to sleep now. |
 | `teleport(float, float)` | Move the body to a world position at once, clearing its velocity: what assigning the node's position cannot do, because the step writes that back every tick. |
+| `total_mass() -> float` | The body's total mass, colliders included. The `mass` property is the extra on top of them. |
 | `user_force() -> float, float` | The force the next step will integrate. |
 | `user_torque() -> float` | The torque the next step will integrate. |
 | `velocity_at_point(float, float) -> float, float` | How fast a world point on the body is moving, spin included. |

@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Drives a rig's bones from the bodies `physics2d.ragdoll` or `physics3d.ragdoll` built for it. `blend` is how much of the simulated pose the bones take: 0 leaves the clip in charge while the bodies simulate unseen, 1 goes limp, and anything between lets a hit push an animation around without ending it.
 
-In a scene, `ragdoll` is the node key that applies it. A script reaches the same properties through `node.ragdoll.get()` and `node.ragdoll.set(table)`.
+In a scene, `ragdoll` is the node key that applies it. A script reaches each property below as a field on `node.ragdoll`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.ragdoll.get()` and `node.ragdoll.set(table)`.
 
 ## Properties
 

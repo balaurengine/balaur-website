@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Holds this node's body to another one in 2D: a hinge, a slider, a rope, a spring, or a generic joint you lock axis by axis. Both ends need a `body2d`; a node without one stands for the nearest body above it, which is how one body carries several joints on child nodes.
 
-In a scene, `joint2d` is the node key that applies it. A script reaches the same properties through `node.joint2d.get()` and `node.joint2d.set(table)`.
+In a scene, `joint2d` is the node key that applies it. A script reaches each property below as a field on `node.joint2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.joint2d.get()` and `node.joint2d.set(table)`.
 
 ## Properties
 

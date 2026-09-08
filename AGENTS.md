@@ -18,6 +18,12 @@ Change the generator instead.
   a warning, and the committed `docs/roadmap.mdx` stays as it is. The limits
   are enforced where the file is written, by the engine's
   `scripts/prose_lints.py`. `--strict` runs the same checks here as failures.
+- `src/data/sponsors.json` — `scripts/gen-sponsors.mjs`, from GitHub Sponsors
+  over GraphQL. It needs `SPONSORS_TOKEN`, a personal token with `read:org`;
+  the runner's own `github.token` cannot read sponsorships. With no token, a
+  failed fetch or a fork's build, it keeps the committed list and says so.
+  `includePrivate` stays false: a private sponsor is never written to a file
+  this repository publishes.
 - `static/llms.txt`, `static/llms-full.txt` — `scripts/gen-llms.mjs`.
 - `static/img/{manual,editor}/*.webp` and `static/img/poster/` —
   `scripts/optimize-images.mjs`, from the PNGs the engine's showcase writes.

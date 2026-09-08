@@ -12,7 +12,7 @@ custom_edit_url: null
 
 The view the scene is drawn from, following the node's global pose: `look_at` aims the 3D camera, `zoom` scales the 2D one in logical pixels per world unit. The last `current` camera of a kind, in tree order, drives that view.
 
-In a scene, `camera` is the node key that applies it. A script reaches the same properties through `node.camera.get()` and `node.camera.set(table)`.
+In a scene, `camera` is the node key that applies it. A script reaches each property below as a field on `node.camera`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.camera.get()` and `node.camera.set(table)`.
 
 ## Properties
 

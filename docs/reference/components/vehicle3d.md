@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Makes this node's body a car chassis, driven by the `wheel3d` children under it. Rapier casts a ray down from each wheel and pushes the chassis along a spring, which is how driving games model cars: it never jams and never tunnels.
 
-In a scene, `vehicle3d` is the node key that applies it. A script reaches the same properties through `node.vehicle3d.get()` and `node.vehicle3d.set(table)`.
+In a scene, `vehicle3d` is the node key that applies it. A script reaches each property below as a field on `node.vehicle3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.vehicle3d.get()` and `node.vehicle3d.set(table)`.
 
 ## Properties
 

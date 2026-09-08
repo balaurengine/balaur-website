@@ -99,7 +99,7 @@ One registration buys three things:
 | | |
 | --- | --- |
 | The scene-file key | `collider = { kind = "ball", radius = 0.5 }` works because the physics plugin registered `collider3d` |
-| The runtime API | `node.set_component`, `get_component`, `has_component`, `remove_component`, `component_names`, plus `scene::component_types()` and `scene::component_schema(name)` |
+| The runtime API | Every property as a field on the node's handle (`node.collider3d.density = 15.0`), plus `node.set_component`, `get_component`, `has_component`, `remove_component`, `component_names`, `scene::component_types()` and `scene::component_schema(name)` |
 | Editor support | The Add component palette and the property inspectors are generated from the registry, so a third-party component is addable and editable with no editor changes |
 
 <Clip name="scenes_inspect" alt="Selecting nodes in the tree; the inspector follows, a scale is dragged, and undone" />

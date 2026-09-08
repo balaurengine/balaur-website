@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Poses 2D bones after the clip has run, every frame: `look_at` turns one bone toward a target node, `two_bone_ik` bends a root, middle and tip chain so the tip reaches it, `fabrik` and `ccdik` reach with a chain of any length, `jiggle` lets a chain trail the pose on a spring, and `follow` moves the node itself to its target plus `offset`, `lag` seconds behind.
 
-In a scene, `modifier2d` is the node key that applies it. A script reaches the same properties through `node.modifier2d.get()` and `node.modifier2d.set(table)`.
+In a scene, `modifier2d` is the node key that applies it. A script reaches each property below as a field on `node.modifier2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.modifier2d.get()` and `node.modifier2d.set(table)`.
 
 ## Properties
 

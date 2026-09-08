@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "node scripts/gen-releases.mjs && node scripts/gen-play-version.mjs && node scripts/gen-play-size.mjs && node scripts/gen-reference.mjs && node scripts/gen-roadmap.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus start",
-    "build": "node scripts/gen-releases.mjs && node scripts/gen-play-version.mjs && node scripts/gen-play-size.mjs && node scripts/gen-reference.mjs && node scripts/gen-roadmap.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus build",
+    "start": "node scripts/gen-releases.mjs && node scripts/gen-sponsors.mjs && node scripts/gen-play-version.mjs && node scripts/gen-play-size.mjs && node scripts/gen-reference.mjs && node scripts/gen-roadmap.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus start",
+    "build": "node scripts/gen-releases.mjs && node scripts/gen-sponsors.mjs && node scripts/gen-play-version.mjs && node scripts/gen-play-size.mjs && node scripts/gen-reference.mjs && node scripts/gen-roadmap.mjs && node scripts/optimize-images.mjs && node scripts/gen-llms.mjs && docusaurus build",
     "gen-reference": "node scripts/gen-reference.mjs",
     "gen-releases": "node scripts/gen-releases.mjs",
+    "gen-sponsors": "node scripts/gen-sponsors.mjs",
     "gen-roadmap": "node scripts/gen-roadmap.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",

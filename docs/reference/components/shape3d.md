@@ -12,7 +12,7 @@ custom_edit_url: null
 
 An untextured 3D primitive drawn at the node -- ball, cuboid, capsule, cylinder, cone, plane, torus, pyramid, prism or tube -- sized in world units and tinted by `color`. Built as a mesh, so a collider fitted to it collides what is drawn.
 
-In a scene, `shape3d` is the node key that applies it. A script reaches the same properties through `node.shape3d.get()` and `node.shape3d.set(table)`.
+In a scene, `shape3d` is the node key that applies it. A script reaches each property below as a field on `node.shape3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.shape3d.get()` and `node.shape3d.set(table)`.
 
 ## Properties
 

@@ -1,0 +1,10 @@
+/* A row of names rather than a column of bullets: the list is short, and a
+   sponsor is a name, not a paragraph. */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  list-style: none;
+}

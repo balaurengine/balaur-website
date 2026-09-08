@@ -12,7 +12,7 @@ custom_edit_url: null
 
 A textured 2D quad at the node, sized from its image at `pixels_per_unit` texture pixels per world unit. A `columns` x `rows` grid, or a `sprite_sheet` asset on `sheet`, makes it a flipbook `frame` steps through.
 
-In a scene, `sprite` is the node key that applies it. A script reaches the same properties through `node.sprite.get()` and `node.sprite.set(table)`.
+In a scene, `sprite` is the node key that applies it. A script reaches each property below as a field on `node.sprite`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.sprite.get()` and `node.sprite.set(table)`.
 
 ## Properties
 

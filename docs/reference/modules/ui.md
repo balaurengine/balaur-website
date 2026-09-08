@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
 
-56 functions, 37 constants. Scripts reach it as `ui::`.
+57 functions, 45 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -40,13 +40,14 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `frame(any?, fn)` | — | Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels. |
 | `horizontal(any?, fn)` | — | Lay the callback's widgets out in a row; `width`, `height` and `tight` size it, in design pixels. |
 | `image(string, any?)` | — | Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path. `region` (`[x, y, w, h]` in the image's own pixels) draws one part of it, which is how an atlas is shown a tile at a time. |
-| `image_button(string, any?) -> bool` | — | The same picture, answering a click: returns whether it was clicked this frame. Takes every `image` option plus `selected`, which draws the `stroke` border a chosen tile needs. |
+| `image_button(string, any?) -> bool` | — | The same picture, answering a click: returns whether it was clicked this frame. Takes every `image` option plus `selected`, which draws the `stroke` border a chosen tile needs, and the `menu`/`menu_click` callbacks a pill takes. |
 | `label(string, any?)` | — | Draw a line of text; `size`, `font`, `color`, `strong`, `wrap` and `truncate` style it. |
 | `left_panel(string, any?, fn) -> float` | — | Dock a column down the left of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
-| `menu_item(string, any?) -> bool` | — | Draw a row inside a context menu; true on the frame it was clicked, which also closes the menu. |
+| `list(string, any?, int, fn)` | — | A scroll area of `count` rows of one height, calling the callback only for the rows on screen. `row_height` is the row, in design pixels. |
+| `menu_item(string, any?) -> bool` | — | Draw a row inside a menu, `width` design pixels across and with `trailing` set against its right edge; true on the frame it was clicked, which also closes the menu unless `keep_open` says otherwise. |
 | `modal(string, any?, fn) -> bool` | — | Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked. `width`, `height` and `top` size and place it, `fill`, `stroke` and `scrim` colour it; height follows the content when it is not given. |
 | `overlay(string, any?, fn)` | — | Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer. `w`/`h` fix its size, and `fill`, `stroke`, `radius` and padding make it a sheet. |
-| `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. `disabled` greys it out and swallows the click. |
+| `pill(string, any?) -> bool` | — | Draw a rounded button, or a left-aligned row when `align = "left"`; true on the frame it was clicked. `disabled` greys it out and swallows the click. `menu` hangs a right-click menu off it, `menu_click` one that opens on a left click. |
 | `rect_stroke(float, float, float, float, any?)` | — | Outline a rectangle at x/y/w/h design pixels from the current panel's corner, `dashed` when asked. |
 | `request_repaint()` | — | Run the UI pass this frame even when lazy; call it every frame something on screen moves without input, such as while the scene plays. |
 | `right(fn)` | — | Lay the callback's widgets out against the right edge, still declared left to right. |
@@ -99,8 +100,11 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `MOD_SHIFT` | `shift` |
 | `WIDGET_BUTTON` | `button` |
 | `WIDGET_CHECK` | `check` |
+| `WIDGET_CODE` | `code` |
+| `WIDGET_COLOR` | `color` |
 | `WIDGET_COLUMN` | `column` |
 | `WIDGET_DIALOG` | `dialog` |
+| `WIDGET_DRAG_VALUE` | `drag_value` |
 | `WIDGET_DRAW` | `draw` |
 | `WIDGET_DROPDOWN` | `dropdown` |
 | `WIDGET_FIELD` | `field` |
@@ -109,6 +113,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `WIDGET_GRID` | `grid` |
 | `WIDGET_IMAGE` | `image` |
 | `WIDGET_LABEL` | `label` |
+| `WIDGET_LIST` | `list` |
+| `WIDGET_MENU` | `menu` |
 | `WIDGET_PANEL` | `panel` |
 | `WIDGET_PROGRESS` | `progress` |
 | `WIDGET_ROW` | `row` |
@@ -116,3 +122,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `WIDGET_SEPARATOR` | `separator` |
 | `WIDGET_SLIDER` | `slider` |
 | `WIDGET_TAB` | `tab` |
+| `WIDGET_TABLE` | `table` |
+| `WIDGET_TEXT_AREA` | `text_area` |
+| `WIDGET_TREE` | `tree` |

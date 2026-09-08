@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Authored 3D geometry from a `mesh` asset, drawn at the node and deformed by the rig `skeleton` names when the asset carries a skin.
 
-In a scene, `mesh` is the node key that applies it. A script reaches the same properties through `node.mesh.get()` and `node.mesh.set(table)`.
+In a scene, `mesh` is the node key that applies it. A script reaches each property below as a field on `node.mesh`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.mesh.get()` and `node.mesh.set(table)`.
 
 ## Properties
 

@@ -12,7 +12,7 @@ custom_edit_url: null
 
 One wheel of the `vehicle3d` above it. Where the node sits on the chassis is where the wheel's ray starts; the rest is suspension tuning. Drive it with `physics3d.set_engine_force`, `set_brake` and `set_steering`.
 
-In a scene, `wheel3d` is the node key that applies it. A script reaches the same properties through `node.wheel3d.get()` and `node.wheel3d.set(table)`.
+In a scene, `wheel3d` is the node key that applies it. A script reaches each property below as a field on `node.wheel3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.wheel3d.get()` and `node.wheel3d.set(table)`.
 
 ## Properties
 

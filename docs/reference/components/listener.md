@@ -12,7 +12,7 @@ custom_edit_url: null
 
 The ears a positional sound is heard from: its distance to this node sets its volume, and its offset across this node's right sets its pan. The last `current` listener applied wins; with no listener in the scene at all, every sound plays flat.
 
-In a scene, `listener` is the node key that applies it. A script reaches the same properties through `node.listener.get()` and `node.listener.set(table)`.
+In a scene, `listener` is the node key that applies it. A script reaches each property below as a field on `node.listener`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.listener.get()` and `node.listener.set(table)`.
 
 ## Properties
 

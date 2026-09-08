@@ -12,7 +12,7 @@ custom_edit_url: null
 
 The scene's atmosphere: the sky it sits under and is lit by, the ambient light, fog, exposure, tonemap, colour grading and the shadow budget. The last `current` one in tree order wins, so a level can carry two and switch between them. Per-view effects stay on `camera.post`.
 
-In a scene, `environment` is the node key that applies it. A script reaches the same properties through `node.environment.get()` and `node.environment.set(table)`.
+In a scene, `environment` is the node key that applies it. A script reaches each property below as a field on `node.environment`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.environment.get()` and `node.environment.set(table)`.
 
 ## Properties
 

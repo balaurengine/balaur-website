@@ -12,7 +12,7 @@ custom_edit_url: null
 
 An untextured 2D primitive drawn at the node -- circle, rect, capsule, ellipse, star, ngon, or a polyline through a `mesh` asset's points or a stroked `path2d` -- sized in world units.
 
-In a scene, `shape2d` is the node key that applies it. A script reaches the same properties through `node.shape2d.get()` and `node.shape2d.set(table)`.
+In a scene, `shape2d` is the node key that applies it. A script reaches each property below as a field on `node.shape2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.shape2d.get()` and `node.shape2d.set(table)`.
 
 ## Properties
 

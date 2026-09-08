@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the OS window, and the backdrop and debug lines drawn around the scene.
 
-64 functions, 30 constants. Scripts reach it as `render::`.
+65 functions, 30 constants. Scripts reach it as `render::`.
 
 Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -34,6 +34,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `draw_circle_2d(float, float, float, any?)` | — | Fill a circle in world units for this frame, over everything the scene drew. |
 | `draw_line(float, float, float, float, float, float, float, float, float, float?, bool?, bool?)` | — | Draw one 3D world-space line for this frame; the width is in pixels unless perspective scales it with distance. |
 | `draw_line_2d(float, float, float, float, float, float, float, float?)` | — | Draw one 2D world-space line for this frame; width is in pixels. |
+| `draw_lines(any)` | — | Draw many 3D lines in one call: eleven numbers a segment, being both ends, an rgb, a width and an on-top flag. |
 | `draw_polyline_2d(any, float?, any?)` | — | Stroke a chain of world-space points for this frame; width is in pixels. |
 | `draw_rect_2d(float, float, float, float, any?)` | — | Fill a rectangle centred at a point, in world units, for this frame. |
 | `draw_text(float, float, float, string, any?)` | — | The same in 3D world space, on a quad that faces the camera. `pixels_per_unit` sizes it, so text a metre away reads the same whatever the font size. |

@@ -236,7 +236,7 @@ for (const name of Object.keys(components).sort()) {
   ];
   if (componentDocs[name]) lines.push(componentDocs[name], '');
   lines.push(
-    `In a scene, ${code(name)} is the node key that applies it. A script reaches the same properties through ${code('node.' + name + '.get()')} and ${code('node.' + name + '.set(table)')}.`,
+    `In a scene, ${code(name)} is the node key that applies it. A script reaches each property below as a field on ${code('node.' + name)}: reading one asks the running component, and assigning one leaves the rest alone. The whole table is ${code('node.' + name + '.get()')} and ${code('node.' + name + '.set(table)')}.`,
     '',
     '## Properties',
     '',

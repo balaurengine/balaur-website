@@ -12,7 +12,7 @@ custom_edit_url: null
 
 A sound of the node's own: which file, at what volume and pitch, looping or not. `audio.play_on` and `audio.stop_on` trigger it, and `autoplay` starts it when the node enters the scene. A `positional` sound is heard from where the node is, relative to the `listener`.
 
-In a scene, `sound` is the node key that applies it. A script reaches the same properties through `node.sound.get()` and `node.sound.set(table)`.
+In a scene, `sound` is the node key that applies it. A script reaches each property below as a field on `node.sound`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.sound.get()` and `node.sound.set(table)`.
 
 ## Properties
 

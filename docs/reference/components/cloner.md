@@ -12,7 +12,7 @@ custom_edit_url: null
 
 Draw this node's whole subtree many times over -- along a line, around a ring, or through a grid -- in one call per mesh. The tree, physics and scripts still see one node; `seed` and `random` scatter the copies.
 
-In a scene, `cloner` is the node key that applies it. A script reaches the same properties through `node.cloner.get()` and `node.cloner.set(table)`.
+In a scene, `cloner` is the node key that applies it. A script reaches each property below as a field on `node.cloner`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.cloner.get()` and `node.cloner.set(table)`.
 
 ## Properties
 

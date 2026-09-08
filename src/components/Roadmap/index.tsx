@@ -21,6 +21,9 @@ export type RoadmapMilestone = {
   /** `0.2`, or `Later` for the ones with no version against them. */
   id: string;
   state: 'built' | 'building' | 'planned';
+  /** The month the milestone is aimed at, `December 2026`. Per milestone, so
+      every card in the tab carries the same date. */
+  estimate?: string;
   title: string;
   items: RoadmapItem[];
 };
@@ -40,6 +43,10 @@ const weight = (milestone: RoadmapMilestone, index: number) =>
 
 // One tab per milestone, one card per thing that milestone does not do yet.
 // The tab is in the URL hash, so a link can open the page on 0.4.
+//
+// Every panel is rendered and the ones not selected carry `hidden`: the build
+// prerenders one HTML file for this page, and the search index is built from
+// it, so a panel left unrendered is a milestone nobody can search for.
 export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}): ReactNode {
   const [active, setActive] = useState(milestones[0].id);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -74,7 +81,6 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
   };
 
   const shown = milestones.find((m) => m.id === active) ?? milestones[0];
-  const index = milestones.indexOf(shown);
 
   return (
     <div className={styles.roadmap}>
@@ -102,16 +108,28 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
         ))}
       </div>
 
-      <div className={styles.panel} role="tabpanel" id={slug(shown.id)} aria-labelledby={shown.id}>
+      {milestones.map((milestone, i) => (
+      <div
+        className={styles.panel}
+        role="tabpanel"
+        key={milestone.id}
+        id={slug(milestone.id)}
+        aria-labelledby={milestone.id}
+        hidden={milestone.id !== shown.id}>
         <Heading as="h2" className={styles.milestone}>
-          {shown.title}
+          {milestone.title}
         </Heading>
-        {STATE_LABEL[shown.state] && (
-          <p className={`${styles.state} ${styles[shown.state]}`}>{STATE_LABEL[shown.state]}</p>
-        )}
+        <p className={styles.badges}>
+          {STATE_LABEL[milestone.state] && (
+            <span className={`${styles.state} ${styles[milestone.state]}`}>{STATE_LABEL[milestone.state]}</span>
+          )}
+          {milestone.estimate && (
+            <span className={`${styles.state} ${styles.estimate}`}>{milestone.estimate}</span>
+          )}
+        </p>
         <div className={styles.grid}>
-          {shown.items.map((item) => (
-            <div className={`${styles.card} ${weight(shown, index)}`} key={item.title}>
+          {milestone.items.map((item) => (
+            <div className={`${styles.card} ${weight(milestone, i)}`} key={item.title}>
               {item.image && (
                 <img
                   className={styles.shot}
@@ -140,6 +158,7 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
           ))}
         </div>
       </div>
+      ))}
     </div>
   );
 }
