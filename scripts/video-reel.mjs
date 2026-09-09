@@ -16,17 +16,33 @@
 // is retaken, not on every build, and an ffmpeg pass over two minutes of video
 // is a quarter of an hour.
 //
-//   yarn video-reel                        # the reel, the share cut, the poster
-//   node scripts/video-reel.mjs --cards    # the card PNGs alone, to look at
+//   yarn video-reel                             # the reel, the share cut, the poster
+//   node scripts/video-reel.mjs --cards         # the card PNGs alone, to look at
+//   node scripts/video-reel.mjs --share-only    # redo the share cut from the built reel
+//   node scripts/video-reel.mjs --share-only --audio track.flac
+//   node scripts/video-reel.mjs --share-only --audio track.flac --audio-start 12
 //
 // Outputs:
 //   static/video/balaur-0-1-0.mp4/.webm        1600x1000, what the post embeds
 //   static/img/manual/balaur-0-1-0.png         the poster's source, committed
 //   video-out/balaur-0-1-0-share.mp4           1920x1080, to upload by hand
 //
-// The share cut is the only one outside `static/`, and it is gitignored: it is
-// what YouTube and X are fed, so serving a second copy of the same two minutes
-// from the site would be bytes nobody asks for.
+// The share cut is the only one outside `static/`. It is committed, but not
+// served: it is what YouTube and Reddit are fed, and a second copy of the same
+// two minutes behind a URL nobody links is bytes the site would carry for
+// nothing. `static/` is what Docusaurus copies into the build; `video-out/` is
+// not.
+//
+// Music, when `--audio` names a track, goes on the share cut alone. The clip
+// the page embeds is played muted by src/components/Clip.tsx, so an audio
+// track there is two megabytes nobody hears. `--share-only` skips the cards,
+// the segments and the VP9 pass and re-cuts from the built reel, which is a
+// minute rather than a quarter of an hour: that is the loop for trying tracks.
+//
+// Whatever the track is, its licence is on you to check, and a public domain
+// composition is not the same as a free recording of it — the performance
+// carries its own copyright. Musopen publishes recordings that are clear of
+// both.
 import sharp from 'sharp';
 import {execFileSync} from 'node:child_process';
 import {existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
@@ -64,6 +80,28 @@ const TITLE_SECONDS = 3.6;
 const CARD_SECONDS = 1.7;
 const END_SECONDS = 3.4;
 const FADE = 0.28;
+// The music comes up over the title card, and goes out early enough to leave
+// the download card in silence: a bed that trails off under the one frame
+// asking the viewer to do something takes the attention with it, where a beat
+// of quiet hands it over.
+const AUDIO_IN = 2.5;
+const AUDIO_OUT = 4.0;
+const AUDIO_TAIL = 1.5;
+
+const argv = process.argv.slice(2);
+const has = (name) => argv.includes(name);
+const valueOf = (name) => (argv.indexOf(name) < 0 ? undefined : argv[argv.indexOf(name) + 1]);
+const cardsOnly = has('--cards');
+const shareOnly = has('--share-only');
+const audio = valueOf('--audio');
+// Where in the track to start, in seconds. The one control worth having: a
+// piece rarely opens on the gesture you want under a title card, and the reel
+// is a fixed 141 seconds that the music has to be chosen to fit rather than
+// the other way round.
+const audioStart = Number(valueOf('--audio-start') ?? 0);
+if (has('--audio') && !audio) throw new Error('--audio wants a path');
+if (audio && !existsSync(audio)) throw new Error(`no audio at ${audio}`);
+if (!Number.isFinite(audioStart) || audioStart < 0) throw new Error('--audio-start wants seconds');
 
 const dataUri = (rel, mime) =>
   `data:${mime};base64,${readFileSync(join(root, rel)).toString('base64')}`;
@@ -165,14 +203,17 @@ const ff = (args) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...args
 // rather than through a second generation.
 const H264 = ['-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-g', '60', '-an'];
 
-const bin = chrome();
+const mp4 = join(videoDir, `${NAME}.mp4`);
 const tmp = mkdtempSync(join(tmpdir(), 'balaur-reel-'));
+// Looked up lazily: --share-only needs ffmpeg and the built reel, not a browser.
+let chromeBin;
 const shot = (slug, html) => {
+  chromeBin ??= chrome();
   const page = join(tmp, `${slug}.html`);
   const png = join(tmp, `${slug}.png`);
   writeFileSync(page, html);
   execFileSync(
-    bin,
+    chromeBin,
     ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
      `--window-size=${W},${H}`, '--virtual-time-budget=8000', `--screenshot=${png}`,
      pathToFileURL(page).href],
@@ -181,15 +222,17 @@ const shot = (slug, html) => {
   return png;
 };
 
-const cards = [['title', titleCard()], ['end', endCard()],
-  ...SECTIONS.map(([clip, title, line]) => [`card_${clip}`, sectionCard(title, line)])];
 const pngs = new Map();
-for (const [slug, html] of cards) {
-  pngs.set(slug, shot(slug, html));
-  console.log(`card  ${slug}`);
+if (!shareOnly) {
+  const cards = [['title', titleCard()], ['end', endCard()],
+    ...SECTIONS.map(([clip, title, line]) => [`card_${clip}`, sectionCard(title, line)])];
+  for (const [slug, html] of cards) {
+    pngs.set(slug, shot(slug, html));
+    console.log(`card  ${slug}`);
+  }
 }
 
-if (process.argv.includes('--cards')) {
+if (cardsOnly) {
   const out = join(tmp, '..', 'balaur-reel-cards');
   mkdirSync(out, {recursive: true});
   for (const [slug, png] of pngs) execFileSync('cp', [png, join(out, `${slug}.png`)]);
@@ -225,34 +268,59 @@ const clipSeg = (name) => {
 };
 
 let total = TITLE_SECONDS + END_SECONDS + SECTIONS.length * CARD_SECONDS;
-still('title', TITLE_SECONDS);
-for (const [clip, title] of SECTIONS) {
-  still(`card_${clip}`, CARD_SECONDS);
-  const seconds = clipSeg(clip);
-  total += seconds;
-  console.log(`cut   ${title.padEnd(16)} ${seconds.toFixed(1)}s`);
-}
-still('end', END_SECONDS);
+if (!shareOnly) {
+  still('title', TITLE_SECONDS);
+  for (const [clip, title] of SECTIONS) {
+    still(`card_${clip}`, CARD_SECONDS);
+    const seconds = clipSeg(clip);
+    total += seconds;
+    console.log(`cut   ${title.padEnd(16)} ${seconds.toFixed(1)}s`);
+  }
+  still('end', END_SECONDS);
 
-const list = join(tmp, 'concat.txt');
-writeFileSync(list, segments.map((s) => `file '${s}'`).join('\n'));
-const mp4 = join(videoDir, `${NAME}.mp4`);
-ff(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', mp4]);
-ff(['-i', mp4, '-c:v', 'libvpx-vp9', '-crf', '34', '-b:v', '0', '-pix_fmt', 'yuv420p',
-    '-row-mt', '1', '-an', join(videoDir, `${NAME}.webm`)]);
+  const list = join(tmp, 'concat.txt');
+  writeFileSync(list, segments.map((seg) => `file '${seg}'`).join('\n'));
+  ff(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', mp4]);
+  ff(['-i', mp4, '-c:v', 'libvpx-vp9', '-crf', '34', '-b:v', '0', '-pix_fmt', 'yuv420p',
+      '-row-mt', '1', '-an', join(videoDir, `${NAME}.webm`)]);
+  // The poster the page shows behind the play button, in the place
+  // scripts/optimize-images.mjs reads its sources from.
+  await sharp(pngs.get('title')).png({palette: true, quality: 95, compressionLevel: 9})
+    .toFile(join(root, 'static', 'img', 'manual', `${NAME}.png`));
+  console.log(`reel  ${NAME}: ${Math.round(total)}s, ${SECTIONS.length} clips`);
+} else if (!existsSync(mp4)) {
+  throw new Error(`--share-only needs ${mp4}; run without it first`);
+}
+
 // The share cut: the same reel padded onto 16:9, which is what YouTube and X
 // want; a 1600x1000 upload is letterboxed by them instead, in their own grey.
 const shareDir = join(root, 'video-out');
 mkdirSync(shareDir, {recursive: true});
 const share = join(shareDir, `${NAME}-share.mp4`);
-ff(['-i', mp4, '-vf', 'scale=1728:1080,pad=1920:1080:96:0:0x0B0E12',
-    '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p',
-    '-movflags', '+faststart', '-an', share]);
-// The poster the page shows behind the play button, in the place
-// scripts/optimize-images.mjs reads its sources from.
-await sharp(pngs.get('title')).png({palette: true, quality: 95, compressionLevel: 9})
-  .toFile(join(root, 'static', 'img', 'manual', `${NAME}.png`));
+const PAD = 'scale=1728:1080,pad=1920:1080:96:0:0x0B0E12';
+const SHARE_V = ['-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p',
+  '-movflags', '+faststart'];
+if (audio) {
+  const seconds = Number(
+    execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration',
+      '-of', 'default=nw=1:nk=1', mp4], {encoding: 'utf8'}).trim());
+  // The track is looped and then cut to the reel, so a piece shorter than the
+  // reel still covers it and a longer one is simply trimmed. loudnorm lands it
+  // on -14 LUFS, which is what YouTube normalises to: hit it here and the
+  // upload is left alone rather than turned down on the way in.
+  const out = (seconds - AUDIO_TAIL - AUDIO_OUT).toFixed(2);
+  ff(['-i', mp4,
+      '-stream_loop', '-1', ...(audioStart ? ['-ss', String(audioStart)] : []), '-i', audio,
+      '-filter_complex',
+      `[0:v]${PAD}[v];` +
+        `[1:a]afade=t=in:st=0:d=${AUDIO_IN},` +
+        `afade=t=out:st=${out}:d=${AUDIO_OUT},` +
+        'loudnorm=I=-14:TP=-1.5:LRA=11[a]',
+      '-map', '[v]', '-map', '[a]', '-t', String(seconds),
+      ...SHARE_V, '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', share]);
+} else {
+  ff(['-i', mp4, '-vf', PAD, ...SHARE_V, '-an', share]);
+}
 
 rmSync(tmp, {recursive: true, force: true});
-console.log(`reel  ${NAME}: ${Math.round(total)}s, ${SECTIONS.length} clips`);
-console.log(`share ${share}`);
+console.log(`share ${share}${audio ? ` with ${audio}` : ' (silent)'}`);
