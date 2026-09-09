@@ -30,6 +30,24 @@ type Persona = {
 
 const PERSONAS: Persona[] = [
   {
+    id: 'multiplayer',
+    who: 'For multiplayer and simulation',
+    persona: 'Physics persona',
+    headline: 'Deterministic by default.',
+    lines: [
+      {icon: 'timer', tone: 'physics', text: 'A fixed 60 Hz tick.'},
+      {icon: 'record', tone: 'physics', text: 'Record inputs and replay the whole session.'},
+      {icon: 'broadcast', text: 'HTTP, websockets and WebTransport.'},
+    ],
+    clip: 'determinism_replay',
+    alt: 'A recorded session replayed tick by tick to the same result',
+    links: [
+      {to: '/multiplayer', label: 'Balaur for multiplayer'},
+      {to: '/docs/manual/determinism', label: 'Determinism manual'},
+      {to: '/examples#angrynerds', label: 'Open examples/angrynerds'},
+    ],
+  },
+  {
     id: 'design',
     who: 'For designers',
     persona: 'Scene and Interface personas',
@@ -82,24 +100,6 @@ const PERSONAS: Persona[] = [
       {to: '/animate', label: 'Balaur for animators'},
       {to: '/docs/manual/animation', label: 'Animation manual'},
       {to: '/examples#rig', label: 'Open examples/rig'},
-    ],
-  },
-  {
-    id: 'multiplayer',
-    who: 'For multiplayer and simulation',
-    persona: 'Physics persona',
-    headline: 'Deterministic by default.',
-    lines: [
-      {icon: 'timer', tone: 'physics', text: 'A fixed 60 Hz tick.'},
-      {icon: 'record', tone: 'physics', text: 'Record inputs and replay the whole session.'},
-      {icon: 'broadcast', text: 'HTTP, websockets and WebTransport.'},
-    ],
-    clip: 'determinism_replay',
-    alt: 'A recorded session replayed tick by tick to the same result',
-    links: [
-      {to: '/multiplayer', label: 'Balaur for multiplayer'},
-      {to: '/docs/manual/determinism', label: 'Determinism manual'},
-      {to: '/examples#angrynerds', label: 'Open examples/angrynerds'},
     ],
   },
   {

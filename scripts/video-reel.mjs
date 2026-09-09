@@ -21,6 +21,7 @@
 //   node scripts/video-reel.mjs --share-only    # redo the share cut from the built reel
 //   node scripts/video-reel.mjs --share-only --audio track.flac
 //   node scripts/video-reel.mjs --share-only --audio track.flac --audio-start 12
+//   node scripts/video-reel.mjs --share-only --audio t.mp3 --credit "Music: …"
 //
 // Outputs:
 //   static/video/balaur-0-1-0.mp4/.webm        1600x1000, what the post embeds
@@ -99,7 +100,13 @@ const audio = valueOf('--audio');
 // is a fixed 141 seconds that the music has to be chosen to fit rather than
 // the other way round.
 const audioStart = Number(valueOf('--audio-start') ?? 0);
+// The whole attribution line, in the licence's own terms: title, performer,
+// source and licence. A CC BY or BY-SA track is not credited by naming the
+// composer — he is not the one whose licence you are relying on.
+const credit = valueOf('--credit');
 if (has('--audio') && !audio) throw new Error('--audio wants a path');
+if (has('--credit') && !credit) throw new Error('--credit wants a line of text');
+if (credit && !audio) throw new Error('--credit without --audio credits nothing');
 if (audio && !existsSync(audio)) throw new Error(`no audio at ${audio}`);
 if (!Number.isFinite(audioStart) || audioStart < 0) throw new Error('--audio-start wants seconds');
 
@@ -161,6 +168,18 @@ const sectionCard = (title, line) =>
 // The version is not repeated here. Set in Alegreya it would come out in old
 // style figures, where 0.1.0 reads as o.1.o; the title card already carries it,
 // in the mono face where the digits line up.
+// The attribution a CC BY track asks for, drawn over the end card of the share
+// cut alone: the reel the page embeds is silent, so a music credit on it would
+// name something nobody can hear. Transparent everywhere but the line itself,
+// so it composites over whatever the card is doing.
+const creditCard = (text) => `<!doctype html>
+<html><head><meta charset="utf-8"><style>
+  @font-face{font-family:'Source Sans 3';font-weight:200 900;src:url('${sourceSans}') format('woff2')}
+  html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:transparent}
+  p{position:absolute;right:104px;bottom:78px;margin:0;text-align:right;
+    font-family:'Source Sans 3',sans-serif;font-size:25px;line-height:1.35;color:#7d8894}
+</style></head><body><p>${escape(text)}</p></body></html>`;
+
 const endCard = () =>
   shell(
     `<div class="lock"><img src="${mark}" alt=""><h1>Balaur Engine</h1></div>
@@ -207,7 +226,7 @@ const mp4 = join(videoDir, `${NAME}.mp4`);
 const tmp = mkdtempSync(join(tmpdir(), 'balaur-reel-'));
 // Looked up lazily: --share-only needs ffmpeg and the built reel, not a browser.
 let chromeBin;
-const shot = (slug, html) => {
+const shot = (slug, html, size = [W, H], clear = false) => {
   chromeBin ??= chrome();
   const page = join(tmp, `${slug}.html`);
   const png = join(tmp, `${slug}.png`);
@@ -215,8 +234,9 @@ const shot = (slug, html) => {
   execFileSync(
     chromeBin,
     ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
-     `--window-size=${W},${H}`, '--virtual-time-budget=8000', `--screenshot=${png}`,
-     pathToFileURL(page).href],
+     `--window-size=${size[0]},${size[1]}`, '--virtual-time-budget=8000',
+     ...(clear ? ['--default-background-color=00000000'] : []),
+     `--screenshot=${png}`, pathToFileURL(page).href],
     {stdio: 'ignore'},
   );
   return png;
@@ -304,6 +324,10 @@ if (audio) {
   const seconds = Number(
     execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration',
       '-of', 'default=nw=1:nk=1', mp4], {encoding: 'utf8'}).trim());
+  // Held back by one fade so the line does not sit at full brightness while
+  // the card behind it is still coming up out of black.
+  const creditAt = (seconds - END_SECONDS + FADE).toFixed(2);
+  const creditPng = credit ? shot('credit', creditCard(credit), [1920, 1080], true) : null;
   // The track is looped and then cut to the reel, so a piece shorter than the
   // reel still covers it and a longer one is simply trimmed. loudnorm lands it
   // on -14 LUFS, which is what YouTube normalises to: hit it here and the
@@ -311,8 +335,21 @@ if (audio) {
   const out = (seconds - AUDIO_TAIL - AUDIO_OUT).toFixed(2);
   ff(['-i', mp4,
       '-stream_loop', '-1', ...(audioStart ? ['-ss', String(audioStart)] : []), '-i', audio,
+      // A bare still is one frame with no rate of its own, which the encoder
+      // cannot resolve a timebase from; looped at the reel's rate it is a
+      // stream like any other.
+      ...(creditPng ? ['-loop', '1', '-framerate', String(FPS), '-i', creditPng] : []),
       '-filter_complex',
-      `[0:v]${PAD}[v];` +
+      // Chrome writes a pHYs chunk into the PNG, which ffmpeg reads as a
+      // pixel aspect ratio. Overlay then reconciles the two branches' ratios
+      // and lands on 1920x1081, an odd height that libx264 refuses. Square
+      // pixels are pinned on both branches and again on the result, which is
+      // the only combination that holds.
+      `[0:v]${PAD}` +
+        (creditPng
+          ? `,setsar=1[base];[2:v]setsar=1[cr];` +
+            `[base][cr]overlay=0:0:enable='gte(t,${creditAt})',setsar=1,scale=1920:1080[v];`
+          : '[v];') +
         `[1:a]afade=t=in:st=0:d=${AUDIO_IN},` +
         `afade=t=out:st=${out}:d=${AUDIO_OUT},` +
         'loudnorm=I=-14:TP=-1.5:LRA=11[a]',
@@ -323,4 +360,4 @@ if (audio) {
 }
 
 rmSync(tmp, {recursive: true, force: true});
-console.log(`share ${share}${audio ? ` with ${audio}` : ' (silent)'}`);
+console.log(`share ${share}${audio ? ` with ${audio}` : ' (silent)'}${credit ? ' + credit' : ''}`);
