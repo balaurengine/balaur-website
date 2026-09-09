@@ -29,8 +29,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_debug_draw(any)` | — | Draw the physics world over the scene: `true` for the usual shapes, or a table naming modes (`#{ colliders = true, joints = true }`). |
 | `set_paused(bool)` | — | Stop or resume stepping both worlds; nodes keep their poses. |
 | `set_sleeping_allowed(bool)` | — | Allow or forbid resting bodies falling asleep, in both worlds and for bodies added later. |
-| `set_threads(int) -> any` | — | How many threads the solver may use. The default is one less than the machine reports, capped at eight; rayon's pool is set once per process, so a later call does nothing. |
+| `set_threads(int) -> any` | — | How many threads the solver may use, from a script's `init`: rayon's pool is built once, before the first step, and a call after that says so and changes nothing. `[physics] threads` in `project.toml` does the same and outranks nothing -- an `init` that asks wins. The default is one less than the machine reports, capped at eight. |
 | `set_tuning(any)` | — | Change how the solver behaves in both worlds: `solver_iterations`, `length_unit`, `ccd_substeps`, contact softness and the rest. Every value here changes results, so a recording only replays against the same numbers: prefer `[physics]` in project.toml. |
 | `sleeping_allowed() -> bool` | — | Whether resting bodies are allowed to fall asleep. |
-| `threads() -> int` | — | How many threads the solver is using. |
+| `threads() -> int` | — | How many threads the solver is using. One in a browser, unless the page is the threaded template and called `initThreadPool`. |
 | `tuning() -> any` | — | The solver settings both worlds are running with. |

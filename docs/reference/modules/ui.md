@@ -54,7 +54,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `right_panel(string, any?, fn) -> float` | — | Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
 | `scale() -> float` | — | The global UI scale: real pixels per design pixel. |
 | `screen_size() -> float, float` | — | The window's width and height, in design pixels. |
-| `scroll(string, any?, fn)` | — | Put the callback in a vertical scroll area; `max_height` caps it and `stick_to_bottom` follows new content. |
+| `scroll(string, any?, fn)` | — | Put the callback in a vertical scroll area; `max_height` caps it, `stick_to_bottom` follows new content, and `offset` scrolls it to that many design pixels down. |
 | `separator(string?)` | — | Draw a one-pixel rule across the container, in the given `#rrggbb` colour when one is passed. |
 | `set_clipboard(string)` | — | Copy text to the system clipboard. |
 | `set_focus(node)` | — | Put focus on a widget node. A node focus cannot activate is refused at the next draw. |

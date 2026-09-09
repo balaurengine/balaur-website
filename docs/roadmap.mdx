@@ -190,6 +190,12 @@ import Roadmap from '@site/src/components/Roadmap';
     title: "Nothing blocks an ordinary game",
     items: [
       {
+        group: "Editor",
+        title: 'Focused script editing',
+        text: <>The code pane takes the whole window, with the docks and the hooks list folded away and put back exactly as they were.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor-redesign.md#57-focus-for-a-script',
+      },
+      {
         group: "Scripts and assets",
         title: 'A bad call caught before it runs',
         text: <><code>balaur check</code> reads the scene beside the script and resolves a component's method against the table the run time uses.</>,
@@ -468,6 +474,12 @@ import Roadmap from '@site/src/components/Roadmap';
         text: <>A screen reader over the widget tree, text scaling, captions, and colour-blind-safe defaults.</>,
       },
       {
+        group: "Rendering",
+        title: 'WebGL2 beside WebGPU',
+        text: <>A browser without WebGPU falls back to a GL backend picked at boot, minus the compute passes it cannot serve.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-web-backends.md',
+      },
+      {
         group: "Tools and services",
         title: 'Steam',
         text: <>Sign-in, achievements, leaderboards, cloud saves and purchases behind <code>platform</code>, with the overlay, Workshop, lobbies and Steam Input beside it.</>,
@@ -515,6 +527,12 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Scripts and assets",
         title: 'FBX import',
         text: <><code>balaur import</code> over the <code>ufbx</code> crate, for the meshes, rigs and clips that never ship as glTF.</>,
+      },
+      {
+        group: "Scripts and assets",
+        title: 'Faster transcendentals',
+        text: <><code>sin</code>, <code>cos</code>, <code>exp</code>, <code>log</code> and <code>pow</code> on polynomial approximations rather than <code>libm</code>, deterministic either way, chosen per project.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-fast-math.md',
       },
       {
         group: "Scripts and assets",
