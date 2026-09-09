@@ -4,9 +4,9 @@ import {hasWebGpu, loadEngine, playUrl} from '@site/src/play';
 import styles from './styles.module.css';
 
 // One example running over the whole page: the engine booted on its pack, on
-// a canvas that fills the viewport — and the screen, when the click that
-// opened it may ask for that. The engine runs once per tab, so closing
-// reloads the page rather than pretending to stop it.
+// a canvas that fills the browser window. Fullscreen is the button, never
+// automatic. The engine runs once per tab, so closing reloads the page
+// rather than pretending to stop it.
 type Status =
   | {kind: 'loading'; text: string}
   | {kind: 'running'}
@@ -30,12 +30,9 @@ const enterFullscreen = async (el: HTMLElement | null) => {
 
 export default function Player({
   name,
-  maximize,
   onClose,
 }: {
   name: string;
-  /** Ask for fullscreen on open — only from a click, which a browser honours. */
-  maximize: boolean;
   onClose: () => void;
 }): ReactNode {
   const [status, setStatus] = useState<Status>({kind: 'loading', text: 'Loading the engine…'});
@@ -44,7 +41,6 @@ export default function Player({
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    if (maximize) void enterFullscreen(stage.current);
     void (async () => {
       if (!hasWebGpu()) {
         setStatus({kind: 'unsupported'});

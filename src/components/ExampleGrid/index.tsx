@@ -27,10 +27,6 @@ export type Example = {
 
 const REPO = 'https://github.com/balaurengine/balaur/tree/main/examples';
 
-// What is running: which example, and whether the click that opened it may
-// ask the browser for fullscreen (a link that opens on the game may not).
-type Playing = {name: string; maximize: boolean};
-
 export default function ExampleGrid({items}: {items: Example[]}): ReactNode {
   // Each card is an anchor target (/examples#hello, and one per example, linked
   // from the persona sections). The id below is on the <article>, which the
@@ -38,21 +34,21 @@ export default function ExampleGrid({items}: {items: Example[]}): ReactNode {
   const brokenLinks = useBrokenLinks();
   items.forEach((e) => brokenLinks.collectAnchor(e.name));
 
-  const [playing, setPlaying] = useState<Playing | null>(null);
+  const [playing, setPlaying] = useState<string | null>(null);
 
   // `/examples/?play=angrynerds` opens straight into the game — a link
   // someone can share, and what a reload comes back to.
   useEffect(() => {
     const asked = new URLSearchParams(window.location.search).get('play');
     if (asked !== null && items.some((e) => e.play && e.name === asked)) {
-      setPlaying({name: asked, maximize: false});
+      setPlaying(asked);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const play = (name: string) => {
     window.history.replaceState(null, '', `?play=${name}`);
-    setPlaying({name, maximize: true});
+    setPlaying(name);
   };
 
   return (
@@ -97,7 +93,7 @@ export default function ExampleGrid({items}: {items: Example[]}): ReactNode {
           </div>
         </article>
       ))}
-      {playing && <Player name={playing.name} maximize={playing.maximize} onClose={() => setPlaying(null)} />}
+      {playing && <Player name={playing} onClose={() => setPlaying(null)} />}
     </div>
   );
 }
