@@ -1,0 +1,243 @@
+#!/usr/bin/env node
+// Build the release reel: the per-feature clips the manual already shows,
+// cut together behind a title card, in the order a game is made.
+//
+// The clips are the input, not the frames: static/video/*.mp4 is what the
+// repository carries, so the reel rebuilds on any checkout with ffmpeg and
+// needs neither a GPU nor the engine. The engine's scripts/showcase.sh is
+// still where a clip itself is retaken.
+//
+// Cards are a small HTML page screenshotted by headless Chrome, the way
+// scripts/social-cards.mjs makes the link previews — the site's own fonts and
+// colours, read from static/fonts and src/css/custom.css. The fonts are
+// inlined as data URIs rather than fetched, so a card renders offline.
+//
+//   node scripts/video-reel.mjs            # the reel, the share cut, the poster
+//   node scripts/video-reel.mjs --cards    # the card PNGs alone, to look at
+//
+// Outputs, all committed:
+//   static/video/balaur-0-1-0.mp4/.webm        1600x1000, what the post embeds
+//   static/video/balaur-0-1-0-share.mp4        1920x1080, for YouTube and X
+//   static/img/manual/balaur-0-1-0.png         the poster's source
+import sharp from 'sharp';
+import {execFileSync} from 'node:child_process';
+import {existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {dirname, join} from 'node:path';
+import {fileURLToPath, pathToFileURL} from 'node:url';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const videoDir = join(root, 'static', 'video');
+const NAME = 'balaur-0-1-0';
+const VERSION = '0.1.0';
+
+// The clips in the order a game is made: arrange it, script it, make it
+// collide, make it playable, make it move, make it look right, prove it
+// replays. Each line is the card that introduces its clip.
+//
+// A clip plays at the speed it was taken. The showcase sequences are paced for
+// a manual page, one control at a time, which is slower than a reel wants; the
+// fix belongs in showcase.rn's own pacing, not in a speed-up here, which reads
+// as a fast-forward.
+const SECTIONS = [
+  ['scenes_inspect', 'The editor', 'Nodes in a tree, properties in the inspector.'],
+  ['scripting_live', 'Rune scripting', 'Scripts reload in milliseconds.'],
+  ['physics_collapse', 'Physics', 'Rapier in 2D and 3D.'],
+  ['input_overlay', 'Input', 'Actions over keyboard, mouse and gamepads.'],
+  ['animation_key', 'Animation', 'Bones, weights and a timeline.'],
+  ['shader_preview', 'Shaders', 'Materials written in WESL.'],
+  ['determinism_replay', 'Determinism', 'Record, replay, roll back.'],
+];
+
+const W = 1600;
+const H = 1000;
+const FPS = 30;
+const TITLE_SECONDS = 3.6;
+const CARD_SECONDS = 1.7;
+const END_SECONDS = 3.4;
+const FADE = 0.28;
+
+const dataUri = (rel, mime) =>
+  `data:${mime};base64,${readFileSync(join(root, rel)).toString('base64')}`;
+const mark = dataUri('static/brand/balaur-mark-dark.svg', 'image/svg+xml');
+const alegreya = dataUri('static/fonts/alegreya-latin.woff2', 'font/woff2');
+const sourceSans = dataUri('static/fonts/source-sans-3-latin.woff2', 'font/woff2');
+const mono = dataUri('static/fonts/jetbrains-mono-latin.woff2', 'font/woff2');
+const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+// The dark palette, so a card cuts to an editor clip without a flash: the
+// editor's own ground is --ifm-background-color in the dark theme.
+const shell = (body, extra = '') => `<!doctype html>
+<html><head><meta charset="utf-8"><style>
+  @font-face{font-family:'Alegreya';font-weight:400 900;src:url('${alegreya}') format('woff2')}
+  @font-face{font-family:'Source Sans 3';font-weight:200 900;src:url('${sourceSans}') format('woff2')}
+  @font-face{font-family:'JetBrains Mono';font-weight:100 800;src:url('${mono}') format('woff2')}
+  html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden}
+  body{
+    box-sizing:border-box;display:flex;flex-direction:column;
+    font-family:'Source Sans 3',sans-serif;color:#e6e9ee;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 118%, rgba(111,164,216,0.20), transparent),
+      linear-gradient(180deg,#12161c 0%,#0b0e12 100%);
+  }
+  /* Alegreya defaults to old-style figures, which turn 0.1.0 into o.1.o. */
+  h1{font-family:'Alegreya',serif;font-weight:700;margin:0;letter-spacing:-0.01em;
+     font-variant-numeric:lining-nums;font-feature-settings:'lnum' 1}
+  ${extra}
+</style></head><body>${body}</body></html>`;
+
+const titleCard = () =>
+  shell(
+    `<div class="lock"><img src="${mark}" alt=""><h1>Balaur Engine</h1></div>
+     <div class="ver">${escape(VERSION)}</div>
+     <div class="url">balaurengine.org</div>`,
+    `body{padding:0 130px 96px;justify-content:center}
+     .lock{display:flex;align-items:center;gap:34px}
+     .lock img{width:132px;height:132px}
+     .lock h1{font-size:116px;line-height:1}
+     .ver{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:78px;
+          color:#6fa4d8;margin:30px 0 0 166px;letter-spacing:0.01em}
+     .url{position:absolute;left:130px;bottom:74px;font-family:'JetBrains Mono',monospace;
+          font-size:30px;color:#98a3ae}`,
+  );
+
+const sectionCard = (title, line) =>
+  shell(
+    `<img class="mark" src="${mark}" alt="">
+     <h1>${escape(title)}</h1>
+     <p>${escape(line)}</p>`,
+    `body{padding:0 130px;justify-content:center}
+     .mark{position:absolute;left:130px;top:96px;width:64px;height:64px;opacity:0.85}
+     h1{font-size:104px;line-height:1.02}
+     p{font-size:46px;line-height:1.3;color:#98a3ae;margin:26px 0 0}`,
+  );
+
+const endCard = () =>
+  shell(
+    `<div class="lock"><img src="${mark}" alt=""><h1>Balaur ${escape(VERSION)}</h1></div>
+     <p>Pre-alpha. MIT. macOS, Windows and Linux.</p>
+     <div class="url">balaurengine.org/download</div>`,
+    `body{padding:0 130px 96px;justify-content:center}
+     .lock{display:flex;align-items:center;gap:30px}
+     .lock img{width:96px;height:96px}
+     .lock h1{font-size:88px;line-height:1}
+     p{font-size:44px;color:#98a3ae;margin:28px 0 0 126px}
+     .url{position:absolute;left:130px;bottom:74px;font-family:'JetBrains Mono',monospace;
+          font-size:34px;color:#6fa4d8}`,
+  );
+
+function chrome() {
+  const candidates = [
+    process.env.CHROME,
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+    'google-chrome',
+    'chromium',
+    'chromium-browser',
+  ].filter(Boolean);
+  for (const c of candidates) {
+    if (c.includes('/')) {
+      if (existsSync(c)) return c;
+      continue;
+    }
+    try {
+      return execFileSync('which', [c], {encoding: 'utf8'}).trim();
+    } catch {
+      /* not on PATH */
+    }
+  }
+  throw new Error('no Chrome or Chromium found; set CHROME=/path/to/binary');
+}
+
+const ff = (args) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...args], {stdio: 'inherit'});
+// One encoder setting for every segment, so the pieces concatenate by copy
+// rather than through a second generation.
+const H264 = ['-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-r', String(FPS), '-g', '60', '-an'];
+
+const bin = chrome();
+const tmp = mkdtempSync(join(tmpdir(), 'balaur-reel-'));
+const shot = (slug, html) => {
+  const page = join(tmp, `${slug}.html`);
+  const png = join(tmp, `${slug}.png`);
+  writeFileSync(page, html);
+  execFileSync(
+    bin,
+    ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
+     `--window-size=${W},${H}`, '--virtual-time-budget=8000', `--screenshot=${png}`,
+     pathToFileURL(page).href],
+    {stdio: 'ignore'},
+  );
+  return png;
+};
+
+const cards = [['title', titleCard()], ['end', endCard()],
+  ...SECTIONS.map(([clip, title, line]) => [`card_${clip}`, sectionCard(title, line)])];
+const pngs = new Map();
+for (const [slug, html] of cards) {
+  pngs.set(slug, shot(slug, html));
+  console.log(`card  ${slug}`);
+}
+
+if (process.argv.includes('--cards')) {
+  const out = join(tmp, '..', 'balaur-reel-cards');
+  mkdirSync(out, {recursive: true});
+  for (const [slug, png] of pngs) execFileSync('cp', [png, join(out, `${slug}.png`)]);
+  console.log(`cards in ${out}`);
+  process.exit(0);
+}
+
+// A still becomes a segment that fades up and back down; a clip is re-encoded
+// to the same settings with the same fades on its ends.
+const segments = [];
+// A fade in on the opening frame would make the title card black, which is
+// the frame Discord, X and a video player all reach for as the thumbnail. So
+// the first segment opens at full and only the ones after it fade up.
+const fades = (seconds, up) =>
+  `${up ? `fade=t=in:st=0:d=${FADE},` : ''}fade=t=out:st=${(seconds - FADE).toFixed(2)}:d=${FADE}`;
+const still = (slug, seconds) => {
+  const out = join(tmp, `seg_${segments.length}.mp4`);
+  ff(['-loop', '1', '-i', pngs.get(slug), '-t', String(seconds),
+      '-vf', `${fades(seconds, segments.length > 0)},format=yuv420p`,
+      ...H264, out]);
+  segments.push(out);
+};
+const clipSeg = (name) => {
+  const src = join(videoDir, `${name}.mp4`);
+  if (!existsSync(src)) throw new Error(`no clip at ${src}`);
+  const seconds = Number(
+    execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', src],
+      {encoding: 'utf8'}).trim());
+  const out = join(tmp, `seg_${segments.length}.mp4`);
+  ff(['-i', src, '-vf', `${fades(seconds, true)},format=yuv420p`, ...H264, out]);
+  segments.push(out);
+  return seconds;
+};
+
+let total = TITLE_SECONDS + END_SECONDS + SECTIONS.length * CARD_SECONDS;
+still('title', TITLE_SECONDS);
+for (const [clip, title] of SECTIONS) {
+  still(`card_${clip}`, CARD_SECONDS);
+  const seconds = clipSeg(clip);
+  total += seconds;
+  console.log(`cut   ${title.padEnd(16)} ${seconds.toFixed(1)}s`);
+}
+still('end', END_SECONDS);
+
+const list = join(tmp, 'concat.txt');
+writeFileSync(list, segments.map((s) => `file '${s}'`).join('\n'));
+const mp4 = join(videoDir, `${NAME}.mp4`);
+ff(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', mp4]);
+ff(['-i', mp4, '-c:v', 'libvpx-vp9', '-crf', '34', '-b:v', '0', '-pix_fmt', 'yuv420p',
+    '-row-mt', '1', '-an', join(videoDir, `${NAME}.webm`)]);
+// The share cut: the same reel padded onto 16:9, which is what YouTube and X
+// want; a 1600x1000 upload is letterboxed by the site instead, in grey.
+ff(['-i', mp4, '-vf', 'scale=1728:1080,pad=1920:1080:96:0:0x0B0E12',
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p',
+    '-movflags', '+faststart', '-an', join(videoDir, `${NAME}-share.mp4`)]);
+// The poster the page shows behind the play button, in the place
+// scripts/optimize-images.mjs reads its sources from.
+await sharp(pngs.get('title')).png({palette: true, quality: 95, compressionLevel: 9})
+  .toFile(join(root, 'static', 'img', 'manual', `${NAME}.png`));
+
+rmSync(tmp, {recursive: true, force: true});
+console.log(`reel  ${NAME}: ${Math.round(total)}s, ${SECTIONS.length} clips`);
