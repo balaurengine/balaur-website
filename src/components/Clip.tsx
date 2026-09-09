@@ -3,13 +3,14 @@ import {useEffect, useRef} from 'react';
 // A short clip from the engine's showcase pipeline (scripts/showcase.sh in
 // the engine repository): a poster, a .webm and an .mp4, all named alike.
 // The poster is the lossy 1000 px copy scripts/optimize-images.mjs writes
-// rather than the lossless 1600 px screenshot the manual shows: it is a still
+// rather than the lossless 1920 px screenshot the manual shows: it is a still
 // behind a play button, at half those pixels and a third of the bytes.
-// Every clip is rendered at 1600×1000, and the element says so up front so
-// the page does not shift when one loads. Nothing downloads until the clip
-// scrolls into view; then it plays, muted, and pauses again when it leaves.
-const WIDTH = 1600;
-const HEIGHT = 1000;
+// Every clip is rendered at 1920×1080 by the engine's OFFSCREEN_SIZE, and the
+// element says so up front so the page does not shift when one loads. Nothing
+// downloads until the clip scrolls into view; then it plays, muted, and pauses
+// again when it leaves.
+const WIDTH = 1920;
+const HEIGHT = 1080;
 
 export default function Clip({name, alt}: {name: string; alt?: string}) {
   const ref = useRef<HTMLVideoElement>(null);

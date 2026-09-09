@@ -28,6 +28,26 @@ Change the generator instead.
 - `static/img/{manual,editor}/*.webp` and `static/img/poster/` —
   `scripts/optimize-images.mjs`, from the PNGs the engine's showcase writes.
 - `reference/` — `scripts/sync-docs.sh`, from the engine repo.
+- `static/video/balaur-*.mp4|webm` and `video-out/*-share.mp4` —
+  `scripts/video-reel.mjs` (`yarn video-reel`), which cuts the release reel
+  from the per-feature clips already in `static/video/`. It runs by hand, not
+  on build: a pass over two minutes of video is a quarter of an hour, and the
+  reel only changes when a clip is retaken. `--share-only` re-cuts just the
+  upload copy in about a minute.
+
+Every clip and screenshot is **1920x1080**, set by `OFFSCREEN_SIZE` in the
+engine's `crates/balaur_cli/src/main.rs`. Three things here are pinned to it
+and have to move together: `src/components/Clip.tsx`'s `WIDTH`/`HEIGHT`, which
+stop the page reflowing as a clip loads; `W`/`H` in `video-reel.mjs`, which
+size the cards and are asserted against every clip before the concat; and the
+poster width in `optimize-images.mjs`. The engine's windowed default is still
+1600x1000, so a screenshot of a *game* is framed wider than its default window.
+
+`assets/audio/` is the reel's music bed, committed with its attribution in the
+README beside it so `yarn video-reel` needs no download and no account. It is
+CC BY: the credit is not optional, and `--audio` refuses a substitute track
+that arrives without a `--credit` to go with it. `assets/` is not `static/`, so
+none of it is served.
 
 ## Search engines
 

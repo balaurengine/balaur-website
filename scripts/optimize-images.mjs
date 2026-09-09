@@ -32,7 +32,7 @@ for (const dir of dirs) {
   }
 }
 // Posters for the clips. A poster is the still behind a play button, drawn at
-// about 380 CSS px on a phone and 580 on a desktop, so the lossless 1600 px
+// about 380 CSS px on a phone and 580 on a desktop, so the lossless 1920 px
 // screenshot above is several times the pixels any screen asks for and many
 // times the bytes: it was the largest thing the home page fetched. One lossy
 // 1000 px copy is exactly a 2x phone and near enough a 2x desktop for a still
