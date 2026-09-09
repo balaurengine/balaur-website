@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Build the release reel: the per-feature clips the manual already shows,
-// cut together behind a title card, in the order a game is made.
+// cut together behind a title card, in the order SECTIONS lists them.
 //
 // The clips are the input, not the frames: static/video/*.mp4 is what the
 // repository carries, so the reel rebuilds on any checkout with ffmpeg and
@@ -65,22 +65,27 @@ const AUDIO_DEFAULT = join(root, 'assets/audio/arabesque-no-1.mp3');
 const CREDIT_DEFAULT =
   'Music: Debussy, Arabesque No. 1. Galaxy Bösendorfer 290 via IMSLP, CC BY 3.0';
 
-// The clips in the order a game is made: arrange it, script it, make it
-// collide, make it playable, make it move, make it look right, prove it
-// replays. Each line is the card that introduces its clip.
+// Determinism leads, then the order a game is made in: arrange it, script it,
+// make it collide, make it playable, make it move, make it look right. Each
+// line is the card that introduces its clip.
+//
+// It leads because it is the one thing here another engine does not do, and a
+// viewer decides whether to keep watching in the first twenty seconds. The
+// cost is that the reel no longer ends on its strongest claim, which the
+// download card has to carry instead.
 //
 // A clip plays at the speed it was taken. The showcase sequences are paced for
 // a manual page, one control at a time, which is slower than a reel wants; the
 // fix belongs in showcase.rn's own pacing, not in a speed-up here, which reads
 // as a fast-forward.
 const SECTIONS = [
+  ['determinism_replay', 'Determinism', 'Record, replay, roll back.'],
   ['scenes_inspect', 'The editor', 'Nodes in a tree, properties in the inspector.'],
   ['scripting_live', 'Rune scripting', 'Scripts reload in milliseconds.'],
   ['physics_collapse', 'Physics', 'Rapier in 2D and 3D.'],
   ['input_overlay', 'Input', 'Actions over keyboard, mouse and gamepads.'],
   ['animation_key', 'Animation', 'Bones, weights and a timeline.'],
   ['shader_preview', 'Shaders', 'Materials written in WESL.'],
-  ['determinism_replay', 'Determinism', 'Record, replay, roll back.'],
 ];
 
 // The cards are drawn at the size the engine captures a clip at, so a card

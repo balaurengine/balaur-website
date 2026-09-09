@@ -17,9 +17,14 @@ it closes.
 
 {/* truncate */}
 
-<Clip name="balaur-0-1-0" alt="Balaur 0.1.0 end to end: the editor, a Rune script reloaded while the scene runs, Rapier colliders, the input overlay, a keyed animation, a WESL shader relinked in place, and a recorded run played back" />
+<Clip name="balaur-0-1-0" alt="Balaur 0.1.0 end to end: a recorded run played back with nobody at the mouse, the editor, a Rune script reloaded while the scene runs, Rapier colliders, the input overlay, a keyed animation, and a WESL shader relinked in place" />
 
 ## Features
+
+- **Determinism.** A fixed 60 Hz step, and a digest per tick that CI compares
+  across operating systems. Record, replay, roll back.
+
+  <Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse" />
 
 - **The editor.** Tabbed, resizable docks built from the engine's own
   widgets, so the editor is a Balaur application.
@@ -50,11 +55,6 @@ it closes.
   `environment`, PBR, WESL shaders, and sixteen primitives.
 
   <Clip name="shader_preview" alt="A material in the inspector, its shader open in the code editor, the UV channel drawn instead of the picture, and a save that relinks the sprite in place" />
-
-- **Determinism.** A fixed 60 Hz step, and a digest per tick that CI compares
-  across operating systems. Record, replay, roll back.
-
-  <Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse" />
 
 - **Export.** Native and web targets with a size report, iOS and Android, and
   the editor itself in a browser tab.
