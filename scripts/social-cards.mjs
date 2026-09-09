@@ -40,6 +40,7 @@ const CARDS = {
   features: ['Features', 'TOML scenes, Rune scripts with hot reload, deterministic 2D & 3D physics, animation, networking — and one file to ship.', '/features'],
   download: ['Download', 'One binary for macOS, Windows and Linux: the editor, the CLI and every game’s runtime.', '/download'],
   roadmap: ['Roadmap', 'What the engine does not do yet, and will.', '/docs/roadmap'],
+  releases: ['Releases', 'Every tagged version, newest first: what shipped in each one and the milestone it closed.', '/releases'],
   docs: ['Documentation', 'A node-based game engine, deterministic, with scripts that reload in milliseconds. The manual and the reference.', '/docs'],
   principles: ['Principles', 'Fast to run, fast to iterate, easy to use — and how the project is run.', '/docs/principles'],
   architecture: ['Architecture', 'Scripts, the language-neutral seam, the ECS core, and the plugins every subsystem is built as.', '/docs/architecture'],

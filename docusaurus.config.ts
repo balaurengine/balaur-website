@@ -266,6 +266,9 @@ const config: Config = {
         // every other page in the same sidebar, so it would light up on every
         // page of the manual.
         {to: '/docs/roadmap', label: 'Roadmap', position: 'left'},
+        // Its pair: the roadmap is what each milestone adds, this is what has
+        // been cut.
+        {to: '/releases', label: 'Releases', position: 'left'},
         {to: '/editor', label: 'Editor', position: 'right'},
         {to: '/download', label: 'Download', position: 'right'},
         // Hidden until the donation page is ready. The one item that asks for
@@ -317,6 +320,10 @@ const config: Config = {
             {
               label: 'Roadmap',
               to: '/docs/roadmap',
+            },
+            {
+              label: 'Releases',
+              to: '/releases',
             },
           ],
         },

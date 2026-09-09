@@ -35,3 +35,6 @@ yarn-error.log*
 # Derived from the docs by scripts/gen-llms.mjs
 /static/llms.txt
 /static/llms-full.txt
+
+# The 16:9 cut of the release reel, uploaded by hand rather than served
+/video-out/

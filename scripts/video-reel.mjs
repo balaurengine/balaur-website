@@ -12,13 +12,21 @@
 // colours, read from static/fonts and src/css/custom.css. The fonts are
 // inlined as data URIs rather than fetched, so a card renders offline.
 //
-//   node scripts/video-reel.mjs            # the reel, the share cut, the poster
+// It runs by hand, like scripts/social-cards.mjs: the reel changes when a clip
+// is retaken, not on every build, and an ffmpeg pass over two minutes of video
+// is a quarter of an hour.
+//
+//   yarn video-reel                        # the reel, the share cut, the poster
 //   node scripts/video-reel.mjs --cards    # the card PNGs alone, to look at
 //
-// Outputs, all committed:
+// Outputs:
 //   static/video/balaur-0-1-0.mp4/.webm        1600x1000, what the post embeds
-//   static/video/balaur-0-1-0-share.mp4        1920x1080, for YouTube and X
-//   static/img/manual/balaur-0-1-0.png         the poster's source
+//   static/img/manual/balaur-0-1-0.png         the poster's source, committed
+//   video-out/balaur-0-1-0-share.mp4           1920x1080, to upload by hand
+//
+// The share cut is the only one outside `static/`, and it is gitignored: it is
+// what YouTube and X are fed, so serving a second copy of the same two minutes
+// from the site would be bytes nobody asks for.
 import sharp from 'sharp';
 import {execFileSync} from 'node:child_process';
 import {existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
@@ -112,18 +120,21 @@ const sectionCard = (title, line) =>
      p{font-size:46px;line-height:1.3;color:#98a3ae;margin:26px 0 0}`,
   );
 
+// The version is not repeated here. Set in Alegreya it would come out in old
+// style figures, where 0.1.0 reads as o.1.o; the title card already carries it,
+// in the mono face where the digits line up.
 const endCard = () =>
   shell(
-    `<div class="lock"><img src="${mark}" alt=""><h1>Balaur ${escape(VERSION)}</h1></div>
-     <p>Pre-alpha. MIT. macOS, Windows and Linux.</p>
+    `<div class="lock"><img src="${mark}" alt=""><h1>Balaur Engine</h1></div>
+     <p>Pre-alpha, MIT, for macOS, Windows and Linux.</p>
      <div class="url">balaurengine.org/download</div>`,
     `body{padding:0 130px 96px;justify-content:center}
      .lock{display:flex;align-items:center;gap:30px}
      .lock img{width:96px;height:96px}
      .lock h1{font-size:88px;line-height:1}
-     p{font-size:44px;color:#98a3ae;margin:28px 0 0 126px}
+     p{font-size:42px;color:#98a3ae;margin:28px 0 0 126px}
      .url{position:absolute;left:130px;bottom:74px;font-family:'JetBrains Mono',monospace;
-          font-size:34px;color:#6fa4d8}`,
+          font-size:38px;color:#6fa4d8}`,
   );
 
 function chrome() {
@@ -230,10 +241,13 @@ ff(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+fasts
 ff(['-i', mp4, '-c:v', 'libvpx-vp9', '-crf', '34', '-b:v', '0', '-pix_fmt', 'yuv420p',
     '-row-mt', '1', '-an', join(videoDir, `${NAME}.webm`)]);
 // The share cut: the same reel padded onto 16:9, which is what YouTube and X
-// want; a 1600x1000 upload is letterboxed by the site instead, in grey.
+// want; a 1600x1000 upload is letterboxed by them instead, in their own grey.
+const shareDir = join(root, 'video-out');
+mkdirSync(shareDir, {recursive: true});
+const share = join(shareDir, `${NAME}-share.mp4`);
 ff(['-i', mp4, '-vf', 'scale=1728:1080,pad=1920:1080:96:0:0x0B0E12',
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p',
-    '-movflags', '+faststart', '-an', join(videoDir, `${NAME}-share.mp4`)]);
+    '-movflags', '+faststart', '-an', share]);
 // The poster the page shows behind the play button, in the place
 // scripts/optimize-images.mjs reads its sources from.
 await sharp(pngs.get('title')).png({palette: true, quality: 95, compressionLevel: 9})
@@ -241,3 +255,4 @@ await sharp(pngs.get('title')).png({palette: true, quality: 95, compressionLevel
 
 rmSync(tmp, {recursive: true, force: true});
 console.log(`reel  ${NAME}: ${Math.round(total)}s, ${SECTIONS.length} clips`);
+console.log(`share ${share}`);

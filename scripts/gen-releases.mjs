@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// Writes src/data/releases.json: the two builds the Download page offers, read
-// once here rather than by every visitor's browser.
+// Writes src/data/releases.json: the two builds the Download page offers and
+// the tagged versions the Releases page lists, read once here rather than by
+// every visitor's browser.
 //
 // Fetching from the page meant a request to api.github.com per view, against
 // the 60-an-hour an unauthenticated IP gets — fine for one reader, not for a
@@ -12,6 +13,11 @@
 // when it publishes one, which is what rebuilds this site. A version tag does
 // not dispatch, so a new release reaches the page on the next deploy, by hand
 // or otherwise.
+//
+// `versions` is every tag GitHub has published, newest first, minus the
+// rolling `nightly`: what the Releases page lists. The words beside each one
+// live in src/data/releases-copy.mjs, which this never touches — a version
+// with no entry there is listed from the tag alone.
 //
 // Usage:
 //   node scripts/gen-releases.mjs     refresh src/data/releases.json
@@ -45,6 +51,16 @@ const keep = (r) =>
     })),
   };
 
+// A row on the Releases page: no assets and no body, so the committed file
+// stays readable in a diff. The Download page is what needs the rest.
+const brief = (r) => ({
+  tag_name: r.tag_name,
+  name: r.name,
+  html_url: r.html_url,
+  published_at: r.published_at,
+  prerelease: r.prerelease,
+});
+
 async function release(path) {
   const headers = {Accept: 'application/vnd.github+json'};
   // The runner's own token: a build shares its IP with every other job on it.
@@ -56,15 +72,33 @@ async function release(path) {
   return keep(await res.json());
 }
 
+// Every release, so a prerelease tag is listed too: 0.1.0 is one, which is
+// why `/latest` answers with nothing and `stable` is null.
+async function versions() {
+  const headers = {Accept: 'application/vnd.github+json'};
+  const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const res = await fetch(`${API}?per_page=100`, {headers});
+  if (!res.ok) throw new Error(`list: ${res.status}`);
+  const all = await res.json();
+  return all
+    .filter((r) => r.tag_name !== 'nightly' && !r.draft)
+    .sort((a, b) => (a.published_at < b.published_at ? 1 : -1))
+    .map(brief);
+}
+
 try {
-  const [stable, nightly] = await Promise.all([
+  const [stable, nightly, tagged] = await Promise.all([
     release('/latest'),
     release('/tags/nightly'),
+    versions(),
   ]);
-  const text = JSON.stringify({stable, nightly}, null, 2) + '\n';
+  const text = JSON.stringify({stable, nightly, versions: tagged}, null, 2) + '\n';
   if (readFileSync(OUT, 'utf8') !== text) {
     writeFileSync(OUT, text);
-    console.log(`releases: stable ${stable?.tag_name ?? 'none'}, nightly ${nightly?.tag_name ?? 'none'}`);
+    console.log(
+      `releases: stable ${stable?.tag_name ?? 'none'}, nightly ${nightly?.tag_name ?? 'none'}, ` +
+        `${tagged.length} tagged`);
   } else {
     console.log('releases.json is current');
   }

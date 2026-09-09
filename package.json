@@ -21,6 +21,7 @@
     "sync-docs": "bash scripts/sync-docs.sh",
     "optimize-images": "node scripts/optimize-images.mjs",
     "social-cards": "node scripts/social-cards.mjs",
+    "video-reel": "node scripts/video-reel.mjs",
     "gen-llms": "node scripts/gen-llms.mjs"
   },
   "dependencies": {
