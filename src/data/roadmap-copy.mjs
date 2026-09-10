@@ -58,6 +58,11 @@ hide_table_of_contents: true
       alt: "The Library dock open under the viewport, with a torus selected and pointed at the library's metal material",
       posts: ['select-two-things'],
     },
+    'Focused script editing': {
+      image: '/img/manual/editor_focus.webp',
+      alt: 'The code pane with the window to itself, the file\'s hooks list beside it, and the Focus chip lit in the top bar',
+      posts: ['focused-script-editing'],
+    },
     'Rune scripting': {
       image: '/img/manual/scripting_editor.webp',
       alt: 'The Script persona: the file, the hooks it declares, and the events its node receives',

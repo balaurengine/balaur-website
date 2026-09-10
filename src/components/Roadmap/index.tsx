@@ -10,7 +10,8 @@ export type RoadmapItem = {
   text: ReactNode;
   /** The engine's plan document for this item; kept as data, not rendered. */
   plan?: string;
-  /** Built already, inside a milestone that is not. */
+  /** Built. The only thing that says so; a milestone is built when all of its
+      items are. */
   done?: boolean;
   /** A screenshot of the thing. Only a built item has one. */
   image?: string;
@@ -22,6 +23,8 @@ export type RoadmapItem = {
 export type RoadmapMilestone = {
   /** `0.2`, or `Later` for the ones with no version against them. */
   id: string;
+  /** Derived from the items, never written down: built when every one of them
+      is done, building for the first that is not. */
   state: 'built' | 'building' | 'planned';
   /** The month the milestone is aimed at, `December 2026`. Per milestone, so
       every card in the tab carries the same date. */
@@ -30,9 +33,9 @@ export type RoadmapMilestone = {
   items: RoadmapItem[];
 };
 
-/** Said once beside the milestone's heading; `planned` is the default and mute. */
+/** Said once beside the milestone's heading. A built milestone says nothing
+    here: every card in it carries its own done chip. */
 const STATE_LABEL: Record<string, string> = {
-  built: 'Built',
   building: 'Being built now',
 };
 

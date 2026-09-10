@@ -21,6 +21,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Editor",
         title: 'The editor',
         text: <>A stage shell of tabbed, resizable docks built from the engine's own widgets, with undo, prefabs, ray picking and the Rig, Polygon and Tiles tools.</>,
+        done: true,
         image: "/img/manual/editor_overview.webp",
         alt: "The editor on examples/angrynerds: the node tree, the viewport with its 2D grid and gizmo, the inspector, and the dock tabs",
         posts: [
@@ -32,6 +33,7 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Tile maps',
         text: <>A tileset that says what each tile is, with voxel collision, autotiling, animated tiles, isometric and hexagonal layouts, and Tiled and LDtk import.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md',
+        done: true,
         image: "/img/manual/tiles_overview.webp",
         alt: "The Tiles dock painting a ground layer, with tile_collision on the map in the inspector",
         posts: [
@@ -42,6 +44,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Editor",
         title: 'Script completion and hover',
         text: <>Completion, hover, go-to-definition, references, rename and formatting, in the Script persona, in <code>balaur lsp</code> and in a VS Code extension.</>,
+        done: true,
         image: "/img/manual/script_completion.webp",
         alt: "The completion popup: a module path, and the functions and constants under it",
         posts: [
@@ -53,6 +56,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Editor",
         title: 'Selection, alignment and a library',
         text: <>Multi-select, align and distribute, gizmos, a Pen tool, a material panel, an Events view, a Cost dock, and <code>editor/library</code>.</>,
+        done: true,
         image: "/img/manual/editor_selection.webp",
         alt: "The Library dock open under the viewport, with a torus selected and pointed at the library's metal material",
         posts: [
@@ -63,6 +67,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Scripts and assets",
         title: 'Rune scripting',
         text: <>One deterministic language with a <code>math</code> module, component handles on nodes, hot reload, a debugger over DAP, and a self-documenting API.</>,
+        done: true,
         image: "/img/manual/scripting_editor.webp",
         alt: "The Script persona: the file, the hooks it declares, and the events its node receives",
         posts: [
@@ -74,6 +79,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Scripts and assets",
         title: 'Scenes, assets and packs',
         text: <>Prefabs with per-path overrides, <code>id://</code> references that survive a rename, import settings beside each file, and sha256-verified binary packs.</>,
+        done: true,
         image: "/img/manual/editor_assets.webp",
         alt: "The Assets dock on res://, with the project file, the scenes and the scripts beside the tree",
         posts: [
@@ -85,6 +91,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Physics and animation",
         title: 'Rapier in 2D and 3D',
         text: <>Bodies, joints, character controllers, the query pipeline, collision events, ray-cast vehicles, and every collider shape including editable voxels.</>,
+        done: true,
         image: "/img/manual/physics_collapse.webp",
         alt: "The Physics persona's collider overlays over the towers of examples/angrynerds",
         posts: [
@@ -95,6 +102,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Physics and animation",
         title: 'Rigs and animation',
         text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls and tweens.</>,
+        done: true,
         image: "/img/manual/rigging_modifiers.webp",
         alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
         posts: [
@@ -107,6 +115,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Gameplay and audio",
         title: 'Interactivity without a script',
         text: <>Hooks, states, scene variables and the binding rows the Events view authors over them, so a scene reacts with no <code>.rn</code> beside it.</>,
+        done: true,
         image: "/img/manual/editor_events.webp",
         alt: "The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three",
         posts: [
@@ -117,6 +126,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "User interface",
         title: 'Widgets, text and the batteries',
         text: <>Nineteen widget kinds over cosmic-text, containers that hand out rects, text in the world, and the batteries: audio buses, input actions, saves, localisation.</>,
+        done: true,
         image: "/img/manual/ui_widgets.webp",
         alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",
         posts: [
@@ -131,6 +141,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Rendering",
         title: 'What draws today',
         text: <>Sprites, tile maps, 2D lights, <code>light3d</code> and an <code>environment</code>, PBR, WESL shaders, the finishing passes, sixteen primitives, booleans and particles.</>,
+        done: true,
         image: "/img/manual/rendering_directional.webp",
         alt: "Three occluders under one directional light, each casting a parallel shadow strip at the light's angle",
         posts: [
@@ -143,6 +154,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Rendering",
         title: 'Post-process materials',
         text: <>A name in <code>camera.post</code> the engine does not know is a <code>material</code> drawn over the whole frame, with <code>tonemap</code> the boundary.</>,
+        done: true,
         image: "/img/manual/shader_preview.webp",
         alt: "A material in the inspector, its shader open in the code editor, and the UV channel drawn instead of the picture",
         posts: [
@@ -153,6 +165,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Networking",
         title: 'The deterministic core',
         text: <>A fixed 60 Hz step, a per-tick digest checked across operating systems, record and replay, rollback, and three transports behind one trait.</>,
+        done: true,
         image: "/img/manual/determinism_replay.webp",
         alt: "The Session dock playing a recorded run back, with nobody at the mouse",
         posts: [
@@ -163,6 +176,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Tools and services",
         title: 'Apple and the platform module',
         text: <>Sign-in, achievements, leaderboards, cloud saves and purchases behind one module, over Game Center, iCloud and StoreKit, with an export that signs.</>,
+        done: true,
         image: "/img/manual/export_sheet.webp",
         alt: "The Export sheet: the ios, android, macos-universal, windows and web targets, each saying what it still needs",
         posts: [
@@ -174,6 +188,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Shipping",
         title: 'Export, the web and the CLI',
         text: <><code>balaur export</code> for native and web with a size report, <code>balaur test</code>, a browser editor over IndexedDB, and a benchmark suite.</>,
+        done: true,
         image: "/img/manual/export_size.webp",
         alt: "Where a pack's bytes are, and what lossless re-encoding takes off",
         posts: [
@@ -192,8 +207,14 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Editor",
         title: 'Focused script editing',
-        text: <>The code pane takes the whole window, with the docks and the hooks list folded away and put back exactly as they were.</>,
+        text: <>The code pane takes the whole window beside its hooks list, with the docks folded away and put back as they were.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-editor-redesign.md#57-focus-for-a-script',
+        done: true,
+        image: "/img/manual/editor_focus.webp",
+        alt: "The code pane with the window to itself, the file's hooks list beside it, and the Focus chip lit in the top bar",
+        posts: [
+          {slug: "focused-script-editing", title: "Focus: the code pane takes the window"},
+        ],
       },
       {
         group: "Scripts and assets",
@@ -208,10 +229,22 @@ import Roadmap from '@site/src/components/Roadmap';
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-textures.md',
       },
       {
+        group: "Scripts and assets",
+        title: 'Godot import',
+        text: <><code>balaur import</code> over <code>project.godot</code>, <code>.tscn</code>, <code>.tres</code> and <code>.gdshader</code>, writing scenes, assets and a report naming what did not convert.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md',
+      },
+      {
         group: "Physics and animation",
         title: 'Animation blending',
         text: <>Blend trees and state machines, so a rig that is otherwise complete can run two clips at once.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
+      },
+      {
+        group: "Physics and animation",
+        title: 'Visibility and tint on a track',
+        text: <><code>visible</code> and <code>tint</code> as clip properties, written on the appearance every node carries rather than the transform.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#22-visible-as-an-animation-track',
       },
       {
         group: "Physics and animation",
@@ -233,9 +266,21 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "User interface",
+        title: 'A picture that clicks, and checks that are exclusive',
+        text: <>An <code>image</code> naming an <code>on_click</code> senses it, a <code>group</code> on a check makes a radio row, and four edge anchors join the corners.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#24-the-widget-kinds',
+      },
+      {
+        group: "User interface",
         title: 'Text a game can edit',
         text: <>A multi-line <code>text</code> kind, a <code>code</code> kind with the gutter and colouring the editor has, a numeric <code>spin</code>, and links a label reports.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#text',
+      },
+      {
+        group: "Rendering",
+        title: 'An inherited tint',
+        text: <>A colour multiplied down a subtree, so one key fades a whole panel or rig rather than one per node.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#21-an-inherited-tint',
       },
       {
         group: "Rendering",
@@ -254,6 +299,7 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Signed releases',
         text: <>Signed binaries per platform, cut by the release workflow.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md#binary-releases',
+        done: true,
       },
       {
         group: "Shipping",
@@ -542,12 +588,6 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Scripts and assets",
-        title: 'Faster transcendentals',
-        text: <><code>sin</code>, <code>cos</code>, <code>exp</code>, <code>log</code> and <code>pow</code> on polynomial approximations rather than <code>libm</code>, deterministic either way, chosen per project.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-fast-math.md',
-      },
-      {
-        group: "Scripts and assets",
         title: 'Rune compiled to WebAssembly',
         text: <>A script unit built to a <code>.wasm</code> module ahead of time and run over the same host calls, in place of the interpreter.</>,
       },
@@ -595,7 +635,8 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Shipping",
         title: 'Per-platform project settings',
-        text: <><code>[application.android]</code> and its siblings over <code>project.toml</code>: window mode, tick rate, feature set and asset variant per target.</>,
+        text: <>One settings screen over every table in <code>project.toml</code>, with an override per platform, architecture or build.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-per-platform.md',
       },
     ],
   },
@@ -614,8 +655,8 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Gameplay and audio",
         title: 'Touch controls a phone needs',
-        text: <><code>touch_button</code> and <code>touch_stick</code> widget kinds, pinch, swipe and long-press recognisers, and a keyboard height a layout can read.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-input.md',
+        text: <><code>touch_button</code> and <code>touch_stick</code> components that feed the action table, pinch, swipe and long-press recognisers, and a keyboard height a layout can read.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-touch.md',
       },
       {
         group: "User interface",

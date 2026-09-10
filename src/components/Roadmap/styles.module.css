@@ -139,8 +139,7 @@
   color: var(--ifm-color-primary);
 }
 
-/* On a card whose milestone is still being built, so it reads against the
-   group beside it rather than the milestone's own state chip. */
+/* What says a thing is built, on the card rather than on the milestone. */
 .shipped {
   margin-left: 0.5rem;
   padding: 0.05rem 0.45rem;

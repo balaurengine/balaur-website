@@ -130,6 +130,13 @@ Eleven docks sit under the viewport.
 
 - The command palette (`⌘K`) is the single overlay: nodes, commands and
   personas.
+- Focus (`⇧⌘\`) gives the code the whole window: the three docks fold and the
+  split goes off, while the file's hooks stay beside the pane. A second press
+  puts back exactly the layout it folded. Opening a panel under it keeps the
+  panel and ends focus, and so does leaving the code tab.
+
+![The code pane with the window to itself, the hooks list beside it, and the Focus chip lit in the top bar](/img/manual/editor_focus.webp)
+
 - There is a dark theme and a light one.
 - *Show input overlay* draws the keys, buttons and pointer the game is being
   fed. See [Input](./input.mdx#seeing-input).
@@ -146,7 +153,7 @@ balaur edit examples/rig --offscreen --frames 100 \
 
 - `--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
   `ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`,
-  `zoom:<percent>`, `palette`, `light`, `play`, `input`.
+  `zoom:<percent>`, `palette`, `light`, `play`, `input`, `focus`.
 - `shot=<file>` captures one frame. `frames=<dir>` captures every other frame
   into a numbered directory.
 - `show:<name>` runs one of the scripted sequences behind this manual's clips,

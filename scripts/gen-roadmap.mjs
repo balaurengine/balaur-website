@@ -109,26 +109,30 @@ function parseMilestones(md) {
     // Whatever sits between the two is named by what it looks like, so the
     // column can be dropped from either side of the sync.
     let estimate = null;
+    let declared = null;
     for (const cell of row.slice(1, -1)) {
-      if (STATES.includes(cell)) stale.add(cell);
+      if (STATES.includes(cell)) declared = cell;
       else if (MONTH.test(cell)) estimate = cell;
       else fail(`a milestone column is a month or nothing, got "${cell}"`);
     }
+    if (declared) stale.add(declared);
     const bare = /^\*\*(.+?)\*\*$/.exec(id);
     if (!bare) fail(`a milestone is "**0.2**", got ${id}`);
-    out.push({id: bare[1], state: 'planned', estimate, title, items: []});
+    out.push({id: bare[1], state: declared ?? 'planned', declared: Boolean(declared), estimate, title, items: []});
   }
   if (!out.length) fail('no `## Milestones` table');
   const undated = out.filter((m) => !m.estimate).map((m) => m.id);
   if (undated.length) warn(`no estimate on ${undated.join(', ')}; those tabs show no month`);
-  if (stale.size) warn(`the Milestones table still has a state column; a row saying \`done\` is what marks a thing built`);
+  if (stale.size) warn('the Milestones table still declares its states; a row saying `done` is what marks a thing built');
   return out;
 }
 
 // A milestone is built when every row in it is, and the one being built is the
 // first that is not — so the page reads the same rows the engine keeps, and
-// there is nowhere for a second answer to live.
+// there is nowhere for a second answer to live. A table that still declares
+// its states is believed instead, so the older file renders as it always did.
 function deriveStates(milestones) {
+  if (milestones.some((milestone) => milestone.declared)) return milestones;
   let building = false;
   for (const milestone of milestones) {
     if (milestone.items.every((item) => item.done)) milestone.state = 'built';
