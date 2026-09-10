@@ -288,15 +288,11 @@ export default function EditorPage(): ReactNode {
 
   return (
     <Layout
-      title="The editor, in your browser"
+      title="The editor"
       description="The Balaur editor in a browser tab: the desktop editor on WebAssembly, editing a project your browser keeps. Open a scene, move a node, edit a script.">
       <PageMetadata image="/img/social/editor-web.png" />
       <main className={styles.main}>
-        <Heading as="h1">The editor, in your browser</Heading>
-        <p className={styles.lede}>
-          The desktop editor compiled to WebAssembly, drawing through WebGPU. Your project is kept in the browser,
-          so a refresh comes back to the scene as you left it.
-        </p>
+        <Heading as="h1">Projects</Heading>
 
         {idle && kept.length > 0 && (
           <section className={styles.section}>
@@ -366,25 +362,10 @@ export default function EditorPage(): ReactNode {
               }}
             />
           </div>
-          <p className={styles.note}>
-            A folder is read into the tab and kept in your browser. Nothing is uploaded.
-          </p>
         </section>
 
         <div className={styles.frame} ref={frame}>
           <div className={styles.tools}>
-            <span className={styles.hint}>
-              {live ? (unsaved > 0 ? `keeping ${unsaved} file${unsaved === 1 ? '' : 's'}…` : 'every change kept') : 'Click the canvas to give it the keyboard.'}
-            </span>
-            {live && canKeep && (
-              <button
-                type="button"
-                className="button button--outline button--secondary button--sm"
-                title="Download the project as a zip"
-                onClick={takeProject}>
-                Download project
-              </button>
-            )}
             <button
               type="button"
               className="button button--outline button--secondary button--sm"
@@ -414,31 +395,6 @@ export default function EditorPage(): ReactNode {
             )}
           </div>
         </div>
-
-        <Heading as="h2">What works</Heading>
-        <ul>
-          <li>
-            The tree, the viewport and its gizmos, the inspector, the docks, the personas and the script editor: the
-            same Rune scripts the desktop editor runs.
-          </li>
-          <li>A save writes into the tab&rsquo;s filesystem and the editor reloads from it. Sound plays.</li>
-          <li>
-            Every edit is kept as you go, and <strong>Download project</strong> takes it back out as a zip.
-          </li>
-          <li>
-            The Export sheet writes the two builds a tab can finish by itself: a <code>.bpak</code>, and a web bundle
-            ready to unpack on any static host. Every other target needs a linker, so run{' '}
-            <code>balaur export --target</code> on a machine.
-          </li>
-          <li>
-            Not yet: a project kept on a server rather than in this browser, and a debugger. Both are on the{' '}
-            <Link to="/docs/roadmap">roadmap</Link>.
-          </li>
-        </ul>
-        <p>
-          For the whole toolchain behind it, <Link to="/docs/getting-started">build the editor</Link>. The{' '}
-          <Link to="/examples">examples</Link> run the same projects as games.
-        </p>
       </main>
     </Layout>
   );

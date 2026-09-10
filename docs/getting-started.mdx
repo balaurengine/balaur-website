@@ -95,16 +95,3 @@ cargo run -p balaur_cli --features window -- edit examples/rig3d
 For hot reload, edit `examples/hello/scripts/spinner.rn` while `run` is going.
 The change applies the moment you save, without losing state.
 
-## Benchmarks
-
-The benchmark suite is headless, no window and no GPU, so what it measures is
-the engine.
-
-```bash
-python3 scripts/bench.py --quick      # ~1 min, noisier
-python3 scripts/bench.py              # full run
-python3 scripts/bench.py --no-run     # re-report the last run
-```
-
-Results are a share of one 60 fps frame. A nanosecond count on its own says
-nothing about whether you have headroom.

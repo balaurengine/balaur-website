@@ -222,7 +222,7 @@ function ReleaseView({release}: {release: Release}) {
           <Heading as="h2">Runtime templates and other builds</Heading>
           <p>
             For exporting to another platform. <code>balaur export</code>{' '}
-            fetches these itself; download one for an offline install. See{' '}
+            fetches these; download one for an offline install. See{' '}
             <Link to="/docs/manual/shipping">Shipping a game</Link>.
           </p>
           <ul className={styles.assetList}>

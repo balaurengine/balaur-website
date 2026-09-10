@@ -4,13 +4,13 @@ image: "/img/social/reference.png"
 sidebar_label: "Reference"
 sidebar_position: 0
 slug: "/reference"
-description: "Every component, asset type and script module in the Balaur game engine, read from a booted engine so nothing can drift from what a scene or a script sees."
+description: "Every component, asset type and script module in the Balaur game engine."
 custom_edit_url: null
 ---
 
 # Reference
 
-Every component, asset type and script module in the engine, read from a booted engine rather than the source, so nothing here can drift from what a scene or a script actually sees.
+Every component, asset type and script module in the engine.
 
 - A **component** is what gives a node a capability; its page lists the properties a scene sets and the functions a script calls on it.
 - An **asset type** is the content an asset-typed property names, in a file or inline; its page shows the definition table.

@@ -385,10 +385,6 @@ const config: Config = {
               to: '/examples',
             },
             {
-              label: 'Benchmarks',
-              to: '/benchmark',
-            },
-            {
               label: 'Download',
               to: '/download',
             },
@@ -409,10 +405,6 @@ const config: Config = {
             {
               label: 'Blog',
               to: '/blog',
-            },
-            {
-              label: 'Blog RSS',
-              href: 'pathname:///blog/rss.xml',
             },
             {
               label: 'Branding',

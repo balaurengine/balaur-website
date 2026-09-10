@@ -27,7 +27,6 @@ const CARDS = {
   code: ['For game developers', 'Nodes and scenes and scripts live in milliseconds.', '/code'],
   animate: ['For animators', 'Bones, mesh skinning with painted weights, IK and a timeline — on the rig that ships in the game.', '/animate'],
   multiplayer: ['Multiplayer', 'Same inputs, same outputs, on every machine: a fixed tick, digests, replay, rollback.', '/multiplayer'],
-  benchmark: ['Run the benchmarks', 'The benchmark project in your browser: pick a case, watch it build, read what the profiler measured.', '/benchmark'],
   examples: ['Examples', 'Seven projects that ship with the engine: what each one shows, the command that opens it, and three to play in the browser.', '/examples'],
   compare: ['Compare', 'Balaur next to Godot, Bevy and Fyrox — honestly, as of September 2026.', '/compare'],
   about: ['About', 'A deterministic engine built by two people — the one who maintains Godot Rapier Physics, and the one who writes Rapier.', '/about'],
