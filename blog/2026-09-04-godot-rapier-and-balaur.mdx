@@ -33,7 +33,7 @@ Two reasons for a new engine:
 
 - The whole tick is deterministic. Fixed 60 Hz step, a digest per tick, `run --record` and `replay --verify`, rollback.
 - Network replies queue and land at the start of a tick: a replay covers logins and retries with no network.
-- Rapier is still the physics, 2D and 3D. Built with Sébastien Crozet, who writes it.
+- Rapier is still the physics, 2D and 3D. Built by Sébastien Crozet.
 - Scenes are TOML. Scripts are Rune and hot reload in milliseconds:
 
 <Clip name="scripting_live" alt="A script changed and saved while the scene runs, the new code live with the state kept" />

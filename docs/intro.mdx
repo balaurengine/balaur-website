@@ -8,34 +8,19 @@ sidebar_position: 1
 
 # Introduction
 
-Balaur is a node-based 2D and 3D game engine: scripting, physics, animation,
-networking, and an editor. Written in Rust.
-
-A game is a scene tree of nodes with scripts attached. Underneath,
-every node is an ECS entity and every subsystem is a plugin. The editor is
-itself a Balaur project.
+Balaur is a deterministic node-based 2D and 3D game engine. A game is a scene tree of nodes with scripts attached.
 
 ![The editor: scene tree, viewport, inspector](/img/manual/editor_overview.webp)
 
-:::warning
-
-No published release yet. Balaur builds from source: see
-[Getting started](./getting-started.mdx).
-
-:::
-
 ## Hot reload and determinism
 
-- Instant hot reload. Save a script while the game runs; the new code is
-  live in milliseconds and the state survives.
-- Determinism, always on. Same inputs, same outputs on every platform: a fixed
-  60 Hz step, a digest per tick, record and replay. Network replies land at
-  the start of a tick in arrival order, so a replay covers logins and retries.
+- Instant hot reload. Save a script and it reloads instantnly.
+- Determinism, always on. Same inputs, same outputs on every platform.
 
 ## A script
 
 ```rune
-// scripts/spinner.rn
+// spinner.rn
 pub fn init(this) { this.angle = 0.0; }
 
 pub fn update(this, dt) {
@@ -47,6 +32,7 @@ pub fn update(this, dt) {
 ## A scene
 
 ```toml
+# scene.toml
 [[nodes]]
 name = "Ball"
 position = [0.0, 6.0, 0.0]
@@ -56,20 +42,13 @@ collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
 ```
 
-`body3d`, `collider3d` and `shape3d` are components. The physics and render
-plugins registered them, which also made them script calls and inspector rows.
+This scene has a node called Ball with three components: `body3d`, `collider3d` and `shape3d`.
 
 ## Where to go next
 
-- [Principles](./principles.mdx): what the engine optimises for, and how it is run.
-- [Getting started](./getting-started.mdx): build the engine, run the examples.
-- [Manual](./manual/scenes.mdx): scenes, scripting, physics, animation, the editor, determinism, shipping.
-- [Features](/features): everything in the engine, one line each.
-- [Architecture](./architecture.mdx) and [Built on](./built-on.mdx): how it is put together, and from what.
-- [Reference](./reference/index.md): generated from the engine: components, asset types, script modules.
-
-## Who and how
-
-Balaur is made by Dragos Daian and Sébastien Crozet, the author of
-[Rapier](https://rapier.rs). MIT, on
-[GitHub](https://github.com/balaurengine/balaur).
+- [Principles](./principles.mdx)
+- [Getting started](./getting-started.mdx)
+- [Manual](./manual/scenes.mdx)
+- [Features](/features)
+- [Architecture](./architecture.mdx) and [Built on](./built-on.mdx)
+- [Reference](./reference/index.md)

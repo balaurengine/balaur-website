@@ -76,7 +76,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title="A deterministic 2D & 3D game engine"
-      description="Balaur is a node-based 2D and 3D game engine: Rune scripts with hot reload, deterministic physics and replay, and an editor built in Balaur.">
+      description="Balaur is a node-based 2D and 3D game engine with Rune scripts that hot reload in milliseconds, always-on determinism, and a built-in editor.">
       <SoftwareJsonLd />
       <Header />
       <main>

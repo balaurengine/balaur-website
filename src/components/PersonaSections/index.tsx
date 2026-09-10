@@ -72,7 +72,7 @@ const PERSONAS: Persona[] = [
       {icon: 'plug', text: 'Plugins in Rust or C.'},
     ],
     clip: 'scripting_live',
-    alt: 'Editing a script while the game runs; on save the new code is live and the state survives',
+    alt: 'Editing a script while the game runs; on save the new code is live',
     links: [
       {to: '/code', label: 'Balaur for game developers'},
       {to: '/docs/manual/scripting', label: 'Scripting'},
