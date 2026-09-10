@@ -139,6 +139,16 @@
   color: var(--ifm-color-primary);
 }
 
+/* On a card whose milestone is still being built, so it reads against the
+   group beside it rather than the milestone's own state chip. */
+.shipped {
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 999px;
+  color: var(--ifm-color-primary);
+}
+
 .title {
   font-family: var(--balaur-display-font);
   font-size: 1.5rem;

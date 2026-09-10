@@ -12,12 +12,21 @@ const REPO = 'balaurengine/balaur';
 // merge to the engine's main branch replaces. Both are read at build time by
 // scripts/gen-releases.mjs, not by the reader's browser.
 //
-// The tagged channel is not called "stable" — while every release is flagged a
-// prerelease on GitHub, saying stable would be a claim the engine does not
-// make anywhere else on the site. The button takes its word from the release's
-// own `prerelease` flag, so it stops saying pre-alpha the moment that stops
-// being true, without an edit here.
+// The tagged channel is not called "stable" — saying stable would be a claim
+// the engine does not make anywhere else on the site. The button takes its word
+// from the version itself: `docs/RELEASING.md` in the engine makes the SemVer
+// prerelease identifier the name of the channel, so `v0.2.0-alpha.3` is the
+// alpha line and a bare `v0.2.0` is the stable one. Until a tag carries a
+// suffix there is nothing to read, so GitHub's `prerelease` flag answers
+// instead. Either way this stops saying pre-alpha on its own.
 type Channel = 'release' | 'nightly';
+
+// `v0.2.0-alpha.3` → "Alpha"; `v0.1.0` → whatever the flag says.
+function channelLabel(release: Release | null): string {
+  const suffix = /-([a-z]+)/i.exec(release?.tag_name ?? '')?.[1];
+  if (suffix) return suffix.charAt(0).toUpperCase() + suffix.slice(1);
+  return release?.prerelease === false ? 'Stable' : 'Pre-alpha';
+}
 const COMMIT_URL = `https://github.com/${REPO}/commit`;
 
 type Asset = {
@@ -241,7 +250,7 @@ export default function Download(): ReactNode {
   const [channel, setChannel] = useState<Channel>('release');
   const data = releases as {release: Release | null; nightly: Release | null};
   const release = data[channel];
-  const taggedLabel = data.release?.prerelease === false ? 'Stable' : 'Pre-alpha';
+  const taggedLabel = channelLabel(data.release);
 
   return (
     <Layout

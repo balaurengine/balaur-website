@@ -10,6 +10,8 @@ export type RoadmapItem = {
   text: ReactNode;
   /** The engine's plan document for this item; kept as data, not rendered. */
   plan?: string;
+  /** Built already, inside a milestone that is not. */
+  done?: boolean;
   /** A screenshot of the thing. Only a built item has one. */
   image?: string;
   alt?: string;
@@ -140,7 +142,10 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
                   loading="lazy"
                 />
               )}
-              <p className={styles.group}>{item.group}</p>
+              <p className={styles.group}>
+                {item.group}
+                {item.done && <span className={styles.shipped}>Done</span>}
+              </p>
               <Heading as="h3" className={styles.title}>
                 {item.title}
               </Heading>

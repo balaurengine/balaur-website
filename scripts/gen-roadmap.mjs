@@ -75,6 +75,9 @@ const isRule = (line) => /^\|\s*(Item|Milestone|:?-{3,})/.test(line);
 
 const STATES = ['built', 'building', 'planned'];
 
+// A state column the engine has not dropped yet, reported once.
+const stale = new Set();
+
 // A month and a year, so an estimate cannot quietly become a quarter or a
 // season the page then has to render.
 const MONTH = /^(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}$/;
@@ -86,7 +89,8 @@ const MONTH = /^(?:January|February|March|April|May|June|July|August|September|O
 //
 // The estimate column is optional, and a table without it warns rather than
 // failing: the engine's file is fetched from its main branch, so the two
-// repositories have to be able to land this in either order.
+// repositories have to be able to land this in either order. A state column is
+// the older shape and is ignored the same way — what is built is the rows.
 function parseMilestones(md) {
   const out = [];
   let inside = false;
@@ -99,25 +103,47 @@ function parseMilestones(md) {
     }
     if (!inside || !line.startsWith('| ') || isRule(line)) continue;
     const row = cells(line);
-    if (row.length !== 3 && row.length !== 4) fail(`a milestone needs three or four columns, got ${row.length}`);
-    const [id, state, ...rest] = row;
-    const estimate = rest.length === 2 ? rest[0] : null;
-    const title = rest[rest.length - 1];
+    if (row.length < 2 || row.length > 4) fail(`a milestone needs two to four columns, got ${row.length}`);
+    const id = row[0];
+    const title = row[row.length - 1];
+    // Whatever sits between the two is named by what it looks like, so the
+    // column can be dropped from either side of the sync.
+    let estimate = null;
+    for (const cell of row.slice(1, -1)) {
+      if (STATES.includes(cell)) stale.add(cell);
+      else if (MONTH.test(cell)) estimate = cell;
+      else fail(`a milestone column is a month or nothing, got "${cell}"`);
+    }
     const bare = /^\*\*(.+?)\*\*$/.exec(id);
     if (!bare) fail(`a milestone is "**0.2**", got ${id}`);
-    if (!STATES.includes(state)) fail(`a milestone state is ${STATES.join(', ')}, got "${state}"`);
-    if (estimate && !MONTH.test(estimate)) fail(`an estimate is "December 2026", got "${estimate}"`);
-    out.push({id: bare[1], state, estimate, title, items: []});
+    out.push({id: bare[1], state: 'planned', estimate, title, items: []});
   }
   if (!out.length) fail('no `## Milestones` table');
   const undated = out.filter((m) => !m.estimate).map((m) => m.id);
   if (undated.length) warn(`no estimate on ${undated.join(', ')}; those tabs show no month`);
+  if (stale.size) warn(`the Milestones table still has a state column; a row saying \`done\` is what marks a thing built`);
   return out;
+}
+
+// A milestone is built when every row in it is, and the one being built is the
+// first that is not — so the page reads the same rows the engine keeps, and
+// there is nowhere for a second answer to live.
+function deriveStates(milestones) {
+  let building = false;
+  for (const milestone of milestones) {
+    if (milestone.items.every((item) => item.done)) milestone.state = 'built';
+    else if (!building) {
+      milestone.state = 'building';
+      building = true;
+    }
+  }
+  return milestones;
 }
 
 // One row: `| **Title** — text | 0.2 | [PLAN-x.md](PLAN-x.md) |`, where the
 // milestone is one from the table above, or that milestone in parentheses for
-// work the engine tracks and this page does not. The text after the dash is
+// work the engine tracks and this page does not. `0.2 done` is a row built
+// ahead of the milestone holding it, and carries a done chip on its card. The text after the dash is
 // what the card says, so it is measured and turned into JSX here.
 function parseRoadmap(md, milestones) {
   const by = new Map(milestones.map((m) => [m.id, m]));
@@ -131,7 +157,10 @@ function parseRoadmap(md, milestones) {
     if (!group || !line.startsWith('| ') || isRule(line)) return;
     const row = cells(line);
     if (row.length !== 3) fail(`${i + 1}: a row needs three columns, got ${row.length}`);
-    const [item, milestone, plan] = row;
+    const [item, mark, plan] = row;
+    // `0.2 done`: built already, inside a milestone that is still being built.
+    const done = / done$/.test(mark);
+    const milestone = done ? mark.slice(0, -' done'.length) : mark;
     if (/^\(.+\)$/.test(milestone)) {
       const inner = milestone.slice(1, -1);
       if (!by.has(inner)) fail(`${i + 1}: milestone "${inner}" is not in the Milestones table`);
@@ -146,7 +175,7 @@ function parseRoadmap(md, milestones) {
     const name = title[1].replace(/`/g, '');
     const text = item.slice(title[0].length);
     measure(name, text, i + 1);
-    by.get(milestone).items.push({group, title: name, text: jsx(text), plan: url});
+    by.get(milestone).items.push({group, title: name, text: jsx(text), plan: url, done});
   });
   const empty = milestones.filter((m) => !m.items.length).map((m) => m.id);
   if (empty.length) fail(`a milestone with no items: ${empty.join(', ')}`);
@@ -245,13 +274,14 @@ function render(milestones, copy, posts) {
       out.push(`        title: '${item.title.replace(/'/g, "\\'")}',`);
       out.push(`        text: ${item.text},`);
       if (item.plan) out.push(`        plan: '${item.plan}',`);
+      if (item.done) out.push('        done: true,');
       // A built row is a record, so it shows the thing and says where it was
       // written up; an unbuilt one has neither to show.
       const shot = copy.shots[item.title];
       if (milestone.state === 'built' && !shot) {
         warn(`"${item.title}" is built with no shot — add it to \`shots\` in src/data/roadmap-copy.mjs`);
       }
-      if (shot && milestone.state !== 'built') warn(`"${item.title}" is not built, so it cannot have a shot`);
+      if (shot && milestone.state !== 'built' && !item.done) warn(`"${item.title}" is not built, so it cannot have a shot`);
       // An incomplete shot is dropped rather than half-written, so the card
       // loses its picture and the page still compiles.
       const whole = shot && shot.image && shot.alt && shot.posts?.length;
@@ -300,7 +330,7 @@ function main() {
   const src = sourcePath();
   if (!existsSync(src)) fail(`no ${src}; run scripts/sync-docs.sh, or set BALAUR_REPO`);
   const md = readFileSync(src, 'utf8');
-  const body = render(parseRoadmap(md, parseMilestones(md)), copy, parseBlog());
+  const body = render(deriveStates(parseRoadmap(md, parseMilestones(md))), copy, parseBlog());
   if (CHECK) {
     const have = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
     if (have !== body) fail('docs/roadmap.mdx is stale — run `yarn gen-roadmap`');
