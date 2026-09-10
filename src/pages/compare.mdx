@@ -11,9 +11,9 @@ image: "/img/social/compare.png"
 | | Balaur | Godot 4 | Bevy | Fyrox |
 | --- | --- | --- | --- | --- |
 | Engine language | Rust | C++ | Rust | Rust |
-| Game code | Rune scripts; Rust or C plugins | GDScript, C#; Rust or C++ via GDExtension | Rust | Rust |
-| Model | A scene tree of nodes | A scene tree of nodes | ECS | A scene tree of nodes |
-| Scene format | TOML | `.tscn`, text | Rust code, or RON | `.rgs` |
+| Game code | Rune scripts; Rust or C plugins | GDScript, C#; Rust or C++ plugins | Rust | Rust |
+| Model | A scene tree | A scene tree | ECS | A scene tree |
+| Scene format | `.toml`, text | `.tscn`, text | Rust code, or `.ron` | `.rgs` |
 | Editor | Yes | Yes | No | Yes |
 | Hot reload | Scripts, on save | Scripts, on save | Assets; opt-in code patching | Code, marked experimental |
 | Cross-platform determinism | Yes: fixed 60 Hz step, replay, rollback | No | No | No |
@@ -21,7 +21,7 @@ image: "/img/social/compare.png"
 | Platforms | Desktop, mobile, web | Desktop, mobile, web; consoles through partners | Desktop, mobile, web | Desktop, web |
 | Networking | HTTP, WebSockets, WebTransport | HTTP, WebSockets, WebRTC, ENet | Community crates | Community crates |
 | Licence | MIT | MIT | MIT | MIT |
-| Age | 0.1, weeks old | 4.x, over a decade | 0.19, six years | 1.0, seven years |
+| Age | Very new | Over a decade | Few years | Few years |
 
 ## Memory
 
@@ -37,52 +37,16 @@ Balaur costs about 0.35 KB per node, Godot about 2.5 KB, so the gap widens with 
 
 Physics and scene-tree throughput are on the [benchmarks page](/docs/benchmarks).
 
-### How it was measured
-
-macOS 26.6 on an Apple M1, September 2026. Each run settles for 15 seconds, then `vmmap --summary` reports its physical footprint, the figure Activity Monitor shows as Memory. Resident set size is not used: it counts shared and mapped pages, and it drifts down as the system compresses an idle process.
-
-```bash
-vmmap --summary $(pgrep -n balaur) | grep "Physical footprint"
-```
-
 ## Build size
 
-A 2D hello world, release build, macOS on an Apple M1.
+A 2D hello world, release build.
 
 | | Balaur | Godot 4.7 | Bevy 0.19 | Fyrox 1.0 |
 | --- | ---: | ---: | ---: | ---: |
-| desktop binary | 44 MB | 79 MB | 51 MB | **29 MB** |
-| web module, brotli | 5.4 MB | 6.6 MB | 4.8 MB | **3.6 MB** |
-
-Fyrox is the smallest on both counts. Balaur is about half of Godot on the desktop.
-
-### How build size was measured
-
-Desktop figures are arm64 and stripped. Godot's is its official release export template, thinned from a universal binary with `lipo`, and a game is that template plus its pack. Balaur's is the windowed runtime template from the nightly of 2026-09-07. Bevy is `DefaultPlugins` with a camera and one sprite. Fyrox is an `Executor` and one empty plugin.
-
-Every engine was built at `lto = "fat"` and `codegen-units = 1`, the settings Balaur's workspace already carries. A stock Bevy or Fyrox project uses Cargo's defaults and lands higher, at 77 MB and 37 MB.
-
-Godot and Balaur ship a prebuilt template carrying the whole engine. Bevy and Fyrox link what the game references.
-
-Sizes are mebibytes, the unit the [build size page](/docs/manual/build-size) uses. Web figures are brotli, after `wasm-opt -Oz`. Godot's is the 4.7 web export template. Balaur's is the module measured on every deploy, broken down on the [build size page](/docs/manual/build-size).
-
-## When to pick which
-
-Godot: the most mature node-and-scene editor there is, a language designed to be easy, thousands of tutorials, a community that has shipped everything. Balaur's scene model will feel familiar from it.
-
-Bevy: the whole game in Rust against an ECS, no editor for now, the largest Rust plugin ecosystem.
-
-Fyrox: Rust with an editor today, and a codebase that calls itself production-ready.
-
-Balaur: if determinism is the product, meaning lockstep or rollback multiplayer, replays, or a simulation that must agree bit for bit. Or if what you value most is the loop: save a script, see it running, keep the state. And only if 0.1 is fine. The [roadmap](/docs/roadmap) says what is missing; the [principles](/docs/principles) say why it is built this way.
+| desktop binary | 44 MB | 79 MB | 51 MB | 29 MB |
+| web module, brotli | 5.4 MB | 6.6 MB | 4.8 MB | 3.6 MB |
 
 ## What Balaur does not have yet
 
-- A binary release: it [builds from source](/docs/getting-started).
-- Consoles.
-- An asset store, a tutorial library, a community of any size.
-- Years of bugs found by other people.
-
-## Sources
-
-Each project's own site, September 2026: [godotengine.org](https://godotengine.org/) and [godot-rust](https://godot-rust.github.io/), [bevy.org](https://bevy.org/) with the [Bevy editor prototypes](https://bevyengine.github.io/bevy_editor_prototypes/roadmap.html) and [`bevy::app::hotpatch`](https://docs.rs/bevy/latest/bevy/app/hotpatch/index.html), [fyrox.rs](https://fyrox.rs/) and the [Fyrox book on hot reloading](https://fyrox-book.github.io/beginning/hot_reloading.html). If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues). This page should never flatter Balaur at another project's expense.
+- Consoles Support.
+- An asset store, a tutorial library.
