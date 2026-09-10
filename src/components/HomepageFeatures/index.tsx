@@ -112,7 +112,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        3D and 2D: windowed, offscreen or headless.
+        <strong>2D and 3D</strong>: windowed, offscreen or headless.
       </>
     ),
   },
@@ -156,7 +156,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        HTTP, WebSockets and WebTransport, with compression.
+        <strong>HTTP, WebSockets and WebTransport</strong>, with compression.
       </>
     ),
   },
@@ -171,8 +171,9 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>Windows, macOS and Linux</strong> today; iOS, Android and the
-        web cross-compiled in CI.
+        Destkop: <strong>Windows, macOS and Linux</strong>.<br></br>
+        Mobile: <strong>iOS, Android</strong>. <br></br>
+        And <strong>Web</strong>.
       </>
     ),
   },
@@ -192,7 +193,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Built on Rust',
+    title: 'Built with Rust',
     icon: (
       <Icon>
         <ellipse cx="12" cy="13.5" rx="6" ry="4" />
@@ -206,7 +207,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>Safe Rust</strong> throughout: Rapier, wgpu, egui, rodio, Rune.
+        Written in <strong>Rust</strong>, reusing popular libraries: Rapier, wgpu, egui, rodio, Rune.
       </>
     ),
   },
