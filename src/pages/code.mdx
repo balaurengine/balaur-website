@@ -1,5 +1,5 @@
 ---
-title: "A game engine for Godot, Unity and Unreal devs"
+title: "A game engine for game developers"
 description: "Nodes and scenes you already know, scripts that go live in milliseconds, TOML scenes that diff in git, one executable to ship."
 image: "/img/social/code.png"
 ---
@@ -9,24 +9,24 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
 <PersonaHero
   who="For game developers"
   persona="Script persona"
-  title="A scene tree you already know."
+  title="Nodes and scenes."
   image="persona_script"
   alt="The Script persona on examples/hello: the script open beside the node tree, with the Output dock below"
   primary={{to: '/examples#hello', label: 'Open examples/hello'}}
   secondary={{to: '/docs/manual/scripting', label: 'Scripting manual'}}>
-  Hot reload that keeps the state, TOML scenes you can review, one executable to ship. Rune, MIT, 2D and 3D.
+  Hot reload code, reuse components in any node and see results instantly.
 </PersonaHero>
 
-<Section title="What you get">
+<Section title="Features">
   <Features items={[
-    {icon: 'tree-structure', title: 'A tree of nodes', text: <>Nodes with scripts attached, each an ECS entity underneath.</>},
-    {icon: 'lightning', title: 'Scripts reload instantly', text: <>Hot reload in milliseconds: the ball keeps its position, the score its value.</>},
-    {icon: 'file-text', title: 'Scenes are TOML', text: <>Readable, diffable, reviewable in a pull request, editable by hand or by the editor.</>},
+    {icon: 'tree-structure', title: 'A tree of nodes', text: <>Nodes with scripts attached.</>},
+    {icon: 'lightning', title: 'Scripts reload instantly', text: <>Hot reload in milliseconds.</>},
+    {icon: 'file-text', title: 'Scenes are TOML', text: <>Readable, diffable, reviewable in a pull request.</>},
     {icon: 'rocket-launch', title: 'Export a single executable', text: <>Bytecode, scenes and assets go into one executable, one per platform.</>},
   ]} />
 </Section>
 
-<Section title="How it works" sub="A component shows up in three places at once.">
+<Section title="Components" sub="Build everything with nodes and components.">
   <HowItWorks file="scenes/main.toml" code={`[[nodes]]
 name = "Ball"
 position = [0.0, 6.0, 0.0]
@@ -35,57 +35,55 @@ body3d = "dynamic"
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }`}>
 
-`body3d`, `collider3d` and `shape3d` are components the physics and render plugins registered. That one registration makes them scene keys, script calls and inspector rows together.
+`body3d`, `collider3d` and `shape3d` are components you can add to nodes.
 
 Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, instant reload, `async`/`await`. A script is a file attached to a node, with `init`, `update` and other methods.
 
+Combine the nodes, components and scripts to create complex games.
   </HowItWorks>
 </Section>
 
-<Section title="In the editor" sub="The Script persona puts the code, the tree and the output on one screen.">
+<Section title="The Editor" sub="Edit the code, the nodes and play the game in one screen.">
   <EditorCards items={[
-    {icon: 'code', title: 'Script editor', text: 'Edit a script beside the running scene, and save.'},
-    {icon: 'bug', title: 'Debugger', text: 'Breakpoints in the gutter, stepping, frames and locals in a dock.'},
-    {icon: 'app-window', title: 'Play in editor', text: 'Run the scene in the viewport and stop back where you were.'},
+    {icon: 'code', title: 'Script editor', text: 'Edit a script beside the running scene.'},
+    {icon: 'bug', title: 'Debugger', text: 'Add breakpoints directly in the Balaur editor.'},
+    {icon: 'app-window', title: 'Play in editor', text: 'Run the scene in the viewport.'},
   ]} />
 </Section>
 
-<Section title="Next to Godot, Unity and Unreal" sub="As of September 2026. Balaur is 0.1 and they are not: read the maturity row first.">
+<Section title="Compare" sub="Determinism and physics features compared to other game engines.">
 
   <Compare rival="Godot 4" rows={[
-    ['Game code', 'GDScript and C#; C++ through GDExtension', 'Rune scripts; plugins in Rust or C'],
-    ['Iterating on code', 'Scripts reload on save', 'A saved script is live in milliseconds'],
-    ['Scene files', 'Text .tscn files that diff', 'TOML, with one rule for every component'],
-    ['Determinism', 'Not bit-exact across platforms', 'Same bits everywhere: record and replay, rollback'],
-    ['Licence and cost', 'Free, MIT', 'Free, MIT'],
-    ['Maturity', 'More than a decade, a huge community, consoles through partners', 'Weeks old, no binary release yet, no consoles'],
+    ['Code', 'GDScript and C#; plugins in C++ and Rust', 'Rune scripts; plugins in C and Rust'],
+    ['Iteration Speed', 'Script reloads on save', 'Script reloads on save'],
+    ['Determinism', 'Not cross platform deterministic', 'Cross platform deterministic: record, replay and rollback'],
+    ['Licence and cost', 'Free, MIT, with', 'Free, MIT'],
+    ['Maturity', 'More than a decade', 'Very new'],
   ]} />
+
+  <br></br>
 
   <Compare rival="Unity 6" rows={[
-    ['Game code', 'C#', 'Rune scripts; plugins in Rust or C'],
-    ['Iterating on code', 'A script change recompiles and reloads the domain; entering play mode starts over', 'A saved script is live in milliseconds'],
-    ['Determinism', 'Not bit-exact across platforms; deterministic multiplayer usually means Photon Quantum or a fixed-point simulation of your own', 'An engine guarantee: fixed tick, replay and a rollback module'],
+    ['Code', 'C#', 'Rune scripts; plugins in Rust or C'],
+    ['Iteration Speed', 'Script recompiles on save', 'Script reloads on save'],
+    ['Determinism', 'Not cross platform deterministic', 'Cross platform deterministic: record, replay and rollback'],
     ['Licence and cost', 'Proprietary; a free tier below a revenue threshold, per-seat subscriptions above it', 'Free, MIT, no threshold and no seats'],
-    ['Maturity', 'Two decades, the largest asset store there is, every platform', 'Weeks old, no asset store, no consoles'],
+    ['Maturity', 'Two decades', 'Very new'],
   ]} />
+
+  <br></br>
 
   <Compare rival="Unreal 5" rows={[
-    ['Game code', 'C++ and Blueprints', 'Rune scripts; plugins in Rust or C'],
-    ['Iterating on code', 'Live Coding patches C++ into a running editor; otherwise a rebuild', 'A saved script is live in milliseconds'],
-    ['Determinism', 'Not bit-exact across platforms', 'Same bits everywhere, verified tick by tick'],
-    ['What you ship', 'A packaged build carrying the engine runtime', 'One self-contained binary per target'],
+    ['Code', 'C++ and Blueprints', 'Rune scripts; plugins in Rust or C'],
+    ['Iteration Speed', 'Script recompiles on save', 'Script reloads on save'],
+    ['Determinism', 'Not cross platform deterministic', 'Cross platform deterministic: record, replay and rollback'],
     ['Licence and cost', 'Free until $1M lifetime gross per product, then a 5% royalty', 'Free, MIT, no royalty'],
-    ['Maturity', 'AAA-proven, consoles, the deepest tooling there is', 'Weeks old, no consoles'],
+    ['Maturity', 'Almost three decades', 'Very new'],
   ]} />
-
-Each rival's column comes from its own site and licence terms; they all move, so check before deciding anything. If a cell is wrong, [open an issue](https://github.com/balaurengine/balaur-website/issues). This page should never flatter Balaur at another project's expense.
-
-Bevy and Fyrox are on [Compare](/compare). What the engine does not do yet is on the [roadmap](/docs/roadmap), and it is a long list.
 
 </Section>
 
 <StartBand
-  title="Change a script while the game runs."
-  text="Edit scripts/spinner.rn and watch the new code take over, state kept."
+  title="View the examples or read the docs."
   primary={{to: '/examples#hello', label: 'Open examples/hello'}}
   secondary={{to: '/docs/getting-started', label: 'Getting started'}} />

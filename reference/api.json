@@ -18,7 +18,7 @@
     },
     "mesh": {
       "directory": "models",
-      "doc": "Geometry for `mesh`-typed properties. A definition names a `source` model\nfile to import, or a `kind` of parametric primitive to build, or carries the\nvertices itself as `positions` and `indices`, which is what lets a script\nbuild one at run time; naming more than one is refused. A `skin` table adds\nbone weights for skeletal animation, `colors` a tint per vertex, and each\n`[[morphs]]` a named shape the mesh can be blended towards -- which a clip\ndrives as `mesh/morph.<name>`.\n\nA primitive is built by the same mesher the `shape3d` component draws, so a\ncollider over this asset collides exactly what is on screen. A `text` mesh\nis the outlines of a shaped run, filled with the counters left as holes; it\nsits on its baseline and is sized in world units.\n\n```toml\n[[assets]]\nid = \"blade\"\ntype = \"mesh\"\nsource = \"models/blade.obj\"      # imported...\n# ...or a primitive, one of ball, cuboid, capsule, cylinder, cone, plane,\n# torus, pyramid, prism, tube:\nkind = \"torus\"\nradius = 1.0\ntube_radius = 0.3\n# ...or a word, shaped and filled from the project's fonts:\nkind = \"text\"\ntext = \"BALAUR\"\nsize = 1.0\n# ...or, instead of any of those:\npositions = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]\nindices = [[0, 1, 2]]\n```"
+      "doc": "Geometry for `mesh`-typed properties. A definition names a `source` model\nfile to import, or a `kind` of parametric primitive to build, or carries the\nvertices itself as `positions` and `indices`, which is what lets a script\nbuild one at run time; naming more than one is refused. A `skin` table adds\nbone weights for bone animation, `colors` a tint per vertex, and each\n`[[morphs]]` a named shape the mesh can be blended towards -- which a clip\ndrives as `mesh/morph.<name>`.\n\nA primitive is built by the same mesher the `shape3d` component draws, so a\ncollider over this asset collides exactly what is on screen. A `text` mesh\nis the outlines of a shaped run, filled with the counters left as holes; it\nsits on its baseline and is sized in world units.\n\n```toml\n[[assets]]\nid = \"blade\"\ntype = \"mesh\"\nsource = \"models/blade.obj\"      # imported...\n# ...or a primitive, one of ball, cuboid, capsule, cylinder, cone, plane,\n# torus, pyramid, prism, tube:\nkind = \"torus\"\nradius = 1.0\ntube_radius = 0.3\n# ...or a word, shaped and filled from the project's fonts:\nkind = \"text\"\ntext = \"BALAUR\"\nsize = 1.0\n# ...or, instead of any of those:\npositions = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]\nindices = [[0, 1, 2]]\n```"
     },
     "path2d": {
       "directory": "paths",
@@ -5956,7 +5956,7 @@
           "value": "6.283185307179586"
         }
       ],
-      "doc": "Deterministic float maths, backed by pure-Rust `libm`: the same inputs give the same bits on every platform. A script uses these rather than the language's own float methods, which reach for the platform's libm and drift between machines.",
+      "doc": "Deterministic float maths, backed by pure-Rust `libm`: the same inputs give the same outputs on every platform. A script uses these rather than the language's own float methods, which reach for the platform's libm and drift between machines.",
       "docs": {
         "abs": "The magnitude, with the sign dropped.",
         "acos": "The angle in radians whose cosine is the argument, from 0 to PI; NaN outside -1..1.",

@@ -89,7 +89,7 @@ make it, and a collider sits on the same node as its body, not on a child.
 | Godot | Balaur |
 | --- | --- |
 | 2D / 3D / Script / AssetLib tabs | Personas: Scene, Script, Animate, Physics, Interface ([editor](/docs/manual/editor)) |
-| Script reloads on save | Hot reload in milliseconds; a compile error keeps the old code running |
+| Script reloads on save | Hot reload in milliseconds |
 | Debugger tab | Breakpoints in the gutter, frames and locals in a dock |
 | Editor plugins in GDScript | The editor is a Balaur project; editing its scripts hot reloads the editor |
 | Remote scene tree | Play in editor: the real scripts on the real scene, every run recorded |
@@ -98,7 +98,7 @@ make it, and a collider sits on the same node as its body, not on a child.
 
 - Determinism. In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
   server is deterministic. Here the whole tick is: fixed step, a digest per
-  tick, record and replay, rollback ([determinism](/docs/manual/determinism)).
+  tick, record, replay and rollback ([determinism](/docs/manual/determinism)).
 - No `connect`. Events are named, not callbacks: `events::emit("hit", p)`
   reaches a subscribed node as `on_hit(p)` next frame. Engine events work the
   same way, most with a polling twin (`input::just_pressed`,

@@ -109,7 +109,7 @@ for the marketing pages, and they are read, not linted.
    - No: `Hot reload in milliseconds; breakpoints, stepping, frames and locals in the editor.`
    - Yes: `Hot reload with breakpoint support.`
 6. **Short headlines.** A few words, not a claim with a subordinate clause.
-   - No: `Deterministic by default: same inputs, same bits, on every machine.`
+   - No: `Deterministic by default: same inputs, same outputs, on every machine.`
    - Yes: `Deterministic by default.`
 7. **Cut reassurance.** `right there`, `already`, `live in the scene you are
    editing`, `when you want the metal`, `when you are done`, `you can read`

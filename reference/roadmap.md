@@ -66,7 +66,7 @@ being built, marked `done`, never back in the shipped one.
 | **Selection, alignment and a library** — multi-select, align and distribute, gizmos, a Pen tool, a material panel, an Events view, a Cost dock, and `editor/library`. | 0.1 done | no plan |
 | **Network dock and Play as two** — two peers started from the editor, with the link and its stats in a dock. | 0.4 | [PLAN-sessions.md#3-steps](PLAN-sessions.md#3-steps) |
 | **The editor in a browser** — a project kept on Gamend rather than only in the browser, and native targets exported from a tab. | 0.6 | [PLAN-web-editor.md](PLAN-web-editor.md) |
-| **A green `main`** — the same bits on every machine, a bad file an error rather than a crash, and documents that match the code. | (0.2) | [PLAN-hardening.md](PLAN-hardening.md) |
+| **A green `main`** — the same outputs on every machine, a bad file an error rather than a crash, and documents that match the code. | (0.2) | [PLAN-hardening.md](PLAN-hardening.md) |
 | **What the editor's frame costs** — the docks rebuild every row every frame, so the shell costs more than a 60 Hz budget; a list draws only what is visible. | (0.2) | [PLAN-editor-performance.md](PLAN-editor-performance.md) |
 | **Node conversions** — reparent, make scene root, save a branch as a scene, fit a collider to what is drawn, and bake a boolean. | (0.2) | [PLAN-node-conversions.md](PLAN-node-conversions.md) |
 | **More than one window** — a second OS window: a dock torn off the editor, or a game on a second display. | 1.0 | no plan |
@@ -88,7 +88,7 @@ being built, marked `done`, never back in the shipped one.
 | **Asset streaming** — a load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it. | 0.6 | no plan |
 | **Scripts you can take** — fifteen small scripts with `exports()` in the library dock, dropped onto a node and edited in place. | 0.5 | [PLAN-authoring-without-code.md](PLAN-authoring-without-code.md) |
 | **Extensions, tier two** — components, systems and calling back into scripts, across the C boundary. | 0.5 | [PLAN-c-api.md#what-tier-1-does-not-do](PLAN-c-api.md#what-tier-1-does-not-do) |
-| **More importers** — Spine and DragonBones for 2D skeletal animation, layered PSD, and `.blend` read by calling Blender. | 1.1 | no plan |
+| **More importers** — Spine and DragonBones for 2D bone animation, layered PSD, and `.blend` read by calling Blender. | 1.1 | no plan |
 | **A package manager** — `[dependencies]` in `project.toml`, `balaur add`, and a lockfile carrying a hash per entry, resolved against the catalogue. | 1.1 | [PLAN-plugins.md](PLAN-plugins.md) |
 | **Procedural noise** — a `noise` module of value, perlin, simplex and worley with fbm over them, seeded like `rng` and computed on `libm`. | 0.9 | no plan |
 | **A world bigger than a float** — origin rebasing on the fixed step, so a world runs past the precision `f32` has left, with the scene streamed in chunks. | 0.9 | no plan |
@@ -174,7 +174,7 @@ can do today, in the batches it would be built in.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **The deterministic core** — a fixed 60 Hz step, a per-tick digest checked across operating systems, record and replay, rollback, and three transports behind one trait. | 0.1 done | no plan |
+| **The deterministic core** — a fixed 60 Hz step, a per-tick digest checked across operating systems, record, replay and rollback, and three transports behind one trait. | 0.1 done | no plan |
 | **WebTransport in the browser** — native QUIC datagrams, binary frames, stable ids and rollback are built, and the browser side is not. | 0.4 | [PLAN-networking.md#2-transports](PLAN-networking.md#2-transports) |
 | **Sessions from a script** — host, join and leave from Rune, with a roster bound to links and `peer`, `host` and headless `server` roles. | 0.2 | [PLAN-sessions.md](PLAN-sessions.md) |
 | **Late join, reconnect and host migration** — under lockstep, out of the snapshot ring. | 0.4 | [PLAN-sessions.md#3-steps](PLAN-sessions.md#3-steps) |

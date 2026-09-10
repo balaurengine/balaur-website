@@ -1,7 +1,7 @@
 ---
 title: "Deterministic simulation, record and replay"
 sidebar_label: "Determinism"
-description: "Same inputs, same bits on every platform: a fixed 60 Hz step, Rapier's enhanced determinism, libm math, per-tick digests, and record and replay."
+description: "Same inputs, same outputs on every platform: a fixed 60 Hz step, Rapier's enhanced determinism, libm math, per-tick digests, and record and replay."
 image: "/img/social/determinism.png"
 sidebar_position: 14
 ---
@@ -24,7 +24,7 @@ possible.
 
 - Rapier's `enhanced-determinism` feature is enabled workspace-wide, for both
   the 3D and 2D worlds.
-- Physics and animation step on one app-owned fixed 60 Hz accumulator
+- Physics and animation step on one app-owned fixed 60 Hz tick
   (`FixedUpdate`), never the variable frame delta.
 - Transcendentals on a simulation path: animation easing, euler↔quaternion
   conversion, slerp: are computed on `libm` rather than the platform's math

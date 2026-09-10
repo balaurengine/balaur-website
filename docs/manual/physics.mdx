@@ -13,7 +13,7 @@ import Clip from '@site/src/components/Clip';
 A plugin wrapping [Rapier](https://rapier.rs): rapier3d for `body3d` and
 `collider3d`, rapier2d for `body2d` and `collider2d`. Both worlds live side by
 side over the same scene tree, built with Rapier's `enhanced-determinism`
-feature and stepped on a fixed 60 Hz accumulator.
+feature and stepped on a fixed 60 Hz tick.
 
 <Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
 
@@ -77,7 +77,7 @@ The full function lists are in the
 
 ## Determinism
 
-- Physics steps on a fixed 60 Hz accumulator, never the variable frame delta.
+- Physics steps on a fixed 60 Hz tick, never the variable frame delta.
 - Order-sensitive collections iterate deterministically.
 - Two runs with identical inputs match bit for bit, and a repository test
   asserts it. See [Determinism](./determinism.mdx).

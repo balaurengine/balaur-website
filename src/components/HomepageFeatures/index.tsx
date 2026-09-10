@@ -83,7 +83,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Same inputs, <strong>same bits</strong> on every platform.
+        Same inputs, <strong>same outputs</strong> on every platform.
       </>
     ),
   },

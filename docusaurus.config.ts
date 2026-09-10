@@ -219,7 +219,7 @@ const config: Config = {
       {
         name: 'keywords',
         content:
-          'game engine, rust game engine, deterministic game engine, 2d game engine, 3d game engine, open source game engine, hot reload scripting, rune scripting, skeletal animation, balaur engine',
+          'game engine, rust game engine, deterministic game engine, 2d game engine, 3d game engine, open source game engine, hot reload scripting, rune scripting, bone animation, balaur engine',
       },
     ],
     // The card a link to the site unfurls with; scripts/social-cards.mjs draws it.
