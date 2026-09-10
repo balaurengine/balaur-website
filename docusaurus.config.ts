@@ -331,7 +331,7 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Community and contributing',
+              label: 'Community',
               to: '/community',
             },
             {
@@ -345,14 +345,6 @@ const config: Config = {
             {
               label: 'Issues',
               href: 'https://github.com/balaurengine/balaur/issues',
-            },
-            {
-              label: 'Engine repo',
-              href: 'https://github.com/balaurengine/balaur',
-            },
-            {
-              label: 'Website repo',
-              href: 'https://github.com/balaurengine/balaur-website',
             },
           ],
         },

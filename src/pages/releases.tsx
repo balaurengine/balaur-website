@@ -65,9 +65,9 @@ function Release({v}: {v: Version}): ReactNode {
         </time>
         <p className={styles.line}>{v.line}</p>
         <p className={styles.links}>
-          <Link to={v.post}>What shipped</Link>
-          <Link to={v.milestone}>Roadmap milestone</Link>
-          {live && <Link to={live.html_url}>Release on GitHub</Link>}
+          <Link to={v.post}>Blog</Link>
+          <Link to={v.milestone}>Roadmap</Link>
+          {live && <Link to={live.html_url}>GitHub</Link>}
         </p>
       </div>
     </article>
@@ -82,11 +82,6 @@ export default function Releases(): ReactNode {
       <PageMetadata image="/img/social/releases.png" />
       <main className={styles.page}>
         <Heading as="h1">Releases</Heading>
-        <p className={styles.intro}>
-          Every tagged version, newest first. <Link to="/download">Download</Link> has a
-          build per platform, and the <Link to="/docs/roadmap">roadmap</Link> has what
-          each milestone adds next.
-        </p>
         {versions.map((v) => (
           <Release key={v.tag} v={v} />
         ))}

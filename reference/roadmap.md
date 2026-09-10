@@ -15,17 +15,17 @@ split it rather than letting one grow.
 
 | Milestone | Estimate | What it is |
 | --- | :-: | --- |
-| **0.1** | September 2026 | The engine as it stands |
-| **0.2** | December 2026 | Nothing blocks an ordinary game |
-| **0.3** | March 2027 | Everything you see |
-| **0.4** | July 2027 | Multiplayer, end to end |
-| **0.5** | November 2027 | A game built without writing a script |
-| **0.6** | April 2028 | A game gets out |
-| **0.7** | September 2028 | What a bigger game asks for |
-| **0.8** | March 2029 | The machine a game runs on |
-| **0.9** | September 2029 | A world, not a scene |
-| **1.0** | March 2030 | The editor makes the content |
-| **1.1** | July 2030 | Other people's parts |
+| **0.1** | September 2026 | Hello Balaur |
+| **0.2** | December 2026 | Balaur v2 |
+| **0.3** | March 2027 | Balaur Again |
+| **0.4** | July 2027 | Balaur Multiplayer |
+| **0.5** | November 2027 | Balaur Scripting |
+| **0.6** | April 2028 | Balaur Web |
+| **0.7** | September 2028 | Big Balaur |
+| **0.8** | March 2029 | Balaur Inputs |
+| **0.9** | September 2029 | Balaur Physics |
+| **1.0** | March 2030 | Balaur Editor |
+| **1.1** | July 2030 | Balaur Packages |
 
 The estimate is the month a milestone is aimed at, and every row in it carries
 that date rather than one of its own. A milestone that is done keeps its month

@@ -24,7 +24,7 @@ const out = join(root, 'static', 'img', 'social');
 const CARDS = {
   home: ['A 2D & 3D game engine', 'Fully deterministic, with scripts that reload in milliseconds. Free and open source, MIT.', '/'],
   'editor-web': ['The editor, in your browser', 'The same editor the desktop build ships, on WebAssembly. Open a scene, move a node, edit a script.', '/editor'],
-  code: ['For game developers', 'Nodes and scenes you know, scripts live in milliseconds, TOML scenes, one binary to ship.', '/code'],
+  code: ['For game developers', 'Nodes and scenes and scripts live in milliseconds.', '/code'],
   animate: ['For animators', 'Bones, mesh skinning with painted weights, IK and a timeline — on the rig that ships in the game.', '/animate'],
   multiplayer: ['Multiplayer', 'Same inputs, same outputs, on every machine: a fixed tick, digests, replay, rollback.', '/multiplayer'],
   benchmark: ['Run the benchmarks', 'The benchmark project in your browser: pick a case, watch it build, read what the profiler measured.', '/benchmark'],
@@ -37,7 +37,7 @@ const CARDS = {
   branding: ['Branding', 'The mark, the wordmark, colours and type, with the files to use them.', '/branding'],
   'from-godot': ['Coming from Godot', 'Nodes to components, GDScript to Rune, signals to methods called by name. The mapping, one line each.', '/docs/from-godot'],
   faq: ['FAQ', 'Free? Which platforms? What language? Is it deterministic? The short answers.', '/faq'],
-  features: ['Features', 'TOML scenes, Rune scripts with hot reload, deterministic 2D & 3D physics, animation, networking — and one file to ship.', '/features'],
+  features: ['Features', 'Rune scripts with hot reload, deterministic 2D & 3D physics, animation, networking — and one file to ship.', '/features'],
   download: ['Download', 'One binary for macOS, Windows and Linux: the editor, the CLI and every game’s runtime.', '/download'],
   roadmap: ['Roadmap', 'What the engine does not do yet, and will.', '/docs/roadmap'],
   releases: ['Releases', 'Every tagged version, newest first: what shipped in each one and the milestone it closed.', '/releases'],

@@ -7,17 +7,16 @@ keywords: [about balaur, balaur engine, who makes balaur, rust game engine, drag
 
 # About
 
-Balaur is a 2D & 3D node-based game engine. Deterministic tick, TOML scenes,
+Balaur is a 2D & 3D node-based game engine. Deterministic ticks,
 Rune scripts that hot reload in milliseconds. Written in Rust. Free, MIT.
 
 ## Who
 
-[Dragos Daian](https://github.com/Ughuuu), [appsinacup](https://appsinacup.com). Started
-Balaur after making Godot's physics deterministic and wanting the rest of the
-tick to follow.
+**[Dragos Daian](https://github.com/Ughuuu)**, [appsinacup](https://appsinacup.com).
+Created a replacement for Godot Physics using Rapier in Rust and made a Game Server in Elixir.
 
 - [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics):
-  Rapier's 2D and 3D physics in Godot. Where Balaur started.
+  Rapier's 2D and 3D physics in Godot.
 - [Gamend](https://github.com/appsinacup/gamend), an open source Elixir game
   server: auth, lobbies, leaderboards, payments, server hooks. Balaur's
   [Gamend module](/docs/manual/gamend) talks to it.
@@ -26,12 +25,12 @@ tick to follow.
   [Godot Whisper](https://github.com/appsinacup/godot-whisper). More Godot
   extensions.
 
-[Sébastien Crozet](https://github.com/sebcrozet), [dimforge](https://dimforge.com). Writes
-the physics Balaur steps and the renderer it draws through.
+**[Sébastien Crozet](https://github.com/sebcrozet)**, [dimforge](https://dimforge.com).
+Created Rapier, parry and other important Rust libraries.
 
 - [Rapier](https://rapier.rs): the physics under Balaur, 2D and 3D.
 - [Parry](https://parry.rs) is the collision detection under Rapier.
-- [kiss3d](https://github.com/dimforge/kiss3d): the renderer under Balaur, on
+- [kiss3d](https://github.com/dimforge/kiss3d): the renderer under Balaur, uses
   wgpu.
 - [nalgebra](https://nalgebra.rs), [salva](https://github.com/dimforge/salva),
   [bevy_rapier](https://github.com/dimforge/bevy_rapier). The rest of dimforge.
@@ -40,28 +39,10 @@ Everything else the engine stands on: [Built on](/docs/built-on).
 
 ## Why
 
-- Godot Rapier Physics makes the physics server deterministic. The rest of the
+- Godot Rapier Physics makes the physics in Godot deterministic. The rest of the
   game is not. Balaur makes the **whole tick** deterministic.
-- A bug fix in Godot waits on review and a release. Here it ships the same day.
-- Longer: [From Godot Rapier to Balaur](/blog/godot-rapier-and-balaur).
-
-## Where it is
-
-- First commit August 2026. Version **0.1.0**. Builds from source; no binary
-  release yet.
-- [Compare](/compare) says when to pick Godot, Bevy or Fyrox instead.
-  [Roadmap](/docs/roadmap) says what is missing.
-
-## How it is run
-
-- [Principles](/docs/principles): what the engine optimises for, and how the
-  project is run.
-- MIT, no CLA. Nothing is for sale: no fees, no revenue share, no paid tier.
-
-## The name
-
-Romanian for dragon, and *Balaur bondoc*, the Transylvanian dromaeosaur with two
-sickle claws on each foot. The mark is the claws. Files on [Branding](/branding).
+- A bug fix in Godot waits on review and a release. Here we ship faster as we own the repositories.
+- [From Godot Rapier to Balaur](/blog/godot-rapier-and-balaur).
 
 ## Contact
 
