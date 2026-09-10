@@ -62,15 +62,13 @@ none of it is served.
 
 ## Fonts and third parties
 
-The site loads nothing from another origin, and the privacy page says so.
+The site loads nothing from another origin.
 
 - Fonts are self-hosted in `static/fonts/`, one variable file per family and
   subset, declared as `@font-face` in a `<style>` in `headTags`.
 - They live there rather than in `custom.css` because webpack rewrites every
   `url()` in a stylesheet to a hashed copy under `/assets`: the fonts would
   ship twice and the preloads would match neither.
-- Do not reintroduce a font CDN, an analytics script or an embed. Both are a
-  measured regression and a contradiction of `/privacy`.
 
 ## Measuring performance
 

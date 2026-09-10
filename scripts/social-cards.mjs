@@ -33,7 +33,6 @@ const CARDS = {
   about: ['About', 'A deterministic engine built by two people — the one who maintains Godot Rapier Physics, and the one who writes Rapier.', '/about'],
   community: ['Community', 'Discord, discussions and issues — and how to help, with code or without it.', '/community'],
   donate: ['Support Balaur', 'Free and MIT, always. Sponsoring pays for the test hardware, developer accounts, signing and CI.', '/donate'],
-  privacy: ['Privacy', 'No analytics, no tracking, no cookies, no account — and an engine that never phones home.', '/privacy'],
   branding: ['Branding', 'The mark, the wordmark, colours and type, with the files to use them.', '/branding'],
   'from-godot': ['Coming from Godot', 'Nodes to components, GDScript to Rune, signals to methods called by name. The mapping, one line each.', '/docs/from-godot'],
   faq: ['FAQ', 'Free? Which platforms? What language? Is it deterministic? The short answers.', '/faq'],

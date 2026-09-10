@@ -4,8 +4,7 @@
 //
 // GitHub's own sponsor card is an iframe on github.com, and an avatar is a
 // request to avatars.githubusercontent.com. Either would put a third-party
-// origin on the page, which /privacy says is not there and AGENTS.md says not
-// to reintroduce. So the list is fetched at build time and ships inside the
+// origin on the page. So the list is fetched at build time and ships inside the
 // page, the way scripts/gen-releases.mjs handles releases.
 //
 // Sponsorships are GraphQL only, and an organisation's are readable only with

@@ -418,10 +418,6 @@ const config: Config = {
               label: 'Branding',
               to: '/branding',
             },
-            {
-              label: 'Privacy',
-              to: '/privacy',
-            },
           ],
         },
       ],
