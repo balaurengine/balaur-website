@@ -79,7 +79,6 @@ export default function ExampleGrid({items}: {items: Example[]}): ReactNode {
                 <button type="button" className="button button--primary button--sm" onClick={() => play(e.name)}>
                   Play in the browser
                 </button>
-                <span className={styles.actionNote}>Needs WebGPU; a few MB, fetched when you press it.</span>
               </p>
             )}
             <pre className={styles.cmd}>
