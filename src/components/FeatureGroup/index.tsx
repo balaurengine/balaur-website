@@ -47,7 +47,7 @@ export default function FeatureGroup({
         <ul className={styles.lines}>{children}</ul>
         {to && (
           <Link to={to} className={styles.more}>
-            See it in the editor: {toLabel ?? title} →
+            Docs: {toLabel ?? title} →
           </Link>
         )}
       </div>

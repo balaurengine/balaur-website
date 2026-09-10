@@ -9,34 +9,31 @@ import FeatureGroup, {Feature} from '@site/src/components/FeatureGroup';
 
 # Features
 
-What is in the engine today, one line each. The why is in [Principles](/docs/principles).
+The engine features. See also [Principles](/docs/principles).
 
 <FeatureGroup title="Nodes, scenes, scripts" clip="scenes_inspect" alt="Selecting a node in the tree and editing it in the inspector" to="/docs/manual/scenes" toLabel="Scenes and nodes">
   <Feature icon="tree-structure" to="/docs/manual/scenes"><strong>Scene tree.</strong> Nodes with scripts attached.</Feature>
-  <Feature icon="file-text" to="/docs/manual/scenes"><strong>TOML scenes.</strong> Every component is a scene key, a script call and an inspector row at once.</Feature>
   <Feature icon="code" to="/docs/manual/scripting"><strong>Rune.</strong> Rust's syntax, `async`/`await`. Instant reload.</Feature>
-  <Feature icon="lightning" to="/docs/manual/scripting#hot-reload"><strong>Hot reload.</strong> A saved script is live in milliseconds.</Feature>
   <Feature icon="bug" to="/docs/manual/scripting#debugging"><strong>Debugger.</strong> Breakpoints, stepping, frames and locals, in the editor.</Feature>
-  <Feature icon="warning-circle" to="/docs/manual/editor#personas"><strong>Errors on save.</strong> A script that does not compile reports file, line and caret.</Feature>
-  <Feature icon="package" to="/docs/reference/assets"><strong>Assets.</strong> Content by reference or inline, one rule for every type.</Feature>
+  <Feature icon="package" to="/docs/reference/assets"><strong>Assets.</strong> Content referenced by a node.</Feature>
 </FeatureGroup>
 
 <FeatureGroup title="Simulation" side="right" clip="determinism_replay" alt="Recording a session and replaying it tick by tick to the same result" to="/docs/manual/determinism" toLabel="Determinism">
   <Feature icon="atom" tone="3d" to="/docs/manual/physics"><strong>Physics.</strong> 2D and 3D through Rapier, on a fixed 60 Hz step.</Feature>
-  <Feature icon="film-strip" tone="animation" to="/docs/manual/animation"><strong>Animation.</strong> Clips, tweens, twelve easings, method tracks.</Feature>
-  <Feature icon="bone" tone="animation" to="/docs/manual/animation#skeletons-and-skins"><strong>Skeletons.</strong> 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK.</Feature>
+  <Feature icon="film-strip" tone="animation" to="/docs/manual/animation"><strong>Animation.</strong> Clips, tweens and easing.</Feature>
+  <Feature icon="bone" tone="animation" to="/docs/manual/animation#skeletons-and-skins"><strong>Skeletons.</strong> Bones with skinned polygons.</Feature>
   <Feature icon="arrows-clockwise" tone="physics" to="/docs/manual/determinism"><strong>Determinism.</strong> Same inputs, same outputs, on every platform.</Feature>
 </FeatureGroup>
 
 <FeatureGroup title="Screen and sound" clip="shader_preview" alt="A material's shader edited and previewed in the editor" to="/docs/manual/rendering" toLabel="Rendering">
-  <Feature icon="image" tone="render"><strong>Rendering.</strong> 3D and 2D, windowed, offscreen or headless.</Feature>
-  <Feature icon="shapes" tone="3d" to="/docs/manual/scenes"><strong>Objects.</strong> Sixteen primitives, bezier paths extruded, revolved and swept, booleans, and a cloner.</Feature>
-  <Feature icon="grid-four" tone="2d" to="/docs/manual/tiles"><strong>Tile maps.</strong> Solid, one-way, animated and light-blocking tiles, autotiling, Tiled import.</Feature>
+  <Feature icon="image" tone="render" to="/docs/manual/rendering"><strong>Rendering.</strong> 2D and 3D.</Feature>
+  <Feature icon="shapes" tone="3d" to="/docs/manual/scenes/#objects"><strong>Objects.</strong> Basic primitives, bezier paths, text and boolean operations.</Feature>
+  <Feature icon="grid-four" tone="2d" to="/docs/manual/tiles"><strong>Tile maps.</strong> Solid, one-way, animated and light-blocking tiles.</Feature>
   <Feature icon="sun" tone="render" to="/docs/manual/rendering"><strong>Lights.</strong> 2D lights and occluders, with post-processing on top.</Feature>
-  <Feature icon="paint-brush" tone="render" to="/docs/manual/shaders"><strong>Shaders.</strong> Materials are written in WESL.</Feature>
-  <Feature icon="layout" tone="ui" to="/docs/manual/ui"><strong>UI.</strong> Widgets for HUDs, an immediate-mode API for tools.</Feature>
-  <Feature icon="text-aa" tone="ui" to="/docs/manual/text"><strong>Text in the world.</strong> Outline, shadow, markup, bitmap fonts, and a width every platform agrees on.</Feature>
-  <Feature icon="speaker-high" tone="audio" to="/docs/manual/input"><strong>Audio and input.</strong> rodio playback; keyboard, mouse, gamepads, touch.</Feature>
+  <Feature icon="paint-brush" tone="render" to="/docs/manual/shaders"><strong>Shaders.</strong> Materials written in WESL.</Feature>
+  <Feature icon="layout" tone="ui" to="/docs/manual/ui"><strong>UI.</strong> Widgets and an immediate-mode API for tools.</Feature>
+  <Feature icon="text-aa" tone="ui" to="/docs/manual/text"><strong>Text.</strong> Outline, shadow, markup and bitmap fonts.</Feature>
+  <Feature icon="speaker-high" tone="audio" to="/docs/manual/input"><strong>Audio and input.</strong> audio playback; keyboard, mouse, gamepads, touch inputs.</Feature>
 </FeatureGroup>
 
 <FeatureGroup
@@ -54,21 +51,19 @@ What is in the engine today, one line each. The why is in [Principles](/docs/pri
     />
   }>
   <Feature icon="globe" to="/docs/manual/networking"><strong>Networking.</strong> HTTP, WebSockets and WebTransport, with compression.</Feature>
-  <Feature icon="cloud" to="/docs/manual/gamend"><strong>Gamend.</strong> Login, REST, realtime rooms, server hooks.</Feature>
+  <Feature icon="cloud" to="/docs/manual/gamend"><strong>Gamend.</strong> Accounts, lobbies, chat, leaderboards, server hooks.</Feature>
   <Feature icon="storefront" to="/docs/manual/stores"><strong>Stores.</strong> Sign-in, achievements, leaderboards, cloud saves and purchases, on Game Center, iCloud and StoreKit.</Feature>
 </FeatureGroup>
 
 <FeatureGroup title="Tools and shipping" image="editor_overview" alt="The editor: node tree, viewport, inspector and the Output dock" to="/docs/manual/editor" toLabel="The editor">
-  <Feature icon="app-window" to="/docs/manual/editor"><strong>The editor.</strong> A Balaur project itself: tree, inspector, gizmos, timeline, rig tools, play-in-editor, undo.</Feature>
-  <Feature icon="shapes" to="/docs/manual/editor#selecting"><strong>Select and arrange.</strong> Box select, group, align, distribute, hide, lock and isolate, over a selection the gizmo drags as one.</Feature>
-  <Feature icon="grid-four" to="/docs/manual/editor#docks-palette-themes"><strong>A library.</strong> Stock materials, lighting setups and project templates, behind <code>balaur new --template</code>.</Feature>
-  <Feature icon="puzzle-piece" to="/docs/manual/editor#extending-the-editor"><strong>Editor plugins.</strong> Docks, tools, commands and inspector sections from a project's own Rune files.</Feature>
-  <Feature icon="magic-wand" to="/docs/manual/scripting"><strong>Script tooling.</strong> Completion, hover, go-to-definition, symbols, rename and formatting, in the editor and in VS Code, Zed or Neovim over <code>balaur lsp</code>.</Feature>
-  <Feature icon="plug" to="/docs/manual/extensions"><strong>Extensions.</strong> Plugins linked in or loaded at run time.</Feature>
-  <Feature icon="package" to="/docs/manual/shipping"><strong>Packs.</strong> A reproducible <code>.bpak</code> of bytecode, scenes and assets.</Feature>
-  <Feature icon="rocket-launch" to="/docs/manual/shipping"><strong>Export.</strong> Bytecode, scenes and assets go into one executable, one per platform.</Feature>
-  <Feature icon="devices"><strong>Platforms.</strong> Windows, macOS and Linux today; iOS, Android and WebAssembly in CI.</Feature>
-  <Feature icon="gear" to="/docs/built-on"><strong>Built on Rust.</strong> Safe code, and Rapier, wgpu, egui, rodio, Rune.</Feature>
+  <Feature icon="app-window" to="/docs/manual/editor"><strong>The editor.</strong> A Balaur project: tree, inspector, timeline.</Feature>
+  <Feature icon="shapes" to="/docs/manual/editor#selecting"><strong>Select and arrange.</strong> Select, group, align and hide.</Feature>
+  <Feature icon="puzzle-piece" to="/docs/manual/editor#extending-the-editor"><strong>Editor plugins.</strong> Docks, tools and custom commands.</Feature>
+  <Feature icon="magic-wand" to="/docs/manual/scripting"><strong>Script tooling.</strong> Completion, hover, go-to-definition, rename and formatting.</Feature>
+  <Feature icon="plug" to="/docs/manual/extensions"><strong>Extensions.</strong> Plugins at build or run time.</Feature>
+  <Feature icon="rocket-launch" to="/docs/manual/shipping"><strong>Export.</strong> Bytecode, scenes and assets.</Feature>
+  <Feature icon="devices" to="/docs/manual/shipping"><strong>Platforms.</strong> Windows, macOS, Linux, iOS, Android and Web.</Feature>
+  <Feature icon="gear" to="/docs/built-on"><strong>Written in Rust.</strong> Reusing popular libraries, and Rapier, wgpu, egui, rodio, Rune.</Feature>
 </FeatureGroup>
 
-MIT licensed, on [GitHub](https://github.com/balaurengine/balaur). Build it from source: see [Getting started](/docs/getting-started).
+MIT licensed. See [Getting started](/docs/getting-started).

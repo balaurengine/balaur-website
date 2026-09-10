@@ -135,7 +135,7 @@ being built, marked `done`, never back in the shipped one.
 
 | Item | Milestone | Plan |
 | --- | :-: | --- |
-| **Widgets, text and the batteries** — nineteen widget kinds over cosmic-text, containers that hand out rects, text in the world, and the batteries: audio buses, input actions, saves, localisation. | 0.1 done | no plan |
+| **Widgets, text and the batteries** — nineteen widget kinds over cosmic-text, containers that hand out rects, text, and the batteries: audio buses, input actions, saves, localisation. | 0.1 done | no plan |
 | **Lists, trees and tables** — `list`, `tree` and `table` kinds with selection, columns, and only the rows in view built, which every dock hand-rolls today. | 0.2 | [PLAN-widgets.md#data-views](PLAN-widgets.md#data-views) |
 | **Menus, popups and tooltips** — a menu bar, a context menu, a tooltip and a toast in a scene, over a pass that draws above the widget tree. | 0.2 | [PLAN-widgets.md#menus-and-popups](PLAN-widgets.md#menus-and-popups) |
 | **A picture that clicks, and checks that are exclusive** — an `image` naming an `on_click` senses it, a `group` on a check makes a radio row, and four edge anchors join the corners. | 0.2 | [PLAN-godot-import.md#24-the-widget-kinds](PLAN-godot-import.md#24-the-widget-kinds) |

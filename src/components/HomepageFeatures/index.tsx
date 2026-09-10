@@ -112,7 +112,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        <strong>2D and 3D</strong>: windowed, offscreen or headless.
+        <strong>2D and 3D</strong>.
       </>
     ),
   },

@@ -56,7 +56,7 @@ const CARDS = {
   ui: ['UI', 'Widgets for game HUDs, immediate-mode UI for tools.', '/docs/manual/ui'],
   input: ['Input', 'Actions over keyboard, mouse, gamepads and touch — one snapshot per frame.', '/docs/manual/input'],
   networking: ['Networking', 'HTTP, WebSockets and QUIC, delivered once per tick and replayable.', '/docs/manual/networking'],
-  gamend: ['Gamend', 'Login, REST, realtime rooms and server hooks.', '/docs/manual/gamend'],
+  gamend: ['Gamend', 'Accounts, lobbies, chat, leaderboards and server hooks.', '/docs/manual/gamend'],
   extensions: ['Modules and extensions', 'Modules linked in, extensions loaded at run time. One plugin trait.', '/docs/manual/extensions'],
   editor: ['The editor', 'A Balaur project that edits Balaur projects.', '/docs/manual/editor'],
   determinism: ['Determinism', 'Same inputs, same outputs, on every platform.', '/docs/manual/determinism'],
