@@ -37,7 +37,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `focus_next()` | — | Move focus to the next widget in scene order, wrapping past the last. |
 | `focus_previous()` | — | Move focus to the previous widget in scene order, wrapping past the first. |
 | `focused() -> any` | — | The widget node focus is on, or nil. |
-| `frame(any?, fn)` | — | Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels. |
+| `frame(any?, fn)` | — | Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels. `tooltip`, `menu` and `menu_click` make the whole box answer the pointer, the way a pill does, and `hover_fill` is the colour it takes while the pointer is over it. |
 | `horizontal(any?, fn)` | — | Lay the callback's widgets out in a row; `width`, `height` and `tight` size it, in design pixels. |
 | `image(string, any?)` | — | Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path. `region` (`[x, y, w, h]` in the image's own pixels) draws one part of it, which is how an atlas is shown a tile at a time. |
 | `image_button(string, any?) -> bool` | — | The same picture, answering a click: returns whether it was clicked this frame. Takes every `image` option plus `selected`, which draws the `stroke` border a chosen tile needs, and the `menu`/`menu_click` callbacks a pill takes. |
@@ -59,7 +59,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_clipboard(string)` | — | Copy text to the system clipboard. |
 | `set_focus(node)` | — | Put focus on a widget node. A node focus cannot activate is refused at the next draw. |
 | `set_keyboard_focus(bool)` | — | Let the arrows, Tab, Enter and Space move and activate the focused widget. Off unless asked for, so a game that moves with the arrows does not click its own HUD; `standard_app` turns it on for a project declaring the `ui_*` actions. |
-| `set_lazy(bool)` | — | Run the UI pass only when something asks for it (input, `request_repaint`, a log line, an asset reload, an egui animation, or the idle tick every 250 ms) and re-present the last pass in between. Off by default: a HUD that reads live state each frame should leave it off. Ignored offscreen. |
+| `set_lazy(bool)` | — | Run the UI pass only when something asks for it (input, `request_repaint`, a log line, an asset reload, an egui animation, or the idle tick every 250 ms, which waits out a drag the UI is no part of) and re-present the last pass in between. Off by default: a HUD that reads live state each frame should leave it off. Ignored offscreen. |
 | `set_scale(float)` | — | Set the global UI scale, clamped to between 0.25 and 3.0 real pixels per design pixel; a design resolution is `screen_size` divided by it. |
 | `set_text(string, string)` | — | Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone. |
 | `set_theme(any)` | — | Replace the theme: `name = "#rrggbb"` colour tokens, `dark = true\|false`, and a `roles` table of named looks a widget takes with `role:`. |

@@ -8,10 +8,16 @@ import releases from '@site/src/data/releases.json';
 import styles from './download.module.css';
 
 const REPO = 'balaurengine/balaur';
-// Two channels: the newest published version, and the `nightly` prerelease
-// every merge to the engine's main branch replaces. Both are read at build
-// time by scripts/gen-releases.mjs, not by the reader's browser.
-type Channel = 'stable' | 'nightly';
+// Two channels: the newest tagged version, and the `nightly` prerelease every
+// merge to the engine's main branch replaces. Both are read at build time by
+// scripts/gen-releases.mjs, not by the reader's browser.
+//
+// The tagged channel is not called "stable" — while every release is flagged a
+// prerelease on GitHub, saying stable would be a claim the engine does not
+// make anywhere else on the site. The button takes its word from the release's
+// own `prerelease` flag, so it stops saying pre-alpha the moment that stops
+// being true, without an edit here.
+type Channel = 'release' | 'nightly';
 const COMMIT_URL = `https://github.com/${REPO}/commit`;
 
 type Asset = {
@@ -159,7 +165,7 @@ function ReleaseView({release}: {release: Release}) {
 
   return (
     <>
-      <Heading as="h2">
+      <Heading as="h2" className={styles.version}>
         {release.name || release.tag_name}
         {nightly ? (
           <span className={styles.badge}>nightly</span>
@@ -232,8 +238,10 @@ function ReleaseView({release}: {release: Release}) {
 }
 
 export default function Download(): ReactNode {
-  const [channel, setChannel] = useState<Channel>('stable');
-  const release = (releases as {stable: Release | null; nightly: Release | null})[channel];
+  const [channel, setChannel] = useState<Channel>('release');
+  const data = releases as {release: Release | null; nightly: Release | null};
+  const release = data[channel];
+  const taggedLabel = data.release?.prerelease === false ? 'Stable' : 'Pre-alpha';
 
   return (
     <Layout
@@ -245,7 +253,7 @@ export default function Download(): ReactNode {
         <Heading as="h1">Download</Heading>
 
         <div className={styles.channels} role="group" aria-label="Release channel">
-          {(['stable', 'nightly'] as Channel[]).map((c) => (
+          {(['release', 'nightly'] as Channel[]).map((c) => (
             <button
               key={c}
               type="button"
@@ -254,7 +262,7 @@ export default function Download(): ReactNode {
                 channel === c ? `${styles.channel} ${styles.channelOn}` : styles.channel
               }
               onClick={() => setChannel(c)}>
-              {c === 'stable' ? 'Stable' : 'Nightly'}
+              {c === 'release' ? taggedLabel : 'Nightly'}
             </button>
           ))}
         </div>
@@ -264,7 +272,7 @@ export default function Download(): ReactNode {
         ) : (
           <div className={styles.stateCard}>
             <Heading as="h2">
-              {channel === 'stable' ? 'No numbered release yet' : 'No nightly yet'}
+              {channel === 'release' ? 'No tagged release yet' : 'No nightly yet'}
             </Heading>
           </div>
         )}

@@ -19,6 +19,13 @@
 // live in src/data/releases-copy.mjs, which this never touches — a version
 // with no entry there is listed from the tag alone.
 //
+// `release` is the newest of those, and it is deliberately not read from
+// GitHub's `/releases/latest`. That endpoint skips prereleases, so while the
+// engine is pre-alpha it answers 404 and the Download page said "no numbered
+// release yet" with v0.1.0 published and twenty-four assets on it. The newest
+// entry in the list is the honest answer at every stage, and the page reads
+// `prerelease` to decide what to call it.
+//
 // Usage:
 //   node scripts/gen-releases.mjs     refresh src/data/releases.json
 //
@@ -88,17 +95,16 @@ async function versions() {
 }
 
 try {
-  const [stable, nightly, tagged] = await Promise.all([
-    release('/latest'),
-    release('/tags/nightly'),
-    versions(),
-  ]);
-  const text = JSON.stringify({stable, nightly, versions: tagged}, null, 2) + '\n';
+  const [nightly, tagged] = await Promise.all([release('/tags/nightly'), versions()]);
+  // The newest tag, with its assets: `versions()` keeps only the brief shape,
+  // so the full record is fetched for the one the page actually offers.
+  const newest = tagged[0] ? await release(`/tags/${tagged[0].tag_name}`) : null;
+  const text = JSON.stringify({release: newest, nightly, versions: tagged}, null, 2) + '\n';
   if (readFileSync(OUT, 'utf8') !== text) {
     writeFileSync(OUT, text);
     console.log(
-      `releases: stable ${stable?.tag_name ?? 'none'}, nightly ${nightly?.tag_name ?? 'none'}, ` +
-        `${tagged.length} tagged`);
+      `releases: ${newest?.tag_name ?? 'none'}${newest?.prerelease ? ' (prerelease)' : ''}, ` +
+        `nightly ${nightly?.tag_name ?? 'none'}, ${tagged.length} tagged`);
   } else {
     console.log('releases.json is current');
   }

@@ -36,6 +36,13 @@
   font-family: var(--ifm-font-family-monospace);
 }
 
+/* Alegreya sets numerals in old style, which drops the zeros to x-height and
+   turns v0.1.0 into vo.1.o. A version number has to be read digit by digit. */
+.version {
+  font-variant-numeric: lining-nums;
+  font-feature-settings: 'lnum' 1;
+}
+
 .meta {
   color: var(--ifm-color-emphasis-600);
   margin-bottom: 0.5rem;
