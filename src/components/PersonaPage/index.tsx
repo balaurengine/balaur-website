@@ -34,7 +34,6 @@ export function PersonaHero({
       <div className={styles.heroText}>
         <p className={styles.eyebrow}>
           <span>{who}</span>
-          <span className={styles.persona}>{persona}</span>
         </p>
         <Heading as="h1" className={styles.h1}>
           {title}

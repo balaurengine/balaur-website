@@ -19,7 +19,6 @@ type Line = {icon: IconName; tone?: Tone; text: string};
 type Persona = {
   id: string;
   who: string;
-  persona: string;
   headline: string;
   lines: Line[];
   clip?: string;
@@ -31,13 +30,12 @@ type Persona = {
 const PERSONAS: Persona[] = [
   {
     id: 'multiplayer',
-    who: 'For multiplayer and simulation',
-    persona: 'Physics persona',
+    who: 'For multiplayer games',
     headline: 'Deterministic by default.',
     lines: [
       {icon: 'timer', tone: 'physics', text: 'A fixed 60 Hz tick.'},
       {icon: 'record', tone: 'physics', text: 'Record inputs and replay the whole session.'},
-      {icon: 'broadcast', text: 'HTTP, websockets and WebTransport.'},
+      {icon: 'broadcast', text: 'HTTP, WebSockets and WebTransport.'},
     ],
     clip: 'determinism_replay',
     alt: 'A recorded session replayed tick by tick to the same result',
@@ -49,27 +47,25 @@ const PERSONAS: Persona[] = [
   },
   {
     id: 'design',
-    who: 'For designers',
-    persona: 'Scene and Interface personas',
+    who: 'For level design',
     headline: 'Design in real time.',
     lines: [
-      {icon: 'cursor', tone: '2d', text: 'Place, move and scale in the viewport.'},
-      {icon: 'layout', tone: 'ui', text: 'View properties in the inspector.'},
-      {icon: 'play', tone: 'ui', text: 'Pressing play starts the game.'},
+      {icon: 'cursor', tone: '2d', text: 'Place, move and scale.'},
+      {icon: 'layout', tone: 'ui', text: 'View properties.'},
+      {icon: 'play', tone: 'ui', text: 'Press play to start the game.'},
     ],
     clip: 'scenes_inspect',
     alt: 'Selecting a node in the tree and editing it in the inspector, the viewport updating as you type',
     links: [
       {to: '/docs/manual/scenes', label: 'Scenes and nodes'},
       {to: '/docs/manual/ui', label: 'UI'},
-      {to: '/examples#angrynerds', label: 'Open examples/angrynerds'},
+      {to: '/examples#hello', label: 'Open examples/hello'},
     ],
   },
   {
     id: 'code',
     who: 'For programmers',
-    persona: 'Script persona',
-    headline: 'Scripts reload instantly on save.',
+    headline: 'Scripts reload instantly.',
     lines: [
       {icon: 'code', text: 'Rune scripting with Rust syntax and async/await.'},
       {icon: 'lightning', text: 'Hot reload with breakpoint support.'},
@@ -87,7 +83,6 @@ const PERSONAS: Persona[] = [
   {
     id: 'animate',
     who: 'For animators',
-    persona: 'Animate persona',
     headline: '2D and 3D animation.',
     lines: [
       {icon: 'bone', tone: 'animation', text: 'Mesh skinning with bones and painted weights.'},
@@ -105,7 +100,6 @@ const PERSONAS: Persona[] = [
   {
     id: 'art',
     who: 'For artists',
-    persona: 'Scene persona, shaders and rendering',
     headline: 'Lights, shadows and shaders.',
     lines: [
       {icon: 'sun', tone: 'render', text: '2D lights and occluders.'},
@@ -128,7 +122,6 @@ function Section({p, index}: {p: Persona; index: number}): ReactNode {
       <div className={styles.text}>
         <p className={styles.eyebrow}>
           <span>{p.who}</span>
-          <span className={styles.persona}>{p.persona}</span>
         </p>
         <Heading as="h2" className={styles.headline}>
           {p.headline}

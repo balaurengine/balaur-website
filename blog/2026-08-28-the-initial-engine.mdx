@@ -1,7 +1,7 @@
 ---
-description: "The first commit. A node tree over an ECS, scenes as TOML, scripts that hot reload with state kept, and every subsystem a plugin."
+description: "The first commit. A node tree with ECS, scenes as TOML, scripts that hot reload, and every subsystem a plugin."
 slug: the-initial-engine
-title: The initial engine
+title: Hello Balaur
 authors: [dragos]
 image: /img/manual/hello_open.png
 keywords: [rust game engine, open source game engine, hot reload, ecs, balaur]
@@ -14,7 +14,7 @@ as TOML, scripts that hot reload with state kept, every subsystem a plugin.
 
 ## What landed
 
-- Nodes over an ECS. A game is a tree of named nodes with scripts
+- Nodes over an ECS. A game is a tree of nodes with scripts
   attached; under it every node is an entity, and every subsystem (physics,
   rendering, audio, input, UI) is a plugin over the same data.
 - Scenes as TOML. A scene file declares nodes, and plugins extend its

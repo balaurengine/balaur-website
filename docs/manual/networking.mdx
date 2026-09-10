@@ -1,7 +1,7 @@
 ---
-title: "Networking: HTTP, websockets and WebTransport"
+title: "Networking: HTTP, WebSockets and WebTransport"
 sidebar_label: "Networking"
-description: "HTTP, websockets and WebTransport for Balaur scripts, delivered once per tick, so a recorded session replays with the network included."
+description: "HTTP, WebSockets and WebTransport for Balaur scripts, delivered once per tick, so a recorded session replays with the network included."
 image: "/img/social/networking.png"
 sidebar_position: 9
 ---
@@ -18,7 +18,7 @@ All three are on by default, each behind its own feature. Building without
 `http` drops the HTTP and TLS stack; without `webtransport` drops QUIC and its
 runtime.
 
-:::tip[For multiplayer and simulation]
+:::tip[For multiplayer games]
 
 [Balaur for multiplayer](/multiplayer) puts this delivery model beside the fixed tick, rollback and replay it exists for.
 
@@ -118,7 +118,7 @@ For a hosted game backend, auth, storage and realtime rooms, see
 
 Built: rollback. Two engines exchange only inputs, predict each other, roll
 back when a prediction was wrong, and compare a per-tick digest to catch a
-desync. It runs over websockets or QUIC, and on QUIC a datagram is a real one,
+desync. It runs over WebSockets or QUIC, and on QUIC a datagram is a real one,
 so a lost input costs a misprediction rather than a stall.
 
 Missing: replication, RPC, a browser WebTransport backend, WebRTC. The plan is

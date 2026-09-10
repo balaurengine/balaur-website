@@ -1,6 +1,6 @@
 ---
 title: "A game engine for Godot, Unity and Unreal devs"
-description: "Nodes and scenes you already know, scripts that go live in milliseconds with state intact, TOML scenes that diff in git, one executable to ship."
+description: "Nodes and scenes you already know, scripts that go live in milliseconds, TOML scenes that diff in git, one executable to ship."
 image: "/img/social/code.png"
 ---
 
@@ -19,8 +19,8 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
 
 <Section title="What you get">
   <Features items={[
-    {icon: 'tree-structure', title: 'A tree of named nodes', text: <>Named nodes with scripts attached, each an ECS entity underneath.</>},
-    {icon: 'lightning', title: 'Scripts reload instantly on save', text: <>Hot reload in milliseconds, state intact: the ball keeps its position, the score its value.</>},
+    {icon: 'tree-structure', title: 'A tree of nodes', text: <>Nodes with scripts attached, each an ECS entity underneath.</>},
+    {icon: 'lightning', title: 'Scripts reload instantly', text: <>Hot reload in milliseconds: the ball keeps its position, the score its value.</>},
     {icon: 'file-text', title: 'Scenes are TOML', text: <>Readable, diffable, reviewable in a pull request, editable by hand or by the editor.</>},
     {icon: 'rocket-launch', title: 'Export a single executable', text: <>Bytecode, scenes and assets go into one executable, one per platform.</>},
   ]} />
@@ -37,7 +37,7 @@ shape3d = { kind = "ball", radius = 0.5 }`}>
 
 `body3d`, `collider3d` and `shape3d` are components the physics and render plugins registered. That one registration makes them scene keys, script calls and inspector rows together.
 
-Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, `async`/`await`. A script is a file attached to a node, with `init`, `update` and whatever methods the scene calls.
+Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, instant reload, `async`/`await`. A script is a file attached to a node, with `init`, `update` and other methods.
 
   </HowItWorks>
 </Section>
@@ -54,7 +54,7 @@ Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, `async`/`await`. A
 
   <Compare rival="Godot 4" rows={[
     ['Game code', 'GDScript and C#; C++ through GDExtension', 'Rune scripts; plugins in Rust or C'],
-    ['Iterating on code', 'Scripts reload on save', 'A saved script is live in milliseconds, with the state intact'],
+    ['Iterating on code', 'Scripts reload on save', 'A saved script is live in milliseconds'],
     ['Scene files', 'Text .tscn files that diff', 'TOML, with one rule for every component'],
     ['Determinism', 'Not bit-exact across platforms', 'Same bits everywhere: record and replay, rollback'],
     ['Licence and cost', 'Free, MIT', 'Free, MIT'],
@@ -63,7 +63,7 @@ Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, `async`/`await`. A
 
   <Compare rival="Unity 6" rows={[
     ['Game code', 'C#', 'Rune scripts; plugins in Rust or C'],
-    ['Iterating on code', 'A script change recompiles and reloads the domain; entering play mode starts over', 'A saved script is live in milliseconds, with the state intact'],
+    ['Iterating on code', 'A script change recompiles and reloads the domain; entering play mode starts over', 'A saved script is live in milliseconds'],
     ['Determinism', 'Not bit-exact across platforms; deterministic multiplayer usually means Photon Quantum or a fixed-point simulation of your own', 'An engine guarantee: fixed tick, replay and a rollback module'],
     ['Licence and cost', 'Proprietary; a free tier below a revenue threshold, per-seat subscriptions above it', 'Free, MIT, no threshold and no seats'],
     ['Maturity', 'Two decades, the largest asset store there is, every platform', 'Weeks old, no asset store, no consoles'],
@@ -71,7 +71,7 @@ Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, `async`/`await`. A
 
   <Compare rival="Unreal 5" rows={[
     ['Game code', 'C++ and Blueprints', 'Rune scripts; plugins in Rust or C'],
-    ['Iterating on code', 'Live Coding patches C++ into a running editor; otherwise a rebuild', 'A saved script is live in milliseconds, with the state intact'],
+    ['Iterating on code', 'Live Coding patches C++ into a running editor; otherwise a rebuild', 'A saved script is live in milliseconds'],
     ['Determinism', 'Not bit-exact across platforms', 'Same bits everywhere, verified tick by tick'],
     ['What you ship', 'A packaged build carrying the engine runtime', 'One self-contained binary per target'],
     ['Licence and cost', 'Free until $1M lifetime gross per product, then a 5% royalty', 'Free, MIT, no royalty'],

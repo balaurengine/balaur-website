@@ -1,5 +1,5 @@
 ---
-description: "Rollback between two engines that exchange only inputs, a digest per tick to catch a desync, and one Transport trait over websockets and QUIC."
+description: "Rollback between two engines that exchange only inputs, a digest per tick to catch a desync, and one Transport trait over WebSockets and QUIC."
 slug: rollback-networking
 title: Rollback networking
 authors: [dragos]
@@ -10,7 +10,7 @@ keywords: [rollback netcode, deterministic lockstep, quic, websocket, multiplaye
 import Clip from '@site/src/components/Clip';
 
 Rollback between two engines that exchange only inputs. A digest per tick to
-catch a desync. One `Transport` trait over websockets and QUIC.
+catch a desync. One `Transport` trait over WebSockets and QUIC.
 
 {/* truncate */}
 
@@ -25,7 +25,7 @@ catch a desync. One `Transport` trait over websockets and QUIC.
 - A digest per tick, exchanged. A peer publishes the hash of a tick
   only once every player's input for it has arrived, and a desync names the
   tick. Two predictions are never compared with each other.
-- One `Transport`. Websockets, and QUIC through `balaur_webtransport`,
+- One `Transport`. WebSockets, and QUIC through `balaur_webtransport`,
   where a datagram is a real one: a lost input costs a misprediction, not a
   stall. `balaur_http`, `balaur_websocket` and `balaur_webtransport` are
   one crate each, behind their own features.

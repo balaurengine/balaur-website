@@ -94,7 +94,7 @@ for the marketing pages, and they are read, not linted.
 2. **One idea per line.** A semicolon, a colon or a second `and` is the tell.
    Cut everything after the first idea, or promote it to its own line.
    - No: `Place, move and scale in the viewport; every property is a row in the inspector, and every change is undoable.`
-   - Yes: `Place, move and scale in the viewport.`
+   - Yes: `Place, move and scale.`
 3. **Enumerations enumerate.** A list of things is a list of things, with no
    trailing clause explaining them.
    - No: `Materials, lights, shadows and particles, live in the scene you are editing.`
@@ -106,7 +106,7 @@ for the marketing pages, and they are read, not linted.
    - No: `Save the script. It is already running.`
    - Yes: `Scripts reload instantly on save.`
 5. **One subject. No clause stacking.**
-   - No: `Hot reload in milliseconds with state intact; breakpoints, stepping, frames and locals in the editor.`
+   - No: `Hot reload in milliseconds; breakpoints, stepping, frames and locals in the editor.`
    - Yes: `Hot reload with breakpoint support.`
 6. **Short headlines.** A few words, not a claim with a subordinate clause.
    - No: `Deterministic by default: same inputs, same bits, on every machine.`
@@ -129,8 +129,8 @@ for the marketing pages, and they are read, not linted.
 11. **Cut implementation detail nobody asked for.** `delivered once per tick`,
     `on wgpu`, `linked at run time`, `over an ECS` answer a question the
     reader did not ask.
-    - No: `HTTP, websockets and QUIC delivered once per tick.`
-    - Yes: `HTTP, websockets and WebTransport.`
+    - No: `HTTP, WebSockets and QUIC delivered once per tick.`
+    - Yes: `HTTP, WebSockets and WebTransport.`
     - No: `2D lights and occluders build a light map.`
     - Yes: `2D lights and occluders.`
 12. **Banned phrases.** `one file to ship` says nothing; the fact is that a

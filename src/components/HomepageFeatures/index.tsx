@@ -40,8 +40,8 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        A <strong>tree of named nodes</strong> with scripts attached, saved as
-        plain TOML.
+        A <strong>tree of nodes</strong> with scripts attached, saved as
+        TOML.
       </>
     ),
   },
@@ -54,7 +54,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        Rust's syntax, <strong>async/await</strong>, and a debugger in the
+        Rust's syntax, instant reload, <strong>async/await</strong>, and a debugger in the
         editor.
       </>
     ),
@@ -69,7 +69,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Save a script and the new code is{' '}
-        <strong>live in milliseconds</strong>, state intact.
+        <strong>live in milliseconds</strong>.
       </>
     ),
   },
@@ -156,7 +156,7 @@ const FeatureList: FeatureItem[] = [
     ),
     description: (
       <>
-        HTTP, <strong>websockets</strong> and WebTransport, with compression.
+        HTTP, WebSockets and WebTransport, with compression.
       </>
     ),
   },
