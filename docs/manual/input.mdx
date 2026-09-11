@@ -90,12 +90,97 @@ A pad with no gyroscope or touchpad reads zero and an empty list, the answer
 an absent pad gives. All of it lands in the recorded snapshot, so a replay
 reproduces a motion-controlled session exactly.
 
-## Touch and dropped files
+## Touch
 
-- `input::touches()` returns the touch points active this frame, with
-  `touches_started()` and `touches_ended()` for the edges.
-- `input::dropped_files()` returns the paths of files dropped onto the window
-  this frame, which is how a tool accepts a drag and drop.
+- `input::touches()` returns the fingers on the screen as `#{ id, x, y }`,
+  oldest first, with `touches_started()` and `touches_ended()` for the edges.
+- A finger is also a left click, so every widget kind works on a phone.
+  `emulate_touch_from_mouse` does the reverse and makes a held mouse button a
+  finger, which is how a desktop drives touch code.
+
+```toml
+[input]
+emulate_mouse_from_touch = true   # the default
+emulate_touch_from_mouse = false  # the default
+```
+
+## Touch controls
+
+A `touch_button` presses an action while a finger is on it. A `touch_stick`
+pushes one action per axis. The game reads the action, so the script that
+answers a keyboard answers a phone.
+
+```toml
+[nodes.touch_stick]
+action_x = "move_x"
+action_y = "move_y"        # 1 pushed away from the player, as a gamepad reads
+anchor = "bottom_left"
+offset = [130.0, -130.0]   # design pixels to the centre, y down
+radius = 90.0
+
+[nodes.touch_button]
+action = "jump"
+anchor = "bottom_right"
+shape = "circle"
+```
+
+- **They feed, they are not bound.** An action bound to Space gains the
+  button as a second source, and the furthest from rest wins. An action no
+  manifest declared still answers.
+- **Placed against the screen.** `anchor` and `offset` in design pixels,
+  inside the safe area. In the editor they sit in the viewport, and only while
+  the game plays.
+- **Hidden without a touch screen.** `visibility = "touchscreen"` is the
+  default: a phone, a touch browser, or a project with
+  `emulate_touch_from_mouse` shows them. `"always"` shows them everywhere.
+- **The finger keeps what it grabbed.** A thumb that slides off a button
+  mid-jump still holds it. `recenter = true` puts the stick under the thumb
+  that found it, and `deadzone` holds a resting thumb at zero.
+- **Components, not widgets.** They are hit-tested inside the tick, so they
+  run headless, land in the digest and replay exactly.
+- `ui::wants_pointer()` says whether a widget took this frame's finger, so a
+  tap on a HUD button does not also fire the shot behind it.
+
+## Gestures
+
+```rune
+if let Some(scale) = input::pinch().get("scale") { zoom *= scale; }
+let pan = input::pan();                 // #{ x, y }, two fingers or more
+if let Some(dx) = input::swipe().get("x") { /* a unit direction */ }
+if input::long_press().get("x").is_some() { /* once per hold */ }
+```
+
+| Call | Answers |
+| --- | --- |
+| `pinch()` | `#{ scale, x, y }` while two fingers move apart or together; `scale` is against last frame |
+| `pan()` | `#{ x, y }`, the average movement of every finger down |
+| `swipe()` | `#{ x, y, speed }` on the frame a finger that travelled far enough lifts |
+| `long_press()` | `#{ x, y }` once, when a still finger has held long enough |
+
+Each is derived from the recorded fingers and the fixed step, so a replay
+reproduces it, and each answers empty with nothing happening. `swipe_pixels`,
+`long_press_seconds` and `long_press_slop` in `[input]` set the thresholds.
+
+## The on-screen keyboard
+
+- A focused `field` raises the system keyboard on iOS and Android.
+- `input::keyboard_height()` is how much of the screen it covers, in pixels
+  from the bottom: read from UIKit, the Android activity or the page, and
+  recorded.
+- `avoid_keyboard = true` on a root widget measures the bottom of the screen
+  from the top of the keyboard, so a form or a chat bar stays above it.
+
+## Dropped files
+
+`input::dropped_files()` returns the paths of files dropped onto the window
+this frame, which is how a tool accepts a drag and drop.
+
+## Feeding input from a script
+
+`feed_key`, `feed_mouse`, `feed_mouse_button`, `feed_touch(id, x, y, phase)`
+and `feed_action(name, value)` put input into the frame as if a device had
+reported it. A test, a showcase or an automation client drives a game with
+them, and a fed frame records and replays like a real one.
 
 ## Seeing input
 
