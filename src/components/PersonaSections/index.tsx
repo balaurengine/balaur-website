@@ -76,7 +76,7 @@ const PERSONAS: Persona[] = [
     links: [
       {to: '/code', label: 'Balaur for game developers'},
       {to: '/docs/manual/scripting', label: 'Scripting'},
-      {to: '/docs/manual/extensions', label: 'Extensions'},
+      {to: '/docs/manual/plugins', label: 'Plugins'},
       {to: '/examples#hello', label: 'Open examples/hello'},
     ],
   },

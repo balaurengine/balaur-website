@@ -1,0 +1,146 @@
+---
+title: "Plugins: static or dynamic, in Rust or C"
+sidebar_label: "Plugins"
+description: "Everything above the Balaur core is a plugin. Build one into the engine, or load it at run time from a shared library written in Rust or C."
+image: "/img/social/plugins.png"
+sidebar_position: 12
+---
+
+# Plugins
+
+Everything above the core is a plugin: physics, rendering, audio, networking.
+One `Plugin` trait covers them all, and the same source builds either way.
+
+| | Static | Dynamic |
+| --- | --- | --- |
+| Ships as | Part of the engine binary, behind a cargo feature | A shared library in the project's `extensions/` directory |
+| Runs on | Every platform, the web included | macOS, Linux and Windows |
+| Written in | Rust | Rust, or C, Zig, Odin, C++ |
+| Needs | An engine you build | A desktop release, which has the `extensions` feature |
+| Starter | [`crates/balaur_physics`](https://github.com/balaurengine/balaur/tree/main/crates/balaur_physics) | [`examples/extension_greeter`](https://github.com/balaurengine/balaur/tree/main/examples/extension_greeter) (Rust), [`examples/extension_c_counter`](https://github.com/balaurengine/balaur/tree/main/examples/extension_c_counter) (C) |
+
+## A dynamic plugin in Rust
+
+`balaur_plugin` is the one dependency.
+
+```toml title="Cargo.toml"
+[package]
+name = "greeter"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+balaur_plugin = { git = "https://github.com/balaurengine/balaur", tag = "v0.2.0" }
+```
+
+```rust title="src/lib.rs"
+use balaur_plugin::prelude::*;
+
+pub struct Greeter {
+    manifest: Manifest,
+}
+
+impl Default for Greeter {
+    fn default() -> Self {
+        Self {
+            manifest: Manifest::new("greeter", env!("CARGO_PKG_VERSION")),
+        }
+    }
+}
+
+impl Plugin for Greeter {
+    fn manifest(&self) -> &Manifest {
+        &self.manifest
+    }
+
+    fn declare(&mut self, reg: &mut Registry<'_>) -> Result<()> {
+        let mut m = reg.script_module("greeter")?;
+        m.function("greet", |_: &Engine, name: String| Ok(format!("hello, {name}")));
+        m.constant("VERSION", Value::Str(env!("CARGO_PKG_VERSION").into()));
+        Ok(())
+    }
+}
+
+balaur_plugin::export_plugin!(Greeter);
+```
+
+```bash
+cargo build --release
+cp target/release/libgreeter.dylib my-game/extensions/   # .so on Linux, greeter.dll on Windows
+```
+
+Scripts then call `greeter::greet("world")` like any built-in module.
+
+- **Match the engine's compiler.** Copy the engine's
+  [`rust-toolchain.toml`](https://github.com/balaurengine/balaur/blob/main/rust-toolchain.toml)
+  into the plugin, and pin the `tag` to the version `balaur --version` prints.
+  The host refuses any other build and names the difference.
+- `Registry` also takes resources, systems, components, presets, asset types
+  and replay sources. `balaur_plugin` re-exports `balaur_core`,
+  `balaur_script`, `anyhow` and `toml` for what the prelude leaves out.
+- A Rust plugin reads and writes its own resources, not the engine's. The two
+  builds compute different type ids for the same type.
+
+## A dynamic plugin in C
+
+The C boundary needs no toolchain match, and any compiler with a C ABI works.
+
+- The header is `include/balaur_extension.h` in every desktop download, and
+  [`crates/balaur_plugin/include`](https://github.com/balaurengine/balaur/tree/main/crates/balaur_plugin/include)
+  in the repository.
+- Export `balaur_extension_abi`, `balaur_extension_name`,
+  `balaur_extension_version` and `balaur_extension_declare`.
+- `declare` receives a table of host functions. It opens a script module and
+  adds functions and constants to it.
+- Values are borrowed for one call, and the host copies what you return, so
+  nothing crosses that needs freeing. Static storage keeps a returned string
+  alive.
+
+```c
+int32_t balaur_extension_declare(const BalaurApi *api, BalaurRegistry *registry) {
+    BalaurModule *m = api->module_open(registry, balaur_str("counter"));
+    api->module_function(m, balaur_str("add"), add, NULL);
+    api->module_close(m);
+    return 0;
+}
+```
+
+```bash
+cc -shared -fPIC -I path/to/include -o libcounter.so counter.c   # .dylib on macOS
+```
+
+A C plugin covers script functions and constants today. Components, systems
+and calls back into scripts are on the [roadmap](../roadmap.mdx).
+
+## A static plugin
+
+A static plugin is part of the engine build, so it runs on the web and mobile
+too.
+
+- Add the crate to the `modules!` table in `crates/balaur/src/lib.rs`, behind
+  a cargo feature.
+- Build the editor and the runtime templates with that feature, as
+  [A custom engine](./ci.mdx#a-custom-engine) shows. `balaur export` compiles
+  scripts against the modules its own binary has, so the editor needs it too.
+
+## Turning plugins on and off
+
+`[plugins]` in `project.toml` decides what a project loads.
+
+- `audio = false` turns a plugin off. Turning off one every build has, like
+  `physics`, is refused.
+- A table turns it on and hands the table to the plugin, which reads it with
+  `reg.config()`.
+- Asking for a plugin nothing registered is an error naming the feature to
+  build with.
+- `Manifest::new(..).requiring(&["physics"])` declares a dependency. Plugins
+  load by name and requirement, never by directory listing, so every machine
+  registers them in the same order.
+- `balaur export` does not copy `extensions/` yet. An exported desktop game
+  looks for it in the directory it runs from.
+
+The design behind all of this is in
+[ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md#modules-and-extensions).

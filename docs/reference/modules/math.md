@@ -2,7 +2,7 @@
 title: "math module"
 image: "/img/social/reference.png"
 sidebar_label: "math"
-description: "Deterministic float maths, backed by pure-Rust libm: the same inputs give the same outputs on every platform. A script uses these rather than the language's…"
+description: "Deterministic float maths, backed by pure-Rust libm: the same inputs give the same outputs on every platform. A script uses these rather than the…"
 custom_edit_url: null
 ---
 

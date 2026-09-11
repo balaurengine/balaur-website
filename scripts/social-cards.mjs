@@ -55,7 +55,7 @@ const CARDS = {
   input: ['Input', 'Actions over keyboard, mouse, gamepads and touch — one snapshot per frame.', '/docs/manual/input'],
   networking: ['Networking', 'HTTP, WebSockets and QUIC, delivered once per tick and replayable.', '/docs/manual/networking'],
   gamend: ['Gamend', 'Accounts, lobbies, chat, leaderboards and server hooks.', '/docs/manual/gamend'],
-  extensions: ['Modules and extensions', 'Modules linked in, extensions loaded at run time. One plugin trait.', '/docs/manual/extensions'],
+  plugins: ['Plugins', 'Static or dynamic, in Rust or C. One plugin trait.', '/docs/manual/plugins'],
   editor: ['The editor', 'A Balaur project that edits Balaur projects.', '/docs/manual/editor'],
   determinism: ['Determinism', 'Same inputs, same outputs, on every platform.', '/docs/manual/determinism'],
   shipping: ['Shipping a game', 'A pack of bytecode and assets, fused onto a runtime: one file to ship.', '/docs/manual/shipping'],
