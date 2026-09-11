@@ -25,7 +25,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `focused()` | — | Whether the window is in front of the player this tick; every script's `on_focus_changed(bool)` is called when it changes. True with no window. |
 | `has_plugin(name: string)` | — | Whether one plugin loaded, so a game shipped without `http` can say so rather than call into a module that is not there. |
 | `open_url(url: string)` | — | Open an http, https or mailto URL in whatever the player browses with: an opener on a desktop, a new tab on the web. Not on iOS or Android yet, where it reports that it has no opener. An effect on the world outside the game: never recorded, and it does nothing while a recording plays. |
-| `platform()` | — | Where this runs: `{ os, web, mobile, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
+| `platform()` | — | Where this runs: `{ os, web, mobile, touchscreen, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
 | `plugin_version(name: string)` | — | The version of one loaded plugin, or nil when it did not load. |
 | `plugins()` | — | Every plugin this build loaded, named, in load order. |
 | `profile_scripts(on)` | — | Start or stop counting what each script costs. Turning it on clears the tally. |

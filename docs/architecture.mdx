@@ -57,8 +57,9 @@ enforces the direction.
 
 ## Scene tree
 
-- A node is an entity carrying `Name`, `Parent`, `Children`, `Transform` and
-  `GlobalTransform`.
+- A node is an entity carrying `Name`, `Parent`, `Children` and
+  `GlobalTransform`. Its local `Transform` is the `transform` component, and
+  a node without one sits where its parent is.
 - Node paths, transform propagation and recursive free are core systems.
 - Plugins hang their own components on the same entities.
 

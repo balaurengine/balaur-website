@@ -2,7 +2,7 @@
   "asset_types": {
     "animation_clip": {
       "directory": "animations",
-      "doc": "A clip keys node properties over time. `length` is in seconds and may be\nleft out to end at the last key; `loop` is `none` (hold the last key),\n`loop` or `pingpong`. Each track names a `target` node path relative to the\nplaying node (empty means that node), a `property` (`position`,\n`rotation_euler`, `rotation`, `scale` or `<component>/<property>`), an\n`interp` (`step`, `linear`, `cubic`) and its `keys`, each `{ t, value }` with\nan optional `ease`. A track with no `property` is a method track whose keys\ncall the node's script. A file holds one clip, or several under\n`[clips.<name>]`, addressed as `file.toml#name`.\n\n```toml\ntype = \"animation_clip\"\n\n[clips.patrol]\nlength = 4.0\nloop = \"pingpong\"\n\n[[clips.patrol.tracks]]\nproperty = \"position\"\ninterp = \"linear\"\nkeys = [\n  { t = 0.0, value = [-2.5, 0.25, -2.0] },\n  { t = 4.0, value = [-2.5, 0.25, 2.0], ease = \"in_out_sine\" },\n]\n```"
+      "doc": "A clip keys node properties over time. `length` is in seconds and may be\nleft out to end at the last key; `loop` is `none` (hold the last key),\n`loop` or `pingpong`. Each track names a `target` node path relative to the\nplaying node (empty means that node), a `property` (`position`,\n`rotation_euler`, `rotation`, `scale`, `visible`, `tint` or\n`<component>/<property>`), an `interp` (`step`, `linear`, `cubic`) and its\n`keys`, each `{ t, value }` with an optional `ease`. `visible` is one channel\nand always stepped; `tint` is the `[r, g, b, a]` every descendant is\nmultiplied by, which a renderable's own `color` is not. A track with no\n`property` is a method track whose keys call the node's script. A file holds\none clip, or several under `[clips.<name>]`, addressed as `file.toml#name`.\n\n```toml\ntype = \"animation_clip\"\n\n[clips.patrol]\nlength = 4.0\nloop = \"pingpong\"\n\n[[clips.patrol.tracks]]\nproperty = \"position\"\ninterp = \"linear\"\nkeys = [\n  { t = 0.0, value = [-2.5, 0.25, -2.0] },\n  { t = 4.0, value = [-2.5, 0.25, 2.0], ease = \"in_out_sine\" },\n]\n```"
     },
     "bone_map": {
       "directory": "animations",
@@ -18,7 +18,7 @@
     },
     "mesh": {
       "directory": "models",
-      "doc": "Geometry for `mesh`-typed properties. A definition names a `source` model\nfile to import, or a `kind` of parametric primitive to build, or carries the\nvertices itself as `positions` and `indices`, which is what lets a script\nbuild one at run time; naming more than one is refused. A `skin` table adds\nbone weights for bone animation, `colors` a tint per vertex, and each\n`[[morphs]]` a named shape the mesh can be blended towards -- which a clip\ndrives as `mesh/morph.<name>`.\n\nA primitive is built by the same mesher the `shape3d` component draws, so a\ncollider over this asset collides exactly what is on screen. A `text` mesh\nis the outlines of a shaped run, filled with the counters left as holes; it\nsits on its baseline and is sized in world units.\n\n```toml\n[[assets]]\nid = \"blade\"\ntype = \"mesh\"\nsource = \"models/blade.obj\"      # imported...\n# ...or a primitive, one of ball, cuboid, capsule, cylinder, cone, plane,\n# torus, pyramid, prism, tube:\nkind = \"torus\"\nradius = 1.0\ntube_radius = 0.3\n# ...or a word, shaped and filled from the project's fonts:\nkind = \"text\"\ntext = \"BALAUR\"\nsize = 1.0\n# ...or, instead of any of those:\npositions = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]\nindices = [[0, 1, 2]]\n```"
+      "doc": "Geometry for `mesh`-typed properties. A definition names a `source` model\nfile to import, or a `kind` of parametric primitive to build, or carries the\nvertices itself as `positions` and `indices`, which is what lets a script\nbuild one at run time; naming more than one is refused. A `skin` table adds\nbone weights for skeletal animation, `colors` a tint per vertex, and each\n`[[morphs]]` a named shape the mesh can be blended towards -- which a clip\ndrives as `mesh/morph.<name>`.\n\nA primitive is built by the same mesher the `shape3d` component draws, so a\ncollider over this asset collides exactly what is on screen. A `text` mesh\nis the outlines of a shaped run, filled with the counters left as holes; it\nsits on its baseline and is sized in world units.\n\n```toml\n[[assets]]\nid = \"blade\"\ntype = \"mesh\"\nsource = \"models/blade.obj\"      # imported...\n# ...or a primitive, one of ball, cuboid, capsule, cylinder, cone, plane,\n# torus, pyramid, prism, tube:\nkind = \"torus\"\nradius = 1.0\ntube_radius = 0.3\n# ...or a word, shaped and filled from the project's fonts:\nkind = \"text\"\ntext = \"BALAUR\"\nsize = 1.0\n# ...or, instead of any of those:\npositions = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]\nindices = [[0, 1, 2]]\n```"
     },
     "path2d": {
       "directory": "paths",
@@ -70,6 +70,7 @@
     "light2d": "A 2D light: the node's position places it, its rotation aims a directional one, and everything drawn under it (sprites, polygons, tiles, a 3D scene behind them) is multiplied by the light map the scene's lights build. A scene with no `light2d` draws exactly as it does unlit; the first one added makes everything else fall to the camera's `ambient`. Debug lines and particles draw after the light map and stay unlit.",
     "light3d": "A 3D light: the node's position places it and its rotation aims it. A scene with no `light3d` keeps the engine's own key light, so nothing draws dark until a scene starts placing its own; the first one added retires it. Turn one off with the node's `visible`, not by deleting it.",
     "listener": "The ears a positional sound is heard from: its distance to this node sets its volume, and its offset across this node's right sets its pan. The last `current` listener applied wins; with no listener in the scene at all, every sound plays flat.",
+    "material": "The material this node and everything under it draw with, unless a renderable names its own. A shape's, sprite's, mesh's or tile map's own `material` is that node's alone; this is the one that inherits. Goes on any node, one that draws nothing included.",
     "mesh": "Authored 3D geometry from a `mesh` asset, drawn at the node and deformed by the rig `skeleton` names when the asset carries a skin.",
     "modifier2d": "Poses 2D bones after the clip has run, every frame: `look_at` turns one bone toward a target node, `two_bone_ik` bends a root, middle and tip chain so the tip reaches it, `fabrik` and `ccdik` reach with a chain of any length, `jiggle` lets a chain trail the pose on a spring, and `follow` moves the node itself to its target plus `offset`, `lag` seconds behind.",
     "modifier3d": "The 3D twin of `modifier2d`, over `bone3d`: `look_at`, `two_bone_ik`, `fabrik`, `ccdik`, `jiggle` and `follow`, posing bones after the clip has run -- `follow` moves the node rather than a bone, so a camera trails what it watches without a script. A chain solver turns each bone by the shortest arc onto the solved point, so a bone's twist about its own aim is left as the clip wrote it.",
@@ -86,6 +87,8 @@
     "text3d": "A block of text drawn in the 3D pass on a quad that faces the camera, shaped by the engine's fonts and sized at `pixels_per_unit` font pixels to the world unit.",
     "tile_collision": "Collision for a `tilemap`'s own cells: every tile the tileset marks solid, as one shape per behaviour, with the material keys a `collider2d` takes. A tile that draws its own polygons gets a collider of its own.",
     "tilemap": "A grid of tiles cut from one `tileset` atlas and centred on the node, one character per cell, drawn at `pixels_per_unit` tile-texture pixels per world unit.",
+    "touch_button": "An on-screen button that presses an `action` while a finger is on it, so a game bound to a key on a desktop needs no second code path on a phone. Placed against the screen less its safe area, not in the scene's world.",
+    "touch_stick": "An on-screen stick that pushes one action per axis while a thumb drags it, reading -1..1 with y positive away from the player, the way a gamepad's stick does. Placed against the screen less its safe area.",
     "transform": "Where the node sits in its parent's space, how it is turned and how big it is. A node without one is at its parent: `propagate_transforms` hands the parent's world transform straight down, which is what a node that only groups or only draws UI wants.",
     "vehicle3d": "Makes this node's body a car chassis, driven by the `wheel3d` children under it. Rapier casts a ray down from each wheel and pushes the chassis along a spring, which is how driving games model cars: it never jams and never tunnels.",
     "wheel3d": "One wheel of the `vehicle3d` above it. Where the node sits on the chassis is where the wheel's ray starts; the rest is suspension tuning. Drive it with `physics3d.set_engine_force`, `set_brake` and `set_steering`.",
@@ -168,6 +171,9 @@
     "listener": [
       "audio"
     ],
+    "material": [
+      "render"
+    ],
     "mesh": [
       "3d",
       "render"
@@ -228,6 +234,14 @@
     "tilemap": [
       "2d",
       "render"
+    ],
+    "touch_button": [
+      "2d",
+      "ui"
+    ],
+    "touch_stick": [
+      "2d",
+      "ui"
     ],
     "transform": [
       "2d",
@@ -2339,6 +2353,14 @@
         "type": "bool"
       }
     },
+    "material": {
+      "source": {
+        "asset": "material",
+        "default": "",
+        "description": "The material asset; empty takes the parent's",
+        "type": "asset"
+      }
+    },
     "mesh": {
       "layers": {
         "default": -1,
@@ -3708,6 +3730,176 @@
         "type": "asset"
       }
     },
+    "touch_button": {
+      "action": {
+        "default": "",
+        "description": "The action a finger on this button presses, as `[input.actions]` names it; the action needs no touch binding",
+        "type": "string"
+      },
+      "anchor": {
+        "default": "bottom_right",
+        "description": "Screen corner or edge the offset is measured from, inside the safe area",
+        "options": [
+          "top_left",
+          "center_top",
+          "top_right",
+          "center_left",
+          "center",
+          "center_right",
+          "bottom_left",
+          "center_bottom",
+          "bottom_right"
+        ],
+        "type": "enum"
+      },
+      "color": {
+        "default": [
+          1.0,
+          1.0,
+          1.0,
+          0.25
+        ],
+        "description": "Fill while nothing is on it, as channel floats or #rrggbb / #rrggbbaa",
+        "type": "color"
+      },
+      "height": {
+        "default": 120.0,
+        "description": "Touch area height in design pixels",
+        "min": 0.0,
+        "type": "float"
+      },
+      "offset": {
+        "default": [
+          -110.0,
+          -110.0
+        ],
+        "description": "From the anchor to the button's centre, in design pixels, x right and y down",
+        "type": "vec2"
+      },
+      "pressed_color": {
+        "default": [
+          1.0,
+          1.0,
+          1.0,
+          0.5
+        ],
+        "description": "Fill while a finger is on it",
+        "type": "color"
+      },
+      "shape": {
+        "default": "circle",
+        "description": "The touch area's outline; a circle uses the larger half of the box",
+        "options": [
+          "rect",
+          "circle"
+        ],
+        "type": "enum"
+      },
+      "visibility": {
+        "default": "touchscreen",
+        "description": "`touchscreen` hides it and stops it taking fingers where the platform has no touch screen",
+        "options": [
+          "always",
+          "touchscreen"
+        ],
+        "type": "enum"
+      },
+      "width": {
+        "default": 120.0,
+        "description": "Touch area width in design pixels",
+        "min": 0.0,
+        "type": "float"
+      }
+    },
+    "touch_stick": {
+      "action_x": {
+        "default": "",
+        "description": "The action the stick's left and right feed, -1 at the left of its throw",
+        "type": "string"
+      },
+      "action_y": {
+        "default": "",
+        "description": "The action the stick's up and down feed, 1 pushed away from the player",
+        "type": "string"
+      },
+      "anchor": {
+        "default": "bottom_left",
+        "description": "Screen corner or edge the offset is measured from, inside the safe area",
+        "options": [
+          "top_left",
+          "center_top",
+          "top_right",
+          "center_left",
+          "center",
+          "center_right",
+          "bottom_left",
+          "center_bottom",
+          "bottom_right"
+        ],
+        "type": "enum"
+      },
+      "color": {
+        "default": [
+          1.0,
+          1.0,
+          1.0,
+          0.18
+        ],
+        "description": "The base circle's fill, as channel floats or #rrggbb / #rrggbbaa",
+        "type": "color"
+      },
+      "deadzone": {
+        "default": 0.15,
+        "description": "Fraction of the throw that reads zero, so a resting thumb does not drift; the rest is rescaled so the first live reading is near zero",
+        "max": 0.95,
+        "min": 0.0,
+        "type": "float"
+      },
+      "knob_color": {
+        "default": [
+          1.0,
+          1.0,
+          1.0,
+          0.45
+        ],
+        "description": "The knob's fill",
+        "type": "color"
+      },
+      "knob_radius": {
+        "default": 38.0,
+        "description": "The knob's own radius in design pixels; drawing only",
+        "min": 1.0,
+        "type": "float"
+      },
+      "offset": {
+        "default": [
+          130.0,
+          -130.0
+        ],
+        "description": "From the anchor to the stick's centre, in design pixels, x right and y down",
+        "type": "vec2"
+      },
+      "radius": {
+        "default": 90.0,
+        "description": "The throw in design pixels: how far the knob travels for a full 1, and the circle a thumb may grab it in",
+        "min": 1.0,
+        "type": "float"
+      },
+      "recenter": {
+        "default": false,
+        "description": "Move the stick's centre to the thumb that grabbed it, so an off-centre grab does not jerk",
+        "type": "bool"
+      },
+      "visibility": {
+        "default": "touchscreen",
+        "description": "`touchscreen` hides it and stops it taking fingers where the platform has no touch screen",
+        "options": [
+          "always",
+          "touchscreen"
+        ],
+        "type": "enum"
+      }
+    },
     "transform": {
       "position": {
         "default": [
@@ -3855,9 +4047,19 @@
           "bottom_left",
           "bottom_right",
           "center",
+          "center_left",
+          "center_right",
+          "center_top",
+          "center_bottom",
           "fill"
         ],
         "type": "enum"
+      },
+      "avoid_keyboard": {
+        "default": false,
+        "description": "On a root: measure the bottom of the surface from the top of the on-screen keyboard, so a form or a chat bar stays above it; nothing on a desktop",
+        "group": "placement",
+        "type": "bool"
       },
       "checked": {
         "default": false,
@@ -3932,10 +4134,10 @@
         "type": "enum"
       },
       "font_size": {
-        "default": 16.0,
-        "description": "Text size in design pixels",
+        "default": 0.0,
+        "description": "Text size in design pixels; 0 takes the size the role or the kind carries",
         "group": "type",
-        "min": 6.0,
+        "min": 0.0,
         "type": "float"
       },
       "font_style": {
@@ -3962,6 +4164,12 @@
         "group": "layout",
         "min": 0.0,
         "type": "float"
+      },
+      "group": {
+        "default": "",
+        "description": "A name this `check` shares with the checks it is exclusive with: ticking one unticks the rest, and one already ticked stays ticked. Empty leaves it flipping on its own",
+        "group": "value",
+        "type": "string"
       },
       "grow": {
         "default": 0.0,
@@ -4014,6 +4222,12 @@
           "evenly"
         ],
         "type": "enum"
+      },
+      "keep_open": {
+        "default": false,
+        "description": "A menu row that leaves its menu open when clicked, as a toggle does; any other row closes it",
+        "group": "events",
+        "type": "bool"
       },
       "kind": {
         "default": "label",
@@ -4108,7 +4322,7 @@
       },
       "on_click": {
         "default": "",
-        "description": "Script method called on this node when the button is clicked",
+        "description": "Script method called on this node when the widget is clicked. An `image` that names one senses clicks too, which is how a picture becomes a button",
         "group": "events",
         "type": "string"
       },
@@ -4178,6 +4392,12 @@
         "default": false,
         "description": "Draw a `field`'s text as dots, for a password",
         "group": "value",
+        "type": "bool"
+      },
+      "showing": {
+        "default": false,
+        "description": "Holds a menu's rows up from the scene, as a click would; for an offscreen run or a tutorial, since nothing can click there",
+        "group": "events",
         "type": "bool"
       },
       "slice": {
@@ -4252,6 +4472,12 @@
       "tooltip": {
         "default": "",
         "description": "Text shown after the pointer rests on the widget; still shown when it is `disabled`, which is where it says why",
+        "group": "type",
+        "type": "string"
+      },
+      "trailing": {
+        "default": "",
+        "description": "Text a button draws against its far edge, dimmer than its caption: a shortcut, or a menu's caret",
         "group": "type",
         "type": "string"
       },
@@ -4674,7 +4900,7 @@
         "focused": "Whether the window is in front of the player this tick; every script's `on_focus_changed(bool)` is called when it changes. True with no window.",
         "has_plugin": "Whether one plugin loaded, so a game shipped without `http` can say so rather than call into a module that is not there.",
         "open_url": "Open an http, https or mailto URL in whatever the player browses with: an opener on a desktop, a new tab on the web. Not on iOS or Android yet, where it reports that it has no opener. An effect on the world outside the game: never recorded, and it does nothing while a recording plays.",
-        "platform": "Where this runs: `{ os, web, mobile, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did.",
+        "platform": "Where this runs: `{ os, web, mobile, touchscreen, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did.",
         "plugin_version": "The version of one loaded plugin, or nil when it did not load.",
         "plugins": "Every plugin this build loaded, named, in load order.",
         "profile_scripts": "Start or stop counting what each script costs. Turning it on clears the tally.",
@@ -5771,10 +5997,13 @@
         "bindings": "What the action is bound to now, whether from the project or from the player's own rebinding.",
         "composing": "The text an input method is still composing, for a field to show under its caret; empty once it commits into `typed`, and always empty without an input method.",
         "declare_actions": "Declare the actions a project's `[input.actions]` would, from a table of name to binding list; for a host running a project other than its own, such as the editor.",
+        "declare_config": "Take the settings a project's `[input]` table would give, from a table: the two emulation switches and the gesture thresholds. For a host running a project other than its own, such as the editor; a key left out keeps its default.",
         "dropped_files": "The absolute paths of files dropped onto the window this frame, in drop order; desktop only.",
+        "feed_action": "Put a value into an action for one frame without a binding, the way a `touch_button` does; the furthest from rest wins where something else feeds the same action. Takes effect on the next tick, since actions derive at the top of one.",
         "feed_key": "Press or release a `KEY_*` key as if the window had reported it; the edge lasts this frame, the state until the opposite feed.",
         "feed_mouse": "Move the cursor to a window-pixel position as if the window had reported it; the delta accumulates for this frame.",
         "feed_mouse_button": "Press or release a `MOUSE_*` button as if the window had reported it.",
+        "feed_touch": "Put a finger on the screen as if the window had reported it: `phase` is `start`, `move`, `end` or `cancel`, and the position is in the same pixels as `mouse_position`.",
         "gamepad_acceleration": "The pad's acceleration in g, gravity included, so a pad at rest reads 1 on one axis. Read from PlayStation pads on desktop; zero for a pad with no accelerometer.",
         "gamepad_axis": "How far the pad's `AXIS_*` stick or trigger is pushed, -1 to 1; zero at rest and for an absent pad.",
         "gamepad_can_rumble": "Whether the pad has motors to rumble; false for a pad that is not connected, and on a build with no force feedback.",
@@ -5792,12 +6021,16 @@
         "just_pressed": "Whether the `KEY_*` key went down this frame; true for that one frame only.",
         "just_released": "Whether the `KEY_*` key came up this frame; true for that one frame only.",
         "keyboard_height": "How much of the window the on-screen keyboard covers, in pixels from the bottom: what a form moves up by. Zero with no keyboard up, and always zero on a desktop.",
+        "long_press": "Where a finger has been held still past `long_press_seconds`, as `{ x, y }`. Reported once per finger, on the frame the hold passes; empty otherwise.",
         "mouse_delta": "How far the cursor moved this frame, in pixels; movement, not a position.",
         "mouse_just_pressed": "Whether the `MOUSE_*` button went down this frame; true for that one frame only.",
         "mouse_just_released": "Whether the `MOUSE_*` button came up this frame; true for that one frame only.",
         "mouse_position": "The cursor's position in window pixels, with (0, 0) at the top-left corner.",
+        "pan": "Two or more fingers moving together as `{ x, y }`, the average movement since last frame in the same pixels as `mouse_position`. Zero with fewer than two down.",
+        "pinch": "Two fingers moving apart or together as `{ scale, x, y }`: `scale` above 1 is apart, measured against last frame, and `x`/`y` are the point between them. Empty with fewer than two fingers down.",
         "reset_bindings": "Drop every saved rebinding and go back to what the project declared.",
         "scroll_delta": "How far the wheel turned this frame, as an (x, y) pair; zero when it did not turn.",
+        "swipe": "A finger that travelled far enough before it lifted, as `{ x, y, speed }`: a unit direction and pixels per second. Reported on the frame it lifted and never again; empty otherwise.",
         "touches": "Every finger on the screen as `{ id, x, y }`, oldest first, in the same pixels as `mouse_position`.",
         "touches_ended": "The ids of the fingers that lifted or were cancelled this frame.",
         "touches_started": "The ids of the fingers that touched down this frame.",
@@ -5814,10 +6047,13 @@
         "bindings",
         "composing",
         "declare_actions",
+        "declare_config",
         "dropped_files",
+        "feed_action",
         "feed_key",
         "feed_mouse",
         "feed_mouse_button",
+        "feed_touch",
         "gamepad_acceleration",
         "gamepad_axis",
         "gamepad_can_rumble",
@@ -5835,12 +6071,16 @@
         "just_pressed",
         "just_released",
         "keyboard_height",
+        "long_press",
         "mouse_delta",
         "mouse_just_pressed",
         "mouse_just_released",
         "mouse_position",
+        "pan",
+        "pinch",
         "reset_bindings",
         "scroll_delta",
+        "swipe",
         "touches",
         "touches_ended",
         "touches_started",
@@ -5858,10 +6098,13 @@
         "bindings": "String -> Value",
         "composing": "() -> Value",
         "declare_actions": "Value -> ()",
+        "declare_config": "Value -> ()",
         "dropped_files": "() -> Value",
+        "feed_action": "(String, f32) -> ()",
         "feed_key": "(String, bool) -> ()",
         "feed_mouse": "(f32, f32) -> ()",
         "feed_mouse_button": "(usize, bool) -> ()",
+        "feed_touch": "(i64, f32, f32, String) -> ()",
         "gamepad_acceleration": "i64 -> Value",
         "gamepad_axis": "(i64, String) -> f32",
         "gamepad_can_rumble": "i64 -> bool",
@@ -5879,12 +6122,16 @@
         "just_pressed": "String -> bool",
         "just_released": "String -> bool",
         "keyboard_height": "() -> Value",
+        "long_press": "() -> Value",
         "mouse_delta": "() -> (f32, f32)",
         "mouse_just_pressed": "usize -> bool",
         "mouse_just_released": "usize -> bool",
         "mouse_position": "() -> (f32, f32)",
+        "pan": "() -> Value",
+        "pinch": "() -> Value",
         "reset_bindings": "() -> ()",
         "scroll_delta": "() -> (f32, f32)",
+        "swipe": "() -> Value",
         "touches": "() -> Value",
         "touches_ended": "() -> Value",
         "touches_started": "() -> Value",
@@ -5956,7 +6203,7 @@
           "value": "6.283185307179586"
         }
       ],
-      "doc": "Deterministic float maths, backed by pure-Rust `libm`: the same inputs give the same outputs on every platform. A script uses these rather than the language's own float methods, which reach for the platform's libm and drift between machines.",
+      "doc": "Deterministic float maths, backed by pure-Rust `libm`: the same inputs give the same bits on every platform. A script uses these rather than the language's own float methods, which reach for the platform's libm and drift between machines.",
       "docs": {
         "abs": "The magnitude, with the sign dropped.",
         "acos": "The angle in radians whose cosine is the argument, from 0 to PI; NaN outside -1..1.",
@@ -6050,7 +6297,7 @@
         "states"
       ],
       "constants": [],
-      "doc": "What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).",
+      "doc": "What every node has: its name and path, its place in the world, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.get_node(\"Arm\")`). `position`, `rotation_euler` and `scale` read the `transform` component, which `this.node.transform.position` reads and writes directly.",
       "docs": {
         "add_child": "Create a named child node under this one and return it.",
         "add_tag": "File the node under a name; `scene.tagged` finds it from then on.",
@@ -6063,9 +6310,11 @@
         "emit": "Emit an event from this node, delivered at the top of the next frame to whoever subscribed to `name` on this node, and to whoever subscribed to `name` from anyone. `call` is the twin that reaches one known script, now.",
         "get_component": "The named component's properties as a table, nil when the node does not carry it.",
         "get_node": "The node at an `A/B/C` path relative to this one, `..` climbing to the parent; nil when nothing matches.",
+        "global_material": "The material the node draws with: its own, or the nearest ancestor's. Empty is the built-in one.",
         "global_position": "The node's position in world space, as of the last transform sync.",
         "global_rotation_euler": "The node's world rotation as euler angles in radians, as of the last transform sync.",
         "global_scale": "The node's scale in world space, as of the last transform sync.",
+        "global_tint": "What the renderer multiplies by: this node's tint with every ancestor's folded in.",
         "global_visible": "What the renderer sees: false when the node or any ancestor is hidden.",
         "global_z_index": "The layer the node actually draws on, with every ancestor's added in.",
         "go": "Put the node in one of its `states`: the state's table is patched over the components it names, and `on_state_changed(from, to)` follows. A node already in that state is left alone.",
@@ -6073,6 +6322,7 @@
         "has_method": "Whether the node's script declares this method, so a caller can tell \"no handler\" from \"a handler that answered nothing\".",
         "has_tag": "Whether the node is filed under a name.",
         "is_valid": "Whether the node is still in the world; false rather than an error when the value is not a node.",
+        "material": "The `material` asset the node names itself, empty when it takes its parent's.",
         "name": "The node's own name, empty when it carries none.",
         "parent": "The node's parent, nil at the root.",
         "patch_component": "Change the properties the table names and leave the rest of the component where they were. On a node without the component this adds it, the schema defaults being what it currently holds.",
@@ -6086,6 +6336,7 @@
         "scale": "The node's scale relative to its parent.",
         "script_path": "The path of the script attached to the node, nil when it has none.",
         "set_component": "Give the node the named component, built from the given table over the component's schema defaults. Every property the table leaves out goes back to its default; `patch_component` is the one that changes a property and leaves the rest.",
+        "set_material": "Draw the node and every descendant naming none with a `material` asset; empty goes back to the parent's.",
         "set_name": "Rename the node, doing nothing when it carries no name.",
         "set_parent": "Move the node under another, keeping where it is in the world; an error for a cycle or a dead parent.",
         "set_position": "Move the node to a local position, given as three numbers or one vector.",
@@ -6093,12 +6344,14 @@
         "set_rotation_euler": "Set the node's local rotation from euler angles in radians.",
         "set_scale": "Set the node's scale relative to its parent, as three numbers or one vector.",
         "set_sibling_index": "Move the node to that place among its siblings, clamped to the end. Order is draw order in a `row` or a `column`, and tree order in the digest.",
+        "set_tint": "Multiply a colour into everything the node and its subtree draw, alpha included, one meaning untinted. A renderable's own `color` is the node's alone; this is the one that inherits.",
         "set_visible": "Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides.",
         "set_z_index": "Put the node and its subtree on a draw layer: higher draws later. Relative by default, adding to the parent's layer; false makes it absolute.",
         "sibling_index": "Where the node sits among its parent's children, counting from zero; 0 at the root.",
         "stable_id": "The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not.",
         "state": "The state the node is in, or \"\" for the pose the scene gave it.",
         "tags": "The names the node is filed under, sorted.",
+        "tint": "The node's own tint as r, g, b, a channel floats; an ancestor's multiplies into it on the way to the screen.",
         "translate": "Move the node by an offset in its parent's space, given as three numbers or one vector.",
         "visible": "Whether the node itself is set to draw; an ancestor may still hide it.",
         "z_index": "The node's own draw layer, added to its parent's unless set absolute."
@@ -6115,9 +6368,11 @@
         "emit",
         "get_component",
         "get_node",
+        "global_material",
         "global_position",
         "global_rotation_euler",
         "global_scale",
+        "global_tint",
         "global_visible",
         "global_z_index",
         "go",
@@ -6125,6 +6380,7 @@
         "has_method",
         "has_tag",
         "is_valid",
+        "material",
         "name",
         "parent",
         "patch_component",
@@ -6138,6 +6394,7 @@
         "scale",
         "script_path",
         "set_component",
+        "set_material",
         "set_name",
         "set_parent",
         "set_position",
@@ -6145,12 +6402,14 @@
         "set_rotation_euler",
         "set_scale",
         "set_sibling_index",
+        "set_tint",
         "set_visible",
         "set_z_index",
         "sibling_index",
         "stable_id",
         "state",
         "tags",
+        "tint",
         "translate",
         "visible",
         "z_index"
@@ -6168,9 +6427,11 @@
         "emit": "(name: string, payload: any?)",
         "get_component": "(component: string)",
         "get_node": "(path: string)",
+        "global_material": "(node)",
         "global_position": "()",
         "global_rotation_euler": "()",
         "global_scale": "()",
+        "global_tint": "(node)",
         "global_visible": "(node)",
         "global_z_index": "(node)",
         "go": "(state: string)",
@@ -6178,6 +6439,7 @@
         "has_method": "(method: string)",
         "has_tag": "(node, tag: string)",
         "is_valid": "()",
+        "material": "(node)",
         "name": "()",
         "parent": "()",
         "patch_component": "(component: string, params: table)",
@@ -6191,6 +6453,7 @@
         "scale": "()",
         "script_path": "()",
         "set_component": "(component: string, params: any?)",
+        "set_material": "(node, material: string)",
         "set_name": "(name: string)",
         "set_parent": "(parent: node)",
         "set_position": "(x: float, y: float, z: float)",
@@ -6198,12 +6461,14 @@
         "set_rotation_euler": "(x: float, y: float, z: float)",
         "set_scale": "(x: float, y: float, z: float)",
         "set_sibling_index": "(index: int)",
+        "set_tint": "(node, r: float, g: float, b: float, a: float?)",
         "set_visible": "(node, on: bool)",
         "set_z_index": "(node, z: int, relative: bool)",
         "sibling_index": "()",
         "stable_id": "()",
         "state": "()",
         "tags": "(node)",
+        "tint": "(node)",
         "translate": "(x: float, y: float, z: float)",
         "visible": "(node)",
         "z_index": "(node)"
@@ -7910,6 +8175,7 @@
         "set_sprite_size": "Override the size the sprite took from its image, giving half-extents in world units instead.",
         "set_terrain": "Paint a terrain value at a column and row and let the tileset's rules pick the tiles, for that cell and the ring around it; below zero clears it.",
         "set_text": "Replace the text a node draws. The block re-shapes on the next frame; a `text_key` on the node still wins over it.",
+        "set_window_mode": "`windowed`, `maximized`, `fullscreen` (borderless) or `exclusive` (the monitor's largest video mode): the same choice as `[window] mode`.",
         "shader_probe": "The four channels the previewed line wrote at the probed pixel, or `()` when nothing has been read yet.",
         "shape2d": "The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape.",
         "shape3d": "The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape.",
@@ -7977,6 +8243,7 @@
         "set_sprite_size",
         "set_terrain",
         "set_text",
+        "set_window_mode",
         "shader_probe",
         "shape2d",
         "shape3d",
@@ -8045,6 +8312,7 @@
         "set_sprite_size": "(NodeId, f32, f32) -> ()",
         "set_terrain": "(NodeId, i64, i64, i64) -> ()",
         "set_text": "(NodeId, String) -> ()",
+        "set_window_mode": "String -> ()",
         "shader_probe": "() -> Value",
         "shape2d": "NodeId -> (String, f32, f32)",
         "shape3d": "NodeId -> (String, f32, f32, f32)",
@@ -8364,30 +8632,45 @@
       "acts_on": {},
       "components": [],
       "constants": [],
-      "doc": "Every setting the engine, its plugins and this game declare, addressed by path: `physics/solver_iterations`, `netcode/faults`, `editor/appearance/theme`. The first segment is the category, the last is the key, and the path is also where the value is stored: `physics/solver_iterations` is `[physics] solver_iterations` in project.toml. A project setting ships with the game; an editor one stays on the machine that set it. Define your own with `define` and it appears in the settings screen beside the engine's.",
+      "doc": "Every setting the engine, its plugins and this game declare, addressed by path: `physics/solver_iterations`, `netcode/faults`, `editor/appearance/theme`. The first segment is the category, the last is the key, and the path is also where the value is stored: `physics/solver_iterations` is `[physics] solver_iterations` in project.toml. A project setting ships with the game; an editor one stays on the machine that set it. Define your own with `define` and it appears in the settings screen beside the engine's. One key may hold an answer per platform: `[override.android.window] orientation` is what `window/orientation` reads on a phone.",
       "docs": {
         "all": "Every defined setting as `{ path, scope, spec }`, in definition order.",
+        "base": "What the file says, ignoring every override: what a settings screen edits.",
+        "clear": "Forget one value, so the next write drops the key: how an override is removed.",
         "define": "Declare a setting of your own: `type`, `default`, and optionally `min`, `max`, `options`, `help`, `order` and `applies`. A path starting `editor/` is kept on this machine; anything else ships with the game.",
-        "get": "One setting's value: what was set, else what its definition defaults to, else nil.",
+        "get": "One setting's value here: the narrowest `[override.<tag>]` this platform answers to, else what was set, else what its definition defaults to, else nil.",
+        "known_tags": "Every tag a project may write an override for: the engine's, then the project's own from `[export] tags`.",
         "load": "Read values out of a TOML text, folding them onto what is already loaded.",
+        "overrides": "The tags this project holds an override for at `path`, in tag order.",
         "set": "Change one setting, in memory. Whether it takes effect now or on the next run is the setting's own business; `all` reports it as `applies`.",
+        "tags": "The names this run answers to, broad to narrow: the kind of machine, the operating system, the architecture, the build.",
         "to_toml": "The text one scope would write, starting from `existing` so anything no setting describes survives. Scope is \"project\" or \"editor\"."
       },
       "functions": [
         "all",
+        "base",
+        "clear",
         "define",
         "get",
+        "known_tags",
         "load",
+        "overrides",
         "set",
+        "tags",
         "to_toml"
       ],
       "name": "settings",
       "signatures": {
         "all": "() -> Value",
+        "base": "String -> Value",
+        "clear": "String -> Value",
         "define": "(String, Value) -> Value",
         "get": "String -> Value",
+        "known_tags": "() -> Value",
         "load": "String -> Value",
+        "overrides": "String -> Value",
         "set": "(String, Value) -> Value",
+        "tags": "() -> Value",
         "to_toml": "(String, String) -> Value"
       }
     },
@@ -8535,6 +8818,22 @@
         {
           "name": "ANCHOR_CENTER",
           "value": "center"
+        },
+        {
+          "name": "ANCHOR_CENTER_BOTTOM",
+          "value": "center_bottom"
+        },
+        {
+          "name": "ANCHOR_CENTER_LEFT",
+          "value": "center_left"
+        },
+        {
+          "name": "ANCHOR_CENTER_RIGHT",
+          "value": "center_right"
+        },
+        {
+          "name": "ANCHOR_CENTER_TOP",
+          "value": "center_top"
         },
         {
           "name": "ANCHOR_FILL",
@@ -8746,6 +9045,7 @@
         "top_panel": "Dock a strip across the top of the window and draw the callback inside it; `height` is in design pixels. Answers the height it ended up with.",
         "vertical": "Lay the callback's widgets out in a column.",
         "wants_keyboard": "Whether a UI widget holds keyboard focus, so the game should leave this frame's key presses alone.",
+        "wants_pointer": "Whether a UI widget took this frame's pointer or finger, so the game should leave it alone: what stops a tap on a HUD button also firing the shot behind it. False without a window.",
         "widget_rect": "Where a `widget` node was last drawn, as `#{ x, y, w, h }` in design pixels; empty until it has drawn once.",
         "window": "Draw the callback in a floating window the user drags and resizes; false once its close button is used."
       },
@@ -8805,6 +9105,7 @@
         "top_panel",
         "vertical",
         "wants_keyboard",
+        "wants_pointer",
         "widget_rect",
         "window"
       ],
@@ -8865,6 +9166,7 @@
         "top_panel": "(String, Option<Value>, CallbackId) -> f64",
         "vertical": "CallbackId -> ()",
         "wants_keyboard": "() -> bool",
+        "wants_pointer": "() -> bool",
         "widget_rect": "NodeId -> Value",
         "window": "(String, Option<Value>, CallbackId) -> bool"
       }

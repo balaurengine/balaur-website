@@ -10,7 +10,7 @@ custom_edit_url: null
 
 One frame of input: the keyboard, mouse, touch screen and gamepads as they stand now, plus the edges: what went down or came up this frame. Nothing feeds it in a headless run, where every query answers neutrally rather than failing.
 
-41 functions, 190 constants. Scripts reach it as `input::`.
+48 functions, 190 constants. Scripts reach it as `input::`.
 
 ## Functions
 
@@ -27,10 +27,13 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `bindings(string) -> any` | — | What the action is bound to now, whether from the project or from the player's own rebinding. |
 | `composing() -> any` | — | The text an input method is still composing, for a field to show under its caret; empty once it commits into `typed`, and always empty without an input method. |
 | `declare_actions(any)` | — | Declare the actions a project's `[input.actions]` would, from a table of name to binding list; for a host running a project other than its own, such as the editor. |
+| `declare_config(any)` | — | Take the settings a project's `[input]` table would give, from a table: the two emulation switches and the gesture thresholds. For a host running a project other than its own, such as the editor; a key left out keeps its default. |
 | `dropped_files() -> any` | — | The absolute paths of files dropped onto the window this frame, in drop order; desktop only. |
+| `feed_action(string, float)` | — | Put a value into an action for one frame without a binding, the way a `touch_button` does; the furthest from rest wins where something else feeds the same action. Takes effect on the next tick, since actions derive at the top of one. |
 | `feed_key(string, bool)` | — | Press or release a `KEY_*` key as if the window had reported it; the edge lasts this frame, the state until the opposite feed. |
 | `feed_mouse(float, float)` | — | Move the cursor to a window-pixel position as if the window had reported it; the delta accumulates for this frame. |
 | `feed_mouse_button(int, bool)` | — | Press or release a `MOUSE_*` button as if the window had reported it. |
+| `feed_touch(int, float, float, string)` | — | Put a finger on the screen as if the window had reported it: `phase` is `start`, `move`, `end` or `cancel`, and the position is in the same pixels as `mouse_position`. |
 | `gamepad_acceleration(int) -> any` | — | The pad's acceleration in g, gravity included, so a pad at rest reads 1 on one axis. Read from PlayStation pads on desktop; zero for a pad with no accelerometer. |
 | `gamepad_axis(int, string) -> float` | — | How far the pad's `AXIS_*` stick or trigger is pushed, -1 to 1; zero at rest and for an absent pad. |
 | `gamepad_can_rumble(int) -> bool` | — | Whether the pad has motors to rumble; false for a pad that is not connected, and on a build with no force feedback. |
@@ -48,12 +51,16 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `just_pressed(string) -> bool` | — | Whether the `KEY_*` key went down this frame; true for that one frame only. |
 | `just_released(string) -> bool` | — | Whether the `KEY_*` key came up this frame; true for that one frame only. |
 | `keyboard_height() -> any` | — | How much of the window the on-screen keyboard covers, in pixels from the bottom: what a form moves up by. Zero with no keyboard up, and always zero on a desktop. |
+| `long_press() -> any` | — | Where a finger has been held still past `long_press_seconds`, as `{ x, y }`. Reported once per finger, on the frame the hold passes; empty otherwise. |
 | `mouse_delta() -> float, float` | — | How far the cursor moved this frame, in pixels; movement, not a position. |
 | `mouse_just_pressed(int) -> bool` | — | Whether the `MOUSE_*` button went down this frame; true for that one frame only. |
 | `mouse_just_released(int) -> bool` | — | Whether the `MOUSE_*` button came up this frame; true for that one frame only. |
 | `mouse_position() -> float, float` | — | The cursor's position in window pixels, with (0, 0) at the top-left corner. |
+| `pan() -> any` | — | Two or more fingers moving together as `{ x, y }`, the average movement since last frame in the same pixels as `mouse_position`. Zero with fewer than two down. |
+| `pinch() -> any` | — | Two fingers moving apart or together as `{ scale, x, y }`: `scale` above 1 is apart, measured against last frame, and `x`/`y` are the point between them. Empty with fewer than two fingers down. |
 | `reset_bindings()` | — | Drop every saved rebinding and go back to what the project declared. |
 | `scroll_delta() -> float, float` | — | How far the wheel turned this frame, as an (x, y) pair; zero when it did not turn. |
+| `swipe() -> any` | — | A finger that travelled far enough before it lifted, as `{ x, y, speed }`: a unit direction and pixels per second. Reported on the frame it lifted and never again; empty otherwise. |
 | `touches() -> any` | — | Every finger on the screen as `{ id, x, y }`, oldest first, in the same pixels as `mouse_position`. |
 | `touches_ended() -> any` | — | The ids of the fingers that lifted or were cancelled this frame. |
 | `touches_started() -> any` | — | The ids of the fingers that touched down this frame. |

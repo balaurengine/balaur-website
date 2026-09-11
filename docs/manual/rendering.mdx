@@ -21,6 +21,8 @@ without naming a material.
 [[nodes]]
 id = "n_lamp"
 name = "Lamp"
+
+[nodes.transform]
 position = [0, 2.5, 0]
 
 [nodes.light2d]
@@ -31,7 +33,7 @@ intensity = 1.6
 shadows = true
 ```
 
-- The node's position places a light and its rotation aims it. At rest a
+- The node's `transform` places a light and its rotation aims it. At rest a
   `light2d` shines along −y, and the node's z rotation turns it.
 - A point light fades quadratically to exactly nothing at `radius`, so its
   edge has no seam.
@@ -140,8 +142,10 @@ See [Shaders](./shaders.mdx#a-pass-over-the-whole-frame) for what a post
 ```toml
 [[nodes]]
 name = "Key"
+
+[nodes.transform]
 position = [4, 7, 4]
-rotation_euler = [-50, 40, 0]
+rotation_euler = [-0.87266, 0.69813, 0]   # radians: -50° and 40°
 
 [nodes.light3d]
 kind = "spot"
@@ -154,7 +158,7 @@ outer = 45
 
 ![A spot light selected in the editor, its cone drawn in the viewport and its light3d rows in the inspector](/img/manual/editor_lights.webp)
 
-- A node's position places it and its rotation aims it. `kind` is
+- The node's `transform` places it and its rotation aims it. `kind` is
   `directional`, `point` or `spot`.
 - A scene with no `light3d` keeps the engine's own key light, so nothing
   written before they existed draws differently. The first one added retires

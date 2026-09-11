@@ -14,7 +14,7 @@ Geometry for `mesh`-typed properties. A definition names a `source` model
 file to import, or a `kind` of parametric primitive to build, or carries the
 vertices itself as `positions` and `indices`, which is what lets a script
 build one at run time; naming more than one is refused. A `skin` table adds
-bone weights for bone animation, `colors` a tint per vertex, and each
+bone weights for skeletal animation, `colors` a tint per vertex, and each
 `[[morphs]]` a named shape the mesh can be blended towards -- which a clip
 drives as `mesh/morph.<name>`.
 

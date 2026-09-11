@@ -12,19 +12,21 @@ import Clip from '@site/src/components/Clip';
 
 ## Nodes are entities
 
-A node is an ECS entity with `Name`, `Parent`, `Children`, `Transform` and
+A node is an ECS entity with `Name`, `Parent`, `Children` and
 `GlobalTransform`.
 
+- Where a node sits in its parent is the `transform` component, like any
+  other. A node without one sits where its parent is, which is what a group or
+  a widget wants.
 - Node paths (`"A/B/C"`), transform propagation and recursive free are core
   systems.
 - Plugins hang their own components on the same entities, so "node" is an API
   surface, not a data structure with a cost.
 - Scripts reach the tree through 30 operations, declared once in the core and
   reached as methods on a node value. Among them: `get_node`, `parent`,
-  `children`, `add_child`, `set_parent`, `queue_free`, `position`,
-  `set_position`, `rotation_euler`, `scale`, `translate`, `attach_script`, and
-  the component operations. `set_parent` keeps the node where it is in the
-  world.
+  `children`, `add_child`, `set_parent`, `queue_free`, `global_position`,
+  `translate`, `attach_script`, and the component operations. `set_parent`
+  keeps the node where it is in the world.
 - Paths accept `..`, so `../Target` names a sibling. The full list is in the
   [script modules reference](/docs/reference/modules).
 - `queue_free` and other structural changes are deferred to the end of the
@@ -35,20 +37,29 @@ A node is an ECS entity with `Name`, `Parent`, `Children`, `Transform` and
 ## Scene files
 
 A flat list of `[[nodes]]` entries with `name`, an optional `parent` by id,
-`position`, `script`, and any component keys the registered plugins contribute.
+`script`, and a key per component, the `transform` among them.
 
 ```toml
 [[nodes]]
 id = "n_ball"
 name = "Ball"
 parent = "n_world"
-position = [0, 6, 0]
 script = "scripts/ball.rn"
 body3d = "dynamic"
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
+
+[nodes.transform]
+position = [0, 6, 0]
+rotation_euler = [0, 1.5708, 0]   # radians
+scale = [1, 1, 1]
 ```
 
+- The keys that describe the node itself are `id`, `name`, `parent`, `tags`,
+  `script`, `instance` and `overrides`, plus `visible`, `tint`, `z_index` and
+  `z_relative`. Every other key is a component.
+- A component is written inline (`shape3d = { ... }`) or as its own table
+  (`[nodes.transform]`). Both mean the same.
 - Scene keys are applied in plugin registration order, which is deterministic.
 - At run time, `scene::instantiate` places a scene and `scene::spawn` makes a
   node.
@@ -63,7 +74,7 @@ file's roots become that node's children.
 id = "n_crate_b"
 name = "CrateB"
 instance = "scenes/crate.toml"
-position = [-0.5, 5, 1.5]
+transform = { position = [-0.5, 5, 1.5] }
 
 [nodes.overrides."Crate/Lid".shape3d]
 color = [0.9, 0.3, 0.25, 1]
@@ -72,8 +83,8 @@ color = [0.9, 0.3, 0.25, 1]
 - The node keeps its own name, transform and components, so its position moves
   the whole prefab.
 - `overrides` is keyed by path from the instance node and holds scene keys:
-  components, the transform, and a `script` whose `props` merge over the
-  prefab's.
+  components, the `transform` among them, and a `script` whose `props` merge
+  over the prefab's.
 - An override patches one property and leaves the rest of the component alone.
 - Ids inside an instance are prefixed by the instance's own
   (`n_crate_b/n_lid`), so two instances of one file stay distinguishable in a
@@ -106,6 +117,7 @@ One registration buys three things:
 
 | Component | Plugin | Purpose |
 | --- | --- | --- |
+| `transform` | core | Position, rotation and scale in the parent's space |
 | `body3d`, `collider3d` | physics | 3D rigid body and collider (rapier3d) |
 | `body2d`, `collider2d` | physics | 2D rigid body and collider (rapier2d) |
 | `shape3d`, `shape2d` | render | Renderable 3D / 2D shape, with a `color` |

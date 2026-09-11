@@ -29,13 +29,13 @@ import {PersonaHero, Section, Features, HowItWorks, EditorCards, Compare, StartB
 <Section title="Components" sub="Build everything with nodes and components.">
   <HowItWorks file="scenes/main.toml" code={`[[nodes]]
 name = "Ball"
-position = [0.0, 6.0, 0.0]
 script = "scripts/ball.rn"
+transform = { position = [0.0, 6.0, 0.0] }
 body3d = "dynamic"
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }`}>
 
-`body3d`, `collider3d` and `shape3d` are components you can add to nodes.
+`transform`, `body3d`, `collider3d` and `shape3d` are components you can add to nodes.
 
 Scripts are [Rune](https://rune-rs.github.io): Rust's syntax, instant reload, `async`/`await`. A script is a file attached to a node, with `init`, `update` and other methods.
 

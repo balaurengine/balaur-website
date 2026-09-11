@@ -30,7 +30,7 @@ make it, and a collider sits on the same node as its body, not on a child.
 
 | Godot | Balaur |
 | --- | --- |
-| `Node2D`, `Node3D` | A node. Position, rotation, scale on every one |
+| `Node2D`, `Node3D` | A node with a [`transform`](/docs/reference/components/transform): position, rotation, scale. A node without one sits at its parent |
 | `RigidBody2D`, `StaticBody2D`, `AnimatableBody2D` | `body2d = "dynamic"` / `"static"` / `"kinematic"`: same in 3D |
 | `CollisionShape2D` | `collider2d = { kind = "rect", half_extents = [0.5, 0.5] }` |
 | `CharacterBody2D`, `CharacterBody3D` | [`character2d`](/docs/reference/components/character2d), [`character3d`](/docs/reference/components/character3d) |
@@ -64,6 +64,7 @@ make it, and a collider sits on the same node as its body, not on a child.
 | `_exit_tree()` | `pub fn on_free(this)` |
 | `@export var speed = 2.0` | `pub fn exports() { #{ speed: 2.0 } }`, overridden in `[nodes.script.props]` |
 | `self` | `this`; the node is `this.node` |
+| `position`, `rotation`, `scale` | `this.node.transform.position`, `.rotation_euler` (radians), `.scale`; `global_position()` in world space |
 | `$Path/To/Node`, `get_node("..")` | `this.node.get_node("Path/To/Node")`, `"../Sibling"` |
 | `queue_free()` | `node.queue_free()`: deferred to end of frame, as in Godot |
 | `apply_impulse(v)` | `this.node.body2d.apply_impulse(x, y)` |

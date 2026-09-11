@@ -2,15 +2,15 @@
 title: "node module"
 image: "/img/social/reference.png"
 sidebar_label: "node"
-description: "What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the…"
+description: "What every node has: its name and path, its place in the world, its children, its components and its script. Each operation takes the node as its first…"
 custom_edit_url: null
 ---
 
 # <span class="ref-icon ref-icon--other" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M64,112v32a8,8,0,0,1-8,8H24a8,8,0,0,1-8-8V112a8,8,0,0,1,8-8H56A8,8,0,0,1,64,112ZM208,40H160a8,8,0,0,0-8,8V96a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V48A8,8,0,0,0,208,40Zm0,112H160a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V160A8,8,0,0,0,208,152Z" opacity="0.2"/><path d="M160,112h48a16,16,0,0,0,16-16V48a16,16,0,0,0-16-16H160a16,16,0,0,0-16,16V64H128a24,24,0,0,0-24,24v32H72v-8A16,16,0,0,0,56,96H24A16,16,0,0,0,8,112v32a16,16,0,0,0,16,16H56a16,16,0,0,0,16-16v-8h32v32a24,24,0,0,0,24,24h16v16a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V160a16,16,0,0,0-16-16H160a16,16,0,0,0-16,16v16H128a8,8,0,0,1-8-8V88a8,8,0,0,1,8-8h16V96A16,16,0,0,0,160,112ZM56,144H24V112H56v32Zm104,16h48v48H160Zm0-112h48V96H160Z"/></svg></span>`node`
 
-What every node has: its name and path, its transform in local and world space, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.position()`).
+What every node has: its name and path, its place in the world, its children, its components and its script. Each operation takes the node as its first argument, so scripts normally call them as methods on a node value (`this.node.get_node("Arm")`). `position`, `rotation_euler` and `scale` read the `transform` component, which `this.node.transform.position` reads and writes directly.
 
-50 functions, 0 constants. Scripts reach it as `node::`.
+56 functions, 0 constants. Scripts reach it as `node::`.
 
 Acts on [`states`](../components/states.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -31,9 +31,11 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `emit(name: string, payload: any?)` | — | Emit an event from this node, delivered at the top of the next frame to whoever subscribed to `name` on this node, and to whoever subscribed to `name` from anyone. `call` is the twin that reaches one known script, now. |
 | `get_component(component: string)` | — | The named component's properties as a table, nil when the node does not carry it. |
 | `get_node(path: string)` | — | The node at an `A/B/C` path relative to this one, `..` climbing to the parent; nil when nothing matches. |
+| `global_material(node)` | — | The material the node draws with: its own, or the nearest ancestor's. Empty is the built-in one. |
 | `global_position()` | — | The node's position in world space, as of the last transform sync. |
 | `global_rotation_euler()` | — | The node's world rotation as euler angles in radians, as of the last transform sync. |
 | `global_scale()` | — | The node's scale in world space, as of the last transform sync. |
+| `global_tint(node)` | — | What the renderer multiplies by: this node's tint with every ancestor's folded in. |
 | `global_visible(node)` | — | What the renderer sees: false when the node or any ancestor is hidden. |
 | `global_z_index(node)` | — | The layer the node actually draws on, with every ancestor's added in. |
 | `go(state: string)` | [`states`](../components/states.md) | Put the node in one of its `states`: the state's table is patched over the components it names, and `on_state_changed(from, to)` follows. A node already in that state is left alone. |
@@ -41,6 +43,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `has_method(method: string)` | — | Whether the node's script declares this method, so a caller can tell "no handler" from "a handler that answered nothing". |
 | `has_tag(node, tag: string)` | — | Whether the node is filed under a name. |
 | `is_valid()` | — | Whether the node is still in the world; false rather than an error when the value is not a node. |
+| `material(node)` | — | The `material` asset the node names itself, empty when it takes its parent's. |
 | `name()` | — | The node's own name, empty when it carries none. |
 | `parent()` | — | The node's parent, nil at the root. |
 | `patch_component(component: string, params: table)` | — | Change the properties the table names and leave the rest of the component where they were. On a node without the component this adds it, the schema defaults being what it currently holds. |
@@ -54,6 +57,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `scale()` | — | The node's scale relative to its parent. |
 | `script_path()` | — | The path of the script attached to the node, nil when it has none. |
 | `set_component(component: string, params: any?)` | — | Give the node the named component, built from the given table over the component's schema defaults. Every property the table leaves out goes back to its default; `patch_component` is the one that changes a property and leaves the rest. |
+| `set_material(node, material: string)` | — | Draw the node and every descendant naming none with a `material` asset; empty goes back to the parent's. |
 | `set_name(name: string)` | — | Rename the node, doing nothing when it carries no name. |
 | `set_parent(parent: node)` | — | Move the node under another, keeping where it is in the world; an error for a cycle or a dead parent. |
 | `set_position(x: float, y: float, z: float)` | — | Move the node to a local position, given as three numbers or one vector. |
@@ -61,12 +65,14 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_rotation_euler(x: float, y: float, z: float)` | — | Set the node's local rotation from euler angles in radians. |
 | `set_scale(x: float, y: float, z: float)` | — | Set the node's scale relative to its parent, as three numbers or one vector. |
 | `set_sibling_index(index: int)` | — | Move the node to that place among its siblings, clamped to the end. Order is draw order in a `row` or a `column`, and tree order in the digest. |
+| `set_tint(node, r: float, g: float, b: float, a: float?)` | — | Multiply a colour into everything the node and its subtree draw, alpha included, one meaning untinted. A renderable's own `color` is the node's alone; this is the one that inherits. |
 | `set_visible(node, on: bool)` | — | Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides. |
 | `set_z_index(node, z: int, relative: bool)` | — | Put the node and its subtree on a draw layer: higher draws later. Relative by default, adding to the parent's layer; false makes it absolute. |
 | `sibling_index()` | — | Where the node sits among its parent's children, counting from zero; 0 at the root. |
 | `stable_id()` | — | The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not. |
 | `state()` | [`states`](../components/states.md) | The state the node is in, or "" for the pose the scene gave it. |
 | `tags(node)` | — | The names the node is filed under, sorted. |
+| `tint(node)` | — | The node's own tint as r, g, b, a channel floats; an ancestor's multiplies into it on the way to the screen. |
 | `translate(x: float, y: float, z: float)` | — | Move the node by an offset in its parent's space, given as three numbers or one vector. |
 | `visible(node)` | — | Whether the node itself is set to draw; an ancestor may still hide it. |
 | `z_index(node)` | — | The node's own draw layer, added to its parent's unless set absolute. |

@@ -24,7 +24,7 @@ pub fn init(this) {
 
 pub fn update(this, dt) {
     this.angle += dt;
-    this.node.set_rotation_euler(0.0, this.angle, 0.0);
+    this.node.transform.rotation_euler = [0.0, this.angle, 0.0];
 }
 
 pub fn fixed_update(this, dt) {}   // the fixed 60 Hz step, before physics
@@ -92,9 +92,9 @@ engine so it cannot drift.
 | Shape | Example |
 | --- | --- |
 | Named values, never spelled | `input::KEY_SPACE`, `physics3d::BODY_DYNAMIC`, `ui::ANCHOR_TOP_LEFT` |
-| Node operations are methods | `this.node.position()`, `node.get_node("../Target")` |
+| Node operations are methods | `node.get_node("../Target")`, `node.queue_free()` |
 | Several returns are a tuple | `let (text, changed) = ui::text_field(...)` |
-| A vector is one value with fields | `this.node.position().y` |
+| A vector is one value with fields | `this.node.transform.position.y` |
 | Tables, lists, nothing | `#{ kind: "ball" }`, `[1, 2]`, `()` |
 | Integers and floats never mix | a float argument is written `0.0` |
 
@@ -113,6 +113,22 @@ if body.linear_velocity().0 > 5.0 {
     body.set_linear_velocity(5.0, 0.0);
 }
 ```
+
+A handle's properties are fields too. The transform is a component like the
+rest, so a script moves a node by writing its `transform`:
+
+```rune
+let p = this.node.transform.position;                // p.x, p.y, p.z
+this.node.transform.position = [p.x, p.y + 1.0, p.z];
+this.node.transform.rotation_euler = [0.0, math::rad(90.0), 0.0];
+```
+
+- Rotations are euler radians, x then y then z. Only the inspector shows
+  degrees.
+- A node without a `transform` sits where its parent is. Writing one gives it
+  one.
+- `position()`, `set_position(x, y, z)`, `translate` and `rotation_degrees`
+  stay on the node as short forms. `global_position()` answers in world space.
 
 ## Script files as modules
 

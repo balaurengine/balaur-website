@@ -12,8 +12,9 @@ import Clip from '@site/src/components/Clip';
 
 Shaders are [WESL](https://wesl-lang.dev): WGSL plus imports, `@if` variants
 and dead-code elimination, linked to WGSL at run time. A `material` asset
-names a shader and the values it draws with. `sprite`, `shape2d`, `shape3d`
-and `mesh` take one, and a node without one draws with the built-in material.
+names a shader and the values it draws with. `sprite`, `shape2d`, `shape3d`,
+`mesh` and `tilemap` take one, a node can hand one to everything under it, and
+a node with neither draws with the built-in material.
 
 <Clip name="shader_preview" alt="A material in the inspector, its shader open in the code editor, the UV channel drawn instead of the picture, and a save that relinks the sprite in place" />
 
@@ -67,6 +68,31 @@ A shader is its own two entry points and nothing else.
   omits is zero.
 - `[features]` are the `@if` flags that pick a variant at link time.
 - A plugin can register shader modules a project's shader imports.
+
+## A material for a whole subtree
+
+The `material` component goes on any node, one that draws nothing included.
+The node and everything under it draw with that material.
+
+```toml
+[[nodes]]
+id = "rig"
+name = "Rig"
+
+[nodes.material]
+source = "materials/metal.toml"
+```
+
+- The nearest one up wins, so a node under a second `material` takes that one.
+- A renderable's own `material` is that node's alone and does not pass down.
+  It is the split between `color` and `tint`, and Godot's `self_modulate` and
+  `modulate`.
+- `node.set_material(path)` sets it from a script. `node.material()` reads the
+  node's own, and `node.global_material()` reads what it draws with.
+- The contract a shader imports says which nodes it draws. A 3D material that
+  reaches a 2D node leaves that node on the built-in material and warns once.
+- In the inspector, an empty `material` field shows what the node inherits and
+  from where, as `metal ← Rig`.
 
 ## A pass over the whole frame
 

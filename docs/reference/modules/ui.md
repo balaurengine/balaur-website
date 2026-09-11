@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
 
-57 functions, 45 constants. Scripts reach it as `ui::`.
+58 functions, 49 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -73,6 +73,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `top_panel(string, any?, fn) -> float` | — | Dock a strip across the top of the window and draw the callback inside it; `height` is in design pixels. Answers the height it ended up with. |
 | `vertical(fn)` | — | Lay the callback's widgets out in a column. |
 | `wants_keyboard() -> bool` | — | Whether a UI widget holds keyboard focus, so the game should leave this frame's key presses alone. |
+| `wants_pointer() -> bool` | — | Whether a UI widget took this frame's pointer or finger, so the game should leave it alone: what stops a tap on a HUD button also firing the shot behind it. False without a window. |
 | `widget_rect(node) -> any` | — | Where a `widget` node was last drawn, as `#{ x, y, w, h }` in design pixels; empty until it has drawn once. |
 | `window(string, any?, fn) -> bool` | — | Draw the callback in a floating window the user drags and resizes; false once its close button is used. |
 
@@ -87,6 +88,10 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `ANCHOR_BOTTOM_LEFT` | `bottom_left` |
 | `ANCHOR_BOTTOM_RIGHT` | `bottom_right` |
 | `ANCHOR_CENTER` | `center` |
+| `ANCHOR_CENTER_BOTTOM` | `center_bottom` |
+| `ANCHOR_CENTER_LEFT` | `center_left` |
+| `ANCHOR_CENTER_RIGHT` | `center_right` |
+| `ANCHOR_CENTER_TOP` | `center_top` |
 | `ANCHOR_FILL` | `fill` |
 | `ANCHOR_TOP_LEFT` | `top_left` |
 | `ANCHOR_TOP_RIGHT` | `top_right` |
