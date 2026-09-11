@@ -139,8 +139,12 @@ too.
 - `Manifest::new(..).requiring(&["physics"])` declares a dependency. Plugins
   load by name and requirement, never by directory listing, so every machine
   registers them in the same order.
-- `balaur export` does not copy `extensions/` yet. An exported desktop game
-  looks for it in the directory it runs from.
+- `balaur export` ships the libraries for its target with a desktop game:
+  `extensions/` beside a flat executable, `Contents/PlugIns` inside a `.app`,
+  signed with the game's identity. Keep a `.so`, a `.dylib` and a `.dll` side
+  by side to export for all three.
+- A web, iOS or Android export warns and ships without them. A plugin those
+  platforms need is a static one.
 
 The design behind all of this is in
 [ARCHITECTURE.md](https://github.com/balaurengine/balaur/blob/main/ARCHITECTURE.md#modules-and-extensions).
