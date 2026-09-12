@@ -1,6 +1,10 @@
-# Website
+# Balaur website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+The source for [balaurengine.org](https://balaurengine.org), the site and docs for the [Balaur](https://github.com/balaurengine/balaur) game engine. Built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+## Authors
+
+Made by [Dragos Daian (@Ughuuu)](https://github.com/Ughuuu) and [Sébastien Crozet (@sebcrozet)](https://github.com/sebcrozet).
 
 ## Installation
 
@@ -41,3 +45,7 @@ GIT_USER=<Your GitHub username> npm run deploy
 ```
 
 If you are using GitHub Pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+## License
+
+MIT, see [LICENSE](LICENSE). Copyright (c) 2026 Sébastien Crozet, Dragos Daian.
