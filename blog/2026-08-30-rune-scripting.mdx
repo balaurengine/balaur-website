@@ -7,31 +7,27 @@ image: /img/manual/scripting_editor.png
 keywords: [rune scripting, game scripting language, script bindings, exported properties, balaur]
 ---
 
-Rune as the scripting language. Bindings each subsystem declares once, against
-a seam with no language in it. A handle per component on a node.
+Rune as the scripting language. Bindings each subsystem declares once,
+against a language-neutral seam. A handle per component on a node.
 
 {/* truncate */}
 
 
 ## What landed
 
-- The seam. `balaur_script` is the neutral contract: a binding is a
-  name, typed values and a function. A backend implements `ScriptHost`
-  against it. Physics, input, render, audio and UI declare their bindings
-  there and know no language.
+- The seam. `balaur_script` is the neutral contract: a binding is a name,
+  typed values and a function. A backend implements `ScriptHost`. Physics,
+  input, render, audio and UI declare their bindings there.
 - Rune. `balaur_script_rune` is the host, picked by `language` in
-  `project.toml`. One object per node, `pub fn update(this, dt)`, and what
-  a script writes to `this` is what the host reads next frame. Rune reads
-  like Rust without types.
-- The node API, once. Twenty-seven node operations are one list of
-  neutral functions taking the node first. A backend adds only its call
-  sugar; a third language would cost the sugar, not the operations.
+  `project.toml`. One object per node, `pub fn update(this, dt)`. What a
+  script writes to `this` the host reads next frame.
+- The node API. Twenty-seven node operations are one list of neutral
+  functions taking the node first. A backend adds its call sugar.
 - Exported properties. `pub fn exports()` returns defaults; the scene
   overrides only what it changes; the inspector lists them per node.
-- Component handles. Each component a node carries is a field on the
-  node, and the field's methods are the driving module's functions with the
-  node filled in. `get()`, `set(table)`, `has()` and `remove()` on all of
-  them.
+- Component handles. Each component on a node is a field on the node. The
+  field's methods are the owning module's functions with the node filled
+  in. `get()`, `set(table)`, `has()` and `remove()` on all of them.
 
 ```rune
 pub fn exports() {
@@ -44,4 +40,4 @@ pub fn fixed_update(this, dt) {
 }
 ```
 
-Luau was the first host and Rune the second; Rune is the only one. [Scripting](/docs/manual/scripting) has the model.
+Rune is the only host. [Scripting](/docs/manual/scripting) has the model.

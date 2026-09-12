@@ -11,9 +11,9 @@ import Clip from '@site/src/components/Clip';
 # Physics
 
 A plugin wrapping [Rapier](https://rapier.rs): rapier3d for `body3d` and
-`collider3d`, rapier2d for `body2d` and `collider2d`. Both worlds live side by
-side over the same scene tree, built with Rapier's `enhanced-determinism`
-feature and stepped on a fixed 60 Hz tick.
+`collider3d`, rapier2d for `body2d` and `collider2d`. Both worlds run over
+the same scene tree, built with Rapier's `enhanced-determinism` feature,
+stepped on a fixed 60 Hz tick.
 
 <Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
 
@@ -38,23 +38,22 @@ physics2d::add_collider(this.node, #{ kind: physics2d::SHAPE_RECT, half_extents:
 - A collider takes `kind` (`ball` and `cuboid` in 3D, `circle` and `rect` in
   2D, and a dozen more each) with the matching dimensions.
 - Plus `restitution`, `friction` and `density`.
-- The scene vocabulary and the script vocabulary are the same words.
+- Scene keys and script constants use the same names.
 
-## Two ways to call, one function
+## Component handles
 
 ```rune
 physics2d::apply_impulse(this.node, 1.0, 0.0);
 this.node.body2d.apply_impulse(1.0, 0.0);
 ```
 
-- Every function takes the node first, so it is also a method on the node's
-  component handle. Those two lines are one call.
-- `node.body2d` binds the node to whichever module drives that component, so
-  the dimension stops being something you repeat: the same `apply_impulse` on
-  a `body3d` handle reaches `physics3d`.
+- Every function takes the node first and is also a method on the node's
+  component handle.
+- `node.body2d` binds to the module that drives the component.
+  `apply_impulse` on a `body3d` handle reaches `physics3d`.
 - Handles also carry `get()`, `set(table)`, `has()` and `remove()`.
-- A method no module declared for that component is an error naming it.
-  `node.sprite.apply_impulse` does not silently do nothing.
+- A method no module declared for the component is an error naming it
+  (`node.sprite.apply_impulse`).
 - Each component's methods are on its reference page, for example
   [`body2d`](/docs/reference/components/body2d).
 
@@ -62,13 +61,12 @@ this.node.body2d.apply_impulse(1.0, 0.0);
 
 | Module | What is in it |
 | --- | --- |
-| `physics3d`, `physics2d` | Bodies, colliders, joints, velocities and queries: one module per world, mirroring the `body3d` and `body2d` split |
-| `physics2d` only | `max_contact_impulse(node)`, the strongest impact a body took this frame, for destruction or damage |
-| `physics` | What spans both worlds: `set_paused`, `is_paused`, `clear`, `set_sleeping_allowed`, `sleeping_allowed`, the debug draw, the solver's tuning and counters |
+| `physics3d`, `physics2d` | Bodies, colliders, joints, velocities and queries, one module per world |
+| `physics2d` only | `max_contact_impulse(node)`, the strongest impact a body took this frame |
+| `physics` | Both worlds: `set_paused`, `is_paused`, `clear`, `set_sleeping_allowed`, `sleeping_allowed`, the debug draw, the solver's tuning and counters |
 
-A tool can therefore treat physics as one simulation. The editor pauses it
-until play, and its Physics persona draws every body's collider and centre of
-mass over the scene, playing or not.
+The editor pauses physics until play. Its Physics persona draws every body's
+collider and centre of mass over the scene, playing or not.
 
 <figure><img src="/img/manual/physics_overlays.webp" alt="The Physics persona's collider and centre-of-mass overlays over examples/angrynerds, the Bird selected" width="1600" height="1000" loading="lazy" /></figure>
 
@@ -77,7 +75,7 @@ The full function lists are in the
 
 ## Determinism
 
-- Physics steps on a fixed 60 Hz tick, never the variable frame delta.
+- Physics steps on a fixed 60 Hz tick.
 - Order-sensitive collections iterate deterministically.
-- Two runs with identical inputs match bit for bit, and a repository test
-  asserts it. See [Determinism](./determinism.mdx).
+- Two runs with identical inputs match bit for bit. See
+  [Determinism](./determinism.mdx).

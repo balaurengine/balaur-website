@@ -8,31 +8,30 @@ keywords: [import settings, pixel art, nearest neighbour filtering, texture impo
 ---
 
 Import settings as a TOML sidecar beside the asset. Project-wide defaults per
-kind in `project.toml`. Nearest filtering, so pixel art draws with hard edges.
+kind in `project.toml`. Nearest filtering: pixel art draws with hard edges.
 
 {/* truncate */}
 
 ## What landed
 
-- **Sidecar.** The double extension sorts beside its image in a listing and
-  cannot collide with a scene or a clip named `hero`.
+- **Sidecar.** `art/hero.png.toml` holds the settings for `art/hero.png`.
 - **Project default.** `[import.texture]` in `project.toml`; a sidecar
   overrides one key at a time.
 - **Every kind.** A file's kind comes from its extension: texture, audio,
-  font or model. One resolver reads them all.
+  font or model.
 - **Two keys reach the renderer.** `filter`: `"nearest"` or `"linear"`.
-  `srgb = false` for an image that is data, not colour: a normal map, a mask.
-- **One re-upload.** The resolved settings are part of the name a texture is
-  uploaded under, with the file's modification time, so editing a sidecar
+  `srgb = false` for a normal map or a mask.
+- **One re-upload.** The resolved settings and the file's modification time
+  are part of the name a texture is uploaded under. Editing a sidecar
   re-decodes one image.
-- **Pixels, never sizes.** A sprite's extent comes from the image header, so
-  a headless run computes the same world as a windowed one and import
-  settings stay out of the digest. Downscaling for a phone is an export key.
+- **Pixels, never sizes.** A sprite's extent comes from the image header.
+  Import settings stay out of the digest. Downscaling for a phone is an
+  export key.
 
 ```toml
 # art/hero.png.toml
-filter = "nearest"   # pixel art, drawn crisp instead of blurred
-srgb = true          # false for a normal map or a mask, which carry data
+filter = "nearest"   # pixel art, drawn crisp
+srgb = true          # false for a normal map or a mask
 ```
 
 ```toml
@@ -41,14 +40,14 @@ srgb = true          # false for a normal map or a mask, which carry data
 filter = "nearest"
 ```
 
-The editor writes the sidecar for you. Pick a picture in the Assets dock and
-the Import tab, beside the Inspector, shows one row per key, each saying whether
-the value is the file's own, the project's or the engine's default. Clearing a
-row drops the key, and an empty sidecar is deleted.
+The editor writes the sidecar. Select a picture in the Assets dock; the
+Import tab, beside the Inspector, shows one row per key and says whether the
+value is the file's own, the project's or the engine's default. Clearing a
+row drops the key. An empty sidecar is deleted.
 
 ![The Import tab showing filter and srgb for a selected picture](/img/manual/import_dock.webp)
 
-Written but not wired: `repeat`, `mipmaps`, `anisotropy` and premultiplied
-alpha, which wait on the renderer exposing a whole sampler. On the
+Parsed but not applied: `repeat`, `mipmaps`, `anisotropy` and premultiplied
+alpha wait on the renderer exposing a whole sampler. On the
 [roadmap](/docs/roadmap); [Import settings](/docs/manual/scenes#import-settings)
 is the manual.

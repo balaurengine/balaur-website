@@ -12,8 +12,6 @@ re-encodes PNGs, subsets fonts and rewrites WAV as FLAC. All of it lossless.
 
 {/* truncate */}
 
-## Where the bytes are
-
 The editor's own pack, 2.1 MB: fonts 77%, scripts 22%, images 1%. The web
 runtime beside it was 17.1 MB.
 
@@ -25,21 +23,19 @@ runtime beside it was 17.1 MB.
 - **Strip.** `strip = true` drops every asset no scene, asset document,
   script string literal or `id://` reference names. Off by default.
 - **Images.** `images = "smallest"` keeps the smaller of the PNG optimiser
-  and lossless WebP. A 128x256 sprite goes 1.1 KB
-  to 0.5 KB. JPEGs are left alone, since re-encoding one loses twice.
+  and lossless WebP. A 128x256 sprite goes 1.1 KB to 0.5 KB. JPEGs are left
+  alone.
 - **Fonts.** `fonts = "subset"` keeps the code points in the project's scenes
   and scripts, printable ASCII, and any `font_ranges` named for server text.
   One face: 421 KB to 29 KB. Kerning, ligatures and Arabic joining survive.
 - **Audio.** `audio = "flac"`: WAV as FLAC, lossless, about half the size.
-- **Lossy, under their own names.** `images = "quantised"` with
-  `images_quality`, `audio = "vorbis"` with `audio_quality`. Separate keys on
-  purpose, so a lossless setting never quietly becomes a lossy one.
-- **One file can disagree.** `recode` in a picture's import settings beats the
-  export's mode for that file alone.
+- **Lossy.** `images = "quantised"` with `images_quality`, `audio = "vorbis"`
+  with `audio_quality`. Separate keys from the lossless modes.
+- **`recode`.** In a picture's import settings, it overrides the export's
+  mode for that file.
 - **Bitmap fonts.** `.fnt` descriptors are in the pack's extension list.
 
-Every mode keeps an image's pixel dimensions, so a re-encoded texture is the
-same sprite.
+Every mode keeps an image's pixel dimensions.
 
 ```toml
 [export]
@@ -53,11 +49,11 @@ audio = "flac"              # write uncompressed WAV as lossless FLAC
 
 ## Not size levers
 
-- Atlases: a few percent of the image bytes, and no draw-call win, since the
+- Atlases: a few percent of the image bytes, and no draw-call win; the
   renderer issues one call per node.
 - GPU-compressed textures (BC, ETC2, ASTC): a byte per pixel on disk, about
   twelve times the PNG, but they cut video memory and upload time.
-- Compressing the pack: the media inside is already compressed, and static
-  hosts gzip on the way out.
+- Compressing the pack: the media inside is compressed, and static hosts
+  gzip on the way out.
 
 [Build size](/docs/manual/build-size) is the manual page.

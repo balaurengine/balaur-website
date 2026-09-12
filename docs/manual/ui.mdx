@@ -8,17 +8,15 @@ sidebar_position: 7
 
 # UI
 
-Two layers, both script-facing. Which one depends on whether the interface
-belongs to the game or to a tool.
+Two layers, both script-facing.
 
 | Layer | What it is | For |
 | --- | --- | --- |
 | `widget` | A component on a scene node. Retained: saved with the scene, edited in the inspector, previewed in the viewport | A game HUD, a settings screen, a whole tool |
 | the `ui` module | Immediate-mode egui, redrawn every frame from a script's `draw_ui` | A canvas that paints itself: a timeline, a weight table |
 
-The editor is built from the first layer now. Its shell, its docks, its
-inspector and its tab rows are `widget` nodes in `editor/scenes/main.toml`,
-and the second layer is what four painting views use.
+The editor's shell, docks, inspector and tab rows are `widget` nodes in
+`editor/scenes/main.toml`. Its four painting views use the `ui` module.
 
 ## Widgets: game HUDs as scene nodes
 
@@ -36,11 +34,10 @@ font_size = 22
 text_color = "#2b2b2b"
 ```
 
-- One `widget` component, not one per kind of element. What it draws is its
-  `kind`: `label`, `button` or `panel`. A component that comes in variants
-  selects them with `kind`, throughout the engine.
-- Widgets live in the scene tree like any node, so they are saved with the
-  scene, editable in the editor, and updatable through the component handle.
+- One `widget` component. `kind` says what it draws: `label`, `button` or
+  `panel`. Every component with variants selects one with `kind`.
+- Widgets are scene nodes: saved with the scene, edited in the editor,
+  updated through the component handle.
 
 ![The Interface persona: examples/angrynerds' Score, Birds, Hint and Restart widgets in the tree, the HUD over the safe area, and the Restart button in the inspector](/img/manual/ui_widgets.webp)
 
@@ -73,10 +70,9 @@ pub fn on_restart(this) {
 }
 ```
 
-- `on_click` names a method on that node's own script, so a button acting on
+- `on_click` names a method on the node's own script. A button acting on
   another node forwards the call.
-- `clicked` is read-only and true for the frame the press happened, for a
-  script that would rather poll.
+- `clicked` is read-only and true for the frame of the press.
 
 ```rune
 let w = this.node.widget.get();
@@ -84,16 +80,13 @@ w.text = "Score 10";
 this.node.widget.set(w);
 ```
 
-- A handle's `set` builds the component from your table over the schema's
-  defaults rather than merging into what is there, so read the table first to
-  change one property.
+- A handle's `set` builds the component from the given table over the
+  schema's defaults. To change one property, `get` first.
 - Panels size to their content when `width` or `height` is 0.
-- `visible` hides a widget without losing its state, and
-  `ui::set_widget_layer` scopes and toggles the layer.
+- `visible` hides a widget and keeps its state. `ui::set_widget_layer` scopes
+  and toggles the layer.
 
 ## The kinds
-
-One component, and `kind` says what it draws.
 
 | Group | Kinds |
 | --- | --- |
@@ -103,49 +96,47 @@ One component, and `kind` says what it draws.
 | Boxes | `panel`, `row`, `column`, `grid`, `flow`, `scroll`, `tab`, `fold`, `dialog` |
 | Other | `image`, `separator`, `draw` |
 
-- **`list`** — rows from `options`, and `text` is the one picked. A row splits
-  on U+001F into an icon, a label, a trailing note and an `#rrggbb` of its
-  own. Above one `columns` the rows flow into a grid of cards, which is
-  `ItemList` in its icon mode; `row_height` is then the card's height.
-- **`tree`** — a `list` whose rows nest. One leading tab is one level, and the
-  fold caret is the kind's own, so a script hands over the whole outline.
-- **`table`** — a row a line, split into one cell a column. `placeholder`
-  holds the column names, split the same way.
-- **`code`** — the file being edited, with the gutter, the syntax colours and
-  the caret. The same editor the `ui` module has always had.
+- **`list`** — rows from `options`; `text` is the one picked. A row splits on
+  U+001F into an icon, a label, a trailing note and an `#rrggbb`. With
+  `columns` above one, rows flow into a grid of cards (`ItemList` in icon
+  mode) and `row_height` is the card's height.
+- **`tree`** — a `list` whose rows nest. One leading tab is one level. The
+  fold caret is the kind's own.
+- **`table`** — one row per line, one cell per column. `placeholder` holds
+  the column names, split the same way.
+- **`code`** — an editor with gutter, syntax colours and caret. The same
+  editor as the `ui` module's `code_editor`.
 - **`draw`** — a rect a script fills. The node owns the placement, the script
-  owns what is inside it, and neither has to know the other.
+  owns the contents.
 
-Only the rows on screen are built, so a list of a whole document costs its
-viewport rather than its length.
+Only the rows on screen are built. A long list costs its viewport.
 
 ![A screen of nodes: a card grid, a control row and a wrapping chip flow](/img/manual/ui_kinds.webp)
 
 ## Layout
 
-A container hands its children rects; nothing positions itself.
+A container hands its children rects.
 
-- **`grow`** — the share of the leftover this box takes along the container's
-  direction. Zero takes only what it asks for.
-- **`gap`** — the air between children. **`padding`** is the air inside the
-  container's own edge.
+- **`grow`** — the share of leftover space this box takes along the
+  container's direction. Zero takes only its own size.
+- **`gap`** — space between children. **`padding`** is space inside the
+  container's edge.
 - **`align`** — where children sit across the container's direction.
 - **`justify`** — how they spread along it: `start`, `center`, `end`,
   `between`, `around` or `evenly`.
-- **`width`** — the box, with `height`, `min_width` and `min_height` beside
-  it. Zero means hug the content.
-- **`handle`** — how wide a grab the seams between children get. A drag
-  writes the new size onto the neighbour that states one.
+- **`width`** — the box, with `height`, `min_width` and `min_height`. Zero
+  hugs the content.
+- **`handle`** — the grab width of the seams between children. A drag writes
+  the new size onto the neighbour that states one.
 
-The arithmetic is [taffy](https://github.com/DioxusLabs/taffy), the layout
-engine Dioxus and Blitz use. It runs over the whole tree before anything
-draws, so a script can read a rect back with `ui::widget_rect` and place
-something against it in the same frame.
+Layout is [taffy](https://github.com/DioxusLabs/taffy), the layout engine
+Dioxus and Blitz use. It runs over the whole tree before drawing. `ui::widget_rect`
+reads a rect back in the same frame.
 
 ## Themes and roles
 
 A `widget_theme` asset says how each kind looks. A widget takes the theme of
-the nearest ancestor that names one, so a screen is themed by its root.
+the nearest ancestor that names one.
 
 ```toml
 type = "widget_theme"
@@ -168,14 +159,14 @@ color = "#f6f8fb"
 strong = true
 ```
 
-- `[colors]` names the fills the rest of the file spells.
-- `[<kind>]` is that kind's look; a kind the file leaves out keeps the
+- `[colors]` names colours the rest of the file refers to.
+- `[<kind>]` is that kind's look. A kind the file leaves out keeps the
   built-in one.
-- `[roles.<name>]` is the same table under a name, and a widget takes it with
-  `role = "primary"`. It sits over its kind's.
+- `[roles.<name>]` is the same table under a name. A widget takes it with
+  `role = "primary"`, over its kind's.
 - `[<kind>.hover]` and `[<kind>.active]` say how it looks under the pointer.
 - A widget's own `fill`, `stroke`, `radius`, `text_color`, `font_size` and
-  `font` win over all of it.
+  `font` win over the theme.
 
 Also on every widget: `tooltip`, `icon` (a glyph from the theme's icon
 family, drawn before the caption) and `disabled`.
@@ -194,32 +185,28 @@ pub fn draw_ui(this) {
 }
 ```
 
-- `draw_ui` runs once per frame inside the egui pass, exposing
-  [egui](https://github.com/emilk/egui) to scripts.
-- Panel and container calls take a closure and push their child UI around it,
-  so a script composes layouts as Rust egui code does.
+- `draw_ui` runs once per frame inside the
+  [egui](https://github.com/emilk/egui) pass.
+- Panel and container calls take a closure for their children, as Rust egui
+  code does.
 - A widget that changes returns a tuple:
   `let (text, changed) = ui::text_field(...)`.
 - The set: panels, labels, pills, toggles, sliders, drag values, dropdowns,
   text fields, modals, scroll areas, menus, shortcuts, and `ui::code_editor`,
   an editable Rune-highlighted buffer.
-- Reach for it where the pointer is the input and the picture is not a set of
-  controls: a timeline's lanes, a weight table, a painting tool. A `draw` node
-  is how one of those sits in a tree of widgets.
-- Colours are per call, so a complete theme lives in a script and hot reloads
-  with it.
+- For canvases: a timeline's lanes, a weight table, a painting tool. A `draw`
+  node places one in a tree of widgets.
+- Colours are per call. A theme lives in a script and hot reloads with it.
 - Fonts load from `<project>/fonts/*.ttf`, with `heading`, `ui` and `mono`
   always available.
 - All dimensions are design pixels. `ui::set_scale(f)` multiplies every metric
-  and the query functions divide back, so a script authors against the
-  design's pixel values at any zoom. HiDPI is separate and automatic.
+  and the query functions divide back. HiDPI is separate and automatic.
 
-The editor's four painting views are built with this module, inside `draw`
-nodes; the rest of its interface is widget nodes. See
+The editor's four painting views use this module inside `draw` nodes. See
 [The editor](./editor.mdx).
 
-## Try it
+## Example
 
-`examples/interface` is a whole screen with no `draw_ui` in it: a card grid,
-an outline, a table, a row of every control, and a theme with roles and hover
-states. The one script fills the three views and writes no layout.
+`examples/interface` is a whole screen built from widgets: a card grid, an
+outline, a table, a row of every control, and a theme with roles and hover
+states. One script fills the three views; the layout is in the scene.

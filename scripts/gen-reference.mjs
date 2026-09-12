@@ -154,6 +154,21 @@ function snippet(text, fallback, max = 155) {
   return out;
 }
 
+// An index cell is the doc's first sentence. A first sentence that runs on
+// past a colon or semicolon is cut there: the page has the rest.
+function brief(text) {
+  const first = String(text ?? '').trim().split(/\n\s*\n/)[0] ?? '';
+  let out = first.replace(/\s+/g, ' ').trim();
+  const end = out.search(/[.!?](?=\s|$)/);
+  if (end !== -1) out = out.slice(0, end);
+  if (out.length > 90) {
+    const at = (re, min) => { const i = out.search(re); return i >= min ? i : -1; };
+    const cut = at(/[:;]\s/, 12) !== -1 ? at(/[:;]\s/, 12) : at(/,\s/, 40);
+    if (cut !== -1) out = out.slice(0, cut);
+  }
+  return out.replace(/\s*--\s*.*$/, '') + '.';
+}
+
 // Strings are emitted as JSON, which is valid double-quoted YAML.
 const frontMatter = (title, extra = {}) =>
   [
@@ -354,9 +369,9 @@ const index = [
   '',
   'Every component, asset type and script module in the engine.',
   '',
-  '- A **component** is what gives a node a capability, eg. bone2d.',
-  '- An **asset type** contains a resource used on a node, eg. mesh',
-  '- A **script module** is the singleton a component calls, eg. http',
+  '- A **component** gives a node a capability: `sprite`, `body3d`, `bone2d`.',
+  '- An **asset type** is a resource a component names: `mesh`, `tileset`.',
+  '- A **script module** is a set of functions a script calls: `http`, `physics3d`.',
   '',
   '## Components',
   '',
@@ -367,7 +382,7 @@ for (const label of [...GROUPS.map(([, l]) => l), 'Other']) {
   if (!grouped[label]) continue;
   index.push(`### ${label}`, '', '| component | properties | what it gives a node |', '| --- | ---: | --- |');
   for (const name of grouped[label]) {
-    index.push(`| <span class="ref-cell">${icon(name, label, COMPONENT_ICONS)}[${code(name)}](./components/${name}.md)</span> | ${Object.keys(components[name]).length} | ${cell(componentDocs[name])} |`);
+    index.push(`| <span class="ref-cell">${icon(name, label, COMPONENT_ICONS)}[${code(name)}](./components/${name}.md)</span> | ${Object.keys(components[name]).length} | ${cell(brief(componentDocs[name]))} |`);
   }
   index.push('');
 }
@@ -377,7 +392,7 @@ for (const type of Object.keys(assetTypes).sort()) {
   index.push(`| <span class="ref-cell">${icon(type, ASSET_GROUPS[type] ?? 'other', ASSET_ICONS)}[${code(type)}](./assets/${type}.md)</span> | ${assetTypes[type].directory ? code(assetTypes[type].directory + '/') : '—'} | ${used} |`);
 }
 index.push('', '## Script modules', '', '| module | functions | what it is for |', '| --- | ---: | --- |');
-for (const m of modules) index.push(`| <span class="ref-cell">${icon(m.name, MODULE_GROUPS[m.name] ?? 'other', MODULE_ICONS)}[${code(m.name)}](./modules/${m.name}.md)</span> | ${m.functions.length} | ${cell(m.doc)} |`);
+for (const m of modules) index.push(`| <span class="ref-cell">${icon(m.name, MODULE_GROUPS[m.name] ?? 'other', MODULE_ICONS)}[${code(m.name)}](./modules/${m.name}.md)</span> | ${m.functions.length} | ${cell(brief(m.doc))} |`);
 index.push('');
 write('index.md', index);
 

@@ -11,42 +11,38 @@ import Clip from '@site/src/components/Clip';
 # Determinism
 
 Identical inputs produce a bit-for-bit identical simulation on every platform.
-That is what makes replays, lockstep networking and content-change checks
-possible.
+Replays, lockstep networking and content-change checks depend on it.
 
 :::tip[For multiplayer games]
 
-[Balaur for multiplayer](/multiplayer) is the same guarantees from the game's side: lockstep, rollback, and a replay you can attach to a bug report.
+[Balaur for multiplayer](/multiplayer): lockstep, rollback, and a replay to attach to a bug report.
 
 :::
 
 ## Engine measures
 
-- Rapier's `enhanced-determinism` feature is enabled workspace-wide, for both
-  the 2D and 3D worlds.
+- Rapier's `enhanced-determinism` feature is on workspace-wide, for the 2D
+  and 3D worlds.
 - Physics and animation step on one app-owned fixed 60 Hz tick
-  (`FixedUpdate`), never the variable frame delta.
-- Transcendentals on a simulation path: animation easing, euler↔quaternion
-  conversion, slerp: are computed on `libm` rather than the platform's math
-  library, which differs across OSes. `glamx` is pinned to `libm` and
-  `scalar-math` workspace-wide, so glam's own `Quat::from_euler` and
-  `Vec3::normalize` land on that same libm and take no SIMD path.
+  (`FixedUpdate`), never the frame delta.
+- Transcendentals on a simulation path (animation easing, euler↔quaternion
+  conversion, slerp) run on `libm`. `glamx` is pinned to `libm` and
+  `scalar-math` workspace-wide, so glam's `Quat::from_euler` and
+  `Vec3::normalize` use the same libm and no SIMD path.
 - A house lint fails the build on a bare `.sin()` or `f32::sin(x)` in Rust.
-- Rune's `f64::powf` and `f64::powi` called the platform `pow`, and its stdlib
-  installs wholesale with no way to override a function from outside, so
-  Balaur ships a small fork putting both on `libm`. They were the only two
-  platform float calls in the whole Rune stdlib.
+- Balaur's Rune fork puts `f64::powf` and `f64::powi` on `libm`, the stdlib's
+  only two platform float calls.
 - Network completions enter the simulation once per tick, at the start of the
-  frame, in arrival order, never from an I/O thread, so a recorded session
-  replays without touching the network, logins and retries included.
+  frame, in arrival order, never from an I/O thread. A recorded session
+  replays without the network, logins and retries included.
 - Order-sensitive Rust iteration uses an insertion-ordered map type, never
   bare `HashMap` iteration.
 - Scene instantiation order and scene-key application order are
   deterministic.
-- Rendering and audio are pure observers of simulation state: headless,
-  offscreen, and windowed runs compute exactly the same simulation.
-- Input is captured once per frame into a snapshot, so recording it per tick
-  is all a replay system needs.
+- Rendering and audio are observers of simulation state. Headless, offscreen
+  and windowed runs compute the same simulation.
+- Input is captured once per frame into a snapshot. A replay records that
+  snapshot per tick.
 - Dev-mode and shipped bytecode come from one compiler configuration.
 - A repository test asserts two runs match bit for bit.
 
@@ -54,32 +50,31 @@ possible.
 
 - Rune numbers are IEEE-754 doubles and 64-bit integers that never mix.
 - `+ - * /` and `sqrt` are exactly specified and reproducible everywhere.
-- The VM is a single-threaded interpreter with no native codegen, so
-  evaluation order is fixed.
-
-The known hazards:
+- The VM is a single-threaded interpreter with no native codegen. Evaluation
+  order is fixed.
 
 | Hazard | Status |
 | --- | --- |
-| `sin`, `cos`, `exp`, `pow`, ... call the platform libm, which differs across OSes | The engine's `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is implemented on pure-Rust `libm` and is bit-identical everywhere. Rune has no transcendentals of its own, so simulation code reaches `math::*` by default. Every float method Rune *does* expose is safe: `sqrt`, `abs`, `floor`, `ceil`, `round`, `min` and `max` are IEEE-exact, and `powf`/`powi` are on `libm` in Balaur's fork |
-| A random source seeded from entropy | Rune has none of its own; the `rng` module (`rng::seed/random/range/int`) is an engine-owned seeded PCG32 stream with a fixed default seed, so a fresh run reproduces by construction |
-| Iteration order over an object (`for (k, v) in obj`) is the hash map's, not insertion order | Rule: simulation-affecting iteration uses lists or sorted keys |
-| Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, which runs on the 60 Hz step with a constant dt; `update(dt)` is for presentation. Use `engine::tick()` for time |
-| Hot reload mid-session | Changing code changes behaviour; turn it off for a run you intend to verify |
+| `sin`, `cos`, `exp`, `pow`, ... call the platform libm, which differs across OSes | The `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is pure-Rust `libm`, bit-identical everywhere. Rune has no transcendentals of its own. Its float methods `sqrt`, `abs`, `floor`, `ceil`, `round`, `min` and `max` are IEEE-exact; `powf` and `powi` are on `libm` in Balaur's fork |
+| A random source seeded from entropy | Rune has none. The `rng` module (`rng::seed/random/range/int`) is an engine-owned seeded PCG32 stream with a fixed default seed |
+| Iteration order over an object (`for (k, v) in obj`) is the hash map's, not insertion order | Simulation-affecting iteration uses lists or sorted keys |
+| Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, on the 60 Hz step with a constant dt; `update(dt)` is for presentation. `engine::tick()` is the clock |
+| Hot reload mid-session | Off for a run to be verified |
 
 ## Checking, recording, replaying
 
-Pin the step and write a hash of the world each tick.
+`--fixed-tick` pins the step. `--trace-digest` writes a hash of the world
+each tick.
 
 ```bash
 balaur run my-game --fixed-tick --trace-digest run-a.txt
 ```
 
 - Two runs that differ parted at the first differing line.
-- Run it on two machines and `diff` the files. That is the whole cross-platform
-  check, and CI does it for every example on Linux, macOS and Windows.
-- A recorded session stores input, not state, so minutes of play is kilobytes.
-  Replaying it re-checks every tick.
+- The cross-platform check is a `diff` of two machines' files. CI runs it for
+  every example on Linux, macOS and Windows.
+- A recorded session stores input, not state: minutes of play is kilobytes.
+  A replay re-checks every tick.
 
 ```bash
 balaur run my-game --fixed-tick --record session.blr
@@ -87,39 +82,38 @@ balaur replay session.blr --verify          # stops at the first tick that disag
 balaur replay session.blr --entries-at 25   # that tick, one digest per node and component
 ```
 
-- Network replies are recorded too, and a replay never touches the network.
-- Rollback runs the same machinery in the other direction: a snapshot restores
-  a tick, and the simulation re-runs the same inputs forward.
+- Network replies are recorded. A replay never touches the network.
+- Rollback: a snapshot restores a tick and the simulation re-runs the same
+  inputs forward.
 - The engine's
   [determinism guide](https://github.com/balaurengine/balaur/blob/main/docs/DETERMINISM.md)
-  has the rules of thumb and the hazards that remain your problem.
+  lists the rules and the remaining hazards.
 
 ## In the editor
 
 <Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse; the recording is scrubbed, paused and played on" />
 
-- Every play-in-editor run records what the game was fed: keys, mouse,
-  gamepads, network replies. The Session dock lists them, ten per game, under
-  the editor's own data directory.
-- Open one and the scene is rebuilt from the document, the recording is fed
-  into it, and the game plays itself.
-- Lanes show the ticks keys and buttons went down, network requests came back,
-  the log spoke and the debugger stopped. Everything recorded at the
-  playhead's tick is in the rows below.
-- Drag the ruler to scrub. Forward is the engine's, backward rebuilds the
-  world and runs from the start, and *Pause* holds the simulation still.
-- The *verify* toggle hashes the world every tick while recording, so a replay
-  can say where it parted rather than merely running.
-- A recording whose scripts have been edited still plays, and the dock says
-  so, since it can no longer promise to reproduce what was seen.
+- Every play-in-editor run records its input: keys, mouse, gamepads, network
+  replies. The Session dock lists them, ten per game, under the editor's data
+  directory.
+- Opening one rebuilds the scene from the document and feeds the recording
+  in.
+- Lanes show the ticks where keys and buttons went down, network requests
+  returned, the log wrote and the debugger stopped. The rows below list
+  everything recorded at the playhead's tick.
+- The ruler scrubs. Forward steps the engine; backward rebuilds the world and
+  runs from the start. *Pause* holds the simulation.
+- The *verify* toggle hashes the world every tick while recording. A replay
+  then reports where it parted.
+- A recording whose scripts were edited since still plays. The dock flags it.
 - *Export* copies one into the project, where `balaur replay --verify` reads
-  the same file. A session caught in the editor is what goes on a bug report.
+  it.
 
-## Verified, not asserted
+## Tests
 
-- The demo project's ball touches down at the same simulation time in headless
-  and windowed runs, and from the exported pack.
-- Pack export writes in sorted key order, so the same sources give the same
+- The demo project's ball touches down at the same simulation time in
+  headless and windowed runs, and from the exported pack.
+- Pack export writes in sorted key order: the same sources give the same
   bytes on any machine.
 - CI exports every example twice per platform and compares digests across the
   matrix.

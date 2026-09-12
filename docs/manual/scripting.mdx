@@ -11,8 +11,8 @@ import Clip from '@site/src/components/Clip';
 # Scripting
 
 Scripts are [Rune](https://rune-rs.github.io/): `.rn` files attached to nodes
-in a scene. Rune reads like Rust without types, and the
-[Rune book](https://rune-rs.github.io/book/) covers the language itself.
+in a scene. The [Rune book](https://rune-rs.github.io/book/) covers the
+language.
 
 ## The model
 
@@ -39,12 +39,11 @@ pub fn draw_ui(this) {}            // immediate-mode UI, once per frame
 | `draw_ui` | once a frame, immediate mode |
 | `on_free`, `hot_reload` | teardown, and a state migration after a save |
 
-- One instance per attached node, handed back as `this`, with the owning node
-  on `this.node`.
-- Rune mutates an object in place, so what a script writes to `this` is what
-  the host reads next frame.
-- `project.toml` names the language with `language`. It defaults to `"rune"`,
-  and any other value is an error.
+- One instance per attached node: `this`, with the node on `this.node`.
+- `this` is mutated in place. What a script writes to it, the host reads next
+  frame.
+- `language` in `project.toml` defaults to `"rune"`. Any other value is an
+  error.
 - See [Determinism](./determinism.mdx) for what belongs in which hook.
 
 ![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.webp)
@@ -65,16 +64,16 @@ source = "scripts/spinner.rn"
 speed = 3.5
 ```
 
-- Defaults are written onto the instance, the node's `props` over them, and
-  only then is `init` called.
+- Defaults are written onto the instance, the node's `props` over them, then
+  `init` runs.
 - The inspector writes an override only where the value differs from the
-  default, so changing a default reaches every node that never overrode it.
-- `node.attach_script(path, props)` is the same thing at run time.
+  default.
+- `node.attach_script(path, props)` does the same at run time.
 
 ## Modules
 
-Subsystems declare their bindings once against a language-neutral seam
-(`balaur_script`), and scripts reach them with `::`.
+Subsystems declare their bindings against `balaur_script`. Scripts reach them
+with `::`.
 
 ```rune
 let t = engine::time();
@@ -87,7 +86,7 @@ physics3d::add_body(this.node, physics3d::BODY_DYNAMIC);
 `http`, `websocket`, `gamend`, `events`, `task`, `debugger`, `fs`, `toml`,
 `json`, `script`. Every function and constant is in the
 [script modules reference](/docs/reference/modules), generated from a booted
-engine so it cannot drift.
+engine.
 
 | Shape | Example |
 | --- | --- |
@@ -98,11 +97,11 @@ engine so it cannot drift.
 | Tables, lists, nothing | `#{ kind: "ball" }`, `[1, 2]`, `()` |
 | Integers and floats never mix | a float argument is written `0.0` |
 
-Each component a node can carry is a field on the node, and that field is a
-handle whose methods are the driving module's functions with the node filled
-in. `this.node.body2d.apply_impulse(x, y)` is
-`physics2d::apply_impulse(this.node, x, y)`. Every handle also answers `get()`,
-`set(table)`, `has()` and `remove()`; the
+Each component is a field on the node. The field is a handle whose methods are
+the module's functions with the node filled in:
+`this.node.body2d.apply_impulse(x, y)` is
+`physics2d::apply_impulse(this.node, x, y)`. Every handle also has `get()`,
+`set(table)`, `has()` and `remove()`. The
 [component reference](/docs/reference/components) lists the methods per
 component.
 
@@ -114,8 +113,8 @@ if body.linear_velocity().0 > 5.0 {
 }
 ```
 
-A handle's properties are fields too. The transform is a component like the
-rest, so a script moves a node by writing its `transform`:
+A handle's properties are fields. A script moves a node by writing its
+`transform`:
 
 ```rune
 let p = this.node.transform.position;                // p.x, p.y, p.z
@@ -123,12 +122,10 @@ this.node.transform.position = [p.x, p.y + 1.0, p.z];
 this.node.transform.rotation_euler = [0.0, math::rad(90.0), 0.0];
 ```
 
-- Rotations are euler radians, x then y then z. Only the inspector shows
-  degrees.
-- A node without a `transform` sits where its parent is. Writing one gives it
-  one.
+- Rotations are euler radians, x then y then z. The inspector shows degrees.
+- A node without a `transform` sits at its parent. Writing one adds it.
 - `position()`, `set_position(x, y, z)`, `translate` and `rotation_degrees`
-  stay on the node as short forms. `global_position()` answers in world space.
+  are short forms on the node. `global_position()` is in world space.
 
 ## Script files as modules
 
@@ -140,17 +137,17 @@ pub fn update(this, dt) {
 }
 ```
 
-- `mod name;` pulls in `name.rn` beside it: from disk in a dev run, from the
-  pack when shipped. Its items are reached as `name::item`.
+- `mod name;` loads `name.rn` beside the file: from disk in a dev run, from
+  the pack when shipped. Its items are `name::item`.
 - `script::require("lib.rn")` loads a file at run time and returns its
   functions in an object.
-- Both hot reload in place. A module object held since `init` sees the new
-  code after a save.
+- Both hot reload. A module object held since `init` sees the new code after
+  a save.
 
 ## Errors
 
-A binding that fails raises, and the call ends there. `script::attempt`
-returns `(ok, value)`: the result, or the error message.
+A failing binding raises and ends the call. `script::attempt` returns
+`(ok, value)`: the result, or the error message.
 
 ```rune
 let (ok, clip) = script::attempt(|| assets::load("animations/missing.toml"));
@@ -161,11 +158,10 @@ if !ok {
 
 ## Tooling
 
-The engine knows its own API, so it can answer what completes at a caret.
 `script::complete`, `hover`, `signature`, `definition`, `symbols`,
-`references`, `find`, `rename`, `replace` and `format` are those answers. Two
-clients read them: the editor's Script persona, and `balaur lsp`, which speaks
-the Language Server Protocol on stdin and stdout.
+`references`, `find`, `rename`, `replace` and `format` answer from the running
+engine. Two clients read them: the editor's Script persona, and `balaur lsp`,
+a Language Server Protocol server on stdin and stdout.
 
 ![The completion popup: a module path, and the functions and constants under it](/img/manual/script_completion.webp)
 
@@ -178,39 +174,36 @@ the Language Server Protocol on stdin and stdout.
 
 | Key | What it does |
 | --- | --- |
-| `⌘B` | Go to definition. A project `pub fn` opens its file; engine API opens the Docs dock, since there is no file to land in |
+| `⌘B` | Go to definition. A project `pub fn` opens its file; engine API opens the Docs dock |
 | `⌥⇧F` | Format the buffer with Rune's own formatter |
 | `⌘⇧R` | Rename an identifier |
 | `⌘⇧F` | Replace text |
 
-Rename and replace are textual. Rune keeps no cross-file index, so both walk
-the files a script's `mod` declarations reach and list every match before
-writing. A rename matches the identifier as a token; a replace matches text.
+Rename and replace are textual. Both walk the files the script's `mod`
+declarations reach and list every match before writing. A rename matches the
+identifier as a token; a replace matches text.
 
 ```bash
 balaur fmt .           # lay every script out
 balaur fmt . --check   # name the files that would change; exits 1 if any do
 ```
 
-`balaur lsp <project>` gives another editor the same answers: diagnostics,
-completion, hover, signature help, go-to-definition, document and workspace
-symbols, references, rename and formatting. The engine repository ships a VS
-Code extension in `editors/code`, whose README carries the Neovim and Zed
-recipes.
+`balaur lsp <project>` serves diagnostics, completion, hover, signature help,
+go-to-definition, document and workspace symbols, references, rename and
+formatting. The engine repository ships a VS Code extension in `editors/code`;
+its README has the Neovim and Zed recipes.
 
 ## Events
 
-No `connect`-style signals. The engine calls methods a script declares by
-name, so a handler reads like `update(dt)`.
+The engine calls methods a script declares by name.
 
 - `on_animation_finished(name)` from an animation, `on_click` from a widget,
   `on_response(r)` from an HTTP request.
 - Most events have a polling twin (`input::just_pressed`,
-  `animation::just_finished`). An event is a frame-scoped snapshot, not a
-  subscription.
+  `animation::just_finished`). An event is a frame-scoped snapshot.
 
-An `async` entry point suspends on `task::wait` and resumes when the result
-enters the simulation at the start of a later tick. See
+An `async` entry point suspends on `task::wait` and resumes at the start of
+the tick the result enters the simulation. See
 [Networking](./networking.mdx) for the delivery model.
 
 ```rune
@@ -224,8 +217,8 @@ Two ways for scripts to reach each other:
 
 | Shape | Call |
 | --- | --- |
-| One target, now, when you hold the node | `node.call("method", args...)` |
-| Something happened, and the emitter does not know who cares | `events` |
+| One target, by node handle | `node.call("method", args...)` |
+| A named event from an emitter to its subscribers | `events` |
 
 ```rune
 this.node.emit("hit", #{ damage: 3 });          // from this node
@@ -235,10 +228,9 @@ events::subscribe(this.node, "hit");            // every emitter's
 pub fn on_hit(this, payload) {}                 // on_<name>, whichever it was
 ```
 
-- Delivery is the top of the next frame's update, in emission then
-  subscription order, so a handler never runs inside the call that emitted.
-- The emitter is part of the key, so a hundred emitters of `hit` do not wake a
-  hundred handlers each: delivery is a lookup.
+- Delivery is at the top of the next frame's update, in emission then
+  subscription order.
+- The emitter is part of the key. Delivery is a lookup.
 - `events::emit` is the same without an emitter. `events::emitted(name)` and
   `events::emitted_from(node, name)` are the polling twins.
 
@@ -247,16 +239,14 @@ pub fn on_hit(this, payload) {}                 // on_<name>, whichever it was
 <Clip name="scripting_live" alt="A value changed and saved while the scene runs, then a breakpoint stepped in the Debugger dock" />
 
 - The host watches the project directory and recompiles a file on save.
-- Rune compiles to an immutable unit, so nothing is patched: the new unit
-  replaces the old, instances keep their state objects, and the next call
-  resolves against the new code.
-- Save-to-live latency is file-watcher latency, a few milliseconds.
-- `hot_reload(this)` lets a script migrate the shape of its state.
-- A save that does not compile puts the compiler's own diagnostic (file, line,
-  column, caret) in the Output dock, and the previously compiled code keeps
-  running.
-- Module paths resolve at compile time, so a misspelled engine call is caught
-  on save rather than when the line finally runs.
+- The new unit replaces the old. Instances keep their state objects, and the
+  next call resolves against the new code.
+- Save-to-live latency is a few milliseconds.
+- `hot_reload(this)` migrates the shape of a script's state.
+- A save that does not compile puts the diagnostic (file, line, column,
+  caret) in the Output dock. The previous code keeps running.
+- Module paths resolve at compile time. A misspelled engine call is caught on
+  save.
 
 ![A save that did not compile, reported in the Output dock](/img/editor/save_error.webp)
 
@@ -270,7 +260,7 @@ scene. The Debugger dock shows call frames and their locals.
 | Continue | `F5` |
 | Step over, into, out | `F10`, `F11`, `Shift+F11` |
 
-The same controls are the `debugger` module, so a tool can drive them:
+The same controls are the `debugger` module:
 
 ```rune
 debugger::set_breakpoints("scripts/ball.rn", [12, 30]);
@@ -282,17 +272,15 @@ debugger::resume(debugger::STEP_OVER);  // CONTINUE | STEP_OVER | STEP_INTO | ST
 debugger::set_break_on_error(true);
 ```
 
-- A script that throws logs the error and the engine carries on. Break on
-  error stops at the line that threw, with frames and locals still readable.
-- It is off by default, because it puts every synchronous call through the
-  stepping executor, otherwise used only where a breakpoint is set. The
-  Debugger dock has the same switch.
-- An error pause cannot be continued. The call is over, so any step button
-  drops it and finishes the tick it interrupted.
-- An async entry point runs as a future and cannot be paused, so a breakpoint
-  inside one is let through.
-- Locals are a frame's named arguments, since Rune keeps no names for its
-  other slots.
+- A script that throws logs the error and the engine continues. Break on
+  error stops at the line that threw, with frames and locals readable.
+- Off by default. On, every synchronous call goes through the stepping
+  executor. The Debugger dock has the same switch.
+- An error pause cannot be continued. Any step button drops the call and
+  finishes the tick.
+- An async entry point cannot be paused. A breakpoint inside one is let
+  through.
+- Locals are a frame's named arguments.
 
 ## Determinism in scripts
 

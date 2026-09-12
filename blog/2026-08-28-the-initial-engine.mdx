@@ -14,21 +14,19 @@ as TOML, scripts that hot reload with state kept, every subsystem a plugin.
 
 ## What landed
 
-- Nodes over an ECS. A game is a tree of nodes with scripts
-  attached; under it every node is an entity, and every subsystem (physics,
-  rendering, audio, input, UI) is a plugin over the same data.
-- Scenes as TOML. A scene file declares nodes, and plugins extend its
-  vocabulary: `body` and `collider` come from the physics crate, not the
-  core.
+- Nodes over an ECS. A game is a tree of nodes with scripts attached. Every
+  node is an entity. Every subsystem (physics, rendering, audio, input, UI)
+  is a plugin over the same data.
+- Scenes as TOML. A scene file declares nodes. Plugins add keys: `body` and
+  `collider` come from the physics crate.
 - Hot reload. Saving a script swaps its code into the running game in
-  milliseconds, with all live state kept. Always on in dev mode, provided
-  by the core.
+  milliseconds, with live state kept. Always on in dev mode.
 - The editor is a project. `balaur edit` runs an editor written in the
-  engine's own scripts, so editing an editor script hot reloads the editor.
-- Export. `balaur export` precompiles scripts into a `.bpak`, and
-  `balaur play` runs from bytecode with no compiler present.
+  engine's own scripts. Editing an editor script hot reloads the editor.
+- Export. `balaur export` precompiles scripts into a `.bpak`. `balaur play`
+  runs from the bytecode.
 - Headless by default. Without the `window` feature everything runs
-  without a display: tests, servers, CI.
+  headless: tests, servers, CI.
 
 ```toml
 [[nodes]]
@@ -39,7 +37,6 @@ body = "dynamic"                                # from balaur_physics
 collider = { shape = "ball", radius = 0.5 }     # from balaur_physics
 ```
 
-Scripts were Luau here; they are Rune now. Cross-platform
-determinism was written down as non-negotiable before any of it was
-measured, and every subsystem since has been vetted against it.
-[Principles](/docs/principles) is the current form of that list.
+Scripts were Luau in this commit; Rune replaced them. Cross-platform
+determinism was a principle from this commit on.
+[Principles](/docs/principles) has the list.

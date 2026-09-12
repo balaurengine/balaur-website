@@ -1,5 +1,5 @@
 ---
-description: "A selection set with box select and align, lights and an environment a scene owns, a PBR material, and a scene that reacts with no script."
+description: "A selection set with box select and align, lights and an environment a scene owns, a PBR material, and event bindings in the scene file."
 slug: select-two-things
 title: Multi-select, lights and PBR materials
 authors: [dragos]
@@ -8,8 +8,8 @@ keywords: [game engine editor, multi select, box select, pbr material, 3d lights
 ---
 
 A selection set with box select, group, align and distribute. `light3d` and an
-`environment` a scene owns. A `pbr` material. Scenes that react with no
-script.
+`environment` a scene owns. A `pbr` material. Event bindings in the scene
+file.
 
 {/* truncate */}
 
@@ -30,19 +30,20 @@ script.
 ## Lights and environment
 
 - **`light3d`.** Point, directional and spot, with shadows and light layers.
-  A scene with none keeps the engine's own key light; the first one retires
-  it, so nothing already written draws differently.
+  A scene with none keeps the engine's key light; the first `light3d`
+  retires it.
 - **`environment`.** Sky, ambient, fog, exposure, tonemap, grading and the
-  shadow budget, on one component the last `current` one wins.
+  shadow budget, on one component. The last `current` one wins.
 - **`package::pbr`.** GGX, Smith and Schlick over the frame's lights. Six
   texture slots, and a one-pixel neutral for every slot a material omits.
 
 ## Event bindings
 
-`examples/hello` opens a door on the third click and carries no code for it.
-`[variables]` holds the count, `states` names the door's two looks, and two
-`[[nodes.bindings]]` rows join them. The Events view writes those rows, and
-"Convert to script" writes the Rune they mean.
+- `[variables]` holds a value, `states` names a node's looks, and
+  `[[nodes.bindings]]` rows join them.
+- `examples/hello` opens a door on the third click this way, with no script.
+- The Events view writes the rows. "Convert to script" writes the Rune they
+  mean.
 
 ![The Events view: two rows on the ball, one counting the click and one opening the door](/img/manual/editor_events.webp)
 
@@ -52,5 +53,5 @@ Drag a file onto the window and it becomes a node. A Pen tool over `path2d`.
 A Cost dock: draws, triangles and texture bytes per node. A Library of
 materials, lighting setups and templates, and `balaur new --template`.
 
-What is left is in the [roadmap](/docs/roadmap): image-based lighting, layer
-stacks, and the rigs that make a camera follow.
+On the [roadmap](/docs/roadmap): image-based lighting, layer stacks and
+camera rigs.

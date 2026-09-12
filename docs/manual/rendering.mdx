@@ -8,10 +8,10 @@ sidebar_position: 4
 
 # Rendering
 
-A 2D scene draws unlit until something lights it. One `light2d` starts a light
-map at the camera's resolution, and everything already drawn is multiplied by
-that map plus the camera's `ambient`. Sprites, polygons and tile maps are lit
-without naming a material.
+A 2D scene draws unlit until it has a `light2d`. One `light2d` starts a light
+map at the camera's resolution. Everything drawn is multiplied by that map
+plus the camera's `ambient`. Sprites, polygons and tile maps are lit with no
+material.
 
 ![A warm point light and a cool fill light over a backdrop, a rect and a circle occluder each casting a shadow away from the warm light, and the rest of the frame fallen to a dark ambient](/img/manual/rendering_lights2d.webp)
 
@@ -34,14 +34,13 @@ shadows = true
 ```
 
 - The node's `transform` places a light and its rotation aims it. At rest a
-  `light2d` shines along −y, and the node's z rotation turns it.
-- A point light fades quadratically to exactly nothing at `radius`, so its
-  edge has no seam.
+  `light2d` shines along −y; the node's z rotation turns it.
+- A point light fades quadratically to zero at `radius`.
 - A directional light ignores `radius` and lights the whole view.
-- `intensity` above 1 pushes past white, which is what
-  [bloom](#post-processing) picks up.
+- `intensity` above 1 pushes past white, which [bloom](#post-processing)
+  picks up.
 
-## The ambient it falls to
+## Ambient
 
 ```toml
 [nodes.camera]
@@ -51,10 +50,9 @@ ambient = "#181c22"     # what an unlit surface is multiplied by
 ```
 
 - A scene with no `light2d` costs no extra pass and no extra draw.
-- The first light changes that: everywhere the lights do not reach falls to
-  the camera's `ambient`, black unless you set it.
-- That is the mood knob. Black is a cave, dim blue is dusk, white is the unlit
-  look back again.
+- With a light, everything the lights do not reach falls to the camera's
+  `ambient`, black by default.
+- White `ambient` is the unlit look.
 
 ## Occluders and shadows
 
@@ -64,29 +62,25 @@ ambient = "#181c22"     # what an unlit surface is multiplied by
 # closed = true               # the last point joins the first
 ```
 
-- A `shadow`-casting light is blocked by any node carrying an `occluder2d`.
-  Each edge is extruded away from the light into a polygon, and the light is
-  masked wherever those polygons land.
-- Left empty, the outline follows the node's `collider2d`, failing that its
-  circle, capsule, rect or sprite shape. What a player sees is what casts the
-  shadow, with nothing authored twice.
-- Name a `mesh` for an outline of your own, or when the node draws a polyline
-  or polygon, whose points the engine will not guess at.
+- A light with `shadows = true` is blocked by any node with an `occluder2d`.
+  Each edge is extruded away from the light into a polygon that masks the
+  light.
+- Left empty, the outline follows the node's `collider2d`, else its circle,
+  capsule, rect or sprite shape.
+- `mesh` names an outline of its own. A polyline or polygon node needs one.
 - Every edge casts, so an occluder stands in its own shadow. A crate that
-  should stay lit wants a smaller outline than its sprite, or a light with
+  should stay lit needs a smaller outline than its sprite, or a light with
   `shadows = false`.
-- A directional light's shadows are parallel, because its rays are.
+- A directional light's shadows are parallel.
 
 ![Three occluders under one directional light, each casting a parallel shadow strip at the light's angle: a rect, a circle and a capsule, their outlines traced faithfully](/img/manual/rendering_directional.webp)
 
 ![The editor with an occluder node selected: only the Points mode chip, an Occluder section in the inspector, and the light gizmos over the lit scene](/img/manual/rendering_occluder_tool.webp)
 
-- The Polygon tool traces an `occluder2d` the way it traces a `polygon`, in
-  Points mode. An outline has no triangles, UVs or weights, so those modes are
-  not offered.
+- The Polygon tool traces an `occluder2d` in Points mode. Triangles, UVs and
+  weights modes are not offered.
 - The Lights chip in the Scene persona draws every light's reach and every
-  occluder's resolved outline, so a derived one is visible without being
-  written down.
+  occluder's resolved outline, derived ones included.
 
 ## Post-processing
 
@@ -98,44 +92,40 @@ bloom_threshold = 0.9   # brightness a pixel has to pass
 bloom_intensity = 0.7   # how much is added back
 ```
 
-- `bloom` is the one a lit 2D scene wants: the light map already gives it
-  bright pixels to bleed.
+- `bloom` is the one that applies in 2D; the light map gives it bright pixels
+  to bleed.
 - `ssao`, `ssr` and `dof` are the other three, 3D only.
-- Unlike `ambient`, `post` is not per-dimension. The effects run over the
-  whole film, so the last current camera of either kind sets them.
+- `post` spans both dimensions (`ambient` does not). The last current camera
+  of either kind sets it.
 
-### Your own passes
+### Custom passes
 
-`post` is a list in the order it runs, and a name the engine does not know is
-a `material` drawn over the whole frame.
+`post` runs in list order. An unknown name is a `material` drawn over the
+whole frame.
 
 ```toml
 [nodes.camera]
 post = ["fog", "tonemap", "bloom", "materials/grade.toml"]
 ```
 
-- Where the engine's own passes run is fixed by the pipeline: `ssao` and
-  `ssr` feed shading, and `bloom` rides the tonemap. Naming one switches it
-  on and nothing more.
-- What the order decides is your materials, and `tonemap` says which side of
-  it each falls on. Before it a pass reads the film in linear light, and what
-  it writes is what blooms. After it a pass reads the tonemapped picture.
-- A list that never names `tonemap` has it at the head, so a plain list of
-  materials is a chain over the finished frame.
-- A pass that will not compile is reported and left out, so a typo costs that
-  pass and not the frame.
+- The engine's own passes run at fixed points: `ssao` and `ssr` feed shading,
+  `bloom` rides the tonemap. Naming one switches it on.
+- Order applies to materials. Before `tonemap` a pass reads linear light and
+  its output blooms. After it a pass reads the tonemapped picture.
+- A list without `tonemap` has it at the head: a plain list of materials runs
+  over the finished frame.
+- A pass that fails to compile is reported and left out.
 
 See [Shaders](./shaders.mdx#a-pass-over-the-whole-frame) for what a post
-  material imports.
+material imports.
 
-## What the light map reaches
+## Light map coverage
 
-- The multiply lands on everything already drawn: sprites, polygons, tile
-  maps, and a 3D scene sitting under a 2D one.
-- Debug lines and particles draw after it and stay unlit. Usually what a debug
-  overlay wants, and worth knowing about a particle effect.
-- Lights observe, like the rest of rendering. They never touch the simulation,
-  so a lit game and a headless one tick identically.
+- The multiply covers sprites, polygons, tile maps, and a 3D scene under a 2D
+  one.
+- Debug lines and particles draw after it and stay unlit.
+- Lights never touch the simulation. A lit game and a headless one tick
+  identically.
 
 ## Lights in 3D
 
@@ -160,12 +150,11 @@ outer = 45
 
 - The node's `transform` places it and its rotation aims it. `kind` is
   `directional`, `point` or `spot`.
-- A scene with no `light3d` keeps the engine's own key light, so nothing
-  written before they existed draws differently. The first one added retires
-  it.
-- Turn one off with the node's `visible`.
-- `shadows` says whether it casts. `layers` is a bitmask a `mesh` or `shape3d`
-  has to share a bit with to be lit by it.
+- A scene with no `light3d` keeps the engine's default key light. The first
+  `light3d` replaces it.
+- `visible` on the node turns it off.
+- `shadows` says whether it casts. `layers` is a bitmask; a `mesh` or
+  `shape3d` is lit when it shares a bit.
 
 ## The scene's atmosphere
 
@@ -180,21 +169,20 @@ fog_color = "#9fb4c8"
 fog_density = 0.012
 ```
 
-- `environment` carries what belongs to the scene rather than to a view: sky,
-  ambient light, fog, exposure, tonemap, colour grading, shadow budget.
-- The last `current` one in tree order wins, so a level can carry two and
-  switch.
+- `environment` carries scene-wide settings: sky, ambient light, fog,
+  exposure, tonemap, colour grading, shadow budget.
+- The last `current` one in tree order wins.
 - `sky` is a project-relative equirectangular image: `.hdr`, `.exr` or `.png`.
-  It draws behind the scene, and `show_sky` turns it off while its orientation
-  and intensity still apply.
+  It draws behind the scene. `show_sky` hides it; orientation and intensity
+  still apply.
 - Image-based lighting from the sky is not bound yet. A scene is lit by its
   `light3d` nodes and its ambient.
-- The editor's Library dock ships three gradient skies to start from.
+- The editor's Library dock ships three gradient skies.
 
 ## A physically based material
 
-`package::pbr` is the surface a 3D material imports to get metallic,
-roughness, emissive and reflectance instead of Lambert.
+A 3D material imports `package::pbr` for metallic, roughness, emissive and
+reflectance. The default is Lambert.
 
 ```wgsl
 import package::mesh::{VertexInput, VertexOutput, vertex};
@@ -215,14 +203,11 @@ struct Params { metallic: f32, roughness: f32, reflectance: f32 }
 - A `[params]` key named for one of six texture slots and given an image path
   binds that slot: `albedo`, `normal`, `metallic_roughness`, `occlusion`,
   `emissive`, `height`.
-- Every slot a material leaves out gets a one-pixel neutral, so a shader never
-  branches on an absent map.
+- A slot left out gets a one-pixel neutral texture.
 - The editor's library ships four materials over one such shader.
 
 ## Limits
 
-- A frame draws at most 64 2D lights, and each shadow-casting one costs a pass
-  of its own.
-- A scene past that is told once in the log rather than quietly dropping
-  frames.
+- A frame draws at most 64 2D lights. Each shadow-casting one costs a pass.
+- A scene past that is told once in the log.
 - The 3D contract carries sixteen lights in its frame uniforms.

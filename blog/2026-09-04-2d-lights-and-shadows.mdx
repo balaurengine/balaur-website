@@ -1,5 +1,5 @@
 ---
-description: "light2d and occluder2d build a light map every sprite, polygon and tile is multiplied by, with shadows from the shapes a node already has."
+description: "light2d and occluder2d build a light map every sprite, polygon and tile is multiplied by, with shadows from the shapes a node has."
 slug: 2d-lights-and-shadows
 title: 2D lights and shadows
 authors: [dragos]
@@ -8,29 +8,26 @@ keywords: [2d lighting, 2d shadows, light map, bloom, occluders]
 ---
 
 `light2d` and `occluder2d` build a light map every sprite, polygon and tile is
-multiplied by. Shadows come from the shapes a node already has.
+multiplied by. Shadows come from the shapes a node has.
 
 {/* truncate */}
 
 
 ## What landed
 
-- `light2d`. Point or directional, with `color`, `radius`, `intensity`
-  and `shadows`. A point light fades quadratically to exactly nothing at
-  `radius`, so its edge has no seam. The camera's `ambient` is what the
-  unlit parts fall to: black is a cave, a dim blue is dusk.
-- `occluder2d`. Left empty, the outline follows the node's
-  `collider2d`, or its circle, capsule, rect or sprite: the thing a player
-  sees casts the shadow, authored once. A directional light's shadows are
-  parallel because its rays are.
+- `light2d`. Point or directional, with `color`, `radius`, `intensity` and
+  `shadows`. A point light fades quadratically to zero at `radius`. Unlit
+  parts fall to the camera's `ambient`.
+- `occluder2d`. Left empty, the outline follows the node's `collider2d`,
+  or its circle, capsule, rect or sprite. A directional light casts
+  parallel shadows.
 
   ![Three occluders under one directional light, each casting a parallel strip](/img/manual/rendering_directional.webp)
 
-- Bloom. `post = ["bloom"]` on the camera; an `intensity` past 1 is
-  what it picks up. `ssao`, `ssr` and `dof` are the 3D three.
-- In the editor. A Lights chip draws every light's reach and every
-  occluder's resolved outline, and the Polygon tool traces an occluder in
-  Points mode.
+- Bloom. `post = ["bloom"]` on the camera; it picks up an `intensity` past
+  1. `ssao`, `ssr` and `dof` are the 3D passes.
+- Editor. A Lights chip draws every light's reach and every occluder's
+  resolved outline. The Polygon tool traces an occluder in Points mode.
 
   ![The editor with an occluder selected: the Points chip, an Occluder section, light gizmos over the lit scene](/img/manual/rendering_occluder_tool.webp)
 
@@ -43,7 +40,6 @@ intensity = 1.6
 shadows = true
 ```
 
-Lights never touch the simulation: a lit game and a headless one tick
-identically. A scene with no `light2d` draws exactly as it did before, with
-no extra pass; a frame draws at most 64 lights.
+Lights are outside the simulation. A scene with no `light2d` adds no pass. A
+frame draws at most 64 lights.
 [Rendering](/docs/manual/rendering) has the rest.

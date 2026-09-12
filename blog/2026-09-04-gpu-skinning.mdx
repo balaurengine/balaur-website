@@ -19,7 +19,7 @@ joint matrices. The CPU path stays as the test reference.
   in the vertex shader from a joint palette the animation writes each
   frame. Thousands of vertices cost the palette upload, not a rebuild.
 - 2D polygons. A `polygon` with bone weights is skinned the same way,
-  at its `pixels_per_unit`, so a skinned character in 2D is one draw.
+  at its `pixels_per_unit`. A skinned 2D character is one draw.
 - The CPU path stays. A node with its own `material` skins on the CPU,
   and headless tests measure that path: the reference the GPU result is
   checked against, with no GPU in CI.

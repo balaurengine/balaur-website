@@ -12,12 +12,12 @@ import Clip from '@site/src/components/Clip';
 
 One plugin, `balaur_anim`: one asset type (`animation_clip`), one component
 (`animation`), one script module, one system. Tracks address properties
-through the component registry, so it animates the renderer and the UI while
-depending only on the core.
+through the component registry. The plugin depends only on the core and
+animates the renderer and the UI.
 
 :::tip[For animators]
 
-[Balaur for animators](/animate) is this page without the plugin internals: bones, skinning, IK and the timeline, on the rig that ships in the game.
+[Balaur for animators](/animate): bones, skinning, IK and the timeline, on the rig that ships in the game.
 
 :::
 
@@ -55,13 +55,13 @@ autoplay = "patrol"
 ```
 
 - A track drives the transform or any registered component property:
-  `shape3d/color`, `shape2d/radius`, `widget/x`. A third-party component
-  animates the day it is registered.
+  `shape3d/color`, `shape2d/radius`, `widget/x`, third-party components
+  included.
 - A track with no `property` is a method track, calling a method on the node's
   script.
 - Rotation keys are authored as euler radians and interpolated as quaternions.
-  A `rotation` track takes the quaternion itself, which is what an imported
-  model's clips hold.
+  A `rotation` track takes the quaternion itself; an imported model's clips
+  use it.
 
 ## The script module
 
@@ -75,14 +75,14 @@ pub fn on_reached_end(this) {   // called by the clip's method track
 }
 ```
 
-Also `seek`, `time`, `current`, `is_playing`, `just_finished`, and `define`
-for building a clip from an object at run time. A tween is asked about
-separately, with `is_tween_running(handle)`.
+Also `seek`, `time`, `current`, `is_playing`, `just_finished`, and `define`,
+which builds a clip from an object at run time. `is_tween_running(handle)`
+answers for a tween.
 
 ## Tweens
 
-A clip generated on the spot from the values a node has now, run through the
-same sampler and the same fixed step.
+A clip generated from the node's current values, run through the same sampler
+and fixed step.
 
 ```rune
 animation::tween(this.node, #{
@@ -104,29 +104,25 @@ animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "linear");   //
 | `interval`, `call` | sequence among the property steps |
 
 - Steps run in order.
-- The spec is data, so a tween serialises: the editor authors one, and it hot
-  reloads.
-- Easing is twelve transitions in four modes, with Godot's names and shapes,
-  so a ported curve behaves.
+- The spec is data: it serialises, the editor authors one, and it hot reloads.
+- Easing is twelve transitions in four modes, with Godot's names and shapes.
 
 ## The Animate persona
 
 <Clip name="animation_key" alt="The Animate persona: scrubbing the clip, posing the thigh bone, keying it, and playing" />
 
-- The timeline's lanes are the selected clip's tracks, and the ruler scrubs
-  the node's own player.
-- Preview goes through the engine's parser, so the editor shows what ships.
-- *Save as file* and *Make inline* convert a clip between its two homes
-  exactly.
-- Keying a bone writes a rotation track on its character's clip, and a skinned
+- The timeline's lanes are the selected clip's tracks. The ruler scrubs the
+  node's player.
+- Preview goes through the engine's parser.
+- *Save as file* and *Make inline* convert a clip between file and inline.
+- Keying a bone writes a rotation track on the character's clip. A skinned
   polygon deforms as the clip plays.
 
 ## Skeletons and skins
 
 A bone is a node with a rest pose: `bone2d` in 2D, `bone3d` in 3D. A skin is a
-`polygon`, a textured 2D polygon whose mesh carries bone weights. A rig needs
-no new animation machinery, because a clip on the character keys its bones by
-path.
+`polygon`: a textured 2D polygon whose mesh carries bone weights. A clip on
+the character keys its bones by path.
 
 ```toml
 [[nodes]]
@@ -150,10 +146,9 @@ weights = [0, 0, 1, 1]
   control the triangulation.
 - UVs default to the texture centred on the node at `pixels_per_unit`.
 - Skinning runs on the GPU from a joint palette computed off the scene tree. A
-  headless run computes the same palette, so bones are in the determinism
-  digest.
+  headless run computes the same palette; bones are in the determinism digest.
 - `skeleton::apply_rest(node)`, `skeleton::overwrite_rest(node)` and
-  `skeleton::bones(node)` are the module's whole surface.
+  `skeleton::bones(node)` are the whole module.
 
 ![A polygon's inspector: vertices, drawn polygons, bones and brush](/img/editor/component_limb.webp)
 
@@ -167,24 +162,24 @@ weights = [0, 0, 1, 1]
 | Polygon · UV | The points placed over the texture |
 | Polygon · Weights | Bone influence painted with a brush |
 
-The polygon stays skinned while you edit it, and the inspector's Skeleton
-section carries the two rest-pose verbs.
+The polygon stays skinned during editing. The inspector's Skeleton section
+has the two rest-pose verbs.
 
 ![Weights mode, painting the thigh bone](/img/editor/tool_polygon_weights.webp)
 
 ### Modifiers
 
-A `modifier2d` runs after the clip every frame, so a clip poses the rig and a
-modifier has the last word. `modifier3d` is the same six kinds over `bone3d`.
+A `modifier2d` runs after the clip every frame. `modifier3d` is the same six
+kinds over `bone3d`.
 
 | `kind` | What it does |
 | --- | --- |
 | `look_at` | Turns one bone so it points at a target node. |
 | `two_bone_ik` | Bends a root, middle and tip chain so the tip reaches the target; `flip` picks the bend side. |
 | `fabrik` | Reaches with a chain of any length. Converges from any pose. `iterations`, `tolerance`. |
-| `ccdik` | The same reach, one bone at a time, and the only one that can hold an `angle_limit` per bone. |
-| `jiggle` | No target: a spring per bone toward the pose the clip left it in, so a chain trails a walk and settles when it stops. `stiffness`, `damping`, `mass`, `gravity`, `use_gravity`. |
-| `follow` | Moves the node itself to its target plus `offset`, `lag` seconds behind. It closes the same share of the gap on every fixed tick, so the path is the same at any frame rate. |
+| `ccdik` | The same reach, one bone at a time. The only kind with an `angle_limit` per bone. |
+| `jiggle` | No target: a spring per bone toward the clip's pose. `stiffness`, `damping`, `mass`, `gravity`, `use_gravity`. |
+| `follow` | Moves the node itself to its target plus `offset`, `lag` seconds behind. Closes the same share of the gap on every fixed tick. |
 
 `chain` says how many bones a chain solver walks, counting the driven one.
 Zero walks to the deepest tip.
@@ -196,9 +191,8 @@ bone = "Shoulder"
 target = "Target"
 ```
 
-`follow` is the one that drives a node rather than a bone, so a camera trails
-what it watches with no script. Its memory is the node's own transform, which
-means a rollback puts a follower back where the snapshot had it.
+`follow` drives the node itself. Its state is the node's transform. A rollback
+restores a follower from the snapshot.
 
 ```toml
 # A camera that trails the player a fifth of a second behind.
@@ -221,15 +215,14 @@ use_gravity = true
 
 ![The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it](/img/manual/rigging_modifiers.webp)
 
-The viewport draws the chain a modifier solves, with a dashed line to the
-target and a handle that drags the node it names. It is the same walk the
-solver makes, so a `chain` of two draws two bones.
+The viewport draws the chain a modifier solves, a dashed line to the target
+and a handle that drags the target node. A `chain` of two draws two bones.
 
-### Deforming a mesh without a bone
+### Free-form deformation
 
 A `polygon/deform` track keys an `[dx, dy]` offset per vertex, added to the
-authored positions before skinning. Spine calls it free-form deformation: a
-mouth, a cape edge or a breathing outline, without a bone for each.
+authored positions before skinning: a mouth, a cape edge or a breathing
+outline. Spine calls it free-form deformation.
 
 ```toml
 [[tracks]]
@@ -241,15 +234,15 @@ keys = [
 ]
 ```
 
-- The one track that goes past four numbers per key.
+- The one track with more than four numbers per key.
 - In Points mode with the Animate persona armed, dragging a vertex moves the
-  offset rather than the mesh.
+  offset.
 - The inspector's **Deform · key** row writes it at the playhead.
 
-### One rig's clips on another
+### Retargeting
 
-A `bone_map` asset pairs canonical bone names with the node paths they take on
-one rig, so a clip authored for a different skeleton plays.
+A `bone_map` asset pairs canonical bone names with one rig's node paths. A
+clip authored for a different skeleton plays through it.
 
 ```toml
 type = "bone_map"
@@ -267,15 +260,14 @@ animation::play(hero, "walk", #{ "retarget": "animations/hero.bonemap.toml" });
 - A rotation key is read as a turn away from the profile's rest and applied to
   this rig's.
 - A position key is scaled by how much longer this rig's bone rests.
-- A track the map says nothing about keeps its authored path, so a clip that
-  half matches plays the half that does.
+- A track the map does not name keeps its authored path.
 - `skeleton_profile` names the canonical skeleton. Leaving it out uses the
   built-in humanoid.
 
 ![The Bone map dock: canonical names on the left, the rig's own bones on the right](/img/manual/rigging_bonemap.webp)
 
-The Bone map dock fills the rows it can by name and writes the asset. It
-ignores case, separators and an exporter's prefix, so `LeftUpperArm` finds
+The Bone map dock fills rows by name and writes the asset. Matching ignores
+case, separators and an exporter's prefix: `LeftUpperArm` finds
 `mixamorig:LeftUpperArm`.
 
 ### Weights, mirroring and tracing
@@ -284,7 +276,7 @@ ignores case, separators and an exporter's prefix, so `LeftUpperArm` finds
 
 | Verb | What it does |
 | --- | --- |
-| Weights dock | The numbers behind the brush: picked vertices, one editable weight per bone, a per-vertex sum that goes red when it is not one |
+| Weights dock | Picked vertices, one editable weight per bone, a per-vertex sum that goes red when it is not one |
 | Bind, Unbind, Normalise | On the picked vertices |
 | Auto | Weights by distance to each bone's segment |
 | Smooth | Average with the vertices sharing an edge |
@@ -304,10 +296,10 @@ physics::ragdoll_blend(this.node, 1.0);
 ```
 
 - `blend` moves each bone from the pose the clip wrote toward its body's.
-- At `0` the clip is in charge and the bodies simulate unseen, so turning the
-  blend up does not snap the rig to a fresh pose. At `1` it is limp.
-- The bodies are ordinary nodes with ordinary `body2d`, `collider2d` and
-  `joint2d`, so a ragdoll is inspectable, undoable and saved with the scene.
+- At `0` the clip drives and the bodies simulate unseen. At `1` the rig is
+  limp.
+- The bodies are nodes with `body2d`, `collider2d` and `joint2d`:
+  inspectable, undoable and saved with the scene.
 - The editor's **Skeleton · Ragdoll** row is this call, and
   `physics3d.ragdoll` is the 3D twin.
 
@@ -319,32 +311,29 @@ balaur import model.glb --project my-game
 
 - Copies the model under `models/`, writes its joint hierarchy as a scene with
   `bone3d` rest poses and one `mesh` node, and its animations as a clip
-  library. All TOML, all editable.
-- A `.gltf` with its `.bin` and textures beside it works the same way.
-- The mesh is skinned every frame from the same scene tree, so the same clips,
-  rest verbs and bone gizmos apply.
-- The joint palette goes to a vertex shader, so a 3D rig deforms on the GPU
-  with the mesh's buffers left alone.
+  library. All TOML.
+- A `.gltf` with its `.bin` and textures beside it imports the same way.
+- The mesh is skinned every frame from the scene tree. The same clips, rest
+  verbs and bone gizmos apply.
+- The joint palette goes to a vertex shader. A 3D rig deforms on the GPU; the
+  mesh's buffers are untouched.
 - A node naming a `material` asset, or a frame under a shader channel view,
-  keeps the CPU path: those shaders draw against `package::mesh` and know
-  nothing about a palette. The shader's blend is `@const`, so a headless test
-  holds it to the CPU reference without a GPU.
+  uses the CPU path: those shaders draw against `package::mesh`. The shader's
+  blend is `@const`. A headless test checks it against the CPU reference.
 
 ![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp)
 
-`examples/rig` is one figure showing four kinds of rigging at once: a clip
-keying bone rotations, two-bone IK reaching a moving target, a `jiggle` plume,
-and a `polygon/deform` breathing outline. It falls into a ragdoll every few
-seconds. `examples/rig3d` is a column imported the way above.
+`examples/rig` is one figure with four kinds of rigging: a clip keying bone
+rotations, two-bone IK reaching a moving target, a `jiggle` plume, and a
+`polygon/deform` breathing outline. It falls into a ragdoll every few seconds.
+`examples/rig3d` is an imported column.
 
 ## Determinism and scheduling
 
-- Playback advances on its own fixed 1/60 accumulator, so the sampler never
-  sees a variable dt.
-- Every transcendental (easing, euler to quaternion, slerp) is computed on
-  `libm`, so an animation is the same on every platform.
-- The system runs after the script tick, so `animation::play()` takes effect
-  the same frame.
-- It runs before physics reads transforms, so an animated kinematic platform
-  pushes whatever stands on it with no extra wiring. `examples/hello` does
-  exactly that.
+- Playback advances on its own fixed 1/60 accumulator.
+- Every transcendental (easing, euler to quaternion, slerp) runs on `libm`,
+  bit-identical on every platform.
+- The system runs after the script tick. `animation::play()` takes effect the
+  same frame.
+- It runs before physics reads transforms. An animated kinematic platform
+  pushes what stands on it (`examples/hello`).

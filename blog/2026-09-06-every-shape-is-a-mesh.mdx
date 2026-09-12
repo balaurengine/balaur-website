@@ -30,10 +30,9 @@ Booleans in both dimensions. A cloner. Text as geometry.
 
   ![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
 
-- In 2D. `shape2d` gained `ellipse`, `star` and `ngon`, and `boolean2d`
-  joins, cuts and intersects filled outlines the same way. The 2D booleans
-  run on `i_overlay`, which works in fixed-point integers and so lands on
-  the same vertices on every platform.
+- In 2D. `shape2d` gained `ellipse`, `star` and `ngon`. `boolean2d` joins,
+  cuts and intersects filled outlines. The 2D booleans run on `i_overlay`,
+  in fixed-point integers: the same vertices on every platform.
 
   ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
 
@@ -45,19 +44,19 @@ Booleans in both dimensions. A cloner. Text as geometry.
 - Text. `kind = "text"` on a `mesh` asset: a word as geometry, counters
   kept as holes, sized in world units, sitting on its baseline.
 
-- Colours and morph targets. Both survive a glTF import now. A morph
-  weight is a property, so a clip drives it as `mesh/morph.<name>`. Vertex
-  colours reach a material that asks: `features = { vertex_color = true }`.
+- Colours and morph targets. Both survive a glTF import. A morph weight is
+  a property; a clip drives it as `mesh/morph.<name>`. Vertex colours reach
+  a material with `features = { vertex_color = true }`.
 
   ![A word as a mesh, and a triangle coloured per vertex](/img/manual/objects_text.webp)
 
-## Why one mesher
+## One mesher
 
-- A collider fitted to a torus is a torus, not the box around one.
+- A collider fitted to a torus is a torus.
 - A ray picks the shape that is drawn.
-- Tests measure meshes: closed, outward-facing, the exact volume a boolean should have.
-- Deterministic by construction: `libm` for the curves, and a BSP that is dot
-  products and lerps with no transcendental to pin.
+- Headless tests check every mesh is closed and outward-facing, with the
+  exact volume a boolean should have.
+- Deterministic: `libm` for the curves, and a BSP of dot products and lerps.
 - The meshers are the engine's own: core builds the triangles, physics fits
   its colliders to them.
 
@@ -77,10 +76,8 @@ kind = "trimesh"
 mesh = "#ring"
 ```
 
-## Try it
-
-- `examples/objects`: five rows, one per category, then the 2D layer.
-  It runs [in the browser](/examples/?play=objects).
-- The [manual](/docs/manual/scenes#objects) and the generated
-  [asset](/docs/reference/assets) and [component](/docs/reference/components)
-  references.
+`examples/objects` has five rows, one per category, then the 2D layer. It
+runs [in the browser](/examples/?play=objects). The
+[manual](/docs/manual/scenes#objects) and the generated
+[asset](/docs/reference/assets) and [component](/docs/reference/components)
+references have the keys.

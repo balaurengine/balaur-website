@@ -8,33 +8,34 @@ sidebar_position: 13
 
 # The editor
 
-A regular Balaur project. Its scripts draw the whole interface through the
-`ui` module, and editing one hot reloads the editor itself. Nothing in it is
-privileged: every binding it uses is available to any project.
+A Balaur project. Its scripts draw the interface through the `ui` module, and
+editing one hot reloads the editor. Every binding it uses (filesystem access,
+TOML parsing, scene instantiation, script reload, camera control, debug
+drawing) is available to any project.
 
 ```bash
-cargo run -p balaur_cli --features window -- edit my-game
+balaur edit my-game
 ```
 
 ![The editor on examples/angrynerds: the node tree, the viewport with its 2D grid and gizmo, the inspector, and the dock tabs](/img/manual/editor_overview.webp)
 
 ## The document and the mirror
 
-- The game's scene TOML is parsed into a document model and mirrored as a real
-  node subtree, so the viewport shows the actual scene and physics builds the
-  actual bodies, paused until play.
-- Edits are written back as TOML, and every one is undoable (`Ctrl+Z`,
+- The scene TOML is parsed into a document model and mirrored as a node
+  subtree. The viewport shows the scene and physics builds the bodies, paused
+  until play.
+- Edits are written back as TOML. Every one is undoable (`Ctrl+Z`,
   `Ctrl+Shift+Z`).
 - Play-in-editor attaches the game's scripts to the mirrored nodes and
-  unpauses, so the real game code runs against the real scene.
+  unpauses.
 - Every run is recorded. See
   [Determinism](./determinism.mdx#in-the-editor).
 - Stop rebuilds the mirror from the document.
 
 ## Personas
 
-The top bar switches between five personas. Each arranges the same panels,
-node tree, viewport or code, docks and inspector, around one job.
+The top bar switches between five personas. Each arranges the same panels
+(node tree, viewport or code, docks, inspector) around one job.
 
 <div className="persona-gallery">
   <figure><img src="/img/manual/persona_scene.webp" alt="The Scene persona: the node tree, the viewport with its gizmo on the selected Bird, and the inspector" width="1600" height="1000" loading="lazy" /><figcaption>Scene</figcaption></figure>
@@ -44,17 +45,15 @@ node tree, viewport or code, docks and inspector, around one job.
   <figure><img src="/img/manual/persona_interface.webp" alt="The Interface persona: examples/angrynerds' widgets over the safe area, the Restart button selected" width="1600" height="1000" loading="lazy" /><figcaption>Interface</figcaption></figure>
 </div>
 
-- Scene. The tree, the viewport with its gizmos, and the inspector
-  generated from the component registry: every registered component,
-  third-party ones included, is addable and editable with no editor changes. A
-  2D scene is detected from its components and gets a 2D grid, a pan-and-zoom
-  camera, a 2D gizmo, click-picking and collider overlays. See
-  [Scenes and nodes](./scenes.mdx).
+- Scene. The tree, the viewport with its gizmos, and the inspector generated
+  from the component registry, third-party components included. A 2D scene
+  gets a 2D grid, a pan-and-zoom camera, a 2D gizmo, click-picking and
+  collider overlays. See [Scenes and nodes](./scenes.mdx).
 - Script. One buffer per file with Rune highlighting, the hooks the file
   declares, and the events the node receives. Save writes to the project and
-  hot reloads the code, live while playing. Click a line number to set a
-  breakpoint; the Debugger dock shows frames and locals, with continue and step
-  over / into / out on `F5`, `F10`, `F11` and `Shift+F11`. See
+  hot reloads the code, while playing too. A click on a line number sets a
+  breakpoint. The Debugger dock shows frames and locals; continue and step
+  over / into / out are `F5`, `F10`, `F11` and `Shift+F11`. See
   [Scripting](./scripting.mdx#hot-reload).
 - Animate. The timeline over the selected clip's tracks. See
   [Animation](./animation.mdx#the-animate-persona).
@@ -64,10 +63,10 @@ node tree, viewport or code, docks and inspector, around one job.
 
 ## Selecting
 
-The selection is a set, and the first thing in it is the active node.
+The selection is a set. Its first node is the active node.
 
 - Shift or ⌘ click a row or a node; drag on empty viewport to box-select.
-- A gizmo drag moves, turns or scales the whole set about its own centre.
+- A gizmo drag moves, turns or scales the set about its centre.
 - `⌘G` groups at the centroid keeping every world pose, `⇧⌘G` ungroups.
 - Six aligns and three distributes, in the palette.
 - `H` hides, `⌘L` locks, `/` isolates. Hidden writes the node's `visible`;
@@ -79,9 +78,9 @@ The selection is a set, and the first thing in it is the active node.
 
 ## Tools
 
-The strip beside the viewport holds Select, Move, Rotate and Scale, then Pen,
-then two rig tools: Rig bone grows and poses a skeleton, Polygon edits a
-skinned polygon's points, triangulation, UVs and weights. Both are under
+The strip beside the viewport: Select, Move, Rotate, Scale, Pen, and two rig
+tools. Rig bone grows and poses a skeleton. Polygon edits a skinned polygon's
+points, triangulation, UVs and weights. Both are under
 [Skeletons and skins](./animation.mdx#skeletons-and-skins).
 
 Pen edits a `path2d` asset in place: click adds an anchor, drag pulls its
@@ -107,44 +106,40 @@ Eleven docks sit under the viewport.
 - Problems: what the linter found in every script, and a shader that would
   not link.
 - Assets: the project's files.
-- Docs: the script reference, module by module, from the running engine rather
-  than a file. `⌘B` on an engine call lands here. See
-  [Tooling](./scripting.mdx#tooling).
+- Docs: the script reference, module by module, from the running engine.
+  `⌘B` on an engine call opens it. See [Tooling](./scripting.mdx#tooling).
 - Timeline: the animation editor's.
 - Debugger: a paused script's frames and locals.
-- Session: the recordings play-in-editor made. It replays one, with lanes for
-  the input, network and log events it holds.
-- Profiler: the last frame as a bar per stage against the 16.7 ms a 60 Hz
-  frame has, from `engine::timings()`.
+- Session: play-in-editor's recordings. It replays one, with lanes for its
+  input, network and log events.
+- Profiler: the last frame as a bar per stage against the 16.7 ms of a 60 Hz
+  frame, from `engine::timings()`.
 - Cost: what the frame draws, from `render::stats()`: draws, triangles,
   texture bytes and a cloner's copies, per node.
 - Library: stock materials, skies, models, lighting setups, camera and
   control rigs, and project templates. Clicking a material copies it in and
   points the selected node at it. A sky is copied under `skies/` and named on
-  the scene's environment; a model, a lighting setup or a rig is instanced as
-  a prefab, and a rig brings the script it needs with it. The skies are gradients
-  and the models are primitives, so the library is kilobytes and carries no
-  third-party licence.
+  the scene's environment. A model, a lighting setup or a rig is instanced as
+  a prefab; a rig brings its script. The skies are gradients and the models
+  are primitives. The library is kilobytes and carries no third-party licence.
 
 ![The Cost dock: seventeen draws and 3758 triangles, with a bar per node and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
 
-- The command palette (`⌘K`) is the single overlay: nodes, commands and
-  personas.
-- Focus (`⇧⌘\`) gives the code the whole window: the three docks fold and the
-  split goes off, while the file's hooks stay beside the pane. A second press
-  puts back exactly the layout it folded. Opening a panel under it keeps the
-  panel and ends focus, and so does leaving the code tab.
+- The command palette (`⌘K`) lists nodes, commands and personas.
+- Focus (`⇧⌘\`) gives the code the whole window: the three docks fold, the
+  split goes off, and the file's hooks stay beside the pane. A second press
+  restores the layout. Opening a panel keeps the panel and ends focus; so does
+  leaving the code tab.
 
 ![The code pane with the window to itself, the hooks list beside it, and the Focus chip lit in the top bar](/img/manual/editor_focus.webp)
 
-- There is a dark theme and a light one.
+- Dark and light themes.
 - *Show input overlay* draws the keys, buttons and pointer the game is being
   fed. See [Input](./input.mdx#seeing-input).
 
-## Driving it from the terminal
+## Start-up states
 
-The editor starts in any state you name. That is how it is tested, and how
-every picture in this manual was taken.
+The editor starts in any state named on the command line.
 
 ```bash
 balaur edit examples/rig --offscreen --frames 100 \
@@ -156,24 +151,23 @@ balaur edit examples/rig --offscreen --frames 100 \
   `zoom:<percent>`, `palette`, `light`, `play`, `input`, `focus`.
 - `shot=<file>` captures one frame. `frames=<dir>` captures every other frame
   into a numbered directory.
-- `show:<name>` runs one of the scripted sequences behind this manual's clips,
-  which feed input through `input::feed_key`, `feed_mouse` and
-  `feed_mouse_button`, the same seam an automated test uses.
-- Offscreen frames advance on the fixed 1/60 step, so frame 90 is the same
-  picture every time.
+- `show:<name>` runs a scripted sequence (this manual's clips). It feeds input
+  through `input::feed_key`, `feed_mouse` and `feed_mouse_button`.
+- Offscreen frames advance on the fixed 1/60 step. Frame 90 is the same
+  picture every run.
 - The engine repository's `scripts/showcase.sh` takes every image and clip on
-  this site that way, so a change to the editor re-takes them all.
+  this site this way.
 
 ## Extending the editor
 
 A plugin is a Rune file adding docks, windows, palette commands, inspector
 sections, property editors, viewport overlays and start-up states.
 
-- `editor/plugins/` ships it with the editor. A project's `editor/` directory
-  keeps it to that game.
+- `editor/plugins/` ships with the editor. A project's `editor/` directory is
+  that game's own.
 - Both load at start-up, in name order.
 - A plugin declares `register()`, returning what it adds, and optionally
-  `state()`, whose object becomes its own slice at `S.plugins.<name>`.
+  `state()`, whose object lives at `S.plugins.<name>`.
 
 ```rune
 // mygame/editor/counter.rn
@@ -207,8 +201,7 @@ pub fn draw(S, k) {
 
 `S` is the editor's whole state, the same object every built-in module gets:
 the document (`S.doc`), the live mirror, the selection (`S.sel`), history and
-the theme. One rule: call the history recorder before mutating the document,
-so undo keeps working.
+the theme. Call the history recorder before mutating the document.
 
 Each list is optional.
 
@@ -217,15 +210,7 @@ Each list is optional.
 - `overlays` are `draw(S)` and draw viewport lines.
 - `editors` map a schema datatype to `draw(S, k, target, spec, value)`,
   replacing the built-in editor for that type.
-- `states` map a name to `run(S)`, so a plugin carries its own start-up state
-  and therefore its own test.
+- `states` map a name to `run(S)`: a plugin's own start-up state.
 
-Nothing is sandboxed. A plugin runs in the editor's host with the editor's
-capabilities, which is the right first cut for a tool a project writes for
-itself.
-
-## Why it is built this way
-
-The editor dogfoods the scripting surface. Everything it needs is an ordinary
-script binding, reusable by any tool or game: filesystem access, TOML parsing,
-scene instantiation, script reload, camera control, debug drawing.
+A plugin runs unsandboxed in the editor's host, with the editor's
+capabilities.

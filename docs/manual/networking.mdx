@@ -1,7 +1,7 @@
 ---
 title: "Networking: HTTP, WebSockets and WebTransport"
 sidebar_label: "Networking"
-description: "HTTP, WebSockets and WebTransport for Balaur scripts, delivered once per tick, so a recorded session replays with the network included."
+description: "HTTP, WebSockets and WebTransport for Balaur scripts, delivered once per tick; a recorded session replays with the network included."
 image: "/img/social/networking.png"
 sidebar_position: 9
 ---
@@ -20,7 +20,7 @@ runtime.
 
 :::tip[For multiplayer games]
 
-[Balaur for multiplayer](/multiplayer) puts this delivery model beside the fixed tick, rollback and replay it exists for.
+[Balaur for multiplayer](/multiplayer) puts this delivery model beside the fixed tick, rollback and replay.
 
 :::
 
@@ -40,14 +40,14 @@ sequenceDiagram
 - All I/O runs on background threads.
 - Completions cross back over a channel and enter the simulation once per
   tick, at the start of the frame, recorded in a snapshot.
-- That is the same model as input, so recording the snapshot per tick is all a
-  replay of a networked session needs.
-- Nothing blocks the frame, and handlers never run from an I/O thread.
+- Input uses the same model. The per-tick snapshot replays a networked
+  session.
+- Nothing blocks the frame. Handlers never run from an I/O thread.
 
-Scripts never poll. There are two shapes.
+Scripts never poll. Two shapes:
 
 **Handler methods.** A request or connection names the node that handles its
-results, dispatched as method calls, the shape a widget's `on_click` uses:
+results, dispatched as method calls:
 
 ```rune
 pub fn init(this) {
@@ -59,7 +59,7 @@ pub fn on_response(this, r) {
 }
 ```
 
-**Sequential await.** A request made without a node returns a token the script
+**Sequential await.** A request without a node returns a token the script
 suspends on, from an `async` entry point:
 
 ```rune
@@ -69,9 +69,9 @@ pub async fn init(this) {
 }
 ```
 
-The script resumes at the start of a later tick, in arrival order, so it is
-deterministic given the same recorded arrivals. One limit: an async entry
-point cannot be paused by the [debugger](./scripting.mdx#debugging).
+The script resumes at the start of a later tick, in arrival order. Given the
+same recorded arrivals the result is deterministic. An async entry point
+cannot be paused by the [debugger](./scripting.mdx#debugging).
 
 ## Options and configuration
 
@@ -95,33 +95,31 @@ timeout = 10.0       # seconds, for a request that names none
   (RFC 7692) and lets the server decide, and `headers` for the upgrade
   request.
 - An HTTP request takes `method`, `body`, `headers` and `timeout`.
-- Defaults come from each protocol's table in `project.toml`, so a project
-  turns compression off everywhere without touching a script.
+- Defaults come from each protocol's table in `project.toml`.
 - A call's own option wins over the table.
 
-## Why there are no signals
+## Events instead of signals
 
-- A script cannot register a persistent callback and be handed a payload three
-  frames later. That would need an id space with explicit release.
-- Events go the other way: the engine calls a method the script declares by
-  name, and a script's own events work the same, scoped to an emitting node or
-  to all of them ([scripting](./scripting.mdx#events)).
+- A script cannot register a persistent callback and be handed a payload
+  three frames later.
+- The engine calls a method the script declares by name. A script's own
+  events work the same, scoped to an emitting node or to all of them
+  ([scripting](./scripting.mdx#events)).
 - Most have a polling twin (`input::just_pressed`,
-  `animation::just_finished`) for scripts that would rather ask than declare a
-  method.
+  `animation::just_finished`).
 - An event is a frame-scoped snapshot, not a subscription.
 
-For a hosted game backend, auth, storage and lobbies, see
+For a hosted game backend (auth, storage, lobbies) see
 [Gamend](./gamend.mdx), built on the same delivery contract.
 
-## What is not there yet
+## Status
 
 Built: rollback. Two engines exchange only inputs, predict each other, roll
 back when a prediction was wrong, and compare a per-tick digest to catch a
-desync. It runs over WebSockets or QUIC, and on QUIC a datagram is a real one,
-so a lost input costs a misprediction rather than a stall.
+desync. It runs over WebSockets or QUIC. On QUIC a datagram is a true
+datagram: a lost input costs a misprediction, not a stall.
 
 Missing: replication, RPC, a browser WebTransport backend, WebRTC. The plan is
 [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md),
-with the short form on the [roadmap](../roadmap.mdx). Raw UDP is not coming:
+with the short form on the [roadmap](../roadmap.mdx). Raw UDP is not planned:
 QUIC datagrams cover it, with encryption and a browser story.

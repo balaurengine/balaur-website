@@ -11,15 +11,14 @@ A `tilemap` node draws a grid of cells over a `tileset`.
 
 - The tileset says what each tile is: solid, one-way, animated,
   light-blocking.
-- The map builds the collider, picks its tiles from the terrain you paint, and
-  casts the shadows.
+- The map builds the collider, resolves its tiles from the painted terrain,
+  and casts the shadows.
 
 ## Collision
 
-- The tileset marks solid tiles, and a `tile_collision` component builds one
-  parry voxel shape from them, not a row of boxes.
-- A body sliding along a wall has no seam to catch on.
-- Slopes are polygons in tile pixels, and `one_way = true` makes a platform.
+- The tileset marks solid tiles. A `tile_collision` component builds one
+  parry voxel shape from them.
+- Slopes are polygons in tile pixels. `one_way = true` makes a platform.
 
 ```toml
 [tiles.0]
@@ -35,8 +34,8 @@ however many cells changed.
 
 ## Autotiling
 
-Paint a terrain and the tiles arrange themselves. Underneath is one table of
-`[[rules]]`, read in order, and the first match wins.
+A painted terrain resolves through one table of `[[rules]]`, read in order.
+The first match wins.
 
 ```toml
 [[rules]]
@@ -49,18 +48,18 @@ transforms = ["rotate", "mirror"]
 outside = "same"
 ```
 
-- `transforms` lets one rule cover eight orientations, so a 47-tile blob is a
+- `transforms` lets one rule cover eight orientations. A 47-tile blob is a
   dozen rules.
 - `outside` says whether the edge of the map counts as the same terrain.
-- Variation is hashed from the cell's coordinate, so a map resolves the same
-  on every machine and after every reload.
+- Variation is hashed from the cell's coordinate. A map resolves the same on
+  every machine and after every reload.
 - `mode = "sides"` or `"corners_and_sides"` writes the rules for a bitmask
   sheet, the layout Godot and Tiled use.
 - `mode = "quarters"` draws a cell as four quarters, each chosen by the two
   cells beside that corner and the one across it. Five tiles cover all 47
-  neighbourhoods, which is what an RPG-Maker-A2 sheet ships. A sheet whose
-  five are not consecutive names them: `quarters = [fill, horizontal,
-  vertical, outer, inner]`.
+  neighbourhoods (an RPG-Maker-A2 sheet). A sheet whose five are not
+  consecutive names them: `quarters = [fill, horizontal, vertical, outer,
+  inner]`.
 
 ## Animated and occluding tiles
 
@@ -74,18 +73,18 @@ occluder = true
 
 - Animation runs on the frame clock, outside the digest.
 - An occluding cell feeds the [2D light map](./rendering.mdx) only its exposed
-  edges, so fifty tiles cast one shadow.
+  edges. Fifty tiles cast one shadow.
 
 ## Cells and layouts
 
-- Cell `0,0` has its top-left corner on the node, and the map keeps an
-  `origin`, so painting reaches in every direction.
+- Cell `0,0` has its top-left corner on the node. The map keeps an `origin`;
+  painting reaches in every direction.
 - `layout = "isometric"` or `"hex"` on the tileset. Mesh, collider, picking
   and the painter share one placement function.
 
 ## The Tiles dock
 
-- Paint, rectangle, fill, line and pick.
+- Paint, rectangle, fill, line, pick, and a stamp of the selected tile with the ones right of and below it.
 - A terrain brush that runs through the engine's own resolver.
 - A Set panel that writes solid, one-way or occluder back to the tileset file.
 
@@ -96,15 +95,13 @@ balaur import level.tmx --project game
 balaur import world.ldtk --project game
 ```
 
-Writes the atlas, a `tileset` per sheet with its grid, spacing, margin,
-per-tile collision and animations, and a scene for the level. That scene has a
-single root named after the map, with one `tilemap` node per tile layer under
-it.
+Writes the atlas, a `tileset` per sheet (grid, spacing, margin, per-tile
+collision, animations) and a scene for the level: one root named after the
+map, one `tilemap` node per tile layer under it.
 
-An `.ldtk` project writes a scene per level. Its entities land as nodes under
-that same root, each carrying the fields it was given.
+An `.ldtk` project writes a scene per level. Its entities become nodes under
+that root, each carrying its fields.
 
-Not yet: cells in their own chunked file, and a multi-tile stamp. They are on
-the [roadmap](/docs/roadmap).
-`tilemap`, `tileset` and `tile_collision` are in the
+A level too big for a scene keeps its rows in a `.cells` file that `cells`
+names. `tilemap`, `tileset` and `tile_collision` are in the
 [reference](/docs/reference/components).

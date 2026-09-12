@@ -15,20 +15,17 @@ macOS `.app`. `balaur update` replaces an install in place.
 
 ## What landed
 
-- Mobile targets. `--target ios` writes a `.app` with `game.bpak`
-  beside the executable; `--target android` an APK layout with it under
-  `assets/`. The engine reads the pack from the bundle instead of from its
-  own file.
-- A signed Mac. A flat fused binary cannot be validly signed: appending
-  bytes is exactly what a signature cannot cover. `--app` builds a `.app`
-  with the pack as a sealed resource and signs it, ad hoc
-  or with `--sign "Developer ID Application: …"`.
-- Templates on demand. Exporting for a platform you are not on offers to
-  download that platform's runtime from the engine's own release tag,
-  checked against `SHA256SUMS`, into a per-user cache. `--no-download`
-  for CI.
-- `balaur update`. Replaces the whole install: binary, bundled editor,
-  runtime template, with the latest published build, verified against the
+- Mobile targets. `--target ios` writes a `.app` with `game.bpak` beside
+  the executable; `--target android` an APK layout with it under
+  `assets/`. The engine reads the pack from the bundle.
+- A signed Mac. `--app` builds a `.app` with the pack as a sealed resource
+  and signs it, ad hoc or with `--sign "Developer ID Application: …"`. A
+  flat fused binary cannot be signed.
+- Templates on demand. Exporting for another platform offers to download
+  its runtime from the engine's release tag, checked against `SHA256SUMS`,
+  into a per-user cache. `--no-download` for CI.
+- `balaur update`. Replaces the whole install (binary, bundled editor,
+  runtime template) with the latest published build, verified against the
   release's checksums. `--check` only reports.
 
 ```bash
@@ -37,7 +34,7 @@ balaur export my-game --target android                 # -> my-game-android/
 balaur export my-game --target macos-universal --app   # -> a signed .app
 ```
 
-A pack is bytecode, scenes and assets in sorted key order, so the same
-sources give the same bytes on any machine. A packed run is pure
-interpretation, which is what lets it land on platforms that forbid JIT.
+A pack is bytecode, scenes and assets in sorted key order. The same sources
+give the same bytes on any machine. A packed run is pure interpretation and
+runs on platforms that forbid JIT.
 [Shipping a game](/docs/manual/shipping) has every flag.

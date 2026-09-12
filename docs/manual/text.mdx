@@ -1,26 +1,25 @@
 ---
 title: "Text: text2d, text3d and the shaper"
 sidebar_label: "Text"
-description: "A name over a character and a score on a sign: the text2d and text3d components, outline and shadow, markup, bitmap fonts, and one measurement everywhere."
+description: "The text2d and text3d components: keys, outline and shadow, markup, script calls, measuring, bitmap fonts and what a block costs."
 sidebar_position: 18
 ---
 
 # Text
 
-The widget layer draws text on the screen. This is the other half: text in the
-scene. A name over a character, a score on a sign, damage numbers, a label on
-a bone.
+`text2d` and `text3d` draw text in the scene. The widget layer draws text on
+the screen.
 
-One shaper serves both. Bidirectional text, Arabic joining, CJK and Thai line
-breaking and the project's font chain work the same in a panel and in the
-world, and both draw from one glyph atlas.
+One shaper and one glyph atlas serve both: bidirectional text, Arabic
+joining, CJK and Thai line breaking and the project's font chain work the
+same in a panel and in the world.
 
 ![Text, one row per thing it does](/img/manual/text_overview.webp)
 
 ## Two components
 
 `text2d` draws in the 2D pass, sized like a sprite. `text3d` draws in the 3D
-pass on a quad that faces the camera. They take the same keys.
+pass on a quad facing the camera. They take the same keys.
 
 ```toml
 [[nodes]]
@@ -42,7 +41,7 @@ outline_color = [0.1, 0.05, 0.0, 1.0]
 | Key | What it does |
 | --- | --- |
 | `text` | The string drawn |
-| `text_key` | A key in the project's strings, re-read every frame so a language change shows at once |
+| `text_key` | A key in the project's strings, re-read every frame |
 | `family` | Which font chain to shape with: `ui`, `heading`, `mono` or `icons` |
 | `font` | A project-relative `.fnt` naming a bitmap face |
 | `font_size`, `font_weight`, `font_style` | Height in font pixels, 100–900, upright or italic |
@@ -53,16 +52,15 @@ outline_color = [0.1, 0.05, 0.0, 1.0]
 | `shadow_offset_x`, `shadow_offset_y`, `shadow_color` | A shadow behind them |
 | `pixels_per_unit` | Font pixels to one world unit |
 
-- `font_size` is the height in font pixels, and `pixels_per_unit` says how
-  many of those go to one world unit. Doubling both leaves the text the same
-  size on screen and twice as sharp.
+- Doubling `font_size` and `pixels_per_unit` together keeps the on-screen
+  size and doubles the sharpness.
 - `text3d` adds `billboard`, `double_sided`, `depth_test` and `alpha_cut`.
-- A billboard turns to the camera every frame. Turn it off and the block stays
-  in the node's own plane, which is what a sign painted on a wall wants.
+- `billboard` turns the block to the camera every frame. Off, the block stays
+  in the node's own plane.
 
 ## Markup
 
-With `markup = true` the text takes the same tags a widget's label does: `[b]`,
+With `markup = true` the text takes the same tags as a widget's label: `[b]`,
 `[i]`, `[color=#7fd4ff]`, `[wave amp= freq=]`, `[center]`, `[right]` and an
 inline `[img=…]`. A coloured run keeps its own colour over the block's.
 
@@ -78,12 +76,10 @@ render::draw_text(x, y, z, "over a character", #{ size: 32.0, align: "center" })
 render::draw_text_2d(x, y, "in the 2D pass", #{ size: 24.0 });
 ```
 
-- `render.set_text` changes what a node draws, for a score that moves every
-  frame.
-- The two `draw_text` calls draw with no node at all, for one frame, the way a
-  debug line does. Neither is recorded: a replay re-runs the script that drew.
-- The editor uses them itself. The Rig tool labels bones in the viewport with
-  `draw_text`.
+- `render.set_text` changes what a node draws.
+- The two `draw_text` calls draw with no node, for one frame. Neither is
+  recorded: a replay re-runs the script that drew.
+- The editor's Rig tool labels bones with `draw_text`.
 
 ## Measuring
 
@@ -91,12 +87,12 @@ render::draw_text_2d(x, y, "in the 2D pass", #{ size: 24.0 });
 let (w, h) = render::text_size("measure me", #{ size: 32.0 });
 ```
 
-- Answers the width and height a string shapes to, in font pixels.
-- Measured against the project's fonts and the bundled ones only, never the
-  machine's, so every platform answers the same.
-- A width is presentation, and a script that writes one into state has put
-  presentation in the digest. The same rule holds for a `kind = "text"` mesh,
-  whose vertices are real geometry with colliders fitted to them.
+- Returns the width and height a string shapes to, in font pixels.
+- Measured against the project's fonts and the bundled ones, never the
+  machine's. Every platform answers the same.
+- A width is presentation. A script that writes one into state puts
+  presentation in the digest. The same holds for a `kind = "text"` mesh, whose
+  vertices are geometry with colliders fitted to them.
 
 ## Bitmap fonts
 
@@ -107,28 +103,27 @@ font = "fonts/pixel.fnt"
 font_size = 32
 ```
 
-- Point `font` at an AngelCode `.fnt` and the engine reads its page and every
+- `font` names an AngelCode `.fnt`. The engine reads its page and every
   glyph's box, then lays the text out by advance and kerning.
-- Nothing is shaped, because a bitmap font has one glyph per character and no
+- Nothing is shaped: a bitmap font has one glyph per character and no
   contextual forms.
-- The page is copied into the same atlas the rasterised glyphs live in, so a
-  bitmap glyph and a vector one are one texture and one draw.
+- The page is copied into the same atlas as the rasterised glyphs. A bitmap
+  glyph and a vector one are one texture and one draw.
 
 ## Editing in the viewport
 
-Double-click a `text2d` or `text3d` in the Scene persona and a field opens
-over it. Enter keeps the text, Escape drops it.
+Double-click a `text2d` or `text3d` in the Scene persona to open a field over
+it. Enter keeps the text, Escape drops it.
 
-## What it costs
+## Cost
 
 - A block is one mesh per colour it draws in, plus one for the outline and one
-  for the shadow. Never one node per letter.
+  for the shadow.
 - Glyphs are rasterised at the size the block covers on screen, quantised to
   buckets 8.7% apart.
-- Walking towards a sign re-shapes it a few times rather than magnifying a
-  bitmap, and two blocks at nearly the same size share their glyphs.
-- The cost is that a glyph is scaled by up to 8.7%, where a distance field
-  would scale exactly.
+- Walking towards a sign re-shapes it a few times. Two blocks at nearly the
+  same size share their glyphs.
+- A glyph is scaled by up to 8.7% between buckets.
 
 [`examples/text`](https://github.com/balaurengine/balaur/tree/main/examples/text)
-is a tour of all of it.
+has all of it.

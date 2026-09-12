@@ -25,8 +25,8 @@ flowchart LR
 ## What landed
 
 - Buses. Declared in `project.toml`. A sound's gain is its own volume
-  times every bus's up to the root, so `audio::set_bus_volume("music",
-  0.3)` moves every piece of music at once and nothing else. `master`
+  times every bus's up to the root. `audio::set_bus_volume("music", 0.3)`
+  moves every piece of music at once and nothing else. `master`
   exists whether or not the project declares it.
 - Routing per playback. A bus does not own a sound: one file is a
   footstep on `sfx` and a menu click on `ui`.

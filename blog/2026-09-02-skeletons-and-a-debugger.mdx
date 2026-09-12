@@ -9,14 +9,14 @@ keywords: [bone animation, 2d skeleton, inverse kinematics, script debugger, fix
 
 Bone animation in 2D and 3D, with skinned polygons and IK. A script
 debugger with breakpoints. A fixed step with record and replay. One scripting
-language instead of two.
+language, Rune.
 
 {/* truncate */}
 
 ## Skeletons
 
 - A bone is a node with a rest pose; a skin is a textured polygon with bone
-  weights. A clip keys the bones by path, in the same timeline as before.
+  weights. A clip keys the bones by path in the timeline.
 
   ![A skinned leg bending under a clip](/img/editor/persona_animate.webp)
 
@@ -39,10 +39,10 @@ language instead of two.
 
 ## One language
 
-- Luau is gone. Rune is the scripting language: the editor, every example and
-  the debugger run on it.
+- Rune is the only scripting language: the editor, every example and the
+  debugger run on it. Luau is removed.
 
-## A fixed step, and proof
+## A fixed step
 
 - Simulation runs in `fixed_update(dt)` at 60 Hz. Each tick hashes the world.
 - `run --record` stores a session; `replay --verify` re-runs it and stops at

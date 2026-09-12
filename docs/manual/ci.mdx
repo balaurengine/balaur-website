@@ -7,18 +7,18 @@ sidebar_position: 17
 
 # Continuous integration
 
-Three actions, each named for what comes out of it. A game pins one version,
-the engine's, and gets the engine, its runtime templates and the actions from
-that same tag.
+Three actions, each named for what it produces. A game pins one version, the
+engine's, and gets the engine, its runtime templates and the actions from
+that tag.
 
 | `uses:` | Produces |
 | --- | --- |
-| `balaurengine/balaur/.github/actions/setup@v0.2.0` | a published `balaur` on `PATH`, verified against the release's `SHA256SUMS`, with the runtime templates you name |
+| `balaurengine/balaur/.github/actions/setup@v0.2.0` | a published `balaur` on `PATH`, verified against the release's `SHA256SUMS`, with the named runtime templates |
 | `balaurengine/balaur/.github/actions/export-game@v0.2.0` | a signed build per target, uploaded as an artifact with build provenance |
-| `balaurengine/balaur/.github/actions/build-engine@v0.2.0` | the editor and runtime templates built from source, for features the published build does not carry |
+| `balaurengine/balaur/.github/actions/build-engine@v0.2.0` | the editor and runtime templates built from source, for features the published build lacks |
 
-`setup` installs the release its own ref names, so `@v0.2.0` installs v0.2.0
-and the version is written once. `@main` follows the rolling nightly.
+`setup` installs the release its own ref names: `@v0.2.0` installs v0.2.0.
+`@main` follows the rolling nightly.
 
 ## A build on every tag
 
@@ -41,15 +41,14 @@ jobs:
           targets: "linux-x64 windows-x64 web"
 ```
 
-The whole file for an unsigned build: no secret, no account, no Rust
-toolchain. `setup` downloads the engine, and `export-game` runs it.
+The whole file for an unsigned build. `setup` downloads the engine and
+`export-game` runs it. No secret, account or Rust toolchain is needed.
 
 ## Signing
 
-- Every signature is applied by `balaur export` itself, never a step beside
-  it, so a build CI signed can be reproduced by hand.
-- An action's job is to put each credential where that platform's own tool
-  looks, and hand the exporter the identity's name.
+- `balaur export` applies every signature itself, never a step beside it.
+- An action puts each credential where that platform's own tool looks and
+  hands the exporter the identity's name.
 
 ```yaml
       - uses: balaurengine/balaur/.github/actions/export-game@v0.2.0
@@ -64,34 +63,33 @@ toolchain. `setup` downloads the engine, and `export-game` runs it.
           notary-issuer: ${{ secrets.ASC_ISSUER_ID }}
 ```
 
-Every file-shaped secret is stored base64-encoded, because a GitHub secret
-holds text: a `.p12`, a `.p8`, a `.mobileprovision`, a `.jks`, a `.pfx`.
+A GitHub secret holds text. Every file-shaped secret is stored
+base64-encoded: a `.p12`, a `.p8`, a `.mobileprovision`, a `.jks`, a `.pfx`.
 
 ```bash
 base64 -i certificate.p12 | pbcopy      # macOS
 base64 -w0 release.jks                  # Linux
 ```
 
-What each target needs:
+Per target:
 
 | Target | Needs | Runner |
 | --- | --- | --- |
-| `linux-x64`, `linux-arm64` | nothing; a Linux download is vouched for by its provenance attestation rather than a signature | any |
-| `windows-x64` | `windows-certificate` and its password, or an Azure Trusted Signing metadata JSON when the key is in a cloud HSM | any; a non-Windows runner signs through `osslsigncode` |
+| `linux-x64`, `linux-arm64` | nothing; a Linux download is vouched for by its provenance attestation | any |
+| `windows-x64` | `windows-certificate` and its password, or an Azure Trusted Signing metadata JSON for a key in a cloud HSM | any; a non-Windows runner signs through `osslsigncode` |
 | `macos-universal` | `macos-certificate`, `macos-identity`, and the three `notary-*` inputs to notarize | macOS |
 | `ios` | `ios-certificate`, `ios-identity` and `ios-profile`; `ipa: true` for TestFlight | macOS |
 | `android` | `android-keystore`, `android-key` and the passwords; without them the build takes Android's debug identity, which installs but ships nowhere | any with the SDK |
 | `web` | nothing; a browser trusts the origin | any |
 
 Identities, team ids and keystore aliases are not secrets and may live in the
-project's `[export]` table, so a click in the editor and a run on a runner sign
-the same way. The passwords never do.
+project's `[export]` table. Passwords may not.
 
 ## Provenance
 
 Both building actions can attach Sigstore build provenance to what they
-upload, which `gh attestation verify` checks with no certificate or account of
-your own. The job needs two extra permissions:
+upload. `gh attestation verify` checks it with no certificate or account.
+The job needs two extra permissions:
 
 ```yaml
     permissions:
@@ -107,8 +105,8 @@ your own. The job needs two extra permissions:
 ## A custom engine
 
 The published templates carry `window` and `extensions`, plus `apple` on
-macOS. A game wanting a different set, a smaller web build or one without the
-networking stack, builds the engine itself.
+macOS. A different set (a smaller web build, one without the networking
+stack) means building the engine.
 
 ```yaml
       - uses: actions/checkout@v7
@@ -123,13 +121,13 @@ networking stack, builds the engine itself.
 
 - [Build size](./build-size.mdx) says what each feature costs.
 - `build-engine` produces the same `balaur-editor-*`, `balaur-runtime-*` and
-  `balaur-template-*` files a release holds, so a later `export-game` picks
-  them up through `BALAUR_TEMPLATES`.
+  `balaur-template-*` files a release holds. A later `export-game` picks them
+  up through `BALAUR_TEMPLATES`.
 
-## What a run costs
+## Runner cost
 
 - A macOS or iOS export needs a `macos-*` runner, billed at ten times a Linux
   minute.
-- Linux, Windows, Android and web all export on a Linux runner.
-- Group targets by the host they need rather than giving each its own job, so
-  a game with four targets spends one Mac job's minutes rather than four.
+- Linux, Windows, Android and web export on a Linux runner.
+- Group targets by host. A game with four targets then spends one Mac job's
+  minutes, not four.

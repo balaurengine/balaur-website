@@ -16,41 +16,35 @@ the editor and over `balaur lsp`, read from the engine's own API.
 
 ## What landed
 
-- **What completes depends on what the caret sits after.** `physics2d::`
-  gives that module's 66 functions and 48 constants, `node.body2d.` what acts
-  on that component, `this.` the script's `exports()` and `pub fn`s.
-- **Hover carries the reference's own line**, and signature help names the
-  argument being typed.
-- **`⌘B` jumps to a definition.** A project `pub fn` opens its file; engine
-  API opens the Docs dock, built from the running engine.
-- **`balaur fmt .` lays a project out**, `⌥⇧F` the open buffer.
-- **`⌘⇧R` renames an identifier and `⌘⇧F` replaces text**, across the files a
-  script's `mod` declarations reach, every match listed first.
-- **Symbols cover this file and every script a scene attaches.**
-- **A VS Code extension spawns `balaur lsp`.** Zed and Neovim get a recipe
-  each.
+- **Completion.** After `physics2d::`: that module's 66 functions and 48
+  constants. After `node.body2d.`: what acts on that component. After
+  `this.`: the script's `exports()` and `pub fn`s.
+- **Hover and signature help.** Hover shows the reference's own line.
+  Signature help names the argument being typed.
+- **Go to definition.** `⌘B`. A project `pub fn` opens its file; engine API
+  opens the Docs dock, built from the running engine.
+- **Formatting.** `balaur fmt .` for a project, `⌥⇧F` for the open buffer.
+- **Rename and replace.** `⌘⇧R` renames an identifier, `⌘⇧F` replaces text,
+  across the files a script's `mod` declarations reach. Every match is
+  listed first.
+- **Symbols.** This file and every script a scene attaches.
+- **Editors.** A VS Code extension spawns `balaur lsp`. Zed and Neovim get a
+  recipe each.
+- **From Rune.** `rune::fmt` does the formatting. The fork makes
+  `Context::iter_functions` public; it completes `"".len()`.
 
-## Where the API list comes from
+## The API list
 
-- **The engine records its own API**: 39 modules, 659 functions, 378
-  constants, the list `balaur api` prints and the reference is built from.
-- **A lint keeps it complete.** CI fails on a function with no doc line.
+- **`balaur api`.** Prints the engine's API: 39 modules, 659 functions, 378
+  constants. The reference is built from it.
+- **Lint.** CI fails on a function with no doc line.
 
 ## Latency
 
 - **1 ms after `::`, 1 ms on a component handle, 3 ms on a bare prefix**, on
   `editor/scripts/model.rn`, 1429 lines.
-- **The bare prefix was 50 ms.** It listed a file's functions through a
-  compiled unit, which a buffer mid-edit usually does not have. It walks the
-  `mod` graph as text now.
-
-## What came from Rune's own server
-
-- **Its completion is `pub(super)`.** The one public entry owns its stdin
-  loop, and the feature pulls in tokio, syntect, handlebars and rust-embed.
-- **`rune::fmt` came across**, costing nothing beyond `alloc`.
-- **The fork opens one symbol.** `Context::iter_functions` was `pub(crate)`,
-  and it is what completes `"".len()`.
+- **Bare prefix.** It walks the `mod` graph as text; through a compiled unit
+  it was 50 ms.
 
 Semantic tokens, inlay hints and code actions are not planned. The
 [scripting manual](/docs/manual/scripting#tooling) has the full list.

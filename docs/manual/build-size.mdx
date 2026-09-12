@@ -1,7 +1,7 @@
 ---
 title: "Build size: what a web build carries"
 sidebar_label: "Build size"
-description: "What is in the Balaur web module, which cargo features and dependencies decide its size, and how to build a smaller runtime template for your own game."
+description: "What is in the Balaur web module, which cargo features and dependencies decide its size, and how to build a smaller runtime template."
 sidebar_position: 16
 ---
 
@@ -10,21 +10,21 @@ import Features from './_features.mdx';
 
 # Build size
 
-The engine module is most of what a web game downloads. This is the module
-behind [the editor](/editor) and the playable [examples](/examples), measured
-on every deploy.
+The engine module is most of a web game's download. The numbers below are the
+module behind [the editor](/editor) and the playable [examples](/examples),
+measured on every deploy.
 
 <PlaySize />
 
-- Which number a player waits for depends on the host: brotli when it
-  compresses `.wasm` (check the `content-encoding` header), gzip when it only
-  does that, raw when it does neither.
-- The raw size is what the browser compiles either way.
-- The pack is on top, and it is the game's own bytes.
+- The host decides which number a player downloads: brotli when it compresses
+  `.wasm` (see the `content-encoding` header), gzip when it only does that,
+  raw when it does neither.
+- The browser compiles the raw size either way.
+- The pack, the game's own bytes, is on top.
 
-## Where the bytes go
+## Module contents
 
-One module carries the whole engine, and nothing in it loads lazily. In it:
+One module carries the whole engine; nothing loads lazily. In it:
 
 - the renderer: wgpu with both its WebGPU and WebGL2 backends, naga, winit;
 - the UI: egui and its four default fonts, its `vello_cpu` rasteriser, and a
@@ -33,16 +33,13 @@ One module carries the whole engine, and nothing in it loads lazily. In it:
 - the Rune compiler and VM;
 - every audio codec rodio turns on, and every image format kiss3d turns on.
 
-Code is about three quarters of the module and data the rest.
-
 | section | share |
 | --- | ---: |
 | code | 76% |
 | data | 24% |
 
-Where that code goes, read off the same build with its symbols kept. Every
-function is charged to the crate it is defined in, and 2% of the code names no
-crate at all.
+Code by crate, from the same build with symbols kept. Each function is charged
+to its defining crate; 2% of the code names no crate.
 
 | | MB |
 | --- | ---: |
@@ -57,14 +54,12 @@ crate at all.
 | image codecs | 0.5 |
 | audio codecs | 0.4 |
 
-Those ten are three quarters of the code. What is left is `core`, `alloc` and
-the serialisation crates: generic code no one feature pays for. The rasteriser
-is the surprise, and the reason is a version bump: `epaint` 0.36 draws through
-`vello_cpu`, so the interface now costs more than the renderer it is drawn
-over.
+Those ten are three quarters of the code. The rest is `core`, `alloc` and the
+serialisation crates. The rasteriser is `epaint` 0.36 drawing through
+`vello_cpu`.
 
-A game pays for all of it whichever features it uses, because the template is
-prebuilt. Half the data is assets that dependencies bake in.
+A game carries all of it whichever features it uses; the template is
+prebuilt. Half the data is assets baked in by dependencies.
 
 | Baked in by a dependency | Raw | Brotli |
 | --- | --- | --- |
@@ -73,13 +68,12 @@ prebuilt. Half the data is assets that dependencies bake in.
 | kiss3d's debug-text font, Work Sans | 0.1 MB | 0.05 MB |
 
 The other half is tables: Unicode data for two text shapers, codec tables,
-shader sources. Every figure on this page is from the module above and moves
-with the dependency versions.
+shader sources. Every figure on this page is from that module and moves with
+the dependency versions.
 
-## What your own game weighs
+## Pack size
 
-The engine module is one download, and the pack beside it is the other. Every
-export prints what it built, so a decision comes with a number attached.
+The pack is the second download. Every export prints a report.
 
 ```text
 pack 2.0 MB
@@ -103,10 +97,9 @@ assets/balaur-logo.png                             20.2 KB
 ```
 
 - Fonts outweigh images in most projects, and the engine outweighs both.
-- On the engine's own assets, subsetting takes a 421 KB face to 29 KB, and the
+- On the engine's own assets, subsetting takes a 421 KB face to 29 KB and the
   image pass takes a small sprite from 1.1 KB to 0.5 KB.
-- Four keys in `[export]` act on what the report shows, each off until you
-  turn it on.
+- Four `[export]` keys act on the report, each off by default.
 
 ![Where a pack's bytes are, and what lossless re-encoding takes off](/img/manual/export_size.webp)
 
@@ -120,11 +113,10 @@ font_keep = ["fonts/ui-*"]  # ...but ship these whole
 audio = "flac"              # write uncompressed WAV as lossless FLAC
 ```
 
-Anything under `fonts/` survives a strip whatever the references say, because
-the UI finds faces by listing that directory and no scene ever names one.
+Anything under `fonts/` survives a strip: the UI finds faces by listing that
+directory, and no scene names one.
 
-Two more keys give up fidelity for size. They are named separately, so a
-lossless setting can never quietly become a lossy one.
+Two more keys are lossy, and named separately from the lossless ones.
 
 ```toml
 [export]
@@ -134,7 +126,7 @@ audio = "vorbis"        # an Ogg Vorbis stream instead of the original PCM
 audio_quality = 0.5     # libvorbis quality, -0.1 to 1.0
 ```
 
-One picture opts out, or asks for something else, in its own
+One picture overrides the mode in its own
 [import settings](/docs/manual/scenes#import-settings).
 
 ```toml
@@ -142,81 +134,72 @@ One picture opts out, or asks for something else, in its own
 recode = "keep"     # this one ships exactly as drawn
 ```
 
-- Every mode except `quantised` and `vorbis` is lossless, and none changes a
-  pixel count.
-- A sprite is sized from its image header, so a re-encoded texture is the same
-  sprite and the game computes the same world.
-- `balaur export --report` prints the table and writes nothing, so a saving is
-  visible before it is taken.
-
-Two things the report will not do:
-
-- An atlas is not a size lever. It saves each file's header and little else,
-  and the renderer draws one call per node either way.
+- Every mode except `quantised` and `vorbis` is lossless. None changes a pixel
+  count.
+- A sprite is sized from its image header; a re-encoded texture is the same
+  sprite.
+- `balaur export --report` prints the table and writes nothing.
+- An atlas is not a size lever: it saves each file's header and little else.
+  The renderer draws one call per node either way.
 - GPU-compressed textures (BC, ETC2, ASTC) cut video memory and upload time,
   not the download. A block-compressed image on disk is larger than the PNG it
   came from.
 
 ## Building a smaller template
 
-`balaur export --target web` copies a template, the glue and module
-`scripts/package_template.sh web` builds in the engine repository, and puts
-the pack and a page beside them. Build one with fewer features and hand it to
-the exporter.
+`balaur export --target web` copies a template (the glue and module
+`scripts/package_template.sh web` builds in the engine repository) and puts
+the pack and a page beside it. A template built with fewer features is passed
+to the exporter.
 
 ```bash
 WEB_FEATURES=window,web scripts/package_template.sh web
 balaur export my-game --target web --template dist/balaur-template-web
 ```
 
-- The script wants the `wasm32-unknown-unknown` target, the `wasm-bindgen` CLI
-  at the version in `Cargo.lock` (it checks), `wasm-opt` from binaryen, and
+- The script needs the `wasm32-unknown-unknown` target, the `wasm-bindgen`
+  CLI at the version in `Cargo.lock` (checked), `wasm-opt` from binaryen, and
   `brotli` for the size line it prints.
-- It refuses a module under 5 MB, which is what a build whose entry point was
-  optimised away looks like.
-- On a browser build only `audio` and `window` weigh anything, and a game
-  without a window is not a game.
-- Everything else keeps its native stack off the wasm target and costs only
+- It refuses a module under 5 MB: a build whose entry point was optimised
+  away.
+- On a browser build only `audio` and `window` weigh anything.
+- Every other feature gates its native stack off the wasm target and costs
   the plugin's own code.
 
 ## Features
 
 <Features />
 
-## What is not a feature yet
+## Dependency levers
 
-The levers below are dependency lines in the engine, not switches. Each is
-named so a fork can flip it, with a size where one has been measured.
-
+These are dependency lines in the engine, not cargo features. A fork can flip
+each; sizes are given where measured.
 
 - egui's default fonts. `egui` is built with `default_fonts` on, by
-  `balaur_ui` and by kiss3d, and the UI plugin falls back to them when a project
-  ships no `fonts/*.ttf`. A game that ships its own carries both sets: 1.4 MB
-  raw, 0.7 MB brotli, for nothing.
-- The WebGL2 fallback. `egui-wgpu`'s default features turn on
-  `wgpu/webgl`, which links the GLES backend (`glow`) and naga's GLSL writer
-  beside WebGPU. Current browsers ship WebGPU; the fallback is for older ones.
-  Unmeasured.
-- Image formats. kiss3d enables every format `image` has, so the module
-  links decoders for EXR, TIFF, GIF, QOI and more that no pack uses: a pack's
-  textures are PNG, JPEG or WebP. Unmeasured; EXR alone is a large decoder.
-- Audio codecs. rodio's defaults are FLAC, MP3, MP4/AAC, Vorbis and WAV,
-  plus dithering noise and a recording path. One feature per codec would let a
-  game that ships Ogg Vorbis drop the rest. Unmeasured.
+  `balaur_ui` and by kiss3d; the UI plugin falls back to them when a project
+  ships no `fonts/*.ttf`. A game with its own fonts carries both sets: 1.4 MB
+  raw, 0.7 MB brotli.
+- The WebGL2 fallback. `egui-wgpu`'s default features turn on `wgpu/webgl`:
+  the GLES backend (`glow`) and naga's GLSL writer beside WebGPU. For browsers
+  without WebGPU. Unmeasured.
+- Image formats. kiss3d enables every format `image` has: decoders for EXR,
+  TIFF, GIF, QOI and more. A pack's textures are PNG, JPEG or WebP.
+  Unmeasured; EXR alone is a large decoder.
+- Audio codecs. rodio's defaults are FLAC, MP3, MP4/AAC, Vorbis and WAV, plus
+  dithering noise and a recording path. One feature per codec would let a
+  game drop the rest. Unmeasured.
 - Physics in one dimension. `balaur_physics` links both rapier2d and
-  rapier3d, so a 2D game carries the 3D solver and parry3d. The crate is written
-  3D-first with `dim2` as a module, which makes a split a refactor rather than a
-  flag. parry's `parallel` feature is on too, and rayon has no threads to use in
-  a browser.
-- The tonemapping table. 0.9 MB raw, 0.2 MB brotli, for HDR tonemapping
-  in kiss3d. An analytic curve costs no bytes.
-- Two text shapers. epaint shapes with `harfrust` 0.12; `cosmic-text`,
-  which `balaur_ui` uses for marked-up text, with `harfrust` 0.5. Two copies
-  of the shaping tables, and of `read-fonts` and `skrifa`, are linked until
-  the two agree on a version.
+  rapier3d; a 2D game carries the 3D solver and parry3d. The crate is 3D-first
+  with `dim2` as a module, so a split is a refactor. parry's `parallel`
+  feature is on, and rayon has no threads in a browser.
+- The tonemapping table. 0.9 MB raw, 0.2 MB brotli, for HDR tonemapping in
+  kiss3d. An analytic curve costs no bytes.
+- Two text shapers. epaint shapes with `harfrust` 0.12; `cosmic-text`
+  (marked-up text in `balaur_ui`) with `harfrust` 0.5. Two copies of the
+  shaping tables, `read-fonts` and `skrifa` are linked until the versions
+  agree.
 
-What is already done leaves no knob on stable Rust: the `web` profile in the
-engine's `Cargo.toml` sets `opt-level = "z"`, fat LTO, one codegen unit,
-`panic = "abort"` and stripped symbols, and the script runs `wasm-opt -Oz` after
-bindgen. A `-Zbuild-std` with `panic_immediate_abort` would take a further slice
-and needs nightly, which the pinned toolchain rules out.
+The `web` profile in the engine's `Cargo.toml` sets `opt-level = "z"`, fat
+LTO, one codegen unit, `panic = "abort"` and stripped symbols, and the script
+runs `wasm-opt -Oz` after bindgen. `-Zbuild-std` with `panic_immediate_abort`
+would cut more and needs nightly, which the pinned toolchain rules out.

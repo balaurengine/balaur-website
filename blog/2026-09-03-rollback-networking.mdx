@@ -19,28 +19,24 @@ catch a desync. One `Transport` trait over WebSockets and QUIC.
 ## What landed
 
 - Rollback. A snapshot restores a tick and the deterministic simulation
-  re-runs the same inputs forward. Node ids are stable across spawns, so a
-  node created in a predicted tick is the same node after the re-run.
+  re-runs the same inputs. Node ids are stable across spawns and re-runs.
   Scripts see `rollback::input` and `rollback::is_resimulating`.
-- A digest per tick, exchanged. A peer publishes the hash of a tick
-  only once every player's input for it has arrived, and a desync names the
-  tick. Two predictions are never compared with each other.
-- One `Transport`. WebSockets, and QUIC through `balaur_webtransport`,
-  where a datagram is a real one: a lost input costs a misprediction, not a
-  stall. `balaur_http`, `balaur_websocket` and `balaur_webtransport` are
-  one crate each, behind their own features.
-- A link that misbehaves. Delay, jitter and datagram loss on every
-  session link, from the editor's settings, so rollback is tested against
-  the link a player has.
+- A digest per tick. A peer publishes a tick's hash once every player's
+  input for it has arrived. A desync names the tick.
+- One `Transport`. WebSockets, and QUIC datagrams through
+  `balaur_webtransport`: a lost input costs a misprediction. `balaur_http`,
+  `balaur_websocket` and `balaur_webtransport` are one crate each, behind
+  their own features.
+- Link faults. Delay, jitter and datagram loss on every session link, set
+  from the editor's settings.
 
   ![The Netcode page of the settings screen: faults, delay, jitter and loss](/img/manual/networking_faults.webp)
 
-## What is not there
+## Next steps
 
-A session a script can open. Rollback runs between two engines in a test
-and over a socket; the session API and replication are the next steps of
-[PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md).
-Raw UDP is not coming: QUIC datagrams cover it, with encryption and a
-browser story.
+- A session a script can open, and replication:
+  [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md).
+  Rollback runs between two engines in a test and over a socket.
+- No raw UDP. QUIC datagrams cover it, with encryption and in the browser.
 
 [Networking](/docs/manual/networking) · [Determinism](/docs/manual/determinism) · [Balaur for multiplayer](/multiplayer)

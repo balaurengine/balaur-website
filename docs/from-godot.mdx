@@ -8,9 +8,8 @@ keywords: [godot alternative, godot to balaur, migrate from godot, godot rust en
 
 # Coming from Godot
 
-The tree of nodes, the scene files, the instancing and the script-per-node
-model are the ones you know. What changes, one line each. Row by row, the
-[manual](/docs/intro) and the [reference](/docs/reference) have the rest.
+Godot to Balaur, one row per file, node and call; the [manual](/docs/intro)
+and the [reference](/docs/reference) have the rest.
 
 ## Files
 
@@ -25,8 +24,9 @@ model are the ones you know. What changes, one line each. Row by row, the
 
 ## Nodes
 
-No class hierarchy. A node is whatever its [components](/docs/reference/components)
-make it, and a collider sits on the same node as its body, not on a child.
+No class hierarchy. A node is whatever its
+[components](/docs/reference/components) make it. A collider sits on the same
+node as its body.
 
 | Godot | Balaur |
 | --- | --- |
@@ -66,18 +66,18 @@ make it, and a collider sits on the same node as its body, not on a child.
 | `self` | `this`; the node is `this.node` |
 | `position`, `rotation`, `scale` | `this.node.transform.position`, `.rotation_euler` (radians), `.scale`; `global_position()` in world space |
 | `$Path/To/Node`, `get_node("..")` | `this.node.get_node("Path/To/Node")`, `"../Sibling"` |
-| `queue_free()` | `node.queue_free()`: deferred to end of frame, as in Godot |
+| `queue_free()` | `node.queue_free()`: deferred to end of frame |
 | `apply_impulse(v)` | `this.node.body2d.apply_impulse(x, y)` |
 | `signal hit` on a node, `enemy.hit.connect(_on_hit)` | `events::subscribe(this.node, "hit", enemy)`, then `pub fn on_hit(this, payload)` ([events](/docs/reference/modules/events)) |
 | `hit.emit(payload)` from that node | `this.node.emit("hit", payload)`: delivered at the top of the next frame |
-| Connecting to every emitter of a signal | `events::subscribe(this.node, "hit")`: omit the node, hear them all |
+| Connecting to every emitter of a signal | `events::subscribe(this.node, "hit")`: no emitter argument |
 | Engine signals: `pressed`, `animation_finished`, `request_completed` | Methods by name: `on_click`, `on_animation_finished(name)`, `on_response(r)` |
 | Calling a method on another node | `node.call("method", args)` |
 | `Input.is_action_just_pressed("jump")` | `input::action_just_pressed("jump")` |
 | `Input.get_axis("left", "right")` | `input::action_value("move_x")`: one action, -1 to 1 |
 | `InputMap` in project settings | `[input.actions]` in `project.toml` ([input](/docs/manual/input)) |
 | `$AnimationPlayer.play("run")` | `animation::play(this.node, "run")` |
-| `create_tween().tween_property(...)` | `animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "out_back")`: Godot's easing names and shapes |
+| `create_tween().tween_property(...)` | `animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "out_back")`: Godot's easing names |
 | `await get_tree().create_timer(1.0).timeout` | `task::wait(...)` in an `async fn`; results land at the start of a tick |
 | `HTTPRequest` | `http::request(url)` ([networking](/docs/manual/networking)) |
 | `FileAccess`, `ConfigFile` | [`fs`](/docs/reference/modules/fs), [`settings`](/docs/reference/modules/settings), [`save`](/docs/reference/modules/save) |
@@ -93,27 +93,30 @@ make it, and a collider sits on the same node as its body, not on a child.
 | Script reloads on save | Hot reload in milliseconds |
 | Debugger tab | Breakpoints in the gutter, frames and locals in a dock |
 | Editor plugins in GDScript | The editor is a Balaur project; editing its scripts hot reloads the editor |
-| Remote scene tree | Play in editor: the real scripts on the real scene, every run recorded |
+| Remote scene tree | Play in editor on the same scene and scripts, every run recorded |
 
-## Not the same
+## Differences
 
 - Determinism. In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
-  server is deterministic. Here the whole tick is: fixed step, a digest per
-  tick, record, replay and rollback ([determinism](/docs/manual/determinism)).
-- No `connect`. Events are named, not callbacks: `events::emit("hit", p)`
-  reaches a subscribed node as `on_hit(p)` next frame. Engine events work the
-  same way, most with a polling twin (`input::just_pressed`,
-  `events::emitted("hit")`).
+  physics server is deterministic. In Balaur the whole tick is: fixed step, a
+  digest per tick, record, replay and rollback
+  ([determinism](/docs/manual/determinism)).
+- No `connect`. Events are named: `events::emit("hit", p)` reaches a
+  subscribed node as `on_hit(p)` next frame. Engine events work the same way,
+  most with a polling form (`input::just_pressed`, `events::emitted("hit")`).
 - No editor-only nodes. Everything the editor does is a script call any
   project can make.
-- Maturity. Very new. [Compare](/compare) and the
-  [roadmap](/docs/roadmap) say what is missing.
+- Maturity. Balaur is new. [Compare](/compare) and the
+  [roadmap](/docs/roadmap) list what is missing.
 
 ## Start
 
 ```bash
-cargo run -p balaur_cli --features window -- edit examples/angrynerds
+balaur import project.godot --project my-game   # convert a Godot project
+balaur edit my-game
 ```
 
-A 2D game (bodies, colliders, widgets, one script per node) small enough to
-read in one sitting. [Getting started](/docs/getting-started) has the rest.
+The importer writes the settings, every scene, the scripts and the theme, and
+reports what did not carry. `examples/angrynerds` is a small 2D game: bodies,
+colliders, widgets, one script per node.
+[Getting started](/docs/getting-started) has the rest.

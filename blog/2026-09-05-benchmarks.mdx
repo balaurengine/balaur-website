@@ -9,8 +9,7 @@ keywords: [game engine benchmarks, godot comparison, rapier performance, scene t
 
 `examples/benchmark` is the Godot benchmark suites' physics and scene-tree
 cases, body for body, run headless, in the editor or on the web. On the
-twelve physics cases Balaur is the quickest engine: about 3× Godot Jolt,
-11–18× Godot Physics.
+twelve physics cases Balaur is about 3× Godot Jolt and 11–18× Godot Physics.
 
 {/* truncate */}
 
@@ -21,29 +20,27 @@ twelve physics cases Balaur is the quickest engine: about 3× Godot Jolt,
 ## The suite
 
 - Physics. Pyramid, mixed pile, joint grid, smash, query storm and drop,
-  in 2D and 3D, the same scenes the
+  in 2D and 3D, the scenes the
   [godot-rapier suite](https://github.com/Ughuuu/benchmarks-repo)
   publishes. 300 timed steps at 60 Hz after a settle; the median tick is
   the number.
 - Nodes. `add_children`, `delete_children` in order, reverse and
   random, `get_node`, against Godot's own published run.
 - `scripts/bench_compare.py` writes the tables and charts from a run
-  beside Godot's results, and the [benchmarks page](/docs/benchmarks) is that
+  beside Godot's results. The [benchmarks page](/docs/benchmarks) is that
   script's output.
 
 ## What it changed
 
-- `raycast` visited every collider along the ray; it stops at the nearest
-  hit now.
-- Creating a body propagated the whole tree; it composes the node's pose
-  from its ancestors instead.
-- A frame's queued frees run as one pass per parent, so freeing a whole
+- `raycast` stops at the nearest hit.
+- Creating a body composes the node's pose from its ancestors.
+- A frame's queued frees run as one pass per parent. Freeing a whole
   container is linear.
-- Children are indexed by name, so a path lookup is one hash per segment,
-  and freeing a node with no components asks no plugin anything.
+- Children are indexed by name: a path lookup is one hash per segment.
+  Freeing a node with no components asks no plugin anything.
 
-- Adding children is quicker than Godot. Deleting and looking up are not yet.
-- Rapier is under both Balaur and Godot Rapier, so the gap between those two
+- Adding children is quicker than Godot. Deleting and looking up are slower.
+- Rapier is under both Balaur and Godot Rapier. The gap between those two
   columns is the engine around the physics.
 
 ```bash

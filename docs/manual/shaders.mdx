@@ -12,9 +12,9 @@ import Clip from '@site/src/components/Clip';
 
 Shaders are [WESL](https://wesl-lang.dev): WGSL plus imports, `@if` variants
 and dead-code elimination, linked to WGSL at run time. A `material` asset
-names a shader and the values it draws with. `sprite`, `shape2d`, `shape3d`,
-`mesh` and `tilemap` take one, a node can hand one to everything under it, and
-a node with neither draws with the built-in material.
+names a shader and its values. `sprite`, `shape2d`, `shape3d`, `mesh` and
+`tilemap` take one. A node can pass one to its subtree. A node with neither
+draws with the built-in material.
 
 <Clip name="shader_preview" alt="A material in the inspector, its shader open in the code editor, the UV channel drawn instead of the picture, and a save that relinks the sprite in place" />
 
@@ -58,21 +58,21 @@ struct Params { speed: f32, rings: f32, tint: vec4<f32> }
 | `package::mesh` | The 3D contract, with `shade(in)` for the scene's lights and fog |
 | `package::post` | A pass over the whole frame: `fullscreen`, `frame(uv)` and `texel()` |
 
-A shader is its own two entry points and nothing else.
+A shader file holds its two entry points; the rest is imported.
 
 - `[params]` are the fields of the shader's `Params` struct, read off the
-  linked shader rather than declared twice.
+  linked shader.
 - A number is an `f32`, an array a `vec2`, `vec3` or `vec4`, a `#rrggbb`
   string a `vec4`.
 - A param the shader does not read warns. One it declares and the material
   omits is zero.
 - `[features]` are the `@if` flags that pick a variant at link time.
-- A plugin can register shader modules a project's shader imports.
+- A plugin can register shader modules for a project's shader to import.
 
 ## A material for a whole subtree
 
-The `material` component goes on any node, one that draws nothing included.
-The node and everything under it draw with that material.
+The `material` component goes on any node, including one that draws nothing.
+The node and its subtree draw with it.
 
 ```toml
 [[nodes]]
@@ -83,22 +83,21 @@ name = "Rig"
 source = "materials/metal.toml"
 ```
 
-- The nearest one up wins, so a node under a second `material` takes that one.
-- A renderable's own `material` is that node's alone and does not pass down.
-  It is the split between `color` and `tint`, and Godot's `self_modulate` and
-  `modulate`.
+- The nearest one up wins.
+- A renderable's own `material` does not pass down. The split is the one
+  between `color` and `tint` (Godot's `self_modulate` and `modulate`).
 - `node.set_material(path)` sets it from a script. `node.material()` reads the
   node's own, and `node.global_material()` reads what it draws with.
-- The contract a shader imports says which nodes it draws. A 3D material that
-  reaches a 2D node leaves that node on the built-in material and warns once.
+- The contract a shader imports says which nodes it draws. A 3D material on a
+  2D node leaves it on the built-in material and warns once.
 - In the inspector, an empty `material` field shows what the node inherits and
   from where, as `metal ← Rig`.
 
 ## A pass over the whole frame
 
-A material named on [`camera.post`](./rendering.mdx#your-own-passes) is drawn over
-the frame instead of over a node. It imports `package::post`, takes no mesh
-and no texture of its own, and keeps its `Params` at `@group(1)`.
+A material named on [`camera.post`](./rendering.mdx#custom-passes) draws over
+the frame. It imports `package::post`, has no mesh or texture of its own, and
+keeps its `Params` at `@group(1)`.
 
 ```wesl
 import package::post::{PostInput, fullscreen, frame};
@@ -116,35 +115,32 @@ struct Params { amount: f32 }
 }
 ```
 
-- `frame(uv)` is what the pass was handed: the film in linear light before
-  `tonemap`, the finished picture after it.
-- `texel()` is the size of one texel, for a pass that reads its neighbours.
+- `frame(uv)` is the pass's input: linear light before `tonemap`, the finished
+  picture after it.
+- `texel()` is the size of one texel.
 - The same material may sit on both sides of `tonemap`. It is compiled once
-  per side, because the two write different formats.
+  per side.
 
 ## In the editor
 
 - The inspector lists a material's params off its linked shader, with an
   editor per type, and writes them back to the file.
-- Its shader opens in the code editor highlighted as WESL. Save, and every
-  material naming it relinks, and every node drawing with it is rebuilt.
-- A shader that will not link says so in the Problems dock with the file, line
-  and column the author wrote, and the node draws with the built-in material
-  meanwhile. `render::check_material(path)` is the same answer for a tool.
-
-Two ways to see what a shader is doing:
+- The shader opens in the code editor with WESL highlighting. On save, every
+  material naming it relinks and every node drawing with it is rebuilt.
+- A shader that fails to link is reported in the Problems dock with file, line
+  and column. The node draws with the built-in material until it links.
+  `render::check_material(path)` gives the same answer to a tool.
 
 | Way | How |
 | --- | --- |
-| A line's value | Click a line number in the gutter and the viewport draws what that line computes for every pixel that reaches it: a `vec2` as red and green, an `f32` as grey, a `vec4` as colour. The line has to declare a value with its type written (`let dist: f32 = ...`) or a constructor. Click again to put the picture back |
-| Channels | `render::set_channel("normals")` draws the scene's normals instead of its colour. `"uv"`, `"depth"` and `"albedo"` are the others, and `""` is the picture. The command palette has one command per channel |
+| A line's value | Click a line number in the gutter; the viewport draws that line's value for every pixel that reaches it: a `vec2` as red and green, an `f32` as grey, a `vec4` as colour. The line must declare a typed value (`let dist: f32 = ...`) or a constructor. Click again to restore the picture |
+| Channels | `render::set_channel("normals")` draws the scene's normals. `"uv"`, `"depth"` and `"albedo"` are the others; `""` is the picture. The command palette has one command per channel |
 
 ## Determinism
 
-- Rendering observes the simulation and feeds nothing back, so a shader is
-  outside the digest, and `time()` is render time rather than the tick.
-- A function marked `@const` runs on the CPU in headless tests, so the parts
-  of a shader that are logic are still testable.
-- A call to a name nothing declares fails to link rather than reaching a GPU.
+- A shader is outside the digest: rendering feeds nothing back to the
+  simulation. `time()` is render time, not the tick.
+- A function marked `@const` runs on the CPU in headless tests.
+- A call to an undeclared name fails to link.
 
 `examples/shaders` is the material above on a sprite, beside a plain one.

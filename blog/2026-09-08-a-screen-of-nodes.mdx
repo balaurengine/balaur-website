@@ -1,24 +1,24 @@
 ---
 description: "Lists, trees, tables and a code editor as widget kinds, themes with roles and hover states, and taffy laying the whole tree out before anything draws."
 slug: a-screen-of-nodes
-title: A screen made of nodes
+title: Widget kinds and themes
 authors: [dragos]
 image: /img/manual/ui_kinds.png
 keywords: [ui nodes, flexbox layout, taffy, widget theme, item list, tree view]
 ---
 
-Lists, trees, tables and a code editor are widget kinds now. A theme carries
-roles and hover states. The whole tree is laid out by taffy before a pixel is
+Lists, trees, tables and a code editor as widget kinds. A theme carries
+roles and hover states. taffy lays out the whole tree before a pixel is
 drawn.
 
 {/* truncate */}
 
 ## What landed
 
-- Data views. `list` holds rows and reports the pick; above one `columns` the
-  rows flow into a grid of cards. `tree` nests them, one leading tab a level.
-  `table` splits a row into one cell a column. Only the rows on screen are
-  built.
+- Data views. `list` holds rows and reports the pick; with `columns` above
+  one the rows flow into a grid of cards. `tree` nests them, one leading tab
+  a level. `table` splits a row into one cell a column. Only the rows on
+  screen are built.
 
   ![A card grid, an outline and a table, all one component](/img/manual/ui_kinds.webp)
 
@@ -30,26 +30,13 @@ drawn.
   `[<kind>.active]` say how it looks under the pointer.
 
 - Layout by taffy. `grow`, `gap`, `padding`, `align`, `justify` and the
-  minimum sizes are [taffy](https://github.com/DioxusLabs/taffy)'s flexbox,
-  which Dioxus and Blitz also use. About 340 lines of arithmetic here went
-  away with it.
+  minimum sizes are [taffy](https://github.com/DioxusLabs/taffy)'s flexbox.
+  The tree is solved before drawing; `ui::widget_rect` reads back this
+  frame's rect.
 
-## The editor is the first user
-
-Its shell, docks, tab rows, top bar, outliner and inspector are widget nodes
-in `editor/scenes/main.toml`. A form whose fields change with the selection
-cannot be authored, so a script makes rows and reuses them: the control's
-kind comes from the property's datatype.
-
-Four views still paint themselves, which is what `draw` nodes are for. A
-timeline's lanes, a weight table and two painting tools are where the pointer
-is the input, and each has a node of its own now.
-
-## Why the tree decides first
-
-egui lays out while it draws, a frame too late for a container handing its
-children rects. A retained tree is solved first, so `ui::widget_rect` reads
-back this frame's answer.
+- The editor. Its shell, docks, tab rows, top bar, outliner and inspector
+  are widget nodes in `editor/scenes/main.toml`. The timeline, the weight
+  table and two painting tools are `draw` nodes.
 
 ```toml
 [nodes.widget]
@@ -59,9 +46,6 @@ row_height = 84
 grow = 1
 ```
 
-## Try it
-
-- `examples/interface`: a whole screen with no `draw_ui` in it. Its one
-  script fills three views and writes no layout.
-- The [manual](/docs/manual/ui) and the generated
-  [component reference](/docs/reference/components).
+`examples/interface` is a screen of widget nodes; its one script fills three
+views and writes no layout. The [manual](/docs/manual/ui) and the generated
+[component reference](/docs/reference/components) have the keys.

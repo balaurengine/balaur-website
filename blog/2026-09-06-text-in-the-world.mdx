@@ -15,23 +15,22 @@ shadow. Markup. Bitmap fonts. Editing in the viewport.
 ## What landed
 
 - **`text2d`, `text3d`.** One component for both passes: the keys a label
-  takes, plus `pixels_per_unit` to size it like a sprite. In 3D: `billboard`,
-  `double_sided`, `depth_test`, `alpha_cut`.
+  takes, plus `pixels_per_unit`. In 3D: `billboard`, `double_sided`,
+  `depth_test`, `alpha_cut`.
 - **Outline and shadow.** The same quads offset and tinted, each layer a
   thousandth of a unit in front of the last.
-- **Markup.** `[b]`, `[i]`, `[color=…]`, `[wave]`. One mesh per colour, so a
-  coloured word keeps its colour.
-- **Bitmap fonts.** An AngelCode `.fnt` ships a pixel face as drawn: one
-  glyph per character, no shaping, its page in the same atlas.
-- **Crisp at any distance.** A block is rasterised at the size it covers on
-  screen, in buckets 8.7% apart, geometric rather than linear.
+- **Markup.** `[b]`, `[i]`, `[color=…]`, `[wave]`. One mesh per colour.
+- **Bitmap fonts.** An AngelCode `.fnt`: one glyph per character, no
+  shaping, its page in the same atlas.
+- **Rasterisation.** A block is rasterised at the size it covers on screen,
+  in geometric buckets 8.7% apart.
 - **Emoji.** A colour face per platform in the fallback chain.
-- **Immediate calls.** `render.draw_text` and `draw_text_2d` for one frame,
-  like a debug line. The Rig tool names bones with them.
-- **`render.text_size`.** Measures against the project's and bundled faces
-  only, never a system face, so a width written into state is the same on
-  every platform. The glyph mesher reads the same faces, so a `kind = "text"`
-  mesh and its colliders are too.
+- **Immediate calls.** `render.draw_text` and `draw_text_2d` for one frame.
+  The Rig tool names bones with them.
+- **`render.text_size`.** Measures against the project's and bundled faces,
+  never a system face: the same width on every platform. The glyph mesher
+  reads the same faces, and a `kind = "text"` mesh and its colliders match
+  everywhere too.
 - **Edit in place.** Double-click a text node in the viewport.
 
 ```toml
@@ -51,7 +50,7 @@ outline_size = 3.0
 outline_color = [0.1, 0.05, 0.0, 1.0]
 ```
 
-No distance fields yet: a glyph is scaled by up to 8.7% between buckets.
+No distance fields: a glyph is scaled by up to 8.7% between buckets.
 
 [Text](/docs/manual/text) is the manual page;
 [`examples/text`](https://github.com/balaurengine/balaur/tree/main/examples/text)

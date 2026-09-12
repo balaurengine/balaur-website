@@ -15,18 +15,14 @@ function, constant, component and asset type. CI fails when it drifts.
 
 ## What landed
 
-- Read from a booted engine. Every module, function and constant comes
-  out of a running interpreter. `input.KEY_SPACE` exists only after
-  registration, and no parser would find it.
-- Checked in CI. The generated files are committed, and a build whose
-  output differs fails. What the reference says is what the engine has.
+- Read from a booted engine. Every module, function and constant comes out
+  of a running interpreter. `input.KEY_SPACE` exists only after
+  registration.
+- Checked in CI. The generated files are committed. A build whose output
+  differs fails.
 - On this site. The [script modules](/docs/reference/modules),
   [components](/docs/reference/components) and
   [assets](/docs/reference/assets) references are that output, one page
   per module, with what each function acts on.
-
-## rng, fs and toml
-
-All three were declared for one language only, so a Rune game had no seeded
-random. They are declared neutrally now, and a test pins the same seed to the
-same sequence.
+- `rng`, `fs` and `toml`. Declared language-neutrally. The same seed gives
+  the same sequence.

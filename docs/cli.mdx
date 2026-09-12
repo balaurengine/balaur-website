@@ -1,0 +1,53 @@
+---
+title: "The CLI: new, run, edit, export and import"
+sidebar_label: "The CLI"
+description: "Every balaur command (new, run, edit, export, play, import, replay, api) and the three run modes: headless, offscreen and windowed."
+image: "/img/social/docs.png"
+sidebar_position: 3
+---
+
+# The CLI
+
+The `balaur` binary is the editor, the runtime and the CLI.
+
+```bash
+balaur new my-game
+balaur run my-game          # dev mode, hot reload on
+balaur edit my-game         # open in the editor
+balaur export my-game       # compile scripts into my-game.bpak
+balaur play my-game.bpak    # run from bytecode only
+```
+
+## Commands
+
+| Command | Effect |
+| --- | --- |
+| `new <path>` | Scaffold a project: `project.toml`, a main scene, one script |
+| `run <path>` | Run in dev mode with hot reload |
+| `edit <path>` | Open the project in the editor |
+| `export <path>` | Compile scripts to bytecode and bundle a `.bpak`; `--target <platform>` produces a fused executable |
+| `play <pack>` | Run a pack, with no compiler and no watcher |
+| `import <file> --project <path>` | Bring a file in: a `.glb` model, an `.aseprite` sprite, a `.tmx` or `.ldtk` level, or a `project.godot` |
+| `replay <session>` | Play back a session recorded with `run --record`; `--verify` re-checks every tick |
+| `api` | Dump every script module, function and constant as JSON |
+
+## Run modes
+
+| Mode | GPU | Window | What it is for |
+| --- | --- | --- | --- |
+| headless (`--headless`) | no | no | tests, CI, servers, determinism runs |
+| offscreen (`--offscreen`) | yes | no | screenshots, automation, visual CI |
+| windowed | yes | yes | playing and editing |
+
+- All three modes compute the same simulation.
+- `--frames N` stops after N frames.
+- `render::screenshot("out.png")` captures the next rendered frame, offscreen or windowed.
+
+## From source
+
+```bash
+cargo run -p balaur_cli -- run my-game --headless
+cargo run -p balaur_cli --features window -- edit my-game
+```
+
+`--features window` builds the kiss3d/wgpu window. Without it everything runs headless.

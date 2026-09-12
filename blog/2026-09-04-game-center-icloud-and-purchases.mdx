@@ -23,25 +23,22 @@ flowchart LR
 
 ## What landed
 
-- `platform`. `sign_in`, `unlock`, `progress`, `submit_score`,
-  `scores`, `cloud_read`, `cloud_write`, `set_presence`. With no store
-  loaded (the editor, a desktop run, a replay) every call answers
-  `unsupported` rather than failing, so a script written against it runs
-  everywhere.
+- `platform`. `sign_in`, `unlock`, `progress`, `submit_score`, `scores`,
+  `cloud_read`, `cloud_write`, `set_presence`. With no store loaded (the
+  editor, a desktop run, a replay) every call answers `unsupported`.
 - `apple`. Game Center behind the portable verbs; the iCloud key-value
-  store behind `cloud_read`. What only Apple has stays in its own module:
-  Sign in with Apple, `identity` for a server to verify, the Game Center
-  dashboard and access point.
-- Purchases. `products`, `purchase`, `entitlements`,
-  `restore_purchases` and `finish_purchase`. StoreKit 2 has no Objective-C
-  interface, so a small Swift shim is compiled at build time; a machine
-  without Swift still builds, and purchases there answer `unsupported`.
-- Arrivals. Notifications, push tokens, URLs opened, a purchase that
-  landed on another device. Call `apple::watch(node)`, and they reach that
-  node.
-- The export writes the plist. `[apple]` in `project.toml` (bundle id,
-  team, version, capabilities) becomes the `Info.plist` and an
-  entitlements file. It refuses what it cannot make work.
+  store behind `cloud_read`. Apple-only calls: Sign in with Apple,
+  `identity` for a server to verify, the Game Center dashboard and access
+  point.
+- Purchases. `products`, `purchase`, `entitlements`, `restore_purchases`
+  and `finish_purchase`. StoreKit 2 is reached through a Swift shim
+  compiled at build time. A machine without Swift still builds; purchases
+  there answer `unsupported`.
+- Arrivals. Notifications, push tokens, opened URLs, a purchase made on
+  another device. `apple::watch(node)` delivers them to that node.
+- Export. `[apple]` in `project.toml` (bundle id, team, version,
+  capabilities) becomes the `Info.plist` and an entitlements file. An
+  entry it cannot honour is refused.
 
 ```rune
 pub async fn init(this) {
@@ -51,8 +48,7 @@ pub async fn init(this) {
 }
 ```
 
-An achievement cannot be un-awarded, and a rollback session re-runs
-predicted ticks, so a call that changes the store waits until its tick can
-no longer be re-run. The engine carries the proof: an identity signature,
-a transaction's signed `jws`, and checking it is a server's job.
+In a rollback session, a call that changes the store waits until its tick
+can no longer be re-run. Sign-in returns an identity signature and a purchase
+a signed `jws`; a server verifies them.
 [Stores](/docs/manual/stores) · [Shipping: Apple](/docs/manual/shipping#apple)

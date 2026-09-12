@@ -17,23 +17,22 @@ and trace.
 
 - **Chain solvers and a spring.** `modifier2d` gained `fabrik`, `ccdik` and
   `jiggle`. Jiggle has no target: it springs each bone toward the pose the
-  clip left, so a plume trails a walk. `modifier3d` is the same five kinds,
-  and is entirely new.
+  clip left. `modifier3d` has the same five kinds.
 
   ![A modifier's chain, the dashed line to its target, and the handle that drags it](/img/manual/rigging_modifiers.webp)
 
 - **Deform tracks.** `polygon/deform` keys an offset per vertex, added before
-  skinning. A mouth or a cape edge, without a bone for each.
+  skinning.
 
 - **Retargeting.** A `bone_map` pairs canonical bone names with the paths
   they take on one rig. A rotation key is read as a turn away from the
-  profile's rest, so a clip built for another skeleton still lands.
+  profile's rest, and a clip built for another skeleton plays on this one.
 
   ![The Bone map dock: canonical names on the left, the rig's own bones on the right](/img/manual/rigging_bonemap.webp)
 
-- **Ragdolls.** `physics2d.ragdoll(node)` walks a rig into a body and a
-  capsule per bone, hinged to its parent's. A `blend` mixes the clip's pose
-  with the simulated one.
+- **Ragdolls.** `physics2d.ragdoll(node)` builds a body and a capsule per
+  bone from a rig, each hinged to its parent's. A `blend` mixes the clip's
+  pose with the simulated one.
 
 - **The panels.** A Weights dock with Bind, Unbind, Normalise, Auto and
   Smooth. Mirror in both tools. Trace, over a texture's alpha. Bone names in

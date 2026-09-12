@@ -1,88 +1,70 @@
 ---
-title: "Getting started: build the engine and run a game"
+title: "Getting started: open, run and edit a project"
 sidebar_label: "Getting started"
-description: "Build the Balaur game engine from source with a Rust toolchain, learn the balaur CLI and the project layout, and run and edit your first scene."
+description: "Download the Balaur editor, make a project, press play, and edit a script that reloads on save."
 image: "/img/social/docs.png"
 sidebar_position: 2
 ---
 
+import Clip from '@site/src/components/Clip';
+
 # Getting started
 
-Prebuilt editor downloads are on the [Download](/download) page.
+## Download
 
-## The CLI
+- [Download](/download) the editor. One binary is the editor, the CLI and the runtime.
+- macOS: open `Balaur.app`. It opens the editor on `~/Balaur`, a starter project it makes on first launch.
+- Windows and Linux: extract the archive. The `balaur` binary inside is the editor.
 
-The `balaur` binary can be run as a cli:
+## A project
 
 ```bash
-cargo run -p balaur_cli -- new my-game
-cargo run -p balaur_cli -- run my-game          # dev mode, hot reload on
-cargo run -p balaur_cli -- export my-game       # precompile scripts into my-game.bpak
-cargo run -p balaur_cli -- play my-game.bpak    # run from bytecode only
-cargo run -p balaur_cli --features window -- edit my-game   # open in the editor
+balaur new my-game
+balaur edit my-game
+```
+
+```text
+my-game/
+├── project.toml        # [application] name, main_scene
+├── scenes/main.toml    # the scene tree, in TOML
+└── scripts/hello.rn    # a script attached to a node
 ```
 
 <figure><img src="/img/manual/hello_open.webp" alt="examples/hello open in the editor: the World node selected, the viewport, the inspector, and the Output dock showing the boot" width="1600" height="1000" loading="lazy" /></figure>
 
-Three run modes:
+## Run
 
-| Mode | GPU | Window | What it is for |
-| --- | --- | --- | --- |
-| headless (`--headless`) | no | no | tests, CI, servers, determinism runs |
-| offscreen (`--offscreen`) | yes | no | screenshots, automation, visual CI |
-| windowed | yes | yes | playing and editing |
-
-Build with `--features window` for the kiss3d/wgpu window. Without it
-everything runs headless, and all three modes compute the same simulation.
-
-| Command | Effect |
-| --- | --- |
-| `new <path>` | Scaffold a project: `project.toml`, a main scene, one script |
-| `run <path>` | Run in dev mode with hot reload |
-| `export <path>` | Compile scripts to bytecode and bundle a `.bpak` pack; `--target <platform>` produces a fused executable |
-| `play <pack>` | Run a pack, with no compiler and no watcher |
-| `edit <path>` | Open the project in the editor (requires `--features window`) |
-| `import <file.glb> --project <path>` | Bring a glTF model in: the file, its joints as `bone3d` nodes, its animations as clips |
-| `replay <session>` | Play back a session recorded with `run --record`; `--verify` re-checks every tick |
-| `api` | Dump every script module, function and constant as JSON |
-
-- `--frames N` stops after N frames. `--headless` and `--offscreen` select the
-  run mode.
-- Screenshots come from scripts. `render::screenshot("out.png")` captures the
-  next rendered frame, offscreen or windowed, so the caller decides when,
-  rather than a frame number chosen before the game started.
-
-## Project layout
-
-`balaur new my-game` creates:
-
-```text
-my-game/
-├── project.toml        # [application] name, main_scene (language defaults to "rune")
-├── scenes/main.toml    # the scene tree, declarative TOML
-└── scripts/hello.rn    # a script attached to a node in the scene
-```
-
-## The examples
-
-The example projects ship in the repository.
+Press Play in the editor, or run the project from a terminal:
 
 ```bash
-# 3D: a spinning cube, a bouncing ball, physics and a HUD label
-cargo run -p balaur_cli -- run examples/hello --headless
-cargo run -p balaur_cli --features window -- run examples/hello
-
-# 2D: a small slingshot game, with 2D shapes, 2D physics and widgets
-cargo run -p balaur_cli --features window -- run examples/angrynerds
-cargo run -p balaur_cli --features window -- edit examples/angrynerds
-
-# A 2D skeleton: a skinned leg on a clip, an arm on two-bone IK
-cargo run -p balaur_cli --features window -- edit examples/rig
-
-# A 3D rig imported from a .glb
-cargo run -p balaur_cli --features window -- edit examples/rig3d
+balaur run my-game
 ```
 
-For hot reload, edit `examples/hello/scripts/spinner.rn` while `run` is going.
-The change applies the moment you save, without losing state.
+## Edit a script
 
+- Switch to the Script persona and open `scripts/hello.rn`.
+- Save. The script reloads with its state kept.
+
+<Clip name="scripting_live" alt="A script changed and saved while the scene runs, the new code live with the state kept" />
+
+## Examples
+
+The examples ship in the repository and play in the browser on the [Examples](/examples) page.
+
+```bash
+balaur edit examples/hello         # 3D: a spinning cube, a bouncing ball, a HUD label
+balaur edit examples/angrynerds    # 2D: a slingshot game with 2D physics and widgets
+balaur edit examples/rig           # a 2D skeleton: a skinned leg, an arm on two-bone IK
+balaur edit examples/rig3d         # a 3D rig imported from a .glb
+```
+
+## From source
+
+```bash
+cargo run -p balaur_cli --features window -- edit my-game
+```
+
+## Next
+
+- [The CLI](./cli.mdx): every command and the three run modes.
+- [Scenes and nodes](./manual/scenes.mdx) and [Scripting](./manual/scripting.mdx).

@@ -1,7 +1,7 @@
 ---
 title: "Input: actions, keyboard, mouse, gamepads, touch"
 sidebar_label: "Input"
-description: "Input in Balaur: actions declared in project.toml, bound to keyboard, mouse, gamepad and touch, read as one snapshot per frame so every session can be replayed."
+description: "Input in Balaur: actions declared in project.toml, bound to keyboard, mouse, gamepad and touch, read as one snapshot per frame and replayed from a recording."
 image: "/img/social/input.png"
 sidebar_position: 8
 ---
@@ -10,17 +10,16 @@ import Clip from '@site/src/components/Clip';
 
 # Input
 
-- The windowed backend pumps OS events into one snapshot per frame, and
-  scripts read that snapshot through the `input` module.
+- The windowed backend pumps OS events into one snapshot per frame. Scripts
+  read it through the `input` module.
 - Headless runs read neutral state.
-- The whole frame's input is one snapshot, so recording it per tick is all a
-  replay system needs.
+- A replay records the snapshot per tick.
 
 <Clip name="input_overlay" alt="The editor's input overlay while examples/hello plays: key chips, the actions they drive, the pointer and a click ripple" />
 
 ## Actions
 
-A game asks for `"jump"`, not for `Space`.
+Declared in `project.toml`:
 
 ```toml
 [input.actions]
@@ -40,9 +39,9 @@ let x = input::action_value("move_x");   // -1 to 1
 - `action_pressed`, `action_just_pressed` and `action_just_released` are the
   edges.
 - `input::bind(name, bindings)` rebinds an action and saves it to the user
-  data directory. `reset_bindings` goes back to what the project declared.
-- Actions are derived from the raw snapshot every frame, so a recording holds
-  the keys pressed and a replay reproduces the actions from them.
+  data directory. `reset_bindings` restores the project's bindings.
+- Actions derive from the raw snapshot every frame. A recording holds the
+  keys; a replay derives the actions.
 
 ## Keyboard and mouse
 
@@ -64,7 +63,7 @@ for pad in input::gamepads() {
 }
 ```
 
-- `input::gamepads()` lists the connected pads, and every query takes a pad id
+- `input::gamepads()` lists the connected pads. Every query takes a pad id
   and a named constant.
 - Buttons are `PAD_*`, axes `AXIS_*` (sticks, triggers, d-pad).
 - `input::gamepad_name(pad)` names the hardware.
@@ -82,21 +81,19 @@ for touch in input::gamepad_touches(pad) {
 | Call | What it does |
 | --- | --- |
 | `gamepad_rumble(pad, #{ strong, weak, duration })` | Runs the two motors at 0 to 1 for that many seconds; answers whether it started |
-| `gamepad_stop_rumble(pad)` | Cuts one short |
-| `gamepad_can_rumble(pad)` | Whether there are motors at all |
-| `gamepad_gyro`, `gamepad_acceleration`, `gamepad_touches` | A PlayStation pad's motion and touchpad, decoded from its own HID reports over USB or Bluetooth |
+| `gamepad_stop_rumble(pad)` | Stops it |
+| `gamepad_can_rumble(pad)` | Whether the pad has motors |
+| `gamepad_gyro`, `gamepad_acceleration`, `gamepad_touches` | A PlayStation pad's motion and touchpad, decoded from its HID reports over USB or Bluetooth |
 
-A pad with no gyroscope or touchpad reads zero and an empty list, the answer
-an absent pad gives. All of it lands in the recorded snapshot, so a replay
-reproduces a motion-controlled session exactly.
+A pad with no gyroscope or touchpad reads zero and an empty list, as an absent
+pad does. All of it is in the recorded snapshot and replays.
 
 ## Touch
 
 - `input::touches()` returns the fingers on the screen as `#{ id, x, y }`,
   oldest first, with `touches_started()` and `touches_ended()` for the edges.
 - A finger is also a left click, so every widget kind works on a phone.
-  `emulate_touch_from_mouse` does the reverse and makes a held mouse button a
-  finger, which is how a desktop drives touch code.
+  `emulate_touch_from_mouse` makes a held mouse button a finger.
 
 ```toml
 [input]
@@ -107,8 +104,7 @@ emulate_touch_from_mouse = false  # the default
 ## Touch controls
 
 A `touch_button` presses an action while a finger is on it. A `touch_stick`
-pushes one action per axis. The game reads the action, so the script that
-answers a keyboard answers a phone.
+pushes one action per axis. The game reads the action.
 
 ```toml
 [nodes.touch_stick]
@@ -124,22 +120,20 @@ anchor = "bottom_right"
 shape = "circle"
 ```
 
-- **They feed, they are not bound.** An action bound to Space gains the
-  button as a second source, and the furthest from rest wins. An action no
-  manifest declared still answers.
-- **Placed against the screen.** `anchor` and `offset` in design pixels,
-  inside the safe area. In the editor they sit in the viewport, and only while
-  the game plays.
-- **Hidden without a touch screen.** `visibility = "touchscreen"` is the
-  default: a phone, a touch browser, or a project with
-  `emulate_touch_from_mouse` shows them. `"always"` shows them everywhere.
-- **The finger keeps what it grabbed.** A thumb that slides off a button
-  mid-jump still holds it. `recenter = true` puts the stick under the thumb
-  that found it, and `deadzone` holds a resting thumb at zero.
-- **Components, not widgets.** They are hit-tested inside the tick, so they
-  run headless, land in the digest and replay exactly.
-- `ui::wants_pointer()` says whether a widget took this frame's finger, so a
-  tap on a HUD button does not also fire the shot behind it.
+- **A second source.** An action bound to Space gains the button as another
+  source; the furthest from rest wins. An action no manifest declared still
+  answers.
+- **Placement.** `anchor` and `offset` in design pixels, inside the safe
+  area. In the editor they sit in the viewport while the game plays.
+- **Visibility.** `visibility = "touchscreen"` is the default: shown on a
+  phone, a touch browser, or a project with `emulate_touch_from_mouse`.
+  `"always"` shows them everywhere.
+- **Capture.** A thumb that slides off a button still holds it.
+  `recenter = true` puts the stick under the thumb that found it. `deadzone`
+  holds a resting thumb at zero.
+- **Components.** Hit-tested inside the tick: they run headless, land in the
+  digest and replay.
+- `ui::wants_pointer()` says whether a widget took this frame's finger.
 
 ## Gestures
 
@@ -157,43 +151,41 @@ if input::long_press().get("x").is_some() { /* once per hold */ }
 | `swipe()` | `#{ x, y, speed }` on the frame a finger that travelled far enough lifts |
 | `long_press()` | `#{ x, y }` once, when a still finger has held long enough |
 
-Each is derived from the recorded fingers and the fixed step, so a replay
-reproduces it, and each answers empty with nothing happening. `swipe_pixels`,
+Each derives from the recorded fingers and the fixed step, and replays. Each
+answers empty when nothing is happening. `swipe_pixels`,
 `long_press_seconds` and `long_press_slop` in `[input]` set the thresholds.
 
 ## The on-screen keyboard
 
 - A focused `field` raises the system keyboard on iOS and Android.
-- `input::keyboard_height()` is how much of the screen it covers, in pixels
-  from the bottom: read from UIKit, the Android activity or the page, and
-  recorded.
+- `input::keyboard_height()` is the covered height in pixels from the bottom,
+  read from UIKit, the Android activity or the page, and recorded.
 - `avoid_keyboard = true` on a root widget measures the bottom of the screen
-  from the top of the keyboard, so a form or a chat bar stays above it.
+  from the top of the keyboard.
 
 ## Dropped files
 
 `input::dropped_files()` returns the paths of files dropped onto the window
-this frame, which is how a tool accepts a drag and drop.
+this frame.
 
 ## Feeding input from a script
 
 `feed_key`, `feed_mouse`, `feed_mouse_button`, `feed_touch(id, x, y, phase)`
-and `feed_action(name, value)` put input into the frame as if a device had
+and `feed_action(name, value)` put input into the frame as if a device
 reported it. A test, a showcase or an automation client drives a game with
-them, and a fed frame records and replays like a real one.
+them. A fed frame records and replays like a real one.
 
 ## Seeing input
 
-- The editor's input overlay draws what the game is being fed this frame. A
-  chip per key and mouse button held, the actions they drive, a cursor at the
-  pointer, a ring spreading from every press.
-- It reads the same snapshot the game reads, so during a replay the cursor
-  follows the recording rather than your hand.
-- Turn it on from the command palette (*Show input overlay*), or start the
-  editor with `--state input`.
-- The actions come from the game's own `project.toml`. The editor is itself a
-  Balaur project, so it declares the game's actions when it opens one, and
-  without that every action a played game asked for would read zero.
+- The editor's input overlay draws this frame's input: a chip per key and
+  mouse button held, the actions they drive, a cursor at the pointer, a ring
+  from every press.
+- It reads the game's snapshot. During a replay the cursor follows the
+  recording.
+- Enabled from the command palette (*Show input overlay*), or with
+  `--state input` at start.
+- The actions come from the game's `project.toml`. The editor, itself a
+  Balaur project, declares the game's actions when it opens one.
 
 ## The full surface
 

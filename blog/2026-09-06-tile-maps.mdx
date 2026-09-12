@@ -18,21 +18,19 @@ Tiled import.
 ## What landed
 
 - **Collision.** The tileset marks solid tiles; `tile_collision` on the map
-  builds one parry voxel shape from them, not a row of boxes, so a sliding
-  body has no seam to catch on. Slopes are polygons in tile pixels;
+  builds one parry voxel shape from them. Slopes are polygons in tile pixels;
   `one_way = true` for platforms. `set_cell` marks the map; the collider is
   rebuilt once on the next fixed step.
 - **Autotiling.** One table of `[[rules]]`, first match wins. `transforms`
-  covers eight orientations per rule, so a 47-tile blob is a dozen rules.
+  covers eight orientations per rule: a 47-tile blob is a dozen rules.
   `outside` says whether the map edge counts as the same terrain. Variation
-  is hashed from the cell's coordinate, so a map resolves the same on every
-  machine. `mode = "sides"` or `"corners_and_sides"` writes the rules from a
-  bitmask sheet.
+  is hashed from the cell's coordinate. `mode = "sides"` or
+  `"corners_and_sides"` writes the rules from a bitmask sheet.
 - **Animated and occluding tiles.** `animation = { frames, fps }` runs on the
   frame clock, outside the digest. `occluder = true` feeds the 2D light map
-  only the exposed edges, so fifty tiles cast one shadow.
+  only the exposed edges: fifty tiles cast one shadow.
 - **Origin.** Cell `0,0` has its top-left corner on the node and the map
-  keeps an `origin`, so painting reaches in every direction.
+  keeps an `origin`.
 - **Tiles dock.** Paint, rectangle, fill, line, pick, a terrain brush through
   the engine's own resolver, and a Set panel that writes solid, one-way or
   occluder back to the tileset file.
@@ -66,8 +64,8 @@ transforms = ["rotate", "mirror"]
 outside = "same"
 ```
 
-Quarter-tile sheets, LDtk import, chunked cell files and the multi-tile
-stamp are in too. [Roadmap](/docs/roadmap),
+Also landed: quarter-tile sheets, LDtk import, chunked cell files and the
+multi-tile stamp. [Roadmap](/docs/roadmap),
 [plan](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-tilemap.md).
 `tilemap` and `tile_collision` are in the
 [components reference](/docs/reference/components).
