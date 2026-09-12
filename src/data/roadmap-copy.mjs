@@ -86,7 +86,7 @@ hide_table_of_contents: true
     'Widgets, text and the batteries': {
       image: '/img/manual/ui_widgets.webp',
       alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",
-      posts: ['text-in-the-world', 'audio-buses', 'input-actions-and-gamepads', 'save-games', 'localization'],
+      posts: ['text-in-the-world', 'audio-buses', 'input-actions-and-gamepads', 'save-games', 'localization', 'a-screen-of-nodes'],
     },
     'Interactivity without a script': {
       image: '/img/manual/editor_events.webp',

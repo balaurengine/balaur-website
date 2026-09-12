@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import type {KeyboardEvent, ReactNode} from 'react';
 import Heading from '@theme/Heading';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import styles from './styles.module.css';
 
 export type RoadmapItem = {
@@ -56,6 +57,11 @@ export default function Roadmap({milestones}: {milestones: RoadmapMilestone[]}):
   const [active, setActive] = useState(milestones[0].id);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const strip = useRef<HTMLDivElement | null>(null);
+
+  // The tab ids below are the page's anchors. Only a heading registers itself,
+  // so a link to `#0.1` reads as broken at build unless they are collected.
+  const brokenLinks = useBrokenLinks();
+  milestones.forEach((milestone) => brokenLinks.collectAnchor(milestone.id));
 
   // The hash is read once the page is in a browser: the build prerenders the
   // first milestone, and a deep link corrects it before paint. On a narrow

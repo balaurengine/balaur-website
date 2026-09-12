@@ -1,7 +1,7 @@
 ---
 title: "Tile maps: collision, autotiling and shadows"
 sidebar_label: "Tile maps"
-description: "Tile maps: solid, one-way, animated and light-blocking tiles, one voxel collider, autotiling from an ordered rule table, isometric and hex, Tiled import."
+description: "Tile maps: solid, one-way, animated and light-blocking tiles, one voxel collider, autotiling from a rule table, isometric and hex, Tiled and LDtk import."
 sidebar_position: 19
 ---
 
@@ -89,17 +89,22 @@ occluder = true
 - A terrain brush that runs through the engine's own resolver.
 - A Set panel that writes solid, one-way or occluder back to the tileset file.
 
-## Importing from Tiled
+## Importing from Tiled and LDtk
 
 ```bash
 balaur import level.tmx --project game
+balaur import world.ldtk --project game
 ```
 
 Writes the atlas, a `tileset` per sheet with its grid, spacing, margin,
-per-tile collision and animations, and a scene with one `tilemap` node per tile
-layer.
+per-tile collision and animations, and a scene for the level. That scene has a
+single root named after the map, with one `tilemap` node per tile layer under
+it.
 
-Not yet: quarter-tile sheets, LDtk import, cells in their own chunked file,
-and a multi-tile stamp. They are on the [roadmap](/docs/roadmap).
+An `.ldtk` project writes a scene per level. Its entities land as nodes under
+that same root, each carrying the fields it was given.
+
+Not yet: cells in their own chunked file, and a multi-tile stamp. They are on
+the [roadmap](/docs/roadmap).
 `tilemap`, `tileset` and `tile_collision` are in the
 [reference](/docs/reference/components).
