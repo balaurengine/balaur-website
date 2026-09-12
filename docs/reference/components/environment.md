@@ -2,7 +2,7 @@
 title: "environment component"
 image: "/img/social/reference.png"
 sidebar_label: "environment"
-description: "The scene's atmosphere: the sky it sits under and is lit by, the ambient light, fog, exposure, tonemap, colour grading and the shadow budget. The last…"
+description: "The scene's atmosphere: sky, ambient, fog, exposure, tonemap, colour grading and the shadow budget. The last current one wins; per-view effects stay on…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `render` · 21 properties · 3D
 
-The scene's atmosphere: the sky it sits under and is lit by, the ambient light, fog, exposure, tonemap, colour grading and the shadow budget. The last `current` one in tree order wins, so a level can carry two and switch between them. Per-view effects stay on `camera.post`.
+The scene's atmosphere: `sky`, `ambient`, `fog`, `exposure`, `tonemap`, colour grading and the shadow budget. The last `current` one wins; per-view effects stay on `camera.post`.
 
 In a scene, `environment` is the node key that applies it. A script reaches each property below as a field on `node.environment`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.environment.get()` and `node.environment.set(table)`.
 

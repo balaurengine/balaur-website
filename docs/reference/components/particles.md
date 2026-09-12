@@ -2,7 +2,7 @@
 title: "particles component"
 image: "/img/social/reference.png"
 sidebar_label: "particles"
-description: "A purely visual 2D emitter at the node: rate, lifetime, speed, cone and gravity. The live particles and the randomness scattering them are backend state…"
+description: "A visual-only 2D emitter at the node: rate, lifetime, speed, spread and gravity. The live particles are renderer state the simulation never sees."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `render` · 14 properties · Rendering
 
-A purely visual 2D emitter at the node: rate, lifetime, speed, cone and gravity. The live particles and the randomness scattering them are backend state the simulation never sees.
+A visual-only 2D emitter at the node: `rate`, `lifetime`, `speed`, `spread` and `gravity`. The live particles are renderer state the simulation never sees.
 
 In a scene, `particles` is the node key that applies it. A script reaches each property below as a field on `node.particles`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.particles.get()` and `node.particles.set(table)`.
 

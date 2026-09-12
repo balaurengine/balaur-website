@@ -2,7 +2,7 @@
 title: "text3d component"
 image: "/img/social/reference.png"
 sidebar_label: "text3d"
-description: "A block of text drawn in the 3D pass on a quad that faces the camera, shaped by the engine's fonts and sized at pixels_per_unit font pixels to the world…"
+description: "A block of text drawn in the 3D pass on a quad, pixels_per_unit font pixels per world unit; billboard turns it to the camera."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `render` · 22 properties · 3D
 
-A block of text drawn in the 3D pass on a quad that faces the camera, shaped by the engine's fonts and sized at `pixels_per_unit` font pixels to the world unit.
+A block of `text` drawn in the 3D pass on a quad, `pixels_per_unit` font pixels per world unit; `billboard` turns it to the camera.
 
 In a scene, `text3d` is the node key that applies it. A script reaches each property below as a field on `node.text3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.text3d.get()` and `node.text3d.set(table)`.
 

@@ -2,7 +2,7 @@
 title: "collider2d component"
 image: "/img/social/reference.png"
 sidebar_label: "collider2d"
-description: "The shape the node collides with in 2D. On a node with a body2d it is that body's shape; on a node without one it is immovable world geometry. A collider…"
+description: "The node's 2D collision shape, chosen by kind. It belongs to the node's body2d or the nearest body above it; without one it is static geometry."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `physics` · 36 properties · 2D
 
-The shape the node collides with in 2D. On a node with a `body2d` it is that body's shape; on a node without one it is immovable world geometry. A collider on a child node belongs to the nearest body above it, which is how one body carries several shapes.
+The node's 2D collision shape, chosen by `kind`. It belongs to the node's `body2d` or the nearest body above it; without one it is static geometry.
 
 In a scene, `collider2d` is the node key that applies it. A script reaches each property below as a field on `node.collider2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.collider2d.get()` and `node.collider2d.set(table)`.
 

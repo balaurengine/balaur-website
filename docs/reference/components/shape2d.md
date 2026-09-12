@@ -2,7 +2,7 @@
 title: "shape2d component"
 image: "/img/social/reference.png"
 sidebar_label: "shape2d"
-description: "An untextured 2D primitive drawn at the node -- circle, rect, capsule, ellipse, star, ngon, or a polyline through a mesh asset's points or a stroked…"
+description: "An untextured 2D primitive at the node. kind is circle, rect, capsule, ellipse, star, ngon or polyline; a polyline follows a mesh or path2d asset."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · 16 properties · 2D
 
-An untextured 2D primitive drawn at the node -- circle, rect, capsule, ellipse, star, ngon, or a polyline through a `mesh` asset's points or a stroked `path2d` -- sized in world units.
+An untextured 2D primitive at the node. `kind` is `circle`, `rect`, `capsule`, `ellipse`, `star`, `ngon` or `polyline`; a `polyline` follows a `mesh` or `path2d` asset.
 
 In a scene, `shape2d` is the node key that applies it. A script reaches each property below as a field on `node.shape2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.shape2d.get()` and `node.shape2d.set(table)`.
 

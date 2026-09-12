@@ -2,7 +2,7 @@
 title: "light3d component"
 image: "/img/social/reference.png"
 sidebar_label: "light3d"
-description: "A 3D light: the node's position places it and its rotation aims it. A scene with no light3d keeps the engine's own key light, so nothing draws dark until…"
+description: "A 3D light placed and aimed by the node. kind is directional, point or spot; the first light3d in a scene retires the engine's default key light."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `render` · 8 properties · 3D
 
-A 3D light: the node's position places it and its rotation aims it. A scene with no `light3d` keeps the engine's own key light, so nothing draws dark until a scene starts placing its own; the first one added retires it. Turn one off with the node's `visible`, not by deleting it.
+A 3D light placed and aimed by the node. `kind` is `directional`, `point` or `spot`; the first `light3d` in a scene retires the engine's default key light.
 
 In a scene, `light3d` is the node key that applies it. A script reaches each property below as a field on `node.light3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.light3d.get()` and `node.light3d.set(table)`.
 

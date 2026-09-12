@@ -2,7 +2,7 @@
 title: "cloner component"
 image: "/img/social/reference.png"
 sidebar_label: "cloner"
-description: "Draw this node's whole subtree many times over -- along a line, around a ring, or through a grid -- in one call per mesh. The tree, physics and scripts…"
+description: "Draws the node's subtree many times; physics and scripts still see one node. mode is linear, radial or grid; seed and random scatter the copies."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `render` · 8 properties · Rendering
 
-Draw this node's whole subtree many times over -- along a line, around a ring, or through a grid -- in one call per mesh. The tree, physics and scripts still see one node; `seed` and `random` scatter the copies.
+Draws the node's subtree many times; physics and scripts still see one node. `mode` is `linear`, `radial` or `grid`; `seed` and `random` scatter the copies.
 
 In a scene, `cloner` is the node key that applies it. A script reaches each property below as a field on `node.cloner`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.cloner.get()` and `node.cloner.set(table)`.
 

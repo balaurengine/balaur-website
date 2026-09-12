@@ -2,7 +2,7 @@
 title: "material component"
 image: "/img/social/reference.png"
 sidebar_label: "material"
-description: "The material this node and everything under it draw with, unless a renderable names its own. A shape's, sprite's, mesh's or tile map's own material is…"
+description: "source is the material asset this node and everything under it draw with. A renderable's own material property overrides it for that node alone."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `render` · 1 property · Rendering
 
-The material this node and everything under it draw with, unless a renderable names its own. A shape's, sprite's, mesh's or tile map's own `material` is that node's alone; this is the one that inherits. Goes on any node, one that draws nothing included.
+`source` is the `material` asset this node and everything under it draw with. A renderable's own `material` property overrides it for that node alone.
 
 In a scene, `material` is the node key that applies it. A script reaches each property below as a field on `node.material`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.material.get()` and `node.material.set(table)`.
 

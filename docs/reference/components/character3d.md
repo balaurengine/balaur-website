@@ -2,7 +2,7 @@
 title: "character3d component"
 image: "/img/social/reference.png"
 sidebar_label: "character3d"
-description: "Moves a node the way a player expects rather than the way physics would: physics3d.move_character slides it along walls, steps it up ledges, keeps it off…"
+description: "A 3D character controller: physics3d.move_character slides the node along walls and steps it up ledges. Needs a collider3d; a kinematic body3d lets it…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `physics` · 12 properties · 3D
 
-Moves a node the way a player expects rather than the way physics would: `physics3d.move_character` slides it along walls, steps it up ledges, keeps it off slopes that are too steep and holds it to the ground over a crest. Needs a `collider3d`; a `body3d` of kind kinematic lets it push what it walks into.
+A 3D character controller: `physics3d.move_character` slides the node along walls and steps it up ledges. Needs a `collider3d`; a `kinematic` `body3d` lets it push bodies.
 
 In a scene, `character3d` is the node key that applies it. A script reaches each property below as a field on `node.character3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.character3d.get()` and `node.character3d.set(table)`.
 

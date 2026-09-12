@@ -2,7 +2,7 @@
 title: "touch_button component"
 image: "/img/social/reference.png"
 sidebar_label: "touch_button"
-description: "An on-screen button that presses an action while a finger is on it, so a game bound to a key on a desktop needs no second code path on a phone. Placed…"
+description: "An on-screen button that presses an action while a finger is on it. anchor and offset place it inside the screen's safe area."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `ui` · 9 properties · 2D
 
-An on-screen button that presses an `action` while a finger is on it, so a game bound to a key on a desktop needs no second code path on a phone. Placed against the screen less its safe area, not in the scene's world.
+An on-screen button that presses an `action` while a finger is on it. `anchor` and `offset` place it inside the screen's safe area.
 
 In a scene, `touch_button` is the node key that applies it. A script reaches each property below as a field on `node.touch_button`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.touch_button.get()` and `node.touch_button.set(table)`.
 

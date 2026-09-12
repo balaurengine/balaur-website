@@ -2,7 +2,7 @@
 title: "boolean3d component"
 image: "/img/social/reference.png"
 sidebar_label: "boolean3d"
-description: "Draw this node as its children combined -- joined, cut out of one another, or only where they overlap. The children stay in the tree, hidden and…"
+description: "Draws the node as its children combined by op: union, difference or intersection. The children stay in the tree, hidden and editable."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `render` · 1 property · 3D
 
-Draw this node as its children combined -- joined, cut out of one another, or only where they overlap. The children stay in the tree, hidden and editable, and moving one recomputes the result.
+Draws the node as its children combined by `op`: `union`, `difference` or `intersection`. The children stay in the tree, hidden and editable.
 
 In a scene, `boolean3d` is the node key that applies it. A script reaches each property below as a field on `node.boolean3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.boolean3d.get()` and `node.boolean3d.set(table)`.
 

@@ -2,7 +2,7 @@
 title: "material asset type"
 image: "/img/social/reference.png"
 sidebar_label: "material"
-description: "A shader and the values it draws with. shader names a .wesl file (project-relative); [features] are the @if flags that pick a variant when it is linked…"
+description: "A shader and its values. shader names a .wesl file, [features] sets its @if flags, [params] fills its Params struct by field name."
 custom_edit_url: null
 ---
 
@@ -10,11 +10,7 @@ custom_edit_url: null
 
 Files live in `materials/`. Used by [`material`](../components/material.md) · `source`, [`mesh`](../components/mesh.md) · `material`, [`shape2d`](../components/shape2d.md) · `material`, [`shape3d`](../components/shape3d.md) · `material`, [`sprite`](../components/sprite.md) · `material`, [`tilemap`](../components/tilemap.md) · `material`.
 
-A shader and the values it draws with. `shader` names a `.wesl` file
-(project-relative); `[features]` are the `@if` flags that pick a variant when
-it is linked; `[params]` are the values of the shader's `Params` struct, by
-field name. A number is an `f32`, an array of two, three or four numbers a
-`vec2`/`vec3`/`vec4`, and a `#rrggbb` or `#rrggbbaa` string a `vec4`.
+A shader and its values. `shader` names a `.wesl` file, `[features]` sets its `@if` flags, `[params]` fills its `Params` struct by field name.
 
 ```toml
 [[assets]]
@@ -22,5 +18,6 @@ id = "water"
 type = "material"
 shader = "shaders/water.wesl"
 features = { lit = true }
+# a number is an f32, [x, y] a vec2, [x, y, z] a vec3, [x, y, z, w] or "#rrggbb"/"#rrggbbaa" a vec4
 params = { speed = 0.4, tint = "#3aa0ff" }
 ```

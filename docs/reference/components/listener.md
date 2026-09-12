@@ -2,7 +2,7 @@
 title: "listener component"
 image: "/img/social/reference.png"
 sidebar_label: "listener"
-description: "The ears a positional sound is heard from: its distance to this node sets its volume, and its offset across this node's right sets its pan. The last…"
+description: "The point positional sounds are heard from: distance sets volume, offset across its right sets pan. The last current listener wins; without one, sounds…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `audio` · 1 property · Audio
 
-The ears a positional sound is heard from: its distance to this node sets its volume, and its offset across this node's right sets its pan. The last `current` listener applied wins; with no listener in the scene at all, every sound plays flat.
+The point positional sounds are heard from: distance sets volume, offset across its right sets pan. The last `current` listener wins; without one, sounds play flat.
 
 In a scene, `listener` is the node key that applies it. A script reaches each property below as a field on `node.listener`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.listener.get()` and `node.listener.set(table)`.
 

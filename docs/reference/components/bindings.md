@@ -2,7 +2,7 @@
 title: "bindings component"
 image: "/img/social/reference.png"
 sidebar_label: "bindings"
-description: "What this node does when something happens to it, without a script. Each row is event, an optional when over the scene's [variables], an action, a target…"
+description: "Reactions the node runs from a table: each row is an event, a when over the scene's [variables], an action, a target node and a value."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `interaction` · 1 property · Other
 
-What this node does when something happens to it, without a script. Each row is `event`, an optional `when` over the scene's `[variables]`, an `action`, a `target` node path and a `value`. Every action is a call a script could make, and the editor's Events view writes the script when a row outgrows the table.
+Reactions the node runs from a table: each row is an `event`, a `when` over the scene's `[variables]`, an `action`, a `target` node and a `value`.
 
 In a scene, `bindings` is the node key that applies it. A script reaches each property below as a field on `node.bindings`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.bindings.get()` and `node.bindings.set(table)`.
 

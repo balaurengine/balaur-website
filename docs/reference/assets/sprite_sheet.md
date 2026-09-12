@@ -2,7 +2,7 @@
 title: "sprite_sheet asset type"
 image: "/img/social/reference.png"
 sidebar_label: "sprite_sheet"
-description: "An image cut into frames of any size, for sprite.sheet: texture names the image and each of frames is a rect of [x, y, w, h] texture pixels with the…"
+description: "An image cut into frames, for sprite.sheet. texture names the image; frames each hold a rect and duration; [tags.<name>] and [slices.<name>] add runs and…"
 custom_edit_url: null
 ---
 
@@ -10,30 +10,24 @@ custom_edit_url: null
 
 Files live in `sheets/`. Used by [`sprite`](../components/sprite.md) · `sheet`.
 
-An image cut into frames of any size, for `sprite.sheet`: `texture` names
-the image and each of `frames` is a `rect` of `[x, y, w, h]` texture pixels
-with the `duration` in seconds a clip shows it for. `sprite.frame` indexes
-the list, past the end drawing the last frame. `[tags.<name>]` is a run of
-frames `from` one index `to` another with a `direction` (`forward`,
-`reverse`, `pingpong`, `pingpong_reverse`) and a `repeat` count, zero for
-ever; `[slices.<name>]` is a `rect` on a frame, in the frame's own pixels,
-with an optional nine-patch `center` and `pivot`, and `keys` when the slice
-moves between frames. `balaur import file.aseprite` writes one of these
-beside the atlas it packs and a clip per tag.
+An image cut into frames, for `sprite.sheet`. `texture` names the image; `frames` each hold a `rect` and `duration`; `[tags.<name>]` and `[slices.<name>]` add runs and regions.
 
 ```toml
-type = "sprite_sheet"
+type = "sprite_sheet"            # balaur import file.aseprite writes one beside the atlas it packs
 texture = "art/walk.png"
-frames = [
+frames = [                       # rect is [x, y, w, h] texture pixels; sprite.frame indexes this list
   { rect = [0, 0, 32, 32], duration = 0.1 },
   { rect = [32, 0, 32, 32], duration = 0.1 },
 ]
 
-[tags.walk]
+[tags.walk]                      # a run of frames
 from = 0
 to = 1
-direction = "forward"
+direction = "forward"            # forward, reverse, pingpong or pingpong_reverse
+repeat = 0                       # zero for ever
 
-[slices.hitbox]
+[slices.hitbox]                  # a rect on a frame, in the frame's own pixels
 rect = [8, 4, 16, 28]
+# center = [4, 4, 8, 20] and pivot = [8, 14] make it a nine-patch with a pivot;
+# keys = [...] when the slice moves between frames
 ```

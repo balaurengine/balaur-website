@@ -2,15 +2,15 @@
 title: "events module"
 image: "/img/social/reference.png"
 sidebar_label: "events"
-description: "Named events between scripts. A node subscribes to a name — from one emitter, or from anyone — and hears it as its script's on_<name> method; node.emit…"
+description: "Named events between scripts. A node subscribes to a name and hears it as its on_<name> method; node.emit and events.emit send one."
 custom_edit_url: null
 ---
 
 # <span class="ref-icon ref-icon--other" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"/><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"/></svg></span>`events`
 
-Named events between scripts. A node subscribes to a name — from one emitter, or from anyone — and hears it as its script's `on_<name>` method; `node.emit` emits from a node and `events.emit` from no one in particular. Delivery is at the top of the next frame's update, in emission then subscription order, so a handler never runs inside the call that emitted. `emitted` and `emitted_from` are the asking twins, for a script that would rather look than declare a method.
+Named events between scripts. A node subscribes to a name and hears it as its `on_<name>` method; `node.emit` and `events.emit` send one.
 
-5 functions, 0 constants. Scripts reach it as `events::`.
+6 functions, 0 constants. Scripts reach it as `events::`.
 
 ## Functions
 
@@ -21,5 +21,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `emit(string, any?)` | — | Queue an event from no particular node, delivered at the top of the next frame's update to whoever subscribed to the name from anyone. |
 | `emitted(string) -> any` | — | The payloads delivered under this name this frame whoever emitted them, in emission order; empty when none were. |
 | `emitted_from(node, string) -> any` | — | The payloads delivered under this name this frame from that node, in emission order; empty when none were. |
+| `next(string, node?) -> int` | — | A token for `task.wait` that wakes, with the payload, the next time the name is delivered from that node or, left out, from anyone: `let payload = task::wait(events::next("finished", door)).await;`, a GDScript `await door.finished`. |
 | `subscribe(node, string, node?)` | — | Hear an event on this node, as its script's `on_<name>(payload)`. Pass the node whose events to hear, or leave it out for every emitter. Subscribing twice is once. |
 | `unsubscribe(node, string, node?)` | — | Stop hearing an event on this node, `from` being the emitter it was subscribed with. Not an error when it was never subscribed. |

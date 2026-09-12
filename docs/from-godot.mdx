@@ -31,7 +31,7 @@ node as its body.
 | Godot | Balaur |
 | --- | --- |
 | `Node2D`, `Node3D` | A node with a [`transform`](/docs/reference/components/transform): position, rotation, scale. A node without one sits at its parent |
-| `RigidBody2D`, `StaticBody2D`, `AnimatableBody2D` | `body2d = "dynamic"` / `"static"` / `"kinematic"`: same in 3D |
+| `RigidBody2D`, `StaticBody2D`, `AnimatableBody2D` | `body2d = { kind = "dynamic" }` (or `static`, `kinematic`); `body3d` in 3D |
 | `CollisionShape2D` | `collider2d = { kind = "rect", half_extents = [0.5, 0.5] }` |
 | `CharacterBody2D`, `CharacterBody3D` | [`character2d`](/docs/reference/components/character2d), [`character3d`](/docs/reference/components/character3d) |
 | `PinJoint2D`, `HingeJoint3D`, … | [`joint2d`](/docs/reference/components/joint2d), [`joint3d`](/docs/reference/components/joint3d) |

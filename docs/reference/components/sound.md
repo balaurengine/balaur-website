@@ -2,7 +2,7 @@
 title: "sound component"
 image: "/img/social/reference.png"
 sidebar_label: "sound"
-description: "A sound of the node's own: which file, at what volume and pitch, looping or not. audio.play_on and audio.stop_on trigger it, and autoplay starts it when…"
+description: "A sound on the node: file, volume, pitch and loop. autoplay starts it on load, audio.play_on triggers it, and positional plays it from the node for the…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `audio` · 10 properties · Audio
 
-A sound of the node's own: which file, at what volume and pitch, looping or not. `audio.play_on` and `audio.stop_on` trigger it, and `autoplay` starts it when the node enters the scene. A `positional` sound is heard from where the node is, relative to the `listener`.
+A sound on the node: `file`, `volume`, `pitch` and `loop`. `autoplay` starts it on load, `audio.play_on` triggers it, and `positional` plays it from the node for the `listener`.
 
 In a scene, `sound` is the node key that applies it. A script reaches each property below as a field on `node.sound`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.sound.get()` and `node.sound.set(table)`.
 

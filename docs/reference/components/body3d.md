@@ -2,7 +2,7 @@
 title: "body3d component"
 image: "/img/social/reference.png"
 sidebar_label: "body3d"
-description: "Makes the node a 3D rigid body rapier simulates: dynamic falls and responds to forces, static never moves, kinematic is moved by script or animation and…"
+description: "A 3D rigid body simulated by rapier. kind is dynamic, static, kinematic or kinematic_velocity; add a collider3d for its shape."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `physics` · 18 properties · 3D
 
-Makes the node a 3D rigid body rapier simulates: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. On its own a body has no shape; add a `collider3d` for it to collide with anything.
+A 3D rigid body simulated by rapier. `kind` is `dynamic`, `static`, `kinematic` or `kinematic_velocity`; add a `collider3d` for its shape.
 
 In a scene, `body3d` is the node key that applies it. A script reaches each property below as a field on `node.body3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.body3d.get()` and `node.body3d.set(table)`.
 
@@ -28,7 +28,7 @@ In a scene, `body3d` is the node key that applies it. A script reaches each prop
 | `gravity_scale` | float | `1` | Multiplier on world gravity for this body: 0 hangs in the air, negative floats up |
 | `gyroscopic` | bool | `false` | Model the wobble a spinning body's own inertia gives it, as a thrown American football has |
 | `inertia` | vec3 | `[0,0,0]` | Resistance to spin about each axis; 0 lets rapier derive it from the mass |
-| `kind` | enum | `dynamic` | How physics drives the node: simulated, immovable, moved by script, or moved by a velocity you set One of `dynamic`, `static`, `kinematic`, `kinematic_velocity`. Scene shorthand: `kind`'s value can be given as the component's whole value. |
+| `kind` | enum | `dynamic` | How physics drives the node: simulated, immovable, moved by script, or moved by a velocity you set One of `dynamic`, `static`, `kinematic`, `kinematic_velocity`. |
 | `linear_damping` | float | `0` | Drag on travel: how fast the body loses speed with nothing touching it At least 0. |
 | `lock_rotation` | flags | `[]` | World axes the body may not turn about; locking all three keeps a character upright One of `x`, `y`, `z`. |
 | `lock_translation` | flags | `[]` | World axes the body may not move along One of `x`, `y`, `z`. |

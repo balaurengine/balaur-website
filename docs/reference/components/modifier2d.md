@@ -2,7 +2,7 @@
 title: "modifier2d component"
 image: "/img/social/reference.png"
 sidebar_label: "modifier2d"
-description: "Poses 2D bones after the clip has run, every frame: look_at turns one bone toward a target node, two_bone_ik bends a root, middle and tip chain so the…"
+description: "Poses 2D bones toward target after the clip runs. kind is look_at, two_bone_ik, fabrik, ccdik, jiggle or follow; follow moves the node by offset and lag."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `animation` · 16 properties · 2D
 
-Poses 2D bones after the clip has run, every frame: `look_at` turns one bone toward a target node, `two_bone_ik` bends a root, middle and tip chain so the tip reaches it, `fabrik` and `ccdik` reach with a chain of any length, `jiggle` lets a chain trail the pose on a spring, and `follow` moves the node itself to its target plus `offset`, `lag` seconds behind.
+Poses 2D bones toward `target` after the clip runs. `kind` is `look_at`, `two_bone_ik`, `fabrik`, `ccdik`, `jiggle` or `follow`; `follow` moves the node by `offset` and `lag`.
 
 In a scene, `modifier2d` is the node key that applies it. A script reaches each property below as a field on `node.modifier2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.modifier2d.get()` and `node.modifier2d.set(table)`.
 

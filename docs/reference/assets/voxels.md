@@ -2,7 +2,7 @@
 title: "voxels asset type"
 image: "/img/social/reference.png"
 sidebar_label: "voxels"
-description: "A voxel grid for a collider: size is one cell in world units, cells the filled coordinates. Coordinates are signed, so a grid has no origin corner, and…"
+description: "A voxel grid for a collider: size is one cell in world units, cells the filled coordinates. physics3d.set_voxel adds or removes a cell."
 custom_edit_url: null
 ---
 
@@ -10,14 +10,12 @@ custom_edit_url: null
 
 Files live in `terrain/`. Used by [`collider2d`](../components/collider2d.md) · `voxels`, [`collider3d`](../components/collider3d.md) · `voxels`.
 
-A voxel grid for a collider: `size` is one cell in world units, `cells` the
-filled coordinates. Coordinates are signed, so a grid has no origin corner,
-and `physics3d.set_voxel` may add or remove a cell at run time.
+A voxel grid for a collider: `size` is one cell in world units, `cells` the filled coordinates. `physics3d.set_voxel` adds or removes a cell.
 
 ```toml
 [[assets]]
 id = "pillar"
 type = "voxels"
 size = [1.0, 1.0, 1.0]
-cells = [[0, 0, 0], [0, 1, 0], [0, 2, 0]]
+cells = [[0, 0, 0], [0, 1, 0], [0, 2, 0]]   # signed coordinates
 ```

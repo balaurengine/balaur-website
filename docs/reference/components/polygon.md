@@ -2,7 +2,7 @@
 title: "polygon component"
 image: "/img/social/reference.png"
 sidebar_label: "polygon"
-description: "A filled, textured 2D polygon from a mesh asset's points and triangles, deformed by the rig skeleton names when the mesh carries skin weights."
+description: "A filled, textured 2D polygon from the mesh asset's points and triangles. With skin weights, the rig skeleton names deforms it."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · `animation` · 5 properties · 2D
 
-A filled, textured 2D polygon from a `mesh` asset's points and triangles, deformed by the rig `skeleton` names when the mesh carries skin weights.
+A filled, textured 2D polygon from the `mesh` asset's points and triangles. With skin weights, the rig `skeleton` names deforms it.
 
 In a scene, `polygon` is the node key that applies it. A script reaches each property below as a field on `node.polygon`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.polygon.get()` and `node.polygon.set(table)`.
 

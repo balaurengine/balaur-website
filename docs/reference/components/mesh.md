@@ -2,7 +2,7 @@
 title: "mesh component"
 image: "/img/social/reference.png"
 sidebar_label: "mesh"
-description: "Authored 3D geometry from a mesh asset, drawn at the node and deformed by the rig skeleton names when the asset carries a skin."
+description: "3D geometry from the mesh asset in source, drawn at the node. With a skin, the rig skeleton names deforms it."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `render` · 6 properties · 3D
 
-Authored 3D geometry from a `mesh` asset, drawn at the node and deformed by the rig `skeleton` names when the asset carries a skin.
+3D geometry from the `mesh` asset in `source`, drawn at the node. With a skin, the rig `skeleton` names deforms it.
 
 In a scene, `mesh` is the node key that applies it. A script reaches each property below as a field on `node.mesh`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.mesh.get()` and `node.mesh.set(table)`.
 

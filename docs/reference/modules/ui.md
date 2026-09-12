@@ -2,15 +2,15 @@
 title: "ui module"
 image: "/img/social/reference.png"
 sidebar_label: "ui"
-description: "Immediate-mode UI, redrawn from a script's draw_ui every frame: panels, layout containers and the design system's widget shapes. HUD elements that live…"
+description: "Immediate-mode UI redrawn from a script's draw_ui every frame: panels, layout containers and widgets. HUD elements in the scene tree are the widget…"
 custom_edit_url: null
 ---
 
 # <span class="ref-icon ref-icon--ui" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M104,104V208H40a8,8,0,0,1-8-8V104Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V96H40V56ZM40,112H96v88H40Zm176,88H112V112H216v88Z"/></svg></span>`ui`
 
-Immediate-mode UI, redrawn from a script's `draw_ui` every frame: panels, layout containers and the design system's widget shapes. HUD elements that live in the scene tree are the `widget` component instead.
+Immediate-mode UI redrawn from a script's `draw_ui` every frame: panels, layout containers and widgets. HUD elements in the scene tree are the `widget` component.
 
-58 functions, 49 constants. Scripts reach it as `ui::`.
+59 functions, 57 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -26,6 +26,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `central_panel(any?, fn)` | — | Draw the callback into whatever room the docked panels left over. |
 | `central_rect() -> float, float, float, float` | — | The x, y, width and height of the surface being drawn into, in design pixels. |
 | `circle_button(string, any?) -> bool` | — | Draw a round button holding one glyph, `d` design pixels across; true on the frame it was clicked. `disabled` greys it out and swallows the click. |
+| `click(node, any?) -> bool` | — | Click a widget node as the pointer would, at the next tick and with no window needed: what a test harness drives the game with. False for a node a pointer could not click, hidden, disabled or not a widget; `#{ hidden: true }` clicks a hidden one anyway, as a test emitting its signal would. |
 | `clipboard() -> string` | — | The text pasted this frame, empty otherwise: the platform clipboard is not readable on demand. |
 | `code_editor(string, string, any?) -> string, bool, int?, any` | — | Draw an editable, highlighted buffer with a gutter; returns the text, whether it changed, any line clicked, and the caret as `#{ x, y, index }`. |
 | `code_line(string, any, any?)` | — | Draw one read-only code row from a list of `{ text, color, strong }` spans, with a gutter label on the left. |
@@ -93,6 +94,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `ANCHOR_CENTER_RIGHT` | `center_right` |
 | `ANCHOR_CENTER_TOP` | `center_top` |
 | `ANCHOR_FILL` | `fill` |
+| `ANCHOR_FILL_ACROSS` | `fill_across` |
+| `ANCHOR_FILL_BOTTOM` | `fill_bottom` |
+| `ANCHOR_FILL_DOWN` | `fill_down` |
+| `ANCHOR_FILL_LEFT` | `fill_left` |
+| `ANCHOR_FILL_RIGHT` | `fill_right` |
+| `ANCHOR_FILL_TOP` | `fill_top` |
 | `ANCHOR_TOP_LEFT` | `top_left` |
 | `ANCHOR_TOP_RIGHT` | `top_right` |
 | `FONT_HEADING` | `heading` |
@@ -126,7 +133,9 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `WIDGET_SCROLL` | `scroll` |
 | `WIDGET_SEPARATOR` | `separator` |
 | `WIDGET_SLIDER` | `slider` |
+| `WIDGET_STACK` | `stack` |
 | `WIDGET_TAB` | `tab` |
 | `WIDGET_TABLE` | `table` |
 | `WIDGET_TEXT_AREA` | `text_area` |
 | `WIDGET_TREE` | `tree` |
+| `WIDGET_WINDOW` | `window` |

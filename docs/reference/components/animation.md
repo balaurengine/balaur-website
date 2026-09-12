@@ -2,7 +2,7 @@
 title: "animation component"
 image: "/img/social/reference.png"
 sidebar_label: "animation"
-description: "Plays animation clips on a node: the library to play them from, one to start when the scene loads, and the rate every clip on the node runs at. The…"
+description: "Plays animation clips on the node. library is the clip asset, autoplay the clip started on load, speed the rate; the animation module drives playback."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `animation` · 4 properties · Animation
 
-Plays animation clips on a node: the library to play them from, one to start when the scene loads, and the rate every clip on the node runs at. The `animation` script module drives the playhead from there.
+Plays animation clips on the node. `library` is the clip asset, `autoplay` the clip started on load, `speed` the rate; the `animation` module drives playback.
 
 In a scene, `animation` is the node key that applies it. A script reaches each property below as a field on `node.animation`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.animation.get()` and `node.animation.set(table)`.
 
@@ -38,7 +38,7 @@ From [`animation`](../modules/animation.md):
 | `is_playing() -> bool` | Whether a clip is advancing on this node; a paused, stopped, finished or absent one answers false. |
 | `just_finished() -> string?` | The clip that ended on this node during the last step, and nil on every other frame. |
 | `pause()` | Hold the playhead where it is, keeping the clip current so `resume` has something to go back to. |
-| `play(string, any?)` | Start the clip of that name on this node; the trailing options table takes `speed` (a multiplier), `from_start`, and `retarget` (a `bone_map` reference, so this rig can play another rig's clips). |
+| `play(string, any?)` | Start the clip of that name on this node; the trailing options table takes `speed` (a multiplier), `from_start`, `fade` (seconds to blend out of the clip before), and `retarget` (a `bone_map` reference, so this rig can play another rig's clips). |
 | `queue(string)` | Play the clip of that name once the current one ends; a looping clip never ends, so a queue behind one never drains. |
 | `resume()` | Carry on from where `pause` left off; a stopped, finished or never-started node is left alone. |
 | `seek(float)` | Move the playhead to a number of seconds and pose the node there, even on a paused or ended clip. |

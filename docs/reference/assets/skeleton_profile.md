@@ -2,7 +2,7 @@
 title: "skeleton_profile asset type"
 image: "/img/social/reference.png"
 sidebar_label: "skeleton_profile"
-description: "A skeleton profile is the canonical skeleton a bone map's names come from, and the rest pose a clip written against it was keyed relative to. Each bone…"
+description: "The canonical skeleton a bone_map names bones from. Each [[bones]] entry has a name, a rest_rotation and a rest_position; no bones means the built-in…"
 custom_edit_url: null
 ---
 
@@ -10,20 +10,16 @@ custom_edit_url: null
 
 Files live in `animations/`. Used by no component property yet.
 
-A skeleton profile is the canonical skeleton a bone map's names come from,
-and the rest pose a clip written against it was keyed relative to. Each bone
-has a `name` and, optionally, a `rest_rotation` in euler radians and a
-`rest_position` whose length scales a retargeted position track. A document
-with no `bones` is the built-in humanoid.
+The canonical skeleton a `bone_map` names bones from. Each `[[bones]]` entry has a `name`, a `rest_rotation` and a `rest_position`; no `bones` means the built-in humanoid.
 
 ```toml
 type = "skeleton_profile"
 
 [[bones]]
 name = "Hips"
-rest_position = [0.0, 1.0, 0.0]
+rest_position = [0.0, 1.0, 0.0]   # its length scales a retargeted position track
 
 [[bones]]
 name = "Spine"
-rest_rotation = [0.0, 0.0, 0.0]
+rest_rotation = [0.0, 0.0, 0.0]   # euler radians
 ```

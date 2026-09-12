@@ -2,7 +2,7 @@
 title: "shape3d component"
 image: "/img/social/reference.png"
 sidebar_label: "shape3d"
-description: "An untextured 3D primitive drawn at the node -- ball, cuboid, capsule, cylinder, cone, plane, torus, pyramid, prism or tube -- sized in world units and…"
+description: "An untextured 3D primitive at the node, tinted by color. kind is ball, cuboid, capsule, cylinder, cone, plane, torus, pyramid, prism or tube."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `render` · 14 properties · 3D
 
-An untextured 3D primitive drawn at the node -- ball, cuboid, capsule, cylinder, cone, plane, torus, pyramid, prism or tube -- sized in world units and tinted by `color`. Built as a mesh, so a collider fitted to it collides what is drawn.
+An untextured 3D primitive at the node, tinted by `color`. `kind` is `ball`, `cuboid`, `capsule`, `cylinder`, `cone`, `plane`, `torus`, `pyramid`, `prism` or `tube`.
 
 In a scene, `shape3d` is the node key that applies it. A script reaches each property below as a field on `node.shape3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.shape3d.get()` and `node.shape3d.set(table)`.
 

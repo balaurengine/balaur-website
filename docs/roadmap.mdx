@@ -218,6 +218,12 @@ import Roadmap from '@site/src/components/Roadmap';
         ],
       },
       {
+        group: "Editor",
+        title: 'Project manager',
+        text: <>The screen the editor starts on: recent projects, new from a template, open a folder, Godot import.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-project-manager.md',
+      },
+      {
         group: "Scripts and assets",
         title: 'A bad call caught before it runs',
         text: <><code>balaur check</code> reads the scene beside the script and resolves a component's method against the table the run time uses.</>,
@@ -234,6 +240,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Godot import',
         text: <><code>balaur import</code> over <code>project.godot</code>, <code>.tscn</code>, <code>.tres</code> and <code>.gdshader</code>, writing scenes, assets and a report naming what did not convert.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md',
+        done: true,
+        image: "/img/blog/port_godot_balaur.webp",
+        alt: "Polyglot Pirates in Godot on the left and the converted project in Balaur on the right",
+        posts: [
+          {slug: "porting-a-godot-game", title: "Godot to Balaur importer"},
+        ],
       },
       {
         group: "Physics and animation",

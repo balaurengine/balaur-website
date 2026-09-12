@@ -2,7 +2,7 @@
 title: "bone2d component"
 image: "/img/social/reference.png"
 sidebar_label: "bone2d"
-description: "Makes the node a 2D bone: the rest position and rotation about z a rig returns to, plus the length and angle its gizmo is drawn with. A skin names its…"
+description: "Makes the node a 2D bone. rest_position and rest_rotation are the pose a rig returns to; length and angle draw its gizmo."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `animation` · 4 properties · 2D
 
-Makes the node a 2D bone: the rest position and rotation about z a rig returns to, plus the length and angle its gizmo is drawn with. A skin names its rig by node path and deforms by the bones under it, in tree order.
+Makes the node a 2D bone. `rest_position` and `rest_rotation` are the pose a rig returns to; `length` and `angle` draw its gizmo.
 
 In a scene, `bone2d` is the node key that applies it. A script reaches each property below as a field on `node.bone2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.bone2d.get()` and `node.bone2d.set(table)`.
 

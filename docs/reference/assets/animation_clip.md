@@ -2,7 +2,7 @@
 title: "animation_clip asset type"
 image: "/img/social/reference.png"
 sidebar_label: "animation_clip"
-description: "A clip keys node properties over time. length is in seconds and may be left out to end at the last key; loop is none (hold the last key), loop or…"
+description: "A clip keys node properties over time. loop is none, loop or pingpong; each track names a target, a property, an interp and its keys."
 custom_edit_url: null
 ---
 
@@ -10,30 +10,24 @@ custom_edit_url: null
 
 Files live in `animations/`. Used by [`animation`](../components/animation.md) · `library`.
 
-A clip keys node properties over time. `length` is in seconds and may be
-left out to end at the last key; `loop` is `none` (hold the last key),
-`loop` or `pingpong`. Each track names a `target` node path relative to the
-playing node (empty means that node), a `property` (`position`,
-`rotation_euler`, `rotation`, `scale`, `visible`, `tint` or
-`<component>/<property>`), an `interp` (`step`, `linear`, `cubic`) and its
-`keys`, each `{ t, value }` with an optional `ease`. `visible` is one channel
-and always stepped; `tint` is the `[r, g, b, a]` every descendant is
-multiplied by, which a renderable's own `color` is not. A track with no
-`property` is a method track whose keys call the node's script. A file holds
-one clip, or several under `[clips.<name>]`, addressed as `file.toml#name`.
+A clip keys node properties over time. `loop` is `none`, `loop` or `pingpong`; each track names a `target`, a `property`, an `interp` and its `keys`.
 
 ```toml
 type = "animation_clip"
 
-[clips.patrol]
-length = 4.0
-loop = "pingpong"
+[clips.patrol]           # one clip per file, or several, addressed as file.toml#patrol
+length = 4.0             # seconds; left out, the clip ends at its last key
+loop = "pingpong"        # none, loop or pingpong
 
 [[clips.patrol.tracks]]
-property = "position"
-interp = "linear"
+target = ""              # node path relative to the playing node; empty is that node
+property = "position"    # rotation_euler, rotation, scale, visible, tint or <component>/<property>
+interp = "linear"        # step, linear or cubic
 keys = [
   { t = 0.0, value = [-2.5, 0.25, -2.0] },
   { t = 4.0, value = [-2.5, 0.25, 2.0], ease = "in_out_sine" },
 ]
+
+[[clips.patrol.tracks]]  # no property: a method track, each key a call on the node's script
+keys = [{ t = 2.0, call = "on_halfway" }]
 ```

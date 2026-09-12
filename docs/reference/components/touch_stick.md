@@ -2,7 +2,7 @@
 title: "touch_stick component"
 image: "/img/social/reference.png"
 sidebar_label: "touch_stick"
-description: "An on-screen stick that pushes one action per axis while a thumb drags it, reading -1..1 with y positive away from the player, the way a gamepad's stick…"
+description: "An on-screen stick that drives action_x and action_y from -1..1 while a thumb drags it, y positive away from the player. anchor and offset place it."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `ui` · 11 properties · 2D
 
-An on-screen stick that pushes one action per axis while a thumb drags it, reading -1..1 with y positive away from the player, the way a gamepad's stick does. Placed against the screen less its safe area.
+An on-screen stick that drives `action_x` and `action_y` from -1..1 while a thumb drags it, y positive away from the player. `anchor` and `offset` place it.
 
 In a scene, `touch_stick` is the node key that applies it. A script reaches each property below as a field on `node.touch_stick`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.touch_stick.get()` and `node.touch_stick.set(table)`.
 

@@ -2,13 +2,13 @@
 title: "settings module"
 image: "/img/social/reference.png"
 sidebar_label: "settings"
-description: "Every setting the engine, its plugins and this game declare, addressed by path: physics/solver_iterations, netcode/faults, editor/appearance/theme. The…"
+description: "Every setting the engine, its plugins and the game declare, by path: physics/solver_iterations is [physics] solver_iterations in project.toml. define…"
 custom_edit_url: null
 ---
 
 # <span class="ref-icon ref-icon--other" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z" opacity="0.2"/><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"/></svg></span>`settings`
 
-Every setting the engine, its plugins and this game declare, addressed by path: `physics/solver_iterations`, `netcode/faults`, `editor/appearance/theme`. The first segment is the category, the last is the key, and the path is also where the value is stored: `physics/solver_iterations` is `[physics] solver_iterations` in project.toml. A project setting ships with the game; an editor one stays on the machine that set it. Define your own with `define` and it appears in the settings screen beside the engine's. One key may hold an answer per platform: `[override.android.window] orientation` is what `window/orientation` reads on a phone.
+Every setting the engine, its plugins and the game declare, by path: `physics/solver_iterations` is `[physics] solver_iterations` in `project.toml`. `define` adds your own; `[override.<platform>]` tables answer per platform.
 
 11 functions, 0 constants. Scripts reach it as `settings::`.
 

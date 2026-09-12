@@ -2,7 +2,7 @@
 title: "vehicle3d component"
 image: "/img/social/reference.png"
 sidebar_label: "vehicle3d"
-description: "Makes this node's body a car chassis, driven by the wheel3d children under it. Rapier casts a ray down from each wheel and pushes the chassis along a…"
+description: "Makes the node's body3d a raycast vehicle chassis, driven by the wheel3d children under it. forward_axis and up_axis orient it."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `physics` · 2 properties · 3D
 
-Makes this node's body a car chassis, driven by the `wheel3d` children under it. Rapier casts a ray down from each wheel and pushes the chassis along a spring, which is how driving games model cars: it never jams and never tunnels.
+Makes the node's `body3d` a raycast vehicle chassis, driven by the `wheel3d` children under it. `forward_axis` and `up_axis` orient it.
 
 In a scene, `vehicle3d` is the node key that applies it. A script reaches each property below as a field on `node.vehicle3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.vehicle3d.get()` and `node.vehicle3d.set(table)`.
 

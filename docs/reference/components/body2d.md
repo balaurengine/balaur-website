@@ -2,7 +2,7 @@
 title: "body2d component"
 image: "/img/social/reference.png"
 sidebar_label: "body2d"
-description: "Makes the node a 2D rigid body rapier simulates, in the xy plane: dynamic falls and responds to forces, static never moves, kinematic is moved by script…"
+description: "A 2D rigid body simulated by rapier in the xy plane. kind is dynamic, static, kinematic or kinematic_velocity; add a collider2d for its shape."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `physics` · 17 properties · 2D
 
-Makes the node a 2D rigid body rapier simulates, in the xy plane: `dynamic` falls and responds to forces, `static` never moves, `kinematic` is moved by script or animation and pushes what it meets. Add a `collider2d` for it to collide with anything.
+A 2D rigid body simulated by rapier in the xy plane. `kind` is `dynamic`, `static`, `kinematic` or `kinematic_velocity`; add a `collider2d` for its shape.
 
 In a scene, `body2d` is the node key that applies it. A script reaches each property below as a field on `node.body2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.body2d.get()` and `node.body2d.set(table)`.
 
@@ -27,7 +27,7 @@ In a scene, `body2d` is the node key that applies it. A script reaches each prop
 | `fast_rotation` | bool | `false` | Allow a spin fast enough that rapier would otherwise clamp it |
 | `gravity_scale` | float | `1` | Multiplier on world gravity for this body: 0 hangs in the air, negative floats up |
 | `inertia` | float | `0` | Resistance to spin; 0 lets rapier derive it from the mass At least 0. |
-| `kind` | enum | `dynamic` | How 2D physics drives the node: simulated, immovable, moved by script, or moved by a velocity you set One of `dynamic`, `static`, `kinematic`, `kinematic_velocity`. Scene shorthand: `kind`'s value can be given as the component's whole value. |
+| `kind` | enum | `dynamic` | How 2D physics drives the node: simulated, immovable, moved by script, or moved by a velocity you set One of `dynamic`, `static`, `kinematic`, `kinematic_velocity`. |
 | `linear_damping` | float | `0` | Drag on travel: how fast the body loses speed with nothing touching it At least 0. |
 | `lock_rotation` | bool | `false` | Stop the body turning; how a 2D character stays upright |
 | `lock_translation` | flags | `[]` | Axes the body may not move along One of `x`, `y`. |

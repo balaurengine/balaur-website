@@ -41,7 +41,7 @@ id = "n_ball"
 name = "Ball"
 parent = "n_world"
 script = "scripts/ball.rn"
-body3d = "dynamic"
+body3d = { kind = "dynamic" }
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
 
@@ -99,8 +99,7 @@ In the editor:
 
 Plugins declare named, schema-described components. A property's `type` is
 one of `float`, `bool`, `string`, `enum`, `vec2`, `vec3`, `color` or `asset`,
-with a default, enum options, an optional scalar shorthand
-(`body3d = "dynamic"`) and a `readonly` marker. A malformed schema fails at
+with a default, enum options and a `readonly` marker. A malformed schema fails at
 boot naming the component and property.
 
 One registration gives:

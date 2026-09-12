@@ -2,7 +2,7 @@
 title: "modifier3d component"
 image: "/img/social/reference.png"
 sidebar_label: "modifier3d"
-description: "The 3D twin of modifier2d, over bone3d: look_at, two_bone_ik, fabrik, ccdik, jiggle and follow, posing bones after the clip has run -- follow moves the…"
+description: "Poses bone3d nodes toward target after the clip runs. kind is look_at, two_bone_ik, fabrik, ccdik, jiggle or follow; follow moves the node by offset and…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `animation` · 16 properties · 3D
 
-The 3D twin of `modifier2d`, over `bone3d`: `look_at`, `two_bone_ik`, `fabrik`, `ccdik`, `jiggle` and `follow`, posing bones after the clip has run -- `follow` moves the node rather than a bone, so a camera trails what it watches without a script. A chain solver turns each bone by the shortest arc onto the solved point, so a bone's twist about its own aim is left as the clip wrote it.
+Poses `bone3d` nodes toward `target` after the clip runs. `kind` is `look_at`, `two_bone_ik`, `fabrik`, `ccdik`, `jiggle` or `follow`; `follow` moves the node by `offset` and `lag`.
 
 In a scene, `modifier3d` is the node key that applies it. A script reaches each property below as a field on `node.modifier3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.modifier3d.get()` and `node.modifier3d.set(table)`.
 

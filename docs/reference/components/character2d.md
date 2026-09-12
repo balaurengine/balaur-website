@@ -2,7 +2,7 @@
 title: "character2d component"
 image: "/img/social/reference.png"
 sidebar_label: "character2d"
-description: "Moves a node the way a 2D player expects: physics2d.move_character slides it along walls, steps it up ledges, keeps it off slopes that are too steep and…"
+description: "A 2D character controller: physics2d.move_character slides the node along walls and steps it up ledges. Needs a collider2d; a kinematic body2d lets it…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `physics` · 12 properties · 2D
 
-Moves a node the way a 2D player expects: `physics2d.move_character` slides it along walls, steps it up ledges, keeps it off slopes that are too steep and holds it to the ground over a crest. Needs a `collider2d`.
+A 2D character controller: `physics2d.move_character` slides the node along walls and steps it up ledges. Needs a `collider2d`; a `kinematic` `body2d` lets it push bodies.
 
 In a scene, `character2d` is the node key that applies it. A script reaches each property below as a field on `node.character2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.character2d.get()` and `node.character2d.set(table)`.
 

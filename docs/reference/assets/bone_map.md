@@ -2,7 +2,7 @@
 title: "bone_map asset type"
 image: "/img/social/reference.png"
 sidebar_label: "bone_map"
-description: "A bone map lets one rig play another's clips. [bones] pairs a canonical bone name with the node path it takes on this rig, relative to the playing node…"
+description: "Lets one rig play another's clips: [bones] pairs canonical bone names with node paths on this rig, profile names the skeleton_profile they come from."
 custom_edit_url: null
 ---
 
@@ -10,17 +10,12 @@ custom_edit_url: null
 
 Files live in `animations/`. Used by no component property yet.
 
-A bone map lets one rig play another's clips. `[bones]` pairs a canonical
-bone name with the node path it takes on this rig, relative to the playing
-node; `profile` names a `skeleton_profile` asset whose rests the clip was
-authored against, and defaults to the built-in humanoid. Pass the map to
-`animation.play(node, clip, { retarget = "maps/hero.toml" })`: each track's
-target is renamed through it, rotations are re-read as turns away from the
-profile's rest, and positions are scaled by how much longer this rig's bones
-are.
+Lets one rig play another's clips: `[bones]` pairs canonical bone names with node paths on this rig, `profile` names the `skeleton_profile` they come from.
 
 ```toml
 type = "bone_map"
+# profile = "animations/humanoid.toml"   # left out, the built-in humanoid profile
+# Used as animation.play(node, clip, { retarget = "maps/hero.toml" })
 
 [bones]
 Hips = "Armature/Hips"

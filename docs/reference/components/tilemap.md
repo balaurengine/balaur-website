@@ -2,7 +2,7 @@
 title: "tilemap component"
 image: "/img/social/reference.png"
 sidebar_label: "tilemap"
-description: "A grid of tiles cut from one tileset atlas and centred on the node, one character per cell, drawn at pixels_per_unit tile-texture pixels per world unit."
+description: "A grid of tiles from one tileset asset, centred on the node. cells holds one character per cell; pixels_per_unit is tile pixels per world unit."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · 8 properties · 2D
 
-A grid of tiles cut from one `tileset` atlas and centred on the node, one character per cell, drawn at `pixels_per_unit` tile-texture pixels per world unit.
+A grid of tiles from one `tileset` asset, centred on the node. `cells` holds one character per cell; `pixels_per_unit` is tile pixels per world unit.
 
 In a scene, `tilemap` is the node key that applies it. A script reaches each property below as a field on `node.tilemap`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.tilemap.get()` and `node.tilemap.set(table)`.
 

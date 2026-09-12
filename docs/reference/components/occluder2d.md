@@ -2,7 +2,7 @@
 title: "occluder2d component"
 image: "/img/social/reference.png"
 sidebar_label: "occluder2d"
-description: "The outline this node blocks 2D light with. Left empty it follows the node's collider2d, or failing that its circle, capsule, rect or sprite shape, so…"
+description: "The outline the node blocks 2D light with. With no mesh it follows the node's collider2d, or else its circle, capsule, rect or sprite shape."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · 2 properties · 2D
 
-The outline this node blocks 2D light with. Left empty it follows the node's `collider2d`, or failing that its circle, capsule, rect or sprite shape, so the thing a player sees is the thing that casts the shadow. Every edge casts, so an occluder stands in its own shadow: a node that should stay lit wants a smaller outline or a light with `shadows = false`.
+The outline the node blocks 2D light with. With no `mesh` it follows the node's `collider2d`, or else its circle, capsule, rect or sprite shape.
 
 In a scene, `occluder2d` is the node key that applies it. A script reaches each property below as a field on `node.occluder2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.occluder2d.get()` and `node.occluder2d.set(table)`.
 

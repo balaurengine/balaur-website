@@ -2,7 +2,7 @@
 title: "tile_collision component"
 image: "/img/social/reference.png"
 sidebar_label: "tile_collision"
-description: "Collision for a tilemap's own cells: every tile the tileset marks solid, as one shape per behaviour, with the material keys a collider2d takes. A tile…"
+description: "Collision for the node's tilemap cells: every tile the tileset marks solid, one shape per behaviour, with the material keys a collider2d takes."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `physics` · 17 properties · 2D
 
-Collision for a `tilemap`'s own cells: every tile the tileset marks solid, as one shape per behaviour, with the material keys a `collider2d` takes. A tile that draws its own polygons gets a collider of its own.
+Collision for the node's `tilemap` cells: every tile the tileset marks solid, one shape per behaviour, with the material keys a `collider2d` takes.
 
 In a scene, `tile_collision` is the node key that applies it. A script reaches each property below as a field on `node.tile_collision`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.tile_collision.get()` and `node.tile_collision.set(table)`.
 

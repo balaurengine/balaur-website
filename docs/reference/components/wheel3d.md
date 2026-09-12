@@ -2,7 +2,7 @@
 title: "wheel3d component"
 image: "/img/social/reference.png"
 sidebar_label: "wheel3d"
-description: "One wheel of the vehicle3d above it. Where the node sits on the chassis is where the wheel's ray starts; the rest is suspension tuning. Drive it with…"
+description: "One wheel of the vehicle3d above it; the node's position on the chassis is where its ray starts. physics3d.set_engine_force, set_brake and set_steering…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `physics` · 11 properties · 3D
 
-One wheel of the `vehicle3d` above it. Where the node sits on the chassis is where the wheel's ray starts; the rest is suspension tuning. Drive it with `physics3d.set_engine_force`, `set_brake` and `set_steering`.
+One wheel of the `vehicle3d` above it; the node's position on the chassis is where its ray starts. `physics3d.set_engine_force`, `set_brake` and `set_steering` drive it.
 
 In a scene, `wheel3d` is the node key that applies it. A script reaches each property below as a field on `node.wheel3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.wheel3d.get()` and `node.wheel3d.set(table)`.
 

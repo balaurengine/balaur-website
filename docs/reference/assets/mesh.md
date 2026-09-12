@@ -2,7 +2,7 @@
 title: "mesh asset type"
 image: "/img/social/reference.png"
 sidebar_label: "mesh"
-description: "Geometry for mesh-typed properties. A definition names a source model file to import, or a kind of parametric primitive to build, or carries the vertices…"
+description: "Geometry for mesh properties: a source file, a primitive kind, or its own positions and indices. skin, colors and morphs add bone weights, vertex tints…"
 custom_edit_url: null
 ---
 
@@ -10,18 +10,7 @@ custom_edit_url: null
 
 Files live in `models/`. Used by [`collider2d`](../components/collider2d.md) · `mesh`, [`collider3d`](../components/collider3d.md) · `mesh`, [`mesh`](../components/mesh.md) · `source`, [`occluder2d`](../components/occluder2d.md) · `mesh`, [`polygon`](../components/polygon.md) · `mesh`, [`shape2d`](../components/shape2d.md) · `mesh`.
 
-Geometry for `mesh`-typed properties. A definition names a `source` model
-file to import, or a `kind` of parametric primitive to build, or carries the
-vertices itself as `positions` and `indices`, which is what lets a script
-build one at run time; naming more than one is refused. A `skin` table adds
-bone weights for skeletal animation, `colors` a tint per vertex, and each
-`[[morphs]]` a named shape the mesh can be blended towards -- which a clip
-drives as `mesh/morph.<name>`.
-
-A primitive is built by the same mesher the `shape3d` component draws, so a
-collider over this asset collides exactly what is on screen. A `text` mesh
-is the outlines of a shaped run, filled with the counters left as holes; it
-sits on its baseline and is sized in world units.
+Geometry for `mesh` properties: a `source` file, a primitive `kind`, or its own `positions` and `indices`. `skin`, `colors` and `morphs` add bone weights, vertex tints and blend shapes.
 
 ```toml
 [[assets]]
@@ -40,4 +29,7 @@ size = 1.0
 # ...or, instead of any of those:
 positions = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]
 indices = [[0, 1, 2]]
+colors = [[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]]   # a tint per vertex
+skin = { bones = [{ path = "Rig/Hip", weights = [1, 1, 1] }] }   # one weight per vertex
+morphs = [{ name = "smile", positions = [[0, 0, 0], [0.1, 0, 0], [0, 0.1, 0]] }]   # a clip drives it as mesh/morph.smile
 ```

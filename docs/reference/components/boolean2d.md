@@ -2,7 +2,7 @@
 title: "boolean2d component"
 image: "/img/social/reference.png"
 sidebar_label: "boolean2d"
-description: "Draw this node as its 2D children combined -- joined, cut out of one another, or only where they overlap. The children stay in the tree, hidden and…"
+description: "Draws the node as its 2D children combined by op: union, difference or intersection. The children stay in the tree, hidden and editable."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · 1 property · 2D
 
-Draw this node as its 2D children combined -- joined, cut out of one another, or only where they overlap. The children stay in the tree, hidden and editable.
+Draws the node as its 2D children combined by `op`: `union`, `difference` or `intersection`. The children stay in the tree, hidden and editable.
 
 In a scene, `boolean2d` is the node key that applies it. A script reaches each property below as a field on `node.boolean2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.boolean2d.get()` and `node.boolean2d.set(table)`.
 

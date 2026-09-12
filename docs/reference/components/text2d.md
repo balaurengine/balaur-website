@@ -2,7 +2,7 @@
 title: "text2d component"
 image: "/img/social/reference.png"
 sidebar_label: "text2d"
-description: "A block of text drawn in the 2D pass, shaped by the engine's fonts and sized at pixels_per_unit font pixels to the world unit."
+description: "A block of text drawn in the 2D pass, pixels_per_unit font pixels per world unit."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · 19 properties · 2D
 
-A block of text drawn in the 2D pass, shaped by the engine's fonts and sized at `pixels_per_unit` font pixels to the world unit.
+A block of `text` drawn in the 2D pass, `pixels_per_unit` font pixels per world unit.
 
 In a scene, `text2d` is the node key that applies it. A script reaches each property below as a field on `node.text2d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.text2d.get()` and `node.text2d.set(table)`.
 

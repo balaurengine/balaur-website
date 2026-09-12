@@ -2,7 +2,7 @@
 title: "joint3d component"
 image: "/img/social/reference.png"
 sidebar_label: "joint3d"
-description: "Holds this node's body to another one: a hinge, a slider, a rope, a spring, a ball socket, or a generic joint you lock axis by axis. Both ends need a…"
+description: "Joins this node's body to body. kind is fixed, revolute, prismatic, spherical, rope, spring or generic; both ends need a body3d on or above the node."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `3d` · `physics` · 18 properties · 3D
 
-Holds this node's body to another one: a hinge, a slider, a rope, a spring, a ball socket, or a generic joint you lock axis by axis. Both ends need a `body3d`; a node without one stands for the nearest body above it, which is how one body carries several joints on child nodes.
+Joins this node's body to `body`. `kind` is `fixed`, `revolute`, `prismatic`, `spherical`, `rope`, `spring` or `generic`; both ends need a `body3d` on or above the node.
 
 In a scene, `joint3d` is the node key that applies it. A script reaches each property below as a field on `node.joint3d`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.joint3d.get()` and `node.joint3d.set(table)`.
 
@@ -25,7 +25,7 @@ In a scene, `joint3d` is the node key that applies it. A script reaches each pro
 | `contacts` | bool | `false` | Let the two joined bodies collide with each other |
 | `damping` | float | `1` | How quickly the motion settles, for a spring joint or a motor At least 0. |
 | `enabled` | bool | `true` | Hold the two bodies together at all |
-| `kind` | enum | `fixed` | How the two bodies may move relative to each other One of `fixed`, `revolute`, `prismatic`, `spherical`, `rope`, `spring`, `generic`. Scene shorthand: `kind`'s value can be given as the component's whole value. |
+| `kind` | enum | `fixed` | How the two bodies may move relative to each other One of `fixed`, `revolute`, `prismatic`, `spherical`, `rope`, `spring`, `generic`. |
 | `length` | float | `0` | The rope's greatest length, or the spring's rest length At least 0. |
 | `limits` | vec2 | `[0,0]` | How far the joint may travel, as a low and a high; equal values mean no limit |
 | `locked_axes` | flags | `[]` | Which of the six freedoms a generic joint takes away One of `x`, `y`, `z`, `ang_x`, `ang_y`, `ang_z`. |

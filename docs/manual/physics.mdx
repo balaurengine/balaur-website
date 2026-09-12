@@ -23,7 +23,7 @@ stepped on a fixed 60 Hz tick.
 [[nodes]]
 name = "Crate"
 transform = { position = [0, 3, 0] }
-body3d = "dynamic"                 # dynamic | kinematic | static
+body3d = { kind = "dynamic" }      # dynamic | kinematic | static
 collider3d = { kind = "cuboid", half_extents = [0.5, 0.5, 0.5] }
 ```
 

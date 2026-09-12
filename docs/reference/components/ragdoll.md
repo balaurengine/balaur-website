@@ -2,7 +2,7 @@
 title: "ragdoll component"
 image: "/img/social/reference.png"
 sidebar_label: "ragdoll"
-description: "Drives a rig's bones from the bodies physics2d.ragdoll or physics3d.ragdoll built for it. blend is how much of the simulated pose the bones take: 0…"
+description: "Drives a rig's bones from the bodies that physics2d.ragdoll or physics3d.ragdoll built. blend is how much of the simulated pose the bones take, 0 to 1."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `physics` · 2 properties · Physics
 
-Drives a rig's bones from the bodies `physics2d.ragdoll` or `physics3d.ragdoll` built for it. `blend` is how much of the simulated pose the bones take: 0 leaves the clip in charge while the bodies simulate unseen, 1 goes limp, and anything between lets a hit push an animation around without ending it.
+Drives a rig's bones from the `bodies` that `physics2d.ragdoll` or `physics3d.ragdoll` built. `blend` is how much of the simulated pose the bones take, 0 to 1.
 
 In a scene, `ragdoll` is the node key that applies it. A script reaches each property below as a field on `node.ragdoll`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.ragdoll.get()` and `node.ragdoll.set(table)`.
 
