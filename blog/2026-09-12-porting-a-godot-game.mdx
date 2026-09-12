@@ -1,0 +1,49 @@
+---
+description: "Converting a shipped Godot game found sixteen engine gaps: one root per scene, a stacking container, theme fidelity and 2D draw order."
+slug: porting-a-godot-game
+title: What porting a Godot game taught the engine
+authors: [dragos]
+image: /img/blog/port_godot_balaur.webp
+keywords: [godot import, godot to balaur, ui layout, widget theme, scene conversion]
+---
+
+`balaur import` converts a Godot project. Running the converted game, and
+driving it with the game's own automation, is what finds the gaps.
+
+{/* truncate */}
+
+Polyglot Pirates is a shipped Godot 4.7 game: 181 scenes, 769 scripts, a
+theme of 700 items. The port lives in its own repo. Its Godot automation
+runner was ported first, scenario by scenario, because a scenario that
+passes is the proof that every script it walks through works.
+
+![Godot on the left, the port on the right](/img/blog/port_godot_balaur.webp)
+
+## What the game asked for
+
+- One root per scene, as a Godot scene and a Unity prefab have. An
+  instance *is* that root, so a converted path reads the same as Godot's.
+- A `stack` container. A Godot MarginContainer lays every child over the
+  same box; balaur queued them in a column, which was the whole broken
+  screen above.
+- Theme fidelity. A converted theme's separations, icon colours and bold
+  faces had nowhere to land, so 300 items were dropped on the way in.
+- `fit` on a picture, Godot's expand and stretch modes.
+- Awaiting a signal and awaiting another node's method, GDScript's two
+  `await` forms.
+- A `meta` component, `Array[Node]` exports, toggle buttons, and children
+  before parents in `init`.
+
+## What was simply wrong
+
+- Tilemaps ignored `z_index`: their pass ran after the sprites, so every
+  map drew over every ship.
+- A button sized itself from its caption and ignored the box the layout
+  had already solved.
+- macOS dark mode was read from the application, which answers light
+  before a window exists.
+
+## Where it is
+
+Five scenarios pass headless, and a run ends with a screenshot for the
+eye. The menu matches. The gameplay screens are next.
