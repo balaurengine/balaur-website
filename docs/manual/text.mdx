@@ -64,6 +64,10 @@ With `markup = true` the text takes the same tags as a widget's label: `[b]`,
 `[i]`, `[color=#7fd4ff]`, `[wave amp= freq=]`, `[center]`, `[right]` and an
 inline `[img=…]`. A coloured run keeps its own colour over the block's.
 
+Two more tags answer the pointer, which only a widget label can do:
+`[url=target]` calls that label's `on_link` with the target, and
+`[hint=text]` shows the text while the pointer rests on the span.
+
 ## From a script
 
 ```rune

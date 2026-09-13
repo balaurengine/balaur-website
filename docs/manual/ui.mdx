@@ -93,7 +93,7 @@ this.node.widget.set(w);
 | Text | `label`, `field`, `text_area`, `code` |
 | Controls | `button`, `check`, `dropdown`, `slider`, `drag_value`, `color`, `progress`, `menu` |
 | Data | `list`, `tree`, `table` |
-| Boxes | `panel`, `row`, `column`, `grid`, `flow`, `scroll`, `tab`, `fold`, `dialog` |
+| Boxes | `panel`, `row`, `column`, `grid`, `flow`, `scroll`, `tab`, `fold`, `dialog`, `toast` |
 | Other | `image`, `separator`, `draw` |
 
 - **`list`** — rows from `options`; `text` is the one picked. A row splits on
@@ -108,6 +108,10 @@ this.node.widget.set(w);
   editor as the `ui` module's `code_editor`.
 - **`draw`** — a rect a script fills. The node owns the placement, the script
   owns the contents.
+- **`menu`** — a button that drops its child rows. A row that is itself a
+  `menu` is a submenu. `placement` says where it opens.
+- **`toast`** — a message that stacks at its anchor and leaves when its
+  `duration` is up. A `toast` binding action puts one up with no script.
 
 Only the rows on screen are built. A long list costs its viewport.
 
@@ -170,6 +174,11 @@ strong = true
 
 Also on every widget: `tooltip`, `icon` (a glyph from the theme's icon
 family, drawn before the caption) and `disabled`.
+
+Three more say what a widget answers to. `context` names a `menu` a right
+click or a long press opens at the pointer. `shortcut` is a chord that
+clicks the widget from anywhere, as `cmd+shift+s` or `f5`. `selectable` lets
+a drag over a label select its text for the platform's copy key.
 
 ## The `ui` module: immediate mode
 
