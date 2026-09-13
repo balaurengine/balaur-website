@@ -37,7 +37,7 @@ Asset types this component references: [`material`](../assets/material.md).
 
 ## Script functions
 
-Methods of `node.shape3d`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.shape3d`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
 
 From [`render`](../modules/render.md):
 

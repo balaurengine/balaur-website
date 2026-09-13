@@ -27,7 +27,7 @@ Asset types this component references: [`animation_clip`](../assets/animation_cl
 
 ## Script functions
 
-Methods of `node.animation`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.animation`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
 
 From [`animation`](../modules/animation.md):
 

@@ -26,7 +26,7 @@ Asset types this component references: [`state_machine`](../assets/state_machine
 
 ## Script functions
 
-Methods of `node.state_machine`, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has `get()`, `set(table)`, `has()` and `remove()`.
+Methods of `node.state_machine`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
 
 From [`animation`](../modules/animation.md):
 
