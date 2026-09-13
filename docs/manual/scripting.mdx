@@ -126,8 +126,9 @@ this.node.transform.rotation_euler = [0.0, math::rad(90.0), 0.0];
   convert; the inspector shows degrees.
 - A node without a `transform` reads its schema defaults, so it sits at its
   parent. Writing one adds it.
-- `translate`, `global_position()`, `global_rotation_euler()` and
-  `global_scale()` are on the node: they answer with or without a transform.
+- `node.transform.translate(x, y, z)` moves by an offset, and
+  `global_position()`, `global_rotation_euler()` and `global_scale()` on the
+  same handle answer in world space.
 
 ## Script files as modules
 

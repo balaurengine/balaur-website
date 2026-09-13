@@ -268,7 +268,7 @@ value = "open"
 | Events | Pointer enter, exit, down, up, click, drag, drop; key down and up; a declared action; scroll; resize; a variable or a state changing; a collision starting or stopping. Each also reaches the node's script as `on_<event>`, bindings first |
 | Actions | `state`, `set_variable`, `add_variable`, `play`, `sound`, `spawn`, `free`, `switch`, `open_url`, `emit`, `call`, `visible` |
 | `when` | A comparison over the scene's variables, joined with `&&` and `\|\|` |
-| States | A table of component properties patched over the node's own. `node.go("hover")` does the same from a script, and `on_state_changed(from, to)` follows |
+| States | A table of component properties patched over the node's own. `node.states.go("hover")` does the same from a script, and `on_state_changed(from, to)` follows |
 
 - The Events view writes these rows. *Convert to script* writes the Rune they
   mean, one function per hook.

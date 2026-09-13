@@ -64,7 +64,7 @@ node as its body.
 | `_exit_tree()` | `pub fn on_free(this)` |
 | `@export var speed = 2.0` | `pub fn exports() { #{ speed: 2.0 } }`, overridden in `[nodes.script.props]` |
 | `self` | `this`; the node is `this.node` |
-| `position`, `rotation`, `scale` | `this.node.transform.position`, `.rotation_euler` (radians), `.scale`; `global_position()` in world space |
+| `position`, `rotation`, `scale` | `this.node.transform.position`, `.rotation_euler` (radians), `.scale`; `transform.global_position()` in world space |
 | `$Path/To/Node`, `get_node("..")` | `this.node.get_node("Path/To/Node")`, `"../Sibling"` |
 | `queue_free()` | `node.queue_free()`: deferred to end of frame |
 | `apply_impulse(v)` | `this.node.body2d.apply_impulse(x, y)` |
