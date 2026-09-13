@@ -1,0 +1,35 @@
+---
+description: "Labels answer the pointer: [url] spans call a script, [hint] spans say something on hover, a drag selects and copies, and numbers get arrows and units."
+slug: links-hints-and-selectable-text
+title: Links, hints and selectable text
+authors: [dragos]
+image: /img/blog/label_links_and_numbers.webp
+keywords: [rich text labels, clickable links, tooltips, text selection, spin box]
+---
+
+A label is a picture of its text no longer. Marks in it can be clicked and
+hovered, a drag selects it, and a number carries units.
+
+{/* truncate */}
+
+![A label with a link and a hint, a selectable line, and two numbers with arrows and units](/img/blog/label_links_and_numbers.webp)
+
+## What landed
+
+- **`[url=target]`.** The span wears the theme's link colour and an
+  underline, the pointer over it is a hand, and a click calls `on_link` with
+  the target. What to do with it is the game's: a scene, a shop, a browser.
+- **`[hint=text]`.** The same span, saying something while the pointer rests
+  on it. The hover text belongs to the span, not to the whole label.
+- **`selectable`.** A drag selects, the platform's copy key takes it, double
+  click takes a word and treble takes the block. A seed or an error code is
+  now something a player can send you.
+- **`arrows` and `suffix`.** A `drag_value` draws a step up and a step down
+  inside its own box, each moving by `step` within `min` and `max`, and the
+  units follow the number: `12 px`, `4.5 m/s`.
+
+Labels are still shaped by the engine's own text stack. That is what keeps
+right-to-left runs in order, holds one glyph atlas behind the HUD and the
+world, and measures a width a headless run agrees with.
+
+The rest is on the [roadmap](/docs/roadmap).

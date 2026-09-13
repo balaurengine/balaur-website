@@ -255,15 +255,22 @@ import Roadmap from '@site/src/components/Roadmap';
         done: true,
       },
       {
+        group: "Scripts and assets",
+        title: 'GDScript bodies',
+        text: <>Each <code>.gd</code> function's body translated to Rune, with a Variant shim, and a marked comment where a line did not carry.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gdscript.md',
+        done: true,
+      },
+      {
         group: "Physics and animation",
         title: 'Animation blending',
-        text: <>Blend trees and state machines, so a rig that is otherwise complete can run two clips at once.</>,
+        text: <>State machines that crossfade between clips, authored or converted from an <code>AnimationTree</code>, and blend trees so a rig can run two clips at once.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
       },
       {
         group: "Physics and animation",
         title: 'Visibility and tint on a track',
-        text: <><code>visible</code> and <code>tint</code> as clip properties, written on the appearance every node carries rather than the transform.</>,
+        text: <><code>visible</code> and <code>tint</code> as clip properties on the appearance every node carries, and names and flags on any component property, held from key to key.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#22-visible-as-an-animation-track',
         done: true,
       },
@@ -282,21 +289,23 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "User interface",
         title: 'Menus, popups and tooltips',
-        text: <>A menu bar, a context menu, a tooltip and a toast in a scene, over a pass that draws above the widget tree.</>,
+        text: <>A menu bar with submenus, a context menu a right click or a long press opens, shortcuts on rows, and a toast.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#menus-and-popups',
+        done: true,
       },
       {
         group: "User interface",
         title: 'A picture that clicks, and checks that are exclusive',
-        text: <>An <code>image</code> naming an <code>on_click</code> senses it, a <code>group</code> on a check makes a radio row, and four edge anchors join the corners.</>,
+        text: <>An <code>image</code> naming an <code>on_click</code> senses it, a <code>group</code> makes a radio row, a <code>button</code> takes a picture, and every Godot anchor preset maps.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#24-the-widget-kinds',
         done: true,
       },
       {
         group: "User interface",
         title: 'Text a game can edit',
-        text: <>A multi-line <code>text</code> kind, a <code>code</code> kind with the gutter and colouring the editor has, a numeric <code>spin</code>, and links a label reports.</>,
+        text: <>A <code>text_area</code>, a <code>code</code> kind with the editor's gutter, a <code>drag_value</code> with arrows and units, labels a drag selects, and <code>[url]</code> and <code>[hint]</code> marks.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#text',
+        done: true,
       },
       {
         group: "Rendering",
@@ -441,6 +450,12 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Gamend",
+        title: 'The Gamend SDK',
+        text: <>A Rune addon generated in the Gamend repository from its OpenAPI document and realtime protocol, one function per operation, copied into the library.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend-bindings.md',
+      },
+      {
+        group: "Gamend",
         title: 'A game server per lobby',
         text: <>Launched and registered by Gamend.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#3-steps',
@@ -547,6 +562,12 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "User interface",
         title: 'Accessibility',
         text: <>A screen reader over the widget tree, text scaling, captions, and colour-blind-safe defaults.</>,
+      },
+      {
+        group: "User interface",
+        title: 'A layout that fits the screen',
+        text: <>Width, height and touch classes that widgets, themes and settings answer to, with a touch-target floor and a game's UI scale.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-responsive.md',
       },
       {
         group: "Rendering",
@@ -669,6 +690,12 @@ import Roadmap from '@site/src/components/Roadmap';
     estimate: "March 2029",
     title: "Balaur Inputs",
     items: [
+      {
+        group: "Editor",
+        title: 'The editor on a tablet and a phone',
+        text: <>The shell folds to one dock and a bottom bar on a narrow screen, and every control answers a finger.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-responsive.md',
+      },
       {
         group: "Gameplay and audio",
         title: 'Motion and haptics beyond one pad',
@@ -858,7 +885,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Scripts and assets",
         title: 'Extensions in WebAssembly',
         text: <>A third tier beside the Rust and C ones: a <code>.wasm</code> module over <code>wasmtime</code> natively and the browser's own engine on the web.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-plugins.md',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-wasm-extensions.md',
       },
       {
         group: "Tools and services",

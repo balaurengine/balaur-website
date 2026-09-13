@@ -1,0 +1,39 @@
+---
+description: "Menus in a scene: a bar with submenus, a context menu any widget names, chords that fire while the menu is shut, and a toast that stacks and leaves."
+slug: menus-popups-and-toasts
+title: Menus, popups and toasts
+authors: [dragos]
+image: /img/blog/menus_popups_toast.webp
+keywords: [game ui menus, context menu, keyboard shortcuts, toast notification, game engine widgets]
+---
+
+Menus are scene nodes now. A `menu` holds rows, any widget names one as its
+`context`, and a `toast` says something and leaves.
+
+{/* truncate */}
+
+![A menu bar with a menu open, its rows showing shortcuts and a submenu, and a toast in the corner](/img/blog/menus_popups_toast.webp)
+
+## What landed
+
+- **A bar.** A `row` of `menu` nodes. A row that is itself a `menu` opens to
+  the side on hover, one submenu at a time, and does not shut the menu it
+  hangs off.
+- **`context`.** Any widget names a `menu` by name. A right click opens it at
+  the pointer, and so does a long press, which is the same gesture on a
+  phone. The widget's own `on_click` stays quiet for that press.
+- **`placement`.** Where a menu opens: `below`, `above`, `pointer`, or
+  `center`.
+- **`shortcut`.** A chord on any widget, written one way: `cmd+shift+s`,
+  `f5`. A menu row fires with its menu shut, and the row draws the chord the
+  way this platform writes it.
+- **`toast`.** A root that stacks at its anchor, fades over its last half
+  second, and frees itself when its `duration` is up. A binding action puts
+  one up with no script at all.
+- **`dialog`.** Escape and a click on the dim now close it, and it reports
+  that through `on_change`.
+
+Every one of them is a property on the `widget` component, so the inspector
+edits them and a scene file holds them.
+
+The rest is on the [roadmap](/docs/roadmap).
