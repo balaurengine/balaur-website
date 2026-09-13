@@ -88,6 +88,16 @@ hide_table_of_contents: true
       alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
       posts: ['skeletons-and-a-debugger', 'gpu-skinning', 'rigging-panels'],
     },
+    'Menus, popups and tooltips': {
+      image: '/img/blog/menus_popups_toast.webp',
+      alt: 'A menu bar with a menu open, its rows showing shortcuts and a submenu, and a toast in the corner',
+      posts: ['menus-popups-and-toasts'],
+    },
+    'Text a game can edit': {
+      image: '/img/blog/label_links_and_numbers.webp',
+      alt: 'A label with a link and a hint, a selectable line, and two numbers with arrows and units',
+      posts: ['links-hints-and-selectable-text'],
+    },
     'Widgets, text and the batteries': {
       image: '/img/manual/ui_widgets.webp',
       alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",
