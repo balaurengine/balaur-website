@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The 3D rigid-body world: bodies and colliders on nodes, their velocities, raycasts and overlap queries. `physics` holds what spans both worlds.
 
-89 functions, 62 constants. Scripts reach it as `physics3d::`.
+88 functions, 62 constants. Scripts reach it as `physics3d::`.
 
 Acts on [`body3d`](../components/body3d.md), [`character3d`](../components/character3d.md), [`collider3d`](../components/collider3d.md), [`joint3d`](../components/joint3d.md), [`vehicle3d`](../components/vehicle3d.md), [`wheel3d`](../components/wheel3d.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -22,9 +22,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `aabb(node) -> float, float, float, float, float, float` | [`collider3d`](../components/collider3d.md) | The world-space box the collider currently occupies, as its two opposite corners. |
 | `active_bodies() -> any` | — | Every node whose body is awake this step: what a game loops over when it wants to touch only what is moving. |
-| `add_ball_collider(node, float)` | [`collider3d`](../components/collider3d.md) | Attach a sphere collider of the given radius. |
 | `add_body(node, string)` | [`body3d`](../components/body3d.md) | Give the node a rigid body of the given kind (`BODY_DYNAMIC`, `BODY_STATIC`, `BODY_KINEMATIC`, `BODY_KINEMATIC_VELOCITY`). |
-| `add_cuboid_collider(node, float, float, float)` | [`collider3d`](../components/collider3d.md) | Attach a box collider from its three half-extents. |
+| `add_collider(node, any)` | [`collider3d`](../components/collider3d.md) | Attach a 3D collider from a `collider3d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary. |
 | `add_force(node, float, float, float)` | [`body3d`](../components/body3d.md) | Push the body until the force is reset; unlike an impulse this is spread over time. |
 | `add_force_at_point(node, float, float, float, float, float, float)` | [`body3d`](../components/body3d.md) | Push at a world point, which also turns the body. |
 | `add_joint(node, any)` | [`joint3d`](../components/joint3d.md) | Tie this node's body to another with a joint, from a `joint3d` table: `kind`, `body`, `anchor`, `axis`, `limits`, and the rest of the component's own vocabulary. |

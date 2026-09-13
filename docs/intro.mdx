@@ -35,7 +35,7 @@ pub fn update(this, dt) {
 # scene.toml
 [[nodes]]
 name = "Ball"
-script = "scripts/ball.rn"
+script = { source = "scripts/ball.rn" }
 transform = { position = [0.0, 6.0, 0.0] }
 body3d = { kind = "dynamic" }
 collider3d = { kind = "ball", radius = 0.5 }

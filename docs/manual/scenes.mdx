@@ -40,7 +40,7 @@ A flat list of `[[nodes]]` entries with `name`, an optional `parent` by id,
 id = "n_ball"
 name = "Ball"
 parent = "n_world"
-script = "scripts/ball.rn"
+script = { source = "scripts/ball.rn" }
 body3d = { kind = "dynamic" }
 collider3d = { kind = "ball", radius = 0.5 }
 shape3d = { kind = "ball", radius = 0.5 }
@@ -57,8 +57,8 @@ scale = [1, 1, 1]
 - A component is written inline (`shape3d = { ... }`) or as its own table
   (`[nodes.transform]`).
 - Scene keys apply in plugin registration order.
-- At run time, `scene::instantiate` places a scene and `scene::spawn` makes a
-  node.
+- At run time, `scene::instantiate` places a scene and `node.add_child` makes
+  a node.
 
 ## Prefabs
 
@@ -107,7 +107,7 @@ One registration gives:
 | | |
 | --- | --- |
 | The scene-file key | `collider3d = { kind = "ball", radius = 0.5 }` |
-| The runtime API | Every property as a field on the node's handle (`node.collider3d.density = 15.0`), plus `node.set_component`, `get_component`, `has_component`, `remove_component`, `component_names`, `scene::component_types()` and `scene::component_schema(name)` |
+| The runtime API | Every property as a field on the node's handle (`node.collider3d.density = 15.0`), plus `node.set_component`, `patch_component`, `get_component`, `has_component`, `remove_component`, `component_names`, `scene::component_types()` and `scene::component_schema(name)` |
 | Editor support | The Add component palette and the property inspectors, generated from the registry |
 
 <Clip name="scenes_inspect" alt="Selecting nodes in the tree; the inspector follows, a scale is dragged, and undone" />
@@ -245,13 +245,13 @@ shape3d = { color = "#4cbf66" }
 [[nodes]]
 name = "Ball"
 
-[[nodes.bindings]]
+[[nodes.bindings.rows]]
 event = "pointer_click"
 action = "add_variable"
 target = "score"
 value = 1
 
-[[nodes.bindings]]
+[[nodes.bindings.rows]]
 event = "pointer_click"
 when = "score >= 3"
 action = "state"

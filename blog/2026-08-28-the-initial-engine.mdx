@@ -32,7 +32,7 @@ as TOML, scripts that hot reload with state kept, every subsystem a plugin.
 [[nodes]]
 name = "Ball"
 position = [0.0, 6.0, 0.0]
-script = "scripts/ball"
+script = { source = "scripts/ball" }
 body = "dynamic"                                # from balaur_physics
 collider = { shape = "ball", radius = 0.5 }     # from balaur_physics
 ```

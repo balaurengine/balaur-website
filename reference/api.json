@@ -303,7 +303,6 @@
       "rows": {
         "default": [],
         "description": "The binding rows, each `{ event, when, action, target, value }`",
-        "shorthand": true,
         "type": "strings"
       }
     },
@@ -7249,13 +7248,10 @@
         "aabb": [
           "collider3d"
         ],
-        "add_ball_collider": [
-          "collider3d"
-        ],
         "add_body": [
           "body3d"
         ],
-        "add_cuboid_collider": [
+        "add_collider": [
           "collider3d"
         ],
         "add_force": [
@@ -7725,9 +7721,8 @@
       "docs": {
         "aabb": "The world-space box the collider currently occupies, as its two opposite corners.",
         "active_bodies": "Every node whose body is awake this step: what a game loops over when it wants to touch only what is moving.",
-        "add_ball_collider": "Attach a sphere collider of the given radius.",
         "add_body": "Give the node a rigid body of the given kind (`BODY_DYNAMIC`, `BODY_STATIC`, `BODY_KINEMATIC`, `BODY_KINEMATIC_VELOCITY`).",
-        "add_cuboid_collider": "Attach a box collider from its three half-extents.",
+        "add_collider": "Attach a 3D collider from a `collider3d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary.",
         "add_force": "Push the body until the force is reset; unlike an impulse this is spread over time.",
         "add_force_at_point": "Push at a world point, which also turns the body.",
         "add_joint": "Tie this node's body to another with a joint, from a `joint3d` table: `kind`, `body`, `anchor`, `axis`, `limits`, and the rest of the component's own vocabulary.",
@@ -7816,9 +7811,8 @@
       "functions": [
         "aabb",
         "active_bodies",
-        "add_ball_collider",
         "add_body",
-        "add_cuboid_collider",
+        "add_collider",
         "add_force",
         "add_force_at_point",
         "add_joint",
@@ -7908,9 +7902,8 @@
       "signatures": {
         "aabb": "NodeId -> (f32, f32, f32, f32, f32, f32)",
         "active_bodies": "() -> Value",
-        "add_ball_collider": "(NodeId, f32) -> ()",
         "add_body": "(NodeId, String) -> ()",
-        "add_cuboid_collider": "(NodeId, f32, f32, f32) -> ()",
+        "add_collider": "(NodeId, Value) -> ()",
         "add_force": "(NodeId, f32, f32, f32) -> ()",
         "add_force_at_point": "(NodeId, f32, f32, f32, f32, f32, f32) -> ()",
         "add_joint": "(NodeId, Value) -> ()",
@@ -8626,7 +8619,7 @@
       "acts_on": {},
       "components": [],
       "constants": [],
-      "doc": "The node tree: its root, lookup by path, spawning and instancing, plus the component and preset vocabulary an editor's palette lists.",
+      "doc": "The node tree: its root, lookup by path, instancing, plus the component and preset vocabulary an editor's palette lists.",
       "docs": {
         "apply_preset": "Add every component a preset names to the node; a part that fails leaves the parts before it in place.",
         "bindable_events": "Every event a `[[nodes.bindings]]` row may answer, in the order an editor offers them.",
@@ -8644,7 +8637,6 @@
         "root": "The tree's root node.",
         "set_variable": "Write a scene variable, coerced to the type it was declared with. Every node declaring `on_variable_changed` hears about it at the end of the tick; writing the value it already holds says nothing.",
         "source": "A scene file's raw TOML text, project-relative and found inside the pack in a packed run; nil when missing.",
-        "spawn": "Create one empty named node under the given parent, or under the root when none is given.",
         "switch": "Replace the scene with another one at the end of this tick, so a script asking inside `update` is not freeing the tree it runs in. `fade` is seconds the renderer crosses over; reset is a switch to the same file.",
         "tagged": "Every node filed under a tag, in tree order; what a scene's `tags` key and `node.add_tag` feed.",
         "unmet_expectations": "Components on the node whose expectations nothing satisfies, as `{ component, expects }`; advisory only.",
@@ -8669,7 +8661,6 @@
         "root",
         "set_variable",
         "source",
-        "spawn",
         "switch",
         "tagged",
         "unmet_expectations",
@@ -8695,7 +8686,6 @@
         "root": "()",
         "set_variable": "(name: string, value: any)",
         "source": "(path: string)",
-        "spawn": "(name: string, parent: node?)",
         "switch": "(path: string, options: map?)",
         "tagged": "(tag: string)",
         "unmet_expectations": "(node: node)",

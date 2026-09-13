@@ -35,7 +35,7 @@ pub fn exports() {
 }
 
 pub fn fixed_update(this, dt) {
-    // physics2d::apply_impulse(this.node, ...), spelled from the node
+    // every function that drives body2d, spelled from the node
     this.node.body2d.apply_impulse(this.speed * dt, 0.0);
 }
 ```

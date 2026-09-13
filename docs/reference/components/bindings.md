@@ -18,4 +18,4 @@ In a scene, `bindings` is the node key that applies it. A script reaches each pr
 
 | property | type | default | description |
 | --- | --- | --- | --- |
-| `rows` | strings | `[]` | The binding rows, each `{ event, when, action, target, value }` Scene shorthand: `rows`'s value can be given as the component's whole value. |
+| `rows` | strings | `[]` | The binding rows, each `{ event, when, action, target, value }` |

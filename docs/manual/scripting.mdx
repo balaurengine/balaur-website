@@ -78,7 +78,7 @@ with `::`.
 ```rune
 let t = engine::time();
 let ball = scene::get_node("World/Ball");
-physics3d::add_body(this.node, physics3d::BODY_DYNAMIC);
+this.node.body3d.set(#{ kind: physics3d::BODY_DYNAMIC });
 ```
 
 `engine`, `scene`, `log`, `input`, `rng`, `math`, `physics`, `physics2d`,
@@ -97,11 +97,11 @@ engine.
 | Tables, lists, nothing | `#{ kind: "ball" }`, `[1, 2]`, `()` |
 | Integers and floats never mix | a float argument is written `0.0` |
 
-Each component is a field on the node. The field is a handle whose methods are
-the module's functions with the node filled in:
-`this.node.body2d.apply_impulse(x, y)` is
-`physics2d::apply_impulse(this.node, x, y)`. Every handle also has `get()`,
-`set(table)`, `has()` and `remove()`. The
+Each component is a field on the node, and that field is a handle carrying
+every function that drives the component: `this.node.body2d.apply_impulse(x, y)`.
+A module keeps what belongs to no node, such as `physics2d::raycast`. Every
+handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
+The
 [component reference](/docs/reference/components) lists the methods per
 component.
 
@@ -122,10 +122,12 @@ this.node.transform.position = [p.x, p.y + 1.0, p.z];
 this.node.transform.rotation_euler = [0.0, math::rad(90.0), 0.0];
 ```
 
-- Rotations are euler radians, x then y then z. The inspector shows degrees.
-- A node without a `transform` sits at its parent. Writing one adds it.
-- `position()`, `set_position(x, y, z)`, `translate` and `rotation_degrees`
-  are short forms on the node. `global_position()` is in world space.
+- Rotations are euler radians, x then y then z. `math::deg` and `math::rad`
+  convert; the inspector shows degrees.
+- A node without a `transform` reads its schema defaults, so it sits at its
+  parent. Writing one adds it.
+- `translate`, `global_position()`, `global_rotation_euler()` and
+  `global_scale()` are on the node: they answer with or without a transform.
 
 ## Script files as modules
 
@@ -178,6 +180,8 @@ a Language Server Protocol server on stdin and stdout.
 | `⌥⇧F` | Format the buffer with Rune's own formatter |
 | `⌘⇧R` | Rename an identifier |
 | `⌘⇧F` | Replace text |
+
+Ctrl works in place of `⌘` in every chord here.
 
 Rename and replace are textual. Both walk the files the script's `mod`
 declarations reach and list every match before writing. A rename matches the

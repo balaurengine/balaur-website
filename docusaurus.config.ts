@@ -29,6 +29,8 @@ const config: Config = {
     format: 'detect',
     mermaid: true,
   },
+  clientModules: ['./src/searchChord.ts'],
+
   themes: [
     '@docusaurus/theme-mermaid',
     [

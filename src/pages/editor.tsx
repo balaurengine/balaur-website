@@ -24,6 +24,19 @@ const PROJECTS = [
   {id: 'rig', label: 'rig', detail: '2D skeleton: bones, a skinned leg, two-bone IK'},
 ];
 
+// The editor's chorded keys, by physical code: `e.key` is whatever the layout
+// prints, so ⇧⌘\ arrives as `|` and never matches a list of characters. C, X
+// and V are left out: egui reads the clipboard from the events the browser's
+// own defaults raise.
+const CHORDS = [
+  'KeyA', 'KeyB', 'KeyE', 'KeyF', 'KeyG', 'KeyK', 'KeyL', 'KeyO', 'KeyP',
+  'KeyR', 'KeyS', 'KeyY', 'KeyZ', 'Backslash', 'Comma', 'Equal', 'Minus',
+];
+
+// The unchorded ones a browser would answer itself: F5 reloads the tab, F11
+// goes fullscreen, `/` opens a quick find.
+const BARE = ['F5', 'F6', 'F10', 'F11', 'Slash'];
+
 // What the page remembers about the projects the engine keeps, so the list
 // draws before anything has downloaded the module to ask.
 const INDEX_KEY = 'balaur:editor:projects';
@@ -239,15 +252,15 @@ export default function EditorPage(): ReactNode {
     return () => window.removeEventListener('beforeunload', ask);
   }, [unsaved]);
 
-  // The browser owns ⌘S, ⌘Z, ⌘K and the zoom chords until the canvas has
-  // focus and claims them. Not ⌘V: egui reads a paste from the event the
-  // default action raises.
+  // The browser owns the editor's chords until the canvas has focus and
+  // claims them. Ctrl and ⌘ both count, because the editor answers to both.
   useEffect(() => {
     const claim = (e: KeyboardEvent) => {
       if (status.kind !== 'running') return;
       const canvas = document.getElementById('balaur-editor-canvas');
       if (document.activeElement !== canvas) return;
-      if ((e.metaKey || e.ctrlKey) && ['s', 'z', 'y', 'o', 'p', 'k', '=', '-', '\\'].includes(e.key.toLowerCase())) {
+      const held = e.metaKey || e.ctrlKey;
+      if (held ? CHORDS.includes(e.code) : BARE.includes(e.code)) {
         e.preventDefault();
       }
     };

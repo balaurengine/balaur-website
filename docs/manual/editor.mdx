@@ -24,8 +24,7 @@ balaur edit my-game
 - The scene TOML is parsed into a document model and mirrored as a node
   subtree. The viewport shows the scene and physics builds the bodies, paused
   until play.
-- Edits are written back as TOML. Every one is undoable (`Ctrl+Z`,
-  `Ctrl+Shift+Z`).
+- Edits are written back as TOML. Every one is undoable (`⌘Z`, `⇧⌘Z`).
 - Play-in-editor attaches the game's scripts to the mirrored nodes and
   unpauses.
 - Every run is recorded. See
@@ -125,6 +124,8 @@ Eleven docks sit under the viewport.
 
 ![The Cost dock: seventeen draws and 3758 triangles, with a bar per node and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
 
+- Every `⌘` chord in this manual answers to Ctrl as well, on every platform
+  and in the browser.
 - The command palette (`⌘K`) lists nodes, commands and personas.
 - Focus (`⇧⌘\`) gives the code the whole window: the three docks fold, the
   split goes off, and the file's hooks stay beside the pane. A second press

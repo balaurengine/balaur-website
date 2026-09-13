@@ -68,7 +68,7 @@ inline `[img=…]`. A coloured run keeps its own colour over the block's.
 
 ```rune
 let node = scene::get_node("Hud/Score");
-render::set_text(node, format!("{}", this.score));
+node.text2d.text = format!("{}", this.score);
 ```
 
 ```rune
@@ -76,7 +76,7 @@ render::draw_text(x, y, z, "over a character", #{ size: 32.0, align: "center" })
 render::draw_text_2d(x, y, "in the 2D pass", #{ size: 24.0 });
 ```
 
-- `render.set_text` changes what a node draws.
+- `text2d.text` and `text3d.text` change what a node draws.
 - The two `draw_text` calls draw with no node, for one frame. Neither is
   recorded: a replay re-runs the script that drew.
 - The editor's Rig tool labels bones with `draw_text`.

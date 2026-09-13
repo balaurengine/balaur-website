@@ -93,7 +93,7 @@ animation::tween(this.node, #{
     ],
 });
 
-animation::tween_to(this.node, "position", [0.0, 9.0, 0.0], 0.2, "linear");   // the one-step shorthand
+animation::tween(this.node, #{ "steps": [#{ "property": "position", "to": [0.0, 9.0, 0.0], "duration": 0.2 }] });
 ```
 
 | Key | What it does |

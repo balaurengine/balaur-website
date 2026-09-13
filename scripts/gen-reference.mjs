@@ -271,7 +271,7 @@ for (const name of Object.keys(components).sort()) {
     lines.push(
       '## Script functions',
       '',
-      `Methods of ${code('node.' + name)}, the handle a node carrying this component exposes. Each is also a free function on its module, taking the node as its first argument. Every handle also has ${code('get()')}, ${code('set(table)')}, ${code('has()')} and ${code('remove()')}.`,
+      `Methods of ${code('node.' + name)}, the handle a node carrying this component exposes. Every handle also has ${code('get()')}, ${code('set(table)')}, ${code('patch(table)')}, ${code('has()')} and ${code('remove()')}.`,
       '',
     );
     for (const m of acting) {
