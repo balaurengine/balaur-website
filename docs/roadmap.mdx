@@ -263,6 +263,18 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Physics and animation",
+        title: 'Concave 2D colliders',
+        text: <>A concave polygon cut into overlapping convex pieces, so nothing wedges into a seam, and imported Godot collision polygons keep their shape.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-convex-decomposition.md',
+        done: true,
+        image: "/img/manual/concave_pieces.webp",
+        alt: "The same table twice, its convex pieces drawn over it: meeting edge to edge on the left with a beam wedged inside, overlapping on the right with the beam pushed clear",
+        posts: [
+          {slug: "concave-2d-colliders", title: "Concave 2D colliders"},
+        ],
+      },
+      {
+        group: "Physics and animation",
         title: 'Animation blending',
         text: <>State machines that crossfade between clips, authored or converted from an <code>AnimationTree</code>, and blend trees so a rig can run two clips at once.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',

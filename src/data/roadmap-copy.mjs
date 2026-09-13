@@ -98,6 +98,11 @@ hide_table_of_contents: true
       alt: 'A label with a link and a hint, a selectable line, and two numbers with arrows and units',
       posts: ['links-hints-and-selectable-text'],
     },
+    'Concave 2D colliders': {
+      image: '/img/manual/concave_pieces.webp',
+      alt: 'The same table twice, its convex pieces drawn over it: meeting edge to edge on the left with a beam wedged inside, overlapping on the right with the beam pushed clear',
+      posts: ['concave-2d-colliders'],
+    },
     'Widgets, text and the batteries': {
       image: '/img/manual/ui_widgets.webp',
       alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",

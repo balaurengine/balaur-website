@@ -16,7 +16,7 @@ One `Plugin` trait covers them all, and one source builds either way.
 | Ships as | Part of the engine binary, behind a cargo feature | A shared library in the project's `extensions/` directory |
 | Runs on | Every platform, the web included | macOS, Linux and Windows |
 | Written in | Rust | Rust, or C, Zig, Odin, C++ |
-| Needs | An engine built from source | A desktop release, which has the `extensions` feature |
+| Needs | An engine [built from source](../building.mdx) | A desktop release, which has the `extensions` feature |
 | Starter | [`crates/balaur_physics`](https://github.com/balaurengine/balaur/tree/main/crates/balaur_physics) | [`examples/extension_greeter`](https://github.com/balaurengine/balaur/tree/main/examples/extension_greeter) (Rust), [`examples/extension_c_counter`](https://github.com/balaurengine/balaur/tree/main/examples/extension_c_counter) (C) |
 
 ## A dynamic plugin in Rust

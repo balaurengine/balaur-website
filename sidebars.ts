@@ -11,6 +11,7 @@ const sidebars: SidebarsConfig = {
     'principles',
     'getting-started',
     'cli',
+    'building',
     'from-godot',
     {
       type: 'category',

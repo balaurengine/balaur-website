@@ -1,0 +1,68 @@
+---
+title: "Build from source"
+sidebar_label: "Build from source"
+description: "The Rust toolchain, the packages each platform needs, and the first build of the Balaur engine and editor."
+image: "/img/social/docs.png"
+sidebar_position: 4
+---
+
+# Build from source
+
+## Toolchain
+
+- Rust 1.98.1 through [rustup](https://rustup.rs). `rust-toolchain.toml` pins it, so any cargo command in the checkout installs and selects it.
+- Git, and a C linker: the Xcode Command Line Tools on macOS, the MSVC "Desktop development with C++" workload on Windows.
+
+## Linux packages
+
+```bash title="Debian, Ubuntu"
+sudo apt-get install -y \
+  build-essential pkg-config \
+  libasound2-dev libudev-dev \
+  libx11-dev libxcursor-dev libxrandr-dev libxi-dev \
+  libxkbcommon-dev libwayland-dev
+```
+
+| Package | For |
+| --- | --- |
+| `libasound2-dev`, `libudev-dev` | audio and gamepads, every build |
+| `libx11-dev`, `libxcursor-dev`, `libxrandr-dev`, `libxi-dev`, `libxkbcommon-dev`, `libwayland-dev` | winit, the `window` feature |
+
+- Fedora: `gcc pkgconf-pkg-config alsa-lib-devel systemd-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel libxkbcommon-devel wayland-devel`
+- Arch: `base-devel pkgconf alsa-lib systemd-libs libx11 libxcursor libxrandr libxi libxkbcommon wayland`
+
+## Build
+
+```bash
+git clone https://github.com/balaurengine/balaur.git
+cd balaur
+cargo run -p balaur_cli -- run examples/hello --headless --frames 120   # no GPU, no window
+cargo run -p balaur_cli --features window -- edit examples/hello        # the editor
+```
+
+The windowed build compiles 541 crates the first time; after that it is incremental.
+
+## On PATH
+
+```bash
+cargo build --release -p balaur_cli --features window --bin balaur
+export PATH="$PWD/target/release:$PATH"
+balaur --version      # 0.2.0 (source build)
+```
+
+The binary finds the editor through `editor/` beside the sources, at a path baked in at build time. Moved elsewhere, it needs `--editor <dir>` or `BALAUR_EDITOR`.
+
+## Features
+
+`window` and `extensions` are off by default; `audio`, `http`, `websocket`, `webtransport`, `gamend`, `web` and `parallel` are on. `--no-default-features` drops the on ones.
+
+## If it fails
+
+| Error | Fix |
+| --- | --- |
+| names `edition2024` or a version under 1.98.1 | `rustup update`; drop any `rustup override` or `+toolchain` flag |
+| `alsa-sys`, `pkg-config`, X11 or Wayland in a linker error | the package list above |
+| `no editor project found; pass --editor <dir>` | run it from the checkout, or pass `--editor` |
+
+Before a pull request, `scripts/precommit.sh` runs what CI runs; see
+[CONTRIBUTING.md](https://github.com/balaurengine/balaur/blob/main/CONTRIBUTING.md).

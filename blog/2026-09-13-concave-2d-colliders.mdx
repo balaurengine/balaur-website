@@ -1,0 +1,48 @@
+---
+description: "A concave 2D body is one collider now: convex_decomposition cuts the polygon into convex pieces and grows each one through the seams it shares, so nothing wedges into a seam."
+slug: concave-2d-colliders
+title: Concave 2D colliders
+authors: [dragos]
+image: /img/manual/concave_pieces.webp
+keywords: [convex decomposition, concave collider, 2d physics, rapier, godot import]
+---
+
+A table can be one dynamic body again. `collider2d` takes a
+`convex_decomposition` kind: it cuts the polygon into convex pieces, then
+grows each piece through the seams it shares.
+
+{/* truncate */}
+
+![The same table twice, with the convex pieces the collider holds drawn over it](/img/manual/concave_pieces.webp)
+
+Until now a concave 2D shape was a `trimesh`, which never collides with
+another trimesh, or a `convex_hull`, which fills the shape in. A table lost
+the gap under it.
+
+## Why the pieces overlap
+
+Cut a table into a top and two legs and you leave seams. A beam pushed into
+one is three separate collision pairs. The top presses down, each leg presses
+up, and the solver fights itself until the beam just sits there. Erin Catto
+wrote this up in [Stuck Inside](https://box2d.org/posts/2020/04/stuck-inside/).
+
+His answer is to overlap the pieces by hand. Balaur does it for you. Each
+piece carries its two edges at a seam on into the neighbour and takes what
+they enclose, so the legs reach up through the top and no channel is left.
+
+`overlap` is the dial, 0.9 by default. At 0 you get the plain pieces, which
+is the left half of the picture. At 1 a piece grows flush with whatever
+stopped it.
+
+## What it costs to use
+
+Nothing to author. The collider reads the same `mesh` asset a `polygon`
+draws, so the outline a player sees and the one they hit are one thing. Mass
+comes from the ungrown pieces, so the table weighs what its area says rather
+than counting the overlaps twice.
+
+Imported Godot projects get it too. A solids-mode `CollisionPolygon2D` maps
+to this kind, which is what Godot does with it.
+
+Scripts can see the pieces. `geometry2d.convex_decomposition` returns them,
+so a tool can draw them, move the dial, or replace one by hand.
