@@ -11,25 +11,27 @@ sidebar_position: 4
 ## Toolchain
 
 - Rust 1.98.1 through [rustup](https://rustup.rs). `rust-toolchain.toml` pins it, so any cargo command in the checkout installs and selects it.
-- Git, and a C linker: the Xcode Command Line Tools on macOS, the MSVC "Desktop development with C++" workload on Windows.
+- Git, and a C and C++ compiler: the Xcode Command Line Tools on macOS, the MSVC "Desktop development with C++" workload on Windows.
 
 ## Linux packages
 
 ```bash title="Debian, Ubuntu"
 sudo apt-get install -y \
-  build-essential pkg-config \
+  git build-essential pkg-config \
   libasound2-dev libudev-dev \
   libx11-dev libxcursor-dev libxrandr-dev libxi-dev \
   libxkbcommon-dev libwayland-dev
 ```
 
-| Package | For |
+| Package | Pulled in by |
 | --- | --- |
-| `libasound2-dev`, `libudev-dev` | audio and gamepads, every build |
+| `build-essential` | a C compiler for zstd and ring; a C++ one for HarfBuzz, the web export's font subsetter |
+| `libasound2-dev` | ALSA, through rodio and cpal: the `audio` feature |
+| `libudev-dev` | gamepads, through gilrs |
 | `libx11-dev`, `libxcursor-dev`, `libxrandr-dev`, `libxi-dev`, `libxkbcommon-dev`, `libwayland-dev` | winit, the `window` feature |
 
-- Fedora: `gcc pkgconf-pkg-config alsa-lib-devel systemd-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel libxkbcommon-devel wayland-devel`
-- Arch: `base-devel pkgconf alsa-lib systemd-libs libx11 libxcursor libxrandr libxi libxkbcommon wayland`
+- Fedora: `git gcc gcc-c++ pkgconf-pkg-config alsa-lib-devel systemd-devel libX11-devel libXcursor-devel libXrandr-devel libXi-devel libxkbcommon-devel wayland-devel`
+- Arch: `git base-devel pkgconf alsa-lib systemd-libs libx11 libxcursor libxrandr libxi libxkbcommon wayland`
 
 ## Build
 
@@ -54,14 +56,14 @@ The binary finds the editor through `editor/` beside the sources, at a path bake
 
 ## Features
 
-`window` and `extensions` are off by default; `audio`, `http`, `websocket`, `webtransport`, `gamend`, `web` and `parallel` are on. `--no-default-features` drops the on ones.
+`window` and `extensions` are off by default; `audio`, `http`, `websocket`, `webtransport`, `gamend`, `web` and `parallel` are on. `--no-default-features` drops those seven.
 
 ## If it fails
 
 | Error | Fix |
 | --- | --- |
 | names `edition2024` or a version under 1.98.1 | `rustup update`; drop any `rustup override` or `+toolchain` flag |
-| `alsa-sys`, `pkg-config`, X11 or Wayland in a linker error | the package list above |
+| `Package alsa was not found in the pkg-config search path` | `libasound2-dev`, or `alsa-lib-devel`. The next missing library fails the same way, so install the whole list |
 | `no editor project found; pass --editor <dir>` | run it from the checkout, or pass `--editor` |
 
 Before a pull request, `scripts/precommit.sh` runs what CI runs; see
