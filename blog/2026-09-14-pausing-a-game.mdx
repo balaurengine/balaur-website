@@ -1,0 +1,53 @@
+---
+description: "engine.set_paused holds the tree, and a node set to process = \"always\" keeps its subtree running through it. Plus a time scale, a frame cap and a tick rate."
+slug: pausing-a-game
+title: Pausing a game
+authors: [dragos]
+image: /img/manual/pause_states.webp
+keywords: [pause menu, process mode, time scale, slow motion, fixed timestep, physics interpolation]
+---
+
+import Clip from '@site/src/components/Clip';
+
+`engine.set_paused(true)` holds the tree. A node set to `process = "always"`
+keeps its own subtree running, which is what a pause menu is.
+
+{/* truncate */}
+
+<Clip name="pause_states" alt="Twelve boxes falling, frozen in mid-air when the game pauses, then falling again at a quarter speed. The heading and the marker beside it keep animating throughout" />
+
+`process` is a key on a node like `visible`, and the subtree under it
+inherits the answer:
+
+- `pausable` stops while paused. The default, and what everything above gets
+  from the root.
+- `always` runs either way. A pause menu, a loading screen, the script that
+  lifts the pause.
+- `when_paused` runs only while paused.
+- `disabled` never runs.
+- `inherit` takes the nearest ancestor's answer.
+
+That one key stops everything that ticks per node:
+
+- Scripts, animation players, tweens, state machines and the `timer`
+  component.
+- Physics is one world and is held whole, so a body under an `always` node
+  stops with the rest. Godot draws the line in the same place.
+- Every script's `on_paused(bool)` is called when the state changes, the
+  scripts the pause just stopped included.
+
+## Slow motion, and the frames between ticks
+
+`engine.set_time_scale(0.25)` multiplies wall-clock time before the
+simulation is owed it. Half speed takes half the fixed steps, double takes
+twice, and each step is still the same length. The cap on catch-up steps
+scales with it, so fast forward is not quietly clipped. Three settings come
+with it:
+
+- `[window] max_fps` caps the loop where vsync does not.
+- `[time] tick_hz` replaces the built-in 60. A recording carries the rate it
+  was made at.
+- `[time] interpolate` draws bodies and `fixed_update` nodes between steps,
+  so they move on every frame of a 144 Hz display. Off by default: it costs
+  one tick of latency, which a run taking one step per frame pays for
+  nothing.

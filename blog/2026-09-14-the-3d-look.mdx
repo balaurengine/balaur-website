@@ -1,0 +1,61 @@
+---
+description: "A sky that lights the scene, occlusion in the creases, glass, mirrors and reflection probes, four finishing passes, and Sponza read whole from one glTF."
+slug: the-3d-look
+title: The 3D look
+authors: [dragos]
+image: /img/blog/sponza_atrium.webp
+keywords: [image based lighting, ssao, glass, reflection probe, gltf import, sponza, wesl]
+---
+
+import Clip from '@site/src/components/Clip';
+
+Sponza, read by one `balaur import` and lit by its own sky. Nothing in it was
+authored by hand except a camera, a sun, an environment and a player.
+
+{/* truncate */}
+
+<Clip name="sponza_walk" alt="Walking the length of the Sponza arcade in first person, the marble floor and the drapes lit by the sky" />
+
+- **A material arrives whole.** Every factor and map, the alpha mode and its
+  cutoff, the index of refraction and the volume. One mesh node per material:
+  Sponza is 25 over 103 primitives.
+- **The sampler comes too.** A floor whose coordinates run past one, clamped,
+  draws as a single stretched texel. The import writes the file's own wrapping
+  beside each image, so the marble arrives tiled.
+
+## What a surface now reads
+
+`package::mesh` binds four things it did not: the sky as an environment map,
+the occlusion the prepass measured, the reflection probes, and the scene glass
+refracts. Each has a one-pixel stand-in, so nothing branches on absence.
+
+![A chrome ball, a pane of glass and a mirrored floor under a sky](/img/blog/3d_look_surfaces.webp)
+
+- **Image-based lighting** replaces `environment.ambient` rather than adding to
+  it. Both stand for the same bounced light.
+- **Glass** is `[surface]` on the material: `transmission`, `ior`, `thickness`
+  and a volume colour. It draws after the opaque scene resolves and refracts
+  it, keeping its own highlights on top.
+- **A mirror** renders the scene from its own plane and replaces what the sky
+  would have shown.
+- **A `reflection_probe`** is a box a room was captured inside. A surface in it
+  reflects the room, aimed at the box rather than at infinity.
+
+## Occlusion, and the pass it needed
+
+![Two boxes on a floor, without occlusion and with it](/img/blog/3d_look_occlusion.webp)
+
+Every 3D material now draws a geometry prepass. Without one a project's
+material fed nothing to the buffer occlusion reads, so its surfaces were the
+only ones a crease never darkened.
+
+## Four passes to finish on
+
+- `vignette`, `aberration`, `grain` and `pixelate` are names on `camera.post`,
+  drawn where the list puts them. `fxaa` and `sharpen` join them from the
+  renderer.
+- The layer stack ships in the editor's library: colour, image, gradient,
+  noise, matcap, fresnel, toon and outline, each a flag with its own knobs.
+
+The Sponza project is [its own
+repository](https://github.com/balaurengine/balaur-sponza).

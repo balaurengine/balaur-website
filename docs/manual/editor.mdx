@@ -19,6 +19,50 @@ balaur edit my-game
 
 ![The editor on examples/angrynerds: the node tree, the viewport with its 2D grid and gizmo, the inspector, and the dock tabs](/img/manual/editor_overview.webp)
 
+## The project manager
+
+Started with no project, the editor opens on the manager. It has three tabs:
+the projects this machine has opened, the examples that ship with the editor,
+and the engine build itself. It is a screen of the editor rather than a window
+of its own, so it hot reloads like the rest of the shell and works on a phone.
+
+![The Projects tab: a filter, the three ways to start, and the projects this machine has opened with their paths, times and engine versions](/img/manual/project_manager.webp)
+
+A row says when it was last opened and which engine opened it. A project whose
+folder has gone stays in the list and says so, because a missing one is usually
+an unplugged disk. New project opens a sheet; Open folder and Import Godot use
+the platform's own folder picker.
+
+Opening a project starts the editor on it and closes this one. One process is
+one project, because the export and import modules and the file root are built
+for the project the editor booted with.
+
+`Open project…`, `New project…` and `Recent projects…` are in the command
+palette, so the manager is reachable without closing what is open.
+
+### Examples
+
+![The Examples tab: a card per example project, each with its name and a line saying what it is](/img/manual/project_examples.webp)
+
+The example projects ship beside the editor. Opening one copies it into your
+projects folder and opens the copy, so the shipped example stays as it was and
+a second copy is a second project.
+
+### Engine versions
+
+The manager's third tab is the build itself: which version this is, which
+channel it follows, and every release that channel has published. Opening the
+tab reads the release feed once; installing replaces the whole install, which
+is what `balaur update` does from a terminal.
+
+![The Engine tab: this build and whether it is current, the channel to follow, and the releases on it](/img/manual/engine_versions.webp)
+
+Follow picks the line: `alpha`, `beta`, `rc`, `stable` or `nightly`. The
+releases under it are that line's, newest first, with the installed one marked.
+A release can also be named exactly. A build from a checkout belongs to no
+channel and says so. A macOS bundle updates by downloading the new disk image
+rather than replacing itself in place.
+
 ## The document and the mirror
 
 - The scene TOML is parsed into a document model and mirrored as a node
@@ -65,6 +109,9 @@ The top bar switches between five personas. Each arranges the same panels
 The selection is a set. Its first node is the active node.
 
 - Shift or ⌘ click a row or a node; drag on empty viewport to box-select.
+  Every node in the set is lit in the tree, not only the active one.
+- A right click on a row picks it and opens the node's own menu: add a child,
+  move it among its siblings, attach a script, duplicate, hide, lock, delete.
 - A gizmo drag moves, turns or scales the set about its centre.
 - `⌘G` groups at the centroid keeping every world pose, `⇧⌘G` ungroups.
 - Six aligns and three distributes, in the palette.
@@ -111,10 +158,10 @@ Eleven docks sit under the viewport.
 - Debugger: a paused script's frames and locals.
 - Session: play-in-editor's recordings. It replays one, with lanes for its
   input, network and log events.
-- Profiler: the last frame as a bar per stage against the 16.7 ms of a 60 Hz
-  frame, from `engine::timings()`.
-- Cost: what the frame draws, from `render::stats()`: draws, triangles,
-  texture bytes and a cloner's copies, per node.
+- Profiler: a row per stage of the last frame, with its cost and a bar
+  against the 16.7 ms of a 60 Hz frame, from `engine::timings()`.
+- Cost: what the frame draws, from `render::stats()`, in named columns:
+  triangles, texture bytes and a cloner's copies, per node.
 - Library: stock materials, skies, models, lighting setups, camera and
   control rigs, and project templates. Clicking a material copies it in and
   points the selected node at it. A sky is copied under `skies/` and named on
@@ -122,7 +169,7 @@ Eleven docks sit under the viewport.
   a prefab; a rig brings its script. The skies are gradients and the models
   are primitives. The library is kilobytes and carries no third-party licence.
 
-![The Cost dock: seventeen draws and 3758 triangles, with a bar per node and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
+![The Cost dock: a row per node with its triangles, texture bytes and a bar, and a cloner drawing sixteen copies](/img/manual/editor_cost.webp)
 
 - Every `⌘` chord in this manual answers to Ctrl as well, on every platform
   and in the browser.

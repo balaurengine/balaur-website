@@ -54,10 +54,20 @@ hide_table_of_contents: true
       alt: 'The completion popup: a module path, and the functions and constants under it',
       posts: ['what-completes-at-the-caret', 'language-server'],
     },
+    'Project manager': {
+      image: '/img/manual/project_manager.webp',
+      alt: 'The project manager: the recent list on the left, a new project from a template on the right, and the two ways in below it',
+      posts: ['the-screen-before-the-editor'],
+    },
     'Selection, alignment and a library': {
       image: '/img/manual/editor_selection.webp',
       alt: "The Library dock open under the viewport, with a torus selected and pointed at the library's metal material",
       posts: ['select-two-things'],
+    },
+    'The 3D look': {
+      image: '/img/blog/sponza_atrium.webp',
+      alt: 'The Sponza atrium lit by its own sky: textured marble, the arcade, the drapes and the lion relief',
+      posts: ['the-3d-look'],
     },
     'Godot import': {
       image: '/img/blog/port_godot_balaur.webp',
@@ -103,6 +113,11 @@ hide_table_of_contents: true
       image: '/img/manual/ui_text.webp',
       alt: 'A label with a link and a hint, a selectable line, and two numbers with arrows and units',
       posts: ['links-hints-and-selectable-text'],
+    },
+    'Pause, time scale and smooth frames': {
+      image: '/img/manual/pause_states.webp',
+      alt: 'Twelve falling boxes frozen in mid-air by a pause, with the heading and the marker beside it still animating on the node set to process = always',
+      posts: ['pausing-a-game'],
     },
     'Concave 2D colliders': {
       image: '/img/manual/concave_pieces.webp',

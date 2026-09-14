@@ -222,6 +222,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Project manager',
         text: <>The screen the editor starts on: recent projects, new from a template, open a folder, Godot import.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-project-manager.md',
+        done: true,
+        image: "/img/manual/project_manager.webp",
+        alt: "The project manager: the recent list on the left, a new project from a template on the right, and the two ways in below it",
+        posts: [
+          {slug: "the-screen-before-the-editor", title: "The screen before the editor"},
+        ],
       },
       {
         group: "Scripts and assets",
@@ -291,12 +297,24 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Pause, time scale and smooth frames',
         text: <>A <code>process</code> mode per subtree, time scale, interpolation between fixed steps, <code>max_fps</code>, vsync, and a tick rate setting.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-time.md',
+        done: true,
+        image: "/img/manual/pause_states.webp",
+        alt: "Twelve falling boxes frozen in mid-air by a pause, with the heading and the marker beside it still animating on the node set to process = always",
+        posts: [
+          {slug: "pausing-a-game", title: "Pausing a game"},
+        ],
       },
       {
         group: "User interface",
         title: 'Lists, trees and tables',
-        text: <><code>list</code>, <code>tree</code> and <code>table</code> kinds with selection, columns, and only the rows in view built, which every dock hand-rolls today.</>,
+        text: <><code>list</code>, <code>tree</code> and <code>table</code> kinds with many rows selected, columns a drag resizes, and only the rows in view built.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#data-views',
+        done: true,
+        image: "/img/manual/ui_rows.webp",
+        alt: "A list with two rows picked, the same entries as a folding tree, and again as a table with named columns",
+        posts: [
+          {slug: "lists-trees-and-tables", title: "Lists, trees and tables"},
+        ],
       },
       {
         group: "User interface",
@@ -341,6 +359,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'The 3D look',
         text: <>Image-based lighting and SSAO bound, glTF keeping its factors and maps, glass, mirrors, probes, finishing passes and layer stacks.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
+        done: true,
+        image: "/img/blog/sponza_atrium.webp",
+        alt: "The Sponza atrium lit by its own sky: textured marble, the arcade, the drapes and the lion relief",
+        posts: [
+          {slug: "the-3d-look", title: "The 3D look"},
+        ],
       },
       {
         group: "Networking",
@@ -360,6 +384,7 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Update channels',
         text: <><code>balaur update --channel alpha</code> follows a rolling tag per line, and a build tracks the channel its own version names.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release-channels.md',
+        done: true,
       },
     ],
   },
@@ -390,6 +415,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Aspect and camera containers',
         text: <>An <code>aspect</code> box that holds a ratio, and a camera's texture drawn as a widget the layout sizes.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#containers',
+      },
+      {
+        group: "Rendering",
+        title: 'A rendered still',
+        text: <>The fork's path tracer behind the editor's Export sheet, with a sample count and a denoise toggle.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
       },
       {
         group: "Rendering",
@@ -439,6 +470,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Network dock and Play as two',
         text: <>Two peers started from the editor, with the link and its stats in a dock.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
+      },
+      {
+        group: "Rendering",
+        title: 'Decals and volumetric fog',
+        text: <>A <code>decal</code> component projected onto the depth buffer, and fog a light throws shafts through.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-3d-rendering.md',
       },
       {
         group: "Networking",

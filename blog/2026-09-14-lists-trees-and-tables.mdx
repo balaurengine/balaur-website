@@ -26,11 +26,17 @@ and none of them builds a row the box does not show.
   so a rebuild of the rows leaves the widths where you put them.
 - A row may carry an `#rrggbb` past its last cell, the way a list row carries
   its own colour.
+- A secondary click picks the row it lands on, so a `context` menu acts on
+  what it opened over. A row already picked keeps the set it is in.
 - The `table` places its body by arithmetic now, as `list` and `tree` already
   did: 2,000 rows cost a screenful. No crate was added for any of it.
 
 The editor eats it. Its Profiler and Cost docks were padding numbers into a
-monospace string to fake columns, and both are `table` nodes now. The picture
-above is one scene of widget nodes, with no drawing code behind it.
+monospace string to fake columns, and both are `table` nodes now. The
+outliner's search view moved onto the same `tree` node the unfiltered one
+already used, and a right click on a row opens the node's own menu.
+
+The picture above is one scene of widget nodes, with no drawing code behind
+it.
 
 The rest is on the [roadmap](/docs/roadmap).

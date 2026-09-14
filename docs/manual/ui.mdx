@@ -102,8 +102,29 @@ this.node.widget.set(w);
   mode) and `row_height` is the card's height.
 - **`tree`** — a `list` whose rows nest. One leading tab is one level. The
   fold caret is the kind's own.
-- **`table`** — one row per line, one cell per column. `placeholder` holds
-  the column names, split the same way.
+- **`table`** — one row per line, one cell per column. `titles` names the
+  columns and says how many there are; a name ending in `>` draws its column
+  against the right edge. A drag on the seam in the header moves a column's
+  width, and a row may carry an `#rrggbb` past its last cell.
+- **`multi`** — lets a `list`, `tree` or `table` hold more than one row. The
+  platform's command key toggles a row and shift takes the run from the last
+  one clicked. `selection` is what the widget holds either way, one row or
+  many, so nothing reading it back branches; `text` is the row last clicked.
+  `on_change` hears the whole set where the widget holds many, and the row
+  where it holds one.
+- **`widths`** — a share per `table` column, normalised: `["3", "1"]` is three
+  quarters and a quarter, and empty divides the width evenly. A drag on a seam
+  in the header writes the shares back, so the scene keeps them.
+- **`header`** — off, a `table` draws no strip of column names. The columns
+  are still `titles`', and a table that names none keeps its first row.
+- **`sort`** — the column the rows are drawn in the order of; `reverse` turns
+  it round, and `sortable` lets a click on a header ask for either and writes
+  both back. A cell that starts with a number sorts as one, so `12 KB` follows
+  `3 KB`.
+- **`reorderable`** — a drag moves a row of a `list` or a `tree`. The kind draws
+  where the row would land and calls `on_move` with the row moved, the row it
+  landed on, and `before`, `after` or `into`. The rows themselves are the
+  script's to reorder.
 - **`code`** — an editor with gutter, syntax colours and caret. The same
   editor as the `ui` module's `code_editor`.
 - **`draw`** — a rect a script fills. The node owns the placement, the script
@@ -113,7 +134,12 @@ this.node.widget.set(w);
 - **`toast`** — a message that stacks at its anchor and leaves when its
   `duration` is up. A `toast` binding action puts one up with no script.
 
-Only the rows on screen are built. A long list costs its viewport.
+Only the rows on screen are built, in all three. A long list costs its
+viewport rather than its length. A secondary click picks the row it lands on,
+so a `context` menu acts on what it opened over; a row already picked keeps
+the set it is in.
+
+![A list with two rows picked, the same entries as a folding tree, and again as a table with named columns](/img/manual/ui_rows.webp)
 
 ![A screen of nodes: a card grid, a control row and a wrapping chip flow](/img/manual/ui_kinds.webp)
 
@@ -171,6 +197,27 @@ strong = true
 - `[<kind>.hover]` and `[<kind>.active]` say how it looks under the pointer.
 - A widget's own `fill`, `stroke`, `radius`, `text_color`, `font_size` and
   `font` win over the theme.
+- `[<kind>] image` with `slice` makes the kind's background a nine-patch, on
+  a row view as on a panel.
+
+A `list`, `tree` or `table` paints more than one plate, so the parts it draws
+are `[colors]` of their own. Each takes the built-in look where the theme
+names none, and a colour with no alpha draws nothing.
+
+| token | what it paints |
+| --- | --- |
+| `row_on`, `row_on_color` | a picked row, and the ink on it |
+| `row_hover`, `row_active` | what a row takes under the pointer, and while it is held |
+| `row_stripe` | a `table`'s every other row |
+| `row_head` | its header's plate |
+| `row_rule` | the lines down its columns, and the one under its header |
+| `row_guide` | the lines down a `tree`'s indent |
+
+These are the rows, not the box: `[list.hover]` still dresses the whole view
+under the pointer, the way it does any other kind. So `row_rule =
+"#00000000"` is a table with no lines, and `row_stripe` the same is one with
+no striping. `padding_x` on the kind is the air either side
+of a cell, and `gap` is the space between a `list`'s cards.
 
 Also on every widget: `tooltip`, `icon` (a glyph from the theme's icon
 family, drawn before the caption) and `disabled`.
@@ -220,7 +267,7 @@ The editor's four painting views use this module inside `draw` nodes. See
 outline, a table, a row of every control, and a theme with roles and hover
 states. One script fills the three views; the layout is in the scene.
 
-Two more scenes sit beside it. `scenes/menus.toml` is a menu bar, a context
-menu and a toast; `scenes/text.toml` is a label with links and hints, a
-selectable line, and numbers with arrows and units. Open either with
-`--scene`.
+Three more scenes sit beside it. `scenes/rows.toml` is the three row views
+over one set of entries. `scenes/menus.toml` is a menu bar, a context menu and
+a toast; `scenes/text.toml` is a label with links and hints, a selectable
+line, and numbers with arrows and units. Open any of them with `--scene`.
