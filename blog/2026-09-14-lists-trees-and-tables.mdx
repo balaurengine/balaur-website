@@ -1,0 +1,36 @@
+---
+description: "Rows in a scene: a list or tree holding many rows, a table with named columns a drag resizes, and only the rows on screen ever built."
+slug: lists-trees-and-tables
+title: Lists, trees and tables
+authors: [dragos]
+image: /img/manual/ui_rows.png
+keywords: [game ui list, tree widget, table columns, virtual scrolling, game engine widgets]
+---
+
+The three row kinds hold many rows now, a `table` has columns a drag resizes,
+and none of them builds a row the box does not show.
+
+{/* truncate */}
+
+![A list with two rows picked, the same entries as a folding tree, and again as a table with named columns](/img/manual/ui_rows.webp)
+
+- `multi` lets a `list`, `tree` or `table` hold more than one row. The
+  platform's command key toggles a row, shift takes the run from the last one
+  clicked, and `selection` is what the widget holds.
+- `on_change` hears the whole selection where the widget holds many, and the
+  row where it holds one. A widget without `multi` behaves as it always did.
+- A `table`'s `placeholder` names its columns, split on the separator its rows
+  are. A name ending in `>` draws its column against the right edge, which is
+  what a column of numbers wants.
+- Each column's width is a share the seam in the header drags, held per table,
+  so a rebuild of the rows leaves the widths where you put them.
+- A row may carry an `#rrggbb` past its last cell, the way a list row carries
+  its own colour.
+- The `table` places its body by arithmetic now, as `list` and `tree` already
+  did: 2,000 rows cost a screenful. No crate was added for any of it.
+
+The editor eats it. Its Profiler and Cost docks were padding numbers into a
+monospace string to fake columns, and both are `table` nodes now. The picture
+above is one scene of widget nodes, with no drawing code behind it.
+
+The rest is on the [roadmap](/docs/roadmap).

@@ -89,6 +89,11 @@ hide_table_of_contents: true
       alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
       posts: ['skeletons-and-a-debugger', 'gpu-skinning', 'rigging-panels'],
     },
+    'Lists, trees and tables': {
+      image: '/img/manual/ui_rows.webp',
+      alt: 'A list with two rows picked, the same entries as a folding tree, and again as a table with named columns',
+      posts: ['lists-trees-and-tables'],
+    },
     'Menus, popups and tooltips': {
       image: '/img/manual/ui_menus.webp',
       alt: 'A menu bar with a menu open, its rows showing shortcuts and a submenu, and a toast in the corner',
