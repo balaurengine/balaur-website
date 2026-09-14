@@ -7,46 +7,46 @@ image: /img/manual/objects_overview.png
 keywords: [3d primitives, procedural mesh, csg booleans, bezier paths, cloner, text mesh]
 ---
 
-Ten 3D primitives and six 2D ones. Bezier paths extruded, revolved and swept.
-Booleans in both dimensions. A cloner. Text as geometry.
+Ten 3D primitives and six 2D ones, bezier paths that extrude, revolve and
+sweep, booleans in both dimensions, a cloner, and text as geometry. Every one
+of them is a mesh.
 
 {/* truncate */}
 
-## What landed
-
-- Primitives. Torus, pyramid, prism, tube, rounded cuboid; ellipse, star
-  and ngon in 2D. `segments`, `rings`, `sides`, `corner_radius` on all of them.
+- The primitives are torus, pyramid, prism, tube and rounded cuboid, with
+  ellipse, star and ngon in 2D. `segments`, `rings`, `sides` and
+  `corner_radius` work on all of them.
 
   ![The primitives row](/img/manual/objects_primitives.webp)
 
-- Paths. `path2d` and `path3d` assets. Extrude with a bevel, lathe, sweep
-  along a rail, stroke.
+- `path2d` and `path3d` assets extrude with a bevel, lathe, sweep along a
+  rail, or stroke.
 
   ![An arch extruded, a goblet revolved, a rail swept](/img/manual/objects_paths.webp)
 
-- Booleans. `boolean3d` and `boolean2d` over a node's children: union,
-  difference, intersection. Operands stay editable; moving one recomputes.
-  Booleans nest.
+- `boolean3d` and `boolean2d` run over a node's children: union,
+  difference, intersection. Operands stay editable, moving one recomputes,
+  and booleans nest.
 
   ![Union, difference and intersection of a cube and a ball](/img/manual/objects_booleans.webp)
 
-- In 2D. `shape2d` gained `ellipse`, `star` and `ngon`. `boolean2d` joins,
-  cuts and intersects filled outlines. The 2D booleans run on `i_overlay`,
-  in fixed-point integers: the same vertices on every platform.
+- `shape2d` gained `ellipse`, `star` and `ngon`, and `boolean2d` joins, cuts
+  and intersects filled outlines. The 2D booleans run on `i_overlay`, in
+  fixed-point integers, so every platform gets the same vertices.
 
   ![Ellipse, star, ngon and capsule; a rect and a circle joined, cut and intersected](/img/manual/objects_flat.webp)
 
-- Cloner. Linear, radial, grid. `seed` and `random` scatter the copies. A
-  thousand copies are one draw call, custom materials included.
+- A cloner is linear, radial or grid, and `seed` and `random` scatter the
+  copies. A thousand copies are one draw call, custom materials included.
 
   ![A row, a ring and a scattered grid](/img/manual/objects_cloner.webp)
 
-- Text. `kind = "text"` on a `mesh` asset: a word as geometry, counters
+- `kind = "text"` on a `mesh` asset turns a word into geometry, counters
   kept as holes, sized in world units, sitting on its baseline.
 
-- Colours and morph targets. Both survive a glTF import. A morph weight is
-  a property; a clip drives it as `mesh/morph.<name>`. Vertex colours reach
-  a material with `features = { vertex_color = true }`.
+- Vertex colours and morph targets both survive a glTF import. A morph
+  weight is a property, so a clip drives it as `mesh/morph.<name>`, and
+  vertex colours reach a material with `features = { vertex_color = true }`.
 
   ![A word as a mesh, and a triangle coloured per vertex](/img/manual/objects_text.webp)
 

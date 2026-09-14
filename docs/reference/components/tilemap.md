@@ -2,7 +2,7 @@
 title: "tilemap component"
 image: "/img/social/reference.png"
 sidebar_label: "tilemap"
-description: "A grid of tiles from one tileset asset, centred on the node. cells holds one character per cell; pixels_per_unit is tile pixels per world unit."
+description: "A grid of tiles from one tileset asset, centred on the node. cells holds rows of tile ids; pixels_per_unit is tile pixels per world unit."
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `2d` · `render` · 8 properties · 2D
 
-A grid of tiles from one `tileset` asset, centred on the node. `cells` holds one character per cell; `pixels_per_unit` is tile pixels per world unit.
+A grid of tiles from one `tileset` asset, centred on the node. `cells` holds rows of tile ids; `pixels_per_unit` is tile pixels per world unit.
 
 In a scene, `tilemap` is the node key that applies it. A script reaches each property below as a field on `node.tilemap`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.tilemap.get()` and `node.tilemap.set(table)`.
 
@@ -18,7 +18,7 @@ In a scene, `tilemap` is the node key that applies it. A script reaches each pro
 
 | property | type | default | description |
 | --- | --- | --- | --- |
-| `cells` | string | — | Rows of tile characters, one row per line: . is empty, 0-9 then a-z index into the tileset. Also accepted: a list of rows of tile ids, -1 for empty, for a tileset past 36 tiles; or the name of a .cells file holding those rows, for a level too big to read in a scene |
+| `cells` | string | — | Rows of tile ids, -1 for an empty cell, as a list of rows; or the name of a `.cells` file holding those rows, for a level too big to read in a scene |
 | `flags` | string | — | How each cell is turned, as rows of numbers beside `cells`: 1 mirrors it left to right, 2 top to bottom, 4 across its diagonal |
 | `material` | asset · [`material`](../assets/material.md) | — | The material the whole map draws with; empty draws with the built-in one |
 | `origin` | vec2 | `[0,0]` | The column and row of the first cell: a map grows in any direction by moving this, and cell 0,0 always has its top-left corner on the node |

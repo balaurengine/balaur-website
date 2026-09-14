@@ -45,7 +45,6 @@ From [`physics2d`](../modules/physics2d.md):
 
 | method | what it does |
 | --- | --- |
-| `add_joint(any)` | Tie this node's body to another with a 2D joint, from a `joint2d` table. |
 | `joint_impulse() -> float` | How hard the joint is pulling right now. |
 | `remove_joint()` | Undo the node's joint, leaving both bodies free. |
 | `set_joint_limits(float, float)` | Set how far the joint may travel. |

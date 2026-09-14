@@ -9,24 +9,22 @@ keywords: [2d game engine, rapier2d, 2d physics, 2d editor gizmo, balaur]
 
 import Clip from '@site/src/components/Clip';
 
-A rapier2d world beside the 3D one. 2D shapes drawn in z order. A 2D grid,
-camera and gizmo in the editor. `examples/angrynerds`.
+Balaur can run a 2D game. A rapier2d world sits beside the 3D one, 2D shapes
+draw in z order, and the editor gets a 2D grid, camera and gizmo.
+`examples/angrynerds` is the first 2D example.
 
 {/* truncate */}
 
-
-## What landed
-
-- A rapier2d world. `body2d` and `collider2d` beside `body3d` and
-  `collider3d`, over the same scene tree. rapier2d is Rapier's own 2D
-  solver, shapes and determinism. Both worlds step on the fixed 60 Hz tick
-  with Rapier's `enhanced-determinism` on and pass the same bit-for-bit
-  test. The 3D path is unchanged.
-- 2D drawing. Shapes draw in z order.
-- The editor. A scene with 2D components gets a 2D grid, a pan-and-zoom
-  camera and a 2D gizmo: drag an axis, a plane, or the ring.
-- examples/angrynerds. A slingshot, towers, and pigs with glasses, in one
-  scene and one script.
+- `body2d` and `collider2d` sit beside `body3d` and `collider3d`, over the
+  same scene tree. rapier2d is Rapier's own 2D solver, with its own shapes
+  and its own determinism. Both worlds step on the fixed 60 Hz tick with
+  Rapier's `enhanced-determinism` on and pass the same bit-for-bit test.
+  Nothing changes on the 3D side.
+- 2D shapes draw in z order.
+- A scene with 2D components gets a 2D grid, a pan-and-zoom camera and a 2D
+  gizmo in the editor. Drag an axis, a plane, or the ring.
+- examples/angrynerds is a slingshot, some towers, and pigs with glasses, in
+  one scene and one script.
 
 ```toml
 [[nodes]]
@@ -41,5 +39,5 @@ radius = 0.4
 
 <Clip name="physics_collapse" alt="The Physics persona's collider overlays over examples/angrynerds, then play and a shot at the towers" />
 
-`balaur edit examples/angrynerds`, or [play it in the browser](/examples/?play=angrynerds).
-Manual: [Physics](/docs/manual/physics), [The editor](/docs/manual/editor).
+Run it with `balaur edit examples/angrynerds`, or [play it in the browser](/examples/?play=angrynerds).
+The manual covers [physics](/docs/manual/physics) and [the editor](/docs/manual/editor).

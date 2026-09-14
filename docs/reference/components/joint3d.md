@@ -45,7 +45,6 @@ From [`physics3d`](../modules/physics3d.md):
 
 | method | what it does |
 | --- | --- |
-| `add_joint(any)` | Tie this node's body to another with a joint, from a `joint3d` table: `kind`, `body`, `anchor`, `axis`, `limits`, and the rest of the component's own vocabulary. |
 | `joint_impulse() -> float` | How hard the joint is pulling right now: what a breakable one is measured against. |
 | `remove_joint()` | Undo the node's joint, leaving both bodies free. |
 | `set_joint_limits(float, float)` | Set how far the joint may travel, in radians for a revolute one and units for a prismatic one. |

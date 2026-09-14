@@ -15,16 +15,12 @@ the layout it folded.
 
 ![The code pane with the window to itself, the hooks list beside it, and the Focus chip lit in the top bar](/img/manual/editor_focus.webp)
 
-## What landed
-
-- **Folds.** The tree, the inspector and the bottom dock, whatever each was
+- It folds the tree, the inspector and the bottom dock, whatever each was
   showing, and the split with them. The hooks list stays.
-- **Restores.** Focus records the three docks' state and the split before
-  folding them. Leaving restores what was open.
-- **Ends.** Opening a panel under focus: the panel stays and the record is
+- Focus records the three docks' state and the split before folding them,
+  and leaving restores what was open.
+- Opening a panel under focus ends it: the panel stays and the record is
   dropped. Leaving the code tab restores the shell.
-- **Command.** A chip beside Split in the top bar, `⇧⌘\`, or the command
-  palette. With no script on the selection the chip is greyed and its
-  tooltip says why.
-
-The rest is on the [roadmap](/docs/roadmap).
+- A chip beside Split in the top bar, `⇧⌘\`, or the command palette turns
+  it on. With no script on the selection the chip is greyed and its tooltip
+  says why.

@@ -19,18 +19,18 @@ twelve physics cases Balaur is about 3× Godot Jolt and 11–18× Godot Physics.
 
 ## The suite
 
-- Physics. Pyramid, mixed pile, joint grid, smash, query storm and drop,
-  in 2D and 3D, the scenes the
+- The physics cases are pyramid, mixed pile, joint grid, smash, query storm
+  and drop, in 2D and 3D: the scenes the
   [godot-rapier suite](https://github.com/Ughuuu/benchmarks-repo)
-  publishes. 300 timed steps at 60 Hz after a settle; the median tick is
-  the number.
-- Nodes. `add_children`, `delete_children` in order, reverse and
-  random, `get_node`, against Godot's own published run.
+  publishes. 300 timed steps at 60 Hz after a settle, and the median tick
+  is the number.
+- The node cases are `add_children`, `delete_children` in order, reverse
+  and random, and `get_node`, against Godot's own published run.
 - `scripts/bench_compare.py` writes the tables and charts from a run
   beside Godot's results. The [benchmarks page](/docs/benchmarks) is that
   script's output.
 
-## What it changed
+## What the numbers changed
 
 - `raycast` stops at the nearest hit.
 - Creating a body composes the node's pose from its ancestors.
@@ -39,9 +39,9 @@ twelve physics cases Balaur is about 3× Godot Jolt and 11–18× Godot Physics.
 - Children are indexed by name: a path lookup is one hash per segment.
   Freeing a node with no components asks no plugin anything.
 
-- Adding children is quicker than Godot. Deleting and looking up are slower.
-- Rapier is under both Balaur and Godot Rapier. The gap between those two
-  columns is the engine around the physics.
+Adding children is quicker than Godot; deleting and looking up are slower.
+Rapier is under both Balaur and Godot Rapier, so the gap between those two
+columns is the engine around the physics.
 
 ```bash
 balaur run examples/benchmark --headless --fixed-tick -- --case=3d/pyramid

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Clip playback on a node's `animation` component: play, pause, seek and query. `tween` builds a short clip from a table of steps and returns a handle.
 
-20 functions, 0 constants. Scripts reach it as `animation::`.
+19 functions, 0 constants. Scripts reach it as `animation::`.
 
 Acts on [`animation`](../components/animation.md), [`state_machine`](../components/state_machine.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -33,10 +33,9 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `seek(node, float)` | [`animation`](../components/animation.md) | Move the playhead to a number of seconds and pose the node there, even on a paused or ended clip. |
 | `set_condition(node, string, bool)` | [`state_machine`](../components/state_machine.md) | Turn on or off a condition that `auto` transitions wait on. |
 | `state(node) -> any` | [`state_machine`](../components/state_machine.md) | The state the machine is in, or nil before it has entered one. |
-| `stop(any)` | [`animation`](../components/animation.md) | End the clip on a node, or the tween a handle names, leaving the pose where it is; `resume` cannot revive it. |
+| `stop(any)` | — | End the clip on a node, or the tween a handle names, leaving the pose where it is; `resume` cannot revive it. |
 | `time(node) -> float` | [`animation`](../components/animation.md) | Seconds of playback since the current clip started, before wrapping; a stopped clip keeps where it stopped. |
 | `travel(node, string)` | [`state_machine`](../components/state_machine.md) | Head for the named state through the fewest transitions, each fading as it says; a state no transition reaches is cut to directly. |
 | `tween(node, any) -> int` | — | Generate a clip on the node from a table of steps and run it, returning the handle `stop` and `is_tween_running` take. The table also takes `delay` in seconds, `then = <handle>` to wait for another tween, `loops` and `speed`; the node's `on_tween_finished(handle)` is called when it runs out. |
-| `tween_to(node, string, any, float, string?) -> int` | — | Move one property of the node to a value over a number of seconds on an optional easing curve, returning a handle. |
 | `tween_value(any, any, float, string?) -> int` | — | A tween over a number, or a list of up to four, that drives no node: read it each frame with `tween_value_of` and write it wherever you like. Returns a handle `stop` takes. |
 | `tween_value_of(any) -> any` | — | Where a value tween has got to, in the shape it was started with; nil once it is over. |

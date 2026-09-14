@@ -120,19 +120,18 @@ anchor = "bottom_right"
 shape = "circle"
 ```
 
-- **A second source.** An action bound to Space gains the button as another
-  source; the furthest from rest wins. An action no manifest declared still
-  answers.
-- **Placement.** `anchor` and `offset` in design pixels, inside the safe
+- An action bound to Space gains the button as a second source; the furthest
+  from rest wins. An action no manifest declared still answers.
+- `anchor` and `offset` place a control in design pixels, inside the safe
   area. In the editor they sit in the viewport while the game plays.
-- **Visibility.** `visibility = "touchscreen"` is the default: shown on a
-  phone, a touch browser, or a project with `emulate_touch_from_mouse`.
-  `"always"` shows them everywhere.
-- **Capture.** A thumb that slides off a button still holds it.
-  `recenter = true` puts the stick under the thumb that found it. `deadzone`
-  holds a resting thumb at zero.
-- **Components.** Hit-tested inside the tick: they run headless, land in the
-  digest and replay.
+- `visibility = "touchscreen"` is the default: shown on a phone, a touch
+  browser, or a project with `emulate_touch_from_mouse`. `"always"` shows
+  them everywhere.
+- A thumb that slides off a button still holds it. `recenter = true` puts
+  the stick under the thumb that found it, and `deadzone` holds a resting
+  thumb at zero.
+- Both are components hit-tested inside the tick: they run headless, land in
+  the digest and replay.
 - `ui::wants_pointer()` says whether a widget took this frame's finger.
 
 ## Gestures

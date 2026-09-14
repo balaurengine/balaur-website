@@ -22,15 +22,3 @@ In a scene, `bone2d` is the node key that applies it. A script reaches each prop
 | `length` | float | `0` | Gizmo length of a tip bone; 0 draws to the first child bone At least 0. |
 | `rest_position` | vec2 | `[0,0]` | Local rest translation |
 | `rest_rotation` | float | `0` | Local rest rotation about z, in radians |
-
-## Script functions
-
-Methods of `node.bone2d`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
-
-From [`skeleton`](../modules/skeleton.md):
-
-| method | what it does |
-| --- | --- |
-| `apply_rest()` | Move every bone under the node back to its rest transform. |
-| `bones()` | The bones under the node in tree order, the order a skin numbers them in, the node itself first when it is one. |
-| `overwrite_rest()` | Record every bone's current transform under the node as its new rest pose. |

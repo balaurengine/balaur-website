@@ -7,9 +7,9 @@ image: /img/manual/editor_selection.png
 keywords: [game engine editor, multi select, box select, pbr material, 3d lights, event bindings]
 ---
 
-A selection set with box select, group, align and distribute. `light3d` and an
-`environment` a scene owns. A `pbr` material. Event bindings in the scene
-file.
+The editor's selection is a set, with box select, group, align and
+distribute. A scene owns its `light3d` nodes and an `environment`, there is
+a `pbr` material, and event bindings live in the scene file.
 
 {/* truncate */}
 
@@ -17,25 +17,25 @@ file.
 
 ## Selection sets
 
-- **Box select and modifiers.** Shift and ⌘ click, a marquee on empty
-  viewport in both 2D and 3D. A gizmo drag moves, turns and scales the whole
-  set about its own centre.
-- **Group, align, distribute.** Group makes a parent at the centroid and
-  keeps every world pose. Six aligns, three distributes.
-- **Hide, lock, isolate.** `H`, `⌘L`, `/`. Hidden writes `visible`; locked is
+- Shift and ⌘ click add to the set, and a marquee on empty viewport
+  box-selects in both 2D and 3D. A gizmo drag moves, turns and scales the
+  whole set about its own centre.
+- Group makes a parent at the centroid and keeps every world pose. There
+  are six aligns and three distributes.
+- `H` hides, `⌘L` locks, `/` isolates. Hidden writes `visible`; locked is
   editor state the gizmo and box select skip.
-- **The inspector edits the set.** A property write reaches every selected
-  node carrying that component.
+- The inspector edits the set. A property write reaches every selected node
+  carrying that component.
 
 ## Lights and environment
 
-- **`light3d`.** Point, directional and spot, with shadows and light layers.
-  A scene with none keeps the engine's key light; the first `light3d`
+- `light3d` is point, directional or spot, with shadows and light layers. A
+  scene with none keeps the engine's key light, and the first `light3d`
   retires it.
-- **`environment`.** Sky, ambient, fog, exposure, tonemap, grading and the
-  shadow budget, on one component. The last `current` one wins.
-- **`package::pbr`.** GGX, Smith and Schlick over the frame's lights. Six
-  texture slots, and a one-pixel neutral for every slot a material omits.
+- `environment` holds sky, ambient, fog, exposure, tonemap, grading and the
+  shadow budget on one component. The last `current` one wins.
+- `package::pbr` is GGX, Smith and Schlick over the frame's lights, with six
+  texture slots and a one-pixel neutral for every slot a material omits.
 
 ## Event bindings
 
@@ -47,11 +47,10 @@ file.
 
 ![The Events view: two rows on the ball, one counting the click and one opening the door](/img/manual/editor_events.webp)
 
-## Also
-
-Drag a file onto the window and it becomes a node. A Pen tool over `path2d`.
-A Cost dock: draws, triangles and texture bytes per node. A Library of
-materials, lighting setups and templates, and `balaur new --template`.
+Also in this one: drag a file onto the window and it becomes a node, and a
+Pen tool edits a `path2d`. A Cost dock shows draws, triangles and texture
+bytes per node. There is a Library of materials, lighting setups and
+templates, and `balaur new --template`.
 
 On the [roadmap](/docs/roadmap): image-based lighting, layer stacks and
 camera rigs.

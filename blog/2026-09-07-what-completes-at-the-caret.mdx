@@ -14,37 +14,32 @@ the editor and over `balaur lsp`, read from the engine's own API.
 
 ![The completion popup under the caret, on a module path](/img/manual/script_completion.webp)
 
-## What landed
-
-- **Completion.** After `physics2d::`: that module's 66 functions and 48
-  constants. After `node.body2d.`: what acts on that component. After
-  `this.`: the script's `exports()` and `pub fn`s.
-- **Hover and signature help.** Hover shows the reference's own line.
-  Signature help names the argument being typed.
-- **Go to definition.** `⌘B`. A project `pub fn` opens its file; engine API
-  opens the Docs dock, built from the running engine.
-- **Formatting.** `balaur fmt .` for a project, `⌥⇧F` for the open buffer.
-- **Rename and replace.** `⌘⇧R` renames an identifier, `⌘⇧F` replaces text,
-  across the files a script's `mod` declarations reach. Every match is
-  listed first.
-- **Symbols.** This file and every script a scene attaches.
-- **Editors.** A VS Code extension spawns `balaur lsp`. Zed and Neovim get a
-  recipe each.
-- **From Rune.** `rune::fmt` does the formatting. The fork makes
-  `Context::iter_functions` public; it completes `"".len()`.
+- After `physics2d::` completion offers that module's 66 functions and 48
+  constants. After `node.body2d.` it offers what acts on that component,
+  and after `this.` the script's `exports()` and `pub fn`s.
+- Hover shows the reference's own line, and signature help names the
+  argument being typed.
+- `⌘B` goes to the definition. A project `pub fn` opens its file; engine
+  API opens the Docs dock, built from the running engine.
+- `balaur fmt .` formats a project, and `⌥⇧F` the open buffer.
+- `⌘⇧R` renames an identifier and `⌘⇧F` replaces text, across the files a
+  script's `mod` declarations reach. Every match is listed first.
+- Symbols cover this file and every script a scene attaches.
+- A VS Code extension spawns `balaur lsp`. Zed and Neovim get a recipe each.
+- `rune::fmt` does the formatting, and the Rune fork makes
+  `Context::iter_functions` public so that `"".len()` completes.
 
 ## The API list
 
-- **`balaur api`.** Prints the engine's API: 39 modules, 659 functions, 378
+- `balaur api` prints the engine's API: 39 modules, 659 functions, 378
   constants. The reference is built from it.
-- **Lint.** CI fails on a function with no doc line.
+- CI fails on a function with no doc line.
 
 ## Latency
 
-- **1 ms after `::`, 1 ms on a component handle, 3 ms on a bare prefix**, on
-  `editor/scripts/model.rn`, 1429 lines.
-- **Bare prefix.** It walks the `mod` graph as text; through a compiled unit
-  it was 50 ms.
+- 1 ms after `::`, 1 ms on a component handle, 3 ms on a bare prefix,
+  measured on `editor/scripts/model.rn`, 1429 lines.
+- A bare prefix walks the `mod` graph as text.
 
 Semantic tokens, inlay hints and code actions are not planned. The
 [scripting manual](/docs/manual/scripting#tooling) has the full list.

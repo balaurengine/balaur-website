@@ -7,22 +7,19 @@ image: /img/manual/locale_settings.png
 keywords: [game localization, plural forms, translation files, locale fallback]
 ---
 
-One TOML file per language under `strings/`. Plural forms picked by the
-locale's rules. A fallback locale. A missing key comes back as the key.
+Strings live in one TOML file per language under `strings/`. Plural forms
+follow the locale's rules, there is a fallback locale, and a missing key
+comes back as the key.
 
 {/* truncate */}
 
-
-## What landed
-
-- Files. A key maps to a string, or to its plural forms. `{name}` in a
-  string is replaced by the argument called `name`. An `n` argument picks
-  the plural form by the locale's rules.
-- Fallback. A key missing from the current locale is looked up in the
-  project's fallback locale, one step. Missing from both, the key itself
-  comes back.
-- Switching. `strings::set_locale`, `strings::locales` for the project's
-  locales, and `strings::system_locale` for the OS locale.
+- A key maps to a string, or to its plural forms. `{name}` in a string is
+  replaced by the argument called `name`, and an `n` argument picks the
+  plural form by the locale's rules.
+- A key missing from the current locale is looked up in the project's
+  fallback locale, one step. Missing from both, the key itself comes back.
+- `strings::set_locale` switches, `strings::locales` lists the project's
+  locales, and `strings::system_locale` reads the OS locale.
 
 ```toml
 # strings/en.toml

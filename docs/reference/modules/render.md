@@ -10,9 +10,9 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the window, backdrop and debug lines.
 
-66 functions, 30 constants. Scripts reach it as `render::`.
+58 functions, 30 constants. Scripts reach it as `render::`.
 
-Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md), [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
+Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
 ## Functions
 
@@ -29,14 +29,17 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `channels() -> any` | — | Every channel name `set_channel` accepts, as a list. |
 | `check_material(string) -> any` | — | Every diagnostic about the material at that path, as `[#{ file, line, column, severity, message }]`; empty when it links. |
 | `clones(node) -> any` | [`cloner`](../components/cloner.md) | Where the node's cloner puts each copy, in the node's own space, as `#{ position, rotation, scale }`; an empty list when the node has no cloner. What a bake-to-nodes command spawns from. |
-| `color(node) -> float, float, float, float` | [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md) | The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all. |
 | `draw_arc_2d(float, float, float, float, float, float?, any?)` | — | Stroke an arc between two angles in degrees, counter-clockwise from the x axis, for this frame; width is in pixels. |
+| `draw_box(float, float, float, float, float, float, any?)` | — | Draw a wireframe box centred at a point, from its three half-extents in world units, for this frame. |
+| `draw_capsule(float, float, float, float, float, any?)` | — | Draw a wireframe capsule centred at a point, `height` being the straight part along y, for this frame. |
 | `draw_circle_2d(float, float, float, any?)` | — | Fill a circle in world units for this frame, over everything the scene drew. |
 | `draw_line(float, float, float, float, float, float, float, float, float, float?, bool?, bool?)` | — | Draw one 3D world-space line for this frame; the width is in pixels unless perspective scales it with distance. |
 | `draw_line_2d(float, float, float, float, float, float, float, float?)` | — | Draw one 2D world-space line for this frame; width is in pixels. |
 | `draw_lines(any)` | — | Draw many 3D lines in one call: eleven numbers a segment, being both ends, an rgb, a width and an on-top flag. |
+| `draw_polygon_2d(any, any?)` | — | Fill a convex outline of world-space points for this frame; `geometry2d` cuts a concave one into triangles first. |
 | `draw_polyline_2d(any, float?, any?)` | — | Stroke a chain of world-space points for this frame; width is in pixels. |
 | `draw_rect_2d(float, float, float, float, any?)` | — | Fill a rectangle centred at a point, in world units, for this frame. |
+| `draw_sphere(float, float, float, float, any?)` | — | Draw a wireframe sphere centred at a point, as three rings in world units, for this frame. |
 | `draw_text(float, float, float, string, any?)` | — | The same in 3D world space, on a quad that faces the camera. `pixels_per_unit` sizes it, so text a metre away reads the same whatever the font size. |
 | `draw_text_2d(float, float, string, any?)` | — | Draw a line of text in 2D world space for this frame, shaped by the engine's fonts. `opts` takes `size`, `weight`, `italic`, `color`, `align`, `markup`, `max_width` and `pixels_per_unit`. |
 | `draw_texture_2d(string, float, float, float, float, any?)` | — | Draw a project image over a rectangle centred at a point, in world units, for this frame; the colour tints it. |
@@ -56,8 +59,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_camera_input(bool)` | — | Allow or inhibit the backend's own mouse camera controls, so an editor can take the pointer for a drag. |
 | `set_cell(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Put one tile at a column and row; a tile below zero clears the cell, and a cell outside the map grows it in that direction. The mesh rebuilds on the next frame. |
 | `set_channel(string)` | — | Draw one channel of the scene (normals, uv, depth or albedo) instead of its colour; an empty name puts the picture back. |
-| `set_circle(node, float)` | [`shape2d`](../components/shape2d.md) | Draw the node as a circle of the given radius in world units, replacing any other 2D shape. |
-| `set_color(node, float, float, float, float?)` | [`particles`](../components/particles.md), [`polygon`](../components/polygon.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`sprite`](../components/sprite.md) | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |
 | `set_cuboid(node, float, float, float)` | [`shape3d`](../components/shape3d.md) | Draw the node as a box from its three half-extents, in world units, replacing any other 3D shape. |
 | `set_cursor_grab(bool)` | — | Confine the cursor to the window, for FPS-style mouse look. |
 | `set_cursor_hidden(bool)` | — | Hide or show the mouse cursor over the window. |
@@ -68,20 +69,11 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_rect(node, float, float)` | [`shape2d`](../components/shape2d.md) | Draw the node as a rectangle from its two half-extents, in world units, replacing any other 2D shape. |
 | `set_shader_preview(string, int)` | — | Draw the value a shader's line computes for every pixel that reaches it; line 0 puts the picture back. |
 | `set_shader_probe(float, float)` | — | Ask what the previewed line computed at one framebuffer pixel; the answer arrives through `shader_probe` a frame later. |
-| `set_sprite(node, string)` | [`sprite`](../components/sprite.md) | Draw the node as a quad textured with a project image, sized from it at 100 texture pixels per world unit. |
-| `set_sprite_frame(node, int)` | [`sprite`](../components/sprite.md) | Show a sheet cell, numbered left to right then top to bottom; only the UVs move, so it is cheap per frame. |
-| `set_sprite_sheet(node, string, int, int)` | [`sprite`](../components/sprite.md) | Draw the node as one cell of a columns-by-rows sheet, sizing the quad to a single frame, not the whole image. |
-| `set_sprite_size(node, float, float)` | [`sprite`](../components/sprite.md) | Override the size the sprite took from its image, giving half-extents in world units instead. |
 | `set_terrain(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Paint a terrain value at a column and row and let the tileset's rules pick the tiles, for that cell and the ring around it; below zero clears it. |
-| `set_text(node, string)` | [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md) | Replace the text a node draws. The block re-shapes on the next frame; a `text_key` on the node still wins over it. |
 | `set_window_mode(string)` | — | `windowed`, `maximized`, `fullscreen` (borderless) or `exclusive` (the monitor's largest video mode): the same choice as `[window] mode`. |
 | `shader_probe() -> any` | — | The four channels the previewed line wrote at the probed pixel, or `()` when nothing has been read yet. |
-| `shape2d(node) -> string, float, float` | [`shape2d`](../components/shape2d.md) | The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape. |
-| `shape3d(node) -> string, float, float, float` | [`shape3d`](../components/shape3d.md) | The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape. |
-| `sprite(node) -> string, int, int, int` | [`sprite`](../components/sprite.md) | The texture path, sheet columns and rows, and current frame; empty and zeros when the node has no sprite. |
 | `stats() -> any` | — | What this frame draws: `{ draws, triangles, texture_bytes, textures, nodes }`, where `nodes` is a row per node that drew, each `{ node, draws, triangles, texture_bytes, copies }`. Presentation, never simulation: nothing in the digest reads it. |
 | `terrain(node, int, int) -> int` | [`tilemap`](../components/tilemap.md) | The terrain value painted at a column and row, or -1 where nothing was painted. |
-| `text(node) -> string` | [`text2d`](../components/text2d.md), [`text3d`](../components/text3d.md) | The text a node draws, as it was last set — not the localized string a `text_key` resolves to. |
 | `text_size(string, any?) -> float, float` | — | The width and height `text` shapes to, in font pixels, with the project's own fonts and never a system face — so a headless run and a windowed one answer the same. A width is presentation: writing one into state puts presentation in the digest. |
 | `texture_size(string) -> int, int` | — | An image's width and height in pixels, read from the file's own header. |
 | `tile_data(node, int, int) -> any` | [`tilemap`](../components/tilemap.md) | What the tileset says about the tile at a column and row -- its `[tiles.<id>.data]` table -- or nil where the cell is empty or the tile carries none. |

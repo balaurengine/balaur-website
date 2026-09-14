@@ -12,22 +12,19 @@ multiplied by. Shadows come from the shapes a node has.
 
 {/* truncate */}
 
-
-## What landed
-
-- `light2d`. Point or directional, with `color`, `radius`, `intensity` and
-  `shadows`. A point light fades quadratically to zero at `radius`. Unlit
-  parts fall to the camera's `ambient`.
-- `occluder2d`. Left empty, the outline follows the node's `collider2d`,
-  or its circle, capsule, rect or sprite. A directional light casts
-  parallel shadows.
+- `light2d` is point or directional, with `color`, `radius`, `intensity` and
+  `shadows`. A point light fades quadratically to zero at `radius`, and
+  unlit parts fall to the camera's `ambient`.
+- An `occluder2d` left empty follows the node's `collider2d`, or its circle,
+  capsule, rect or sprite. A directional light casts parallel shadows.
 
   ![Three occluders under one directional light, each casting a parallel strip](/img/manual/rendering_directional.webp)
 
-- Bloom. `post = ["bloom"]` on the camera; it picks up an `intensity` past
-  1. `ssao`, `ssr` and `dof` are the 3D passes.
-- Editor. A Lights chip draws every light's reach and every occluder's
-  resolved outline. The Polygon tool traces an occluder in Points mode.
+- `post = ["bloom"]` on the camera picks up an `intensity` past 1. `ssao`,
+  `ssr` and `dof` are the 3D passes.
+- In the editor, a Lights chip draws every light's reach and every
+  occluder's resolved outline, and the Polygon tool traces an occluder in
+  Points mode.
 
   ![The editor with an occluder selected: the Points chip, an Occluder section, light gizmos over the lit scene](/img/manual/rendering_occluder_tool.webp)
 

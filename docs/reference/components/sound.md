@@ -37,5 +37,5 @@ From [`audio`](../modules/audio.md):
 
 | method | what it does |
 | --- | --- |
-| `play_on() -> int` | Start the node's own `sound` from the top, replacing what it had going, and return the new handle. |
-| `stop_on()` | Silence what the node's `sound` started; a node carrying none is left alone. |
+| `play() -> int` | Start the node's own `sound` from the top, replacing what it had going, and return the new handle. |
+| `stop()` | Silence what the node's `sound` started; a node carrying none is left alone. |

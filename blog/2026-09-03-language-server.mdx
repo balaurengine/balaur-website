@@ -12,19 +12,17 @@ Problems checks: missing scripts, prefabs, assets and shaders.
 
 {/* truncate */}
 
-
-## What landed
-
-- Checks. A script or prefab a node names that does not exist. An asset
-  reference (a texture, a material, a mesh) that does not resolve, checked
-  as written and as project-relative. A component missing what it expects
-  beside it. A shader that will not link, with file, line and column.
-- The Problems dock. Every root script and the scene, re-checked on save.
-  A row marks an error with `×`.
-- `balaur lsp`. Speaks LSP on stdin and stdout and calls the same
+- The checks catch a script or prefab a node names that does not exist, and
+  an asset reference (a texture, a material, a mesh) that does not resolve,
+  checked as written and as project-relative. They also catch a component
+  missing what it expects beside it, and a shader that will not link, with
+  file, line and column.
+- The Problems dock re-checks every root script and the scene on save, and
+  marks an error row with `×`.
+- `balaur lsp` speaks LSP on stdin and stdout and calls the same
   `check_source` as the dock. It boots the project once and blocks on
-  stdin. A finding carries the end of its span.
-- From a script. `script::check(path)` returns the same findings.
+  stdin, and a finding carries the end of its span.
+- `script::check(path)` returns the same findings to a script.
 
 ```bash
 balaur lsp my-game      # point your editor's LSP client at it

@@ -7,26 +7,24 @@ image: /img/manual/hello_open.png
 keywords: [rust game engine, open source game engine, hot reload, ecs, balaur]
 ---
 
-The first commit: eight crates, one example. A node tree over an ECS, scenes
-as TOML, scripts that hot reload with state kept, every subsystem a plugin.
+The first commit: eight crates and one example. A game is a tree of nodes
+with scripts attached, scenes are TOML files, scripts hot reload with their
+state kept, and every subsystem is a plugin.
 
 {/* truncate */}
 
-## What landed
-
-- Nodes over an ECS. A game is a tree of nodes with scripts attached. Every
-  node is an entity. Every subsystem (physics, rendering, audio, input, UI)
-  is a plugin over the same data.
-- Scenes as TOML. A scene file declares nodes. Plugins add keys: `body` and
-  `collider` come from the physics crate.
-- Hot reload. Saving a script swaps its code into the running game in
-  milliseconds, with live state kept. Always on in dev mode.
-- The editor is a project. `balaur edit` runs an editor written in the
-  engine's own scripts. Editing an editor script hot reloads the editor.
-- Export. `balaur export` precompiles scripts into a `.bpak`. `balaur play`
-  runs from the bytecode.
-- Headless by default. Without the `window` feature everything runs
-  headless: tests, servers, CI.
+- A game is a tree of nodes with scripts attached. Under the tree every node
+  is an entity, and physics, rendering, audio, input and UI are plugins over
+  the same data.
+- A scene file declares its nodes in TOML. Plugins add their own keys:
+  `body` and `collider` come from the physics crate.
+- Saving a script swaps its code into the running game in milliseconds and
+  keeps the live state. Hot reload is always on in dev mode.
+- `balaur edit` runs an editor written in the engine's own scripts, so the
+  editor is a project too. Editing an editor script hot reloads the editor.
+- `balaur export` precompiles scripts into a `.bpak`, and `balaur play` runs
+  from the bytecode.
+- Without the `window` feature everything runs headless: tests, servers, CI.
 
 ```toml
 [[nodes]]
@@ -37,6 +35,5 @@ body = "dynamic"                                # from balaur_physics
 collider = { shape = "ball", radius = 0.5 }     # from balaur_physics
 ```
 
-Scripts were Luau in this commit; Rune replaced them. Cross-platform
-determinism was a principle from this commit on.
+Cross-platform determinism has been a rule since this commit.
 [Principles](/docs/principles) has the list.

@@ -90,12 +90,12 @@ hide_table_of_contents: true
       posts: ['skeletons-and-a-debugger', 'gpu-skinning', 'rigging-panels'],
     },
     'Menus, popups and tooltips': {
-      image: '/img/blog/menus_popups_toast.webp',
+      image: '/img/manual/ui_menus.webp',
       alt: 'A menu bar with a menu open, its rows showing shortcuts and a submenu, and a toast in the corner',
       posts: ['menus-popups-and-toasts'],
     },
     'Text a game can edit': {
-      image: '/img/blog/label_links_and_numbers.webp',
+      image: '/img/manual/ui_text.webp',
       alt: 'A label with a link and a hint, a selectable line, and two numbers with arrows and units',
       posts: ['links-hints-and-selectable-text'],
     },

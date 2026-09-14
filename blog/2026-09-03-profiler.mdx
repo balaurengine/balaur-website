@@ -7,23 +7,20 @@ image: /img/manual/editor_profiler.png
 keywords: [game profiler, frame timings, performance budget, editor dock]
 ---
 
-`engine::timings()` reports the last frame as a span per stage. A Profiler
-dock draws it against the 16.7 ms a 60 Hz frame has. `--timings` for a
-headless run.
+`engine::timings()` reports the last frame as a span per stage, and a
+Profiler dock draws it against the 16.7 ms a 60 Hz frame has. `--timings`
+prints the same for a headless run.
 
 {/* truncate */}
 
-
-## What landed
-
-- Stages. `first`, `pre_update`, `update`, `fixed_update`, `scene_sync`,
-  `last`, and physics as `physics3d/step` and `physics2d/step`: the cost
-  of each this frame, in order.
-- The dock. Open it while playing and every frame redraws the bars. A
-  stage past its share of the budget stands out.
-- Headless. `balaur run my-game --timings` prints the same stages when the
-  run ends: mean, worst, and share of a 60 Hz frame.
-- Scripts. `engine::timings()` returns the same table.
+- The stages are `first`, `pre_update`, `update`, `fixed_update`,
+  `scene_sync`, `last`, and physics as `physics3d/step` and
+  `physics2d/step`: the cost of each this frame, in order.
+- Open the dock while playing and every frame redraws the bars. A stage
+  past its share of the budget stands out.
+- `balaur run my-game --timings` prints the same stages when a headless run
+  ends: mean, worst, and share of a 60 Hz frame.
+- Scripts read the same table from `engine::timings()`.
 
 ```bash
 balaur run examples/angrynerds --headless --fixed-tick --frames 600 --timings

@@ -7,23 +7,21 @@ image: /img/manual/save_settings.png
 keywords: [save games, save file migration, versioned saves, user data directory]
 ---
 
-`save::write(slot, data)` and `save::read(slot)`: a table per user, written
-atomically, stamped with a version and migrated one step at a time.
+`save::write(slot, data)` and `save::read(slot)` store a table per user. The
+file is written atomically, stamped with a version, and migrated one step at
+a time.
 
 {/* truncate */}
 
-
-## What landed
-
-- Slots. A slot name is letters, digits, `-` and `_`, validated.
+- A slot name is letters, digits, `-` and `_`, and is validated.
   `save::slots()` lists them and `save::remove(slot)` deletes one. Files
   live under the platform's user-data directory.
-- Atomic. A file is written beside its target and renamed over it. A crash
+- A file is written beside its target and renamed over it, so a crash
   mid-save leaves the previous file whole.
-- Versioned. Every file carries the build's `[save] version`. Reading an
-  older one calls the migration script's `migrate_save(version, data)`
-  once per version step (1 to 2, then 2 to 3). A file from a newer build
-  is refused.
+- Every file carries the build's `[save] version`. Reading an older one
+  calls the migration script's `migrate_save(version, data)` once per
+  version step (1 to 2, then 2 to 3), and a file from a newer build is
+  refused.
 
 ```toml
 # project.toml

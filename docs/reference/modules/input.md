@@ -10,7 +10,7 @@ custom_edit_url: null
 
 One frame of input: keyboard, mouse, touch screen and gamepads, plus what went down or came up this frame. A headless run answers every query neutrally.
 
-48 functions, 190 constants. Scripts reach it as `input::`.
+46 functions, 190 constants. Scripts reach it as `input::`.
 
 ## Functions
 
@@ -26,8 +26,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `bind(string, any)` | — | Rebind the action to one binding or a list of them, replacing what it had and saving to the user data directory. |
 | `bindings(string) -> any` | — | What the action is bound to now, whether from the project or from the player's own rebinding. |
 | `composing() -> any` | — | The text an input method is still composing, for a field to show under its caret; empty once it commits into `typed`, and always empty without an input method. |
-| `declare_actions(any)` | — | Declare the actions a project's `[input.actions]` would, from a table of name to binding list; for a host running a project other than its own, such as the editor. |
-| `declare_config(any)` | — | Take the settings a project's `[input]` table would give, from a table: the two emulation switches and the gesture thresholds. For a host running a project other than its own, such as the editor; a key left out keeps its default. |
 | `dropped_files() -> any` | — | The absolute paths of files dropped onto the window this frame, in drop order; desktop only. |
 | `feed_action(string, float)` | — | Put a value into an action for one frame without a binding, the way a `touch_button` does; the furthest from rest wins where something else feeds the same action. Takes effect on the next tick, since actions derive at the top of one. |
 | `feed_key(string, bool)` | — | Press or release a `KEY_*` key as if the window had reported it; the edge lasts this frame, the state until the opposite feed. |

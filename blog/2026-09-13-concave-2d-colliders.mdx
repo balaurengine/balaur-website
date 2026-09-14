@@ -28,14 +28,14 @@ piece grows flush with whatever stopped it.
 
 ![One shape at four overlap settings, and three stars showing how many pieces pile onto one point](/img/blog/concave_dial_stack.webp)
 
-## What testing turned up
+## What it costs and what it buys
 
-- **It spilled.** On spiky outlines a piece with several seams grew a few
-  percent of its area past the polygon. Fixed: a piece keeps a seam only while
-  it stays convex. A sampling test over 25 shapes now guards it.
-- **Pieces pile up.** `overlap` scales depth, not count. A drawn outline
-  stacks two or three pieces on a point. A 240-point star stacks 80.
-- **What it costs.** One box tested against that star, per placement:
+- A piece keeps a seam only while it stays convex. Without that rule, a
+  piece with several seams on a spiky outline grows a few percent of its
+  area past the polygon. A sampling test over 25 shapes guards it.
+- `overlap` scales depth, not count, so pieces pile up. A drawn outline
+  stacks two or three pieces on a point, and a 240-point star stacks 80.
+- The cost, one box tested against that star, per placement:
 
 | kind | ns |
 | --- | --- |
@@ -43,7 +43,7 @@ piece grows flush with whatever stopped it.
 | convex_decomposition, overlap 0 | 187 |
 | convex_decomposition, overlap 0.9 | 367 |
 
-- **What it buys.** A beam started inside the table, after four seconds:
+- What it buys, a beam started inside the table, after four seconds:
 
 | kind | result |
 | --- | --- |
@@ -51,9 +51,9 @@ piece grows flush with whatever stopped it.
 | convex_hull | out, with the gap under the table filled in |
 | overlap 0.9 | out |
 
-- **Which to use.** A trimesh is the cheaper static collider when bodies only
-  touch it from outside. This kind is for dynamic bodies, and for static ones
-  a body can end up inside.
+- A trimesh is the cheaper static collider when bodies only touch it from
+  outside. This kind is for dynamic bodies, and for static ones a body can
+  end up inside.
 
 ## Also
 

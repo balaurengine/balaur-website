@@ -45,8 +45,4 @@ From [`render`](../modules/render.md):
 
 | method | what it does |
 | --- | --- |
-| `color() -> float, float, float, float` | The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all. |
-| `set_circle(float)` | Draw the node as a circle of the given radius in world units, replacing any other 2D shape. |
-| `set_color(float, float, float, float?)` | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |
 | `set_rect(float, float)` | Draw the node as a rectangle from its two half-extents, in world units, replacing any other 2D shape. |
-| `shape2d() -> string, float, float` | The 2D shape's kind and its two dimensions in world units; empty and zeros when the node has no 2D shape. |

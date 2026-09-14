@@ -42,5 +42,4 @@ From [`animation`](../modules/animation.md):
 | `queue(string)` | Play the clip of that name once the current one ends; a looping clip never ends, so a queue behind one never drains. |
 | `resume()` | Carry on from where `pause` left off; a stopped, finished or never-started node is left alone. |
 | `seek(float)` | Move the playhead to a number of seconds and pose the node there, even on a paused or ended clip. |
-| `stop()` | End the clip on a node, or the tween a handle names, leaving the pose where it is; `resume` cannot revive it. |
 | `time() -> float` | Seconds of playback since the current clip started, before wrapping; a stopped clip keeps where it stopped. |

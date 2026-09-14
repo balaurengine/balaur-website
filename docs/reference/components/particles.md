@@ -32,13 +32,3 @@ In a scene, `particles` is the node key that applies it. A script reaches each p
 | `speed` | float | `2` | Initial speed in world units per second At least 0. |
 | `spread` | float | `30` | Half-angle of the emission cone in degrees At least 0. |
 | `texture` | string | — | An image each particle draws with, project-relative; empty draws a flat square |
-
-## Script functions
-
-Methods of `node.particles`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
-
-From [`render`](../modules/render.md):
-
-| method | what it does |
-| --- | --- |
-| `set_color(float, float, float, float?)` | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |

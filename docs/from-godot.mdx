@@ -97,17 +97,17 @@ node as its body.
 
 ## Differences
 
-- Determinism. In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
+- In Godot only [Godot Rapier Physics](https://github.com/appsinacup/godot-rapier-physics)'s
   physics server is deterministic. In Balaur the whole tick is: fixed step, a
   digest per tick, record, replay and rollback
   ([determinism](/docs/manual/determinism)).
-- No `connect`. Events are named: `events::emit("hit", p)` reaches a
+- There is no `connect`. Events are named: `events::emit("hit", p)` reaches a
   subscribed node as `on_hit(p)` next frame. Engine events work the same way,
   most with a polling form (`input::just_pressed`, `events::emitted("hit")`).
-- No editor-only nodes. Everything the editor does is a script call any
-  project can make.
-- Maturity. Balaur is new. [Compare](/compare) and the
-  [roadmap](/docs/roadmap) list what is missing.
+- There are no editor-only nodes. Everything the editor does is a script call
+  any project can make.
+- Balaur is new. [Compare](/compare) and the [roadmap](/docs/roadmap) list
+  what is missing.
 
 ## Start
 

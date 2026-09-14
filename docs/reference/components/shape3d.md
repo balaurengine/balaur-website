@@ -43,8 +43,5 @@ From [`render`](../modules/render.md):
 
 | method | what it does |
 | --- | --- |
-| `color() -> float, float, float, float` | The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all. |
 | `set_ball(float)` | Draw the node as a sphere of the given radius in world units, replacing any other 3D shape. |
-| `set_color(float, float, float, float?)` | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |
 | `set_cuboid(float, float, float)` | Draw the node as a box from its three half-extents, in world units, replacing any other 3D shape. |
-| `shape3d() -> string, float, float, float` | The 3D shape's kind and its three dimensions in world units; empty and zeros when the node has no 3D shape. |

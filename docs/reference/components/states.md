@@ -2,7 +2,7 @@
 title: "states component"
 image: "/img/social/reference.png"
 sidebar_label: "states"
-description: "Named looks for the node. Every key beside current and duration is a state holding per-component property tables; node.go(\"hover\") patches one over the…"
+description: "Named looks for the node. Every key beside current and duration is a state holding per-component property tables; node.states.go(\"hover\") patches one…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 `interaction` · 2 properties · Other
 
-Named looks for the node. Every key beside `current` and `duration` is a state holding per-component property tables; `node.go("hover")` patches one over the node.
+Named looks for the node. Every key beside `current` and `duration` is a state holding per-component property tables; `node.states.go("hover")` patches one over the node.
 
 In a scene, `states` is the node key that applies it. A script reaches each property below as a field on `node.states`: reading one asks the running component, and assigning one leaves the rest alone. The whole table is `node.states.get()` and `node.states.set(table)`.
 

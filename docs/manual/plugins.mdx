@@ -74,7 +74,7 @@ cp target/release/libgreeter.dylib my-game/extensions/   # .so on Linux, greeter
 
 Scripts call `greeter::greet("world")` like any built-in module.
 
-- **Match the engine's compiler.** Copy the engine's
+- Match the engine's compiler: copy the engine's
   [`rust-toolchain.toml`](https://github.com/balaurengine/balaur/blob/main/rust-toolchain.toml)
   into the plugin and pin `tag` to the version `balaur --version` prints. The
   host refuses any other build and names the difference.

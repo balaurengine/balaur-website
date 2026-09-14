@@ -7,26 +7,24 @@ image: /img/manual/import_settings.png
 keywords: [import settings, pixel art, nearest neighbour filtering, texture import, godot import]
 ---
 
-Import settings as a TOML sidecar beside the asset. Project-wide defaults per
-kind in `project.toml`. Nearest filtering: pixel art draws with hard edges.
+Import settings live in a TOML sidecar beside the asset, with project-wide
+defaults per kind in `project.toml`. Nearest filtering is one of them, so
+pixel art draws with hard edges.
 
 {/* truncate */}
 
-## What landed
-
-- **Sidecar.** `art/hero.png.toml` holds the settings for `art/hero.png`.
-- **Project default.** `[import.texture]` in `project.toml`; a sidecar
-  overrides one key at a time.
-- **Every kind.** A file's kind comes from its extension: texture, audio,
-  font or model.
-- **Two keys reach the renderer.** `filter`: `"nearest"` or `"linear"`.
-  `srgb = false` for a normal map or a mask.
-- **One re-upload.** The resolved settings and the file's modification time
-  are part of the name a texture is uploaded under. Editing a sidecar
-  re-decodes one image.
-- **Pixels, never sizes.** A sprite's extent comes from the image header.
-  Import settings stay out of the digest. Downscaling for a phone is an
-  export key.
+- `art/hero.png.toml` holds the settings for `art/hero.png`.
+- `[import.texture]` in `project.toml` is the project default, and a sidecar
+  overrides it one key at a time.
+- A file's kind comes from its extension: texture, audio, font or model.
+- Two keys reach the renderer. `filter` is `"nearest"` or `"linear"`, and
+  `srgb = false` is for a normal map or a mask.
+- The resolved settings and the file's modification time are part of the
+  name a texture is uploaded under, so editing a sidecar re-decodes one
+  image.
+- Settings change pixels, never sizes. A sprite's extent comes from the
+  image header, import settings stay out of the digest, and downscaling for
+  a phone is an export key.
 
 ```toml
 # art/hero.png.toml

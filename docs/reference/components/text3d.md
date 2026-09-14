@@ -40,14 +40,3 @@ In a scene, `text3d` is the node key that applies it. A script reaches each prop
 | `shadow_offset_y` | float | `0` | Font pixels the shadow is moved along y |
 | `text` | string | — | The text drawn; `text_key` wins over it |
 | `text_key` | string | — | A key in the project's strings, re-read every frame so a language change shows at once |
-
-## Script functions
-
-Methods of `node.text3d`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
-
-From [`render`](../modules/render.md):
-
-| method | what it does |
-| --- | --- |
-| `set_text(string)` | Replace the text a node draws. The block re-shapes on the next frame; a `text_key` on the node still wins over it. |
-| `text() -> string` | The text a node draws, as it was last set — not the localized string a `text_key` resolves to. |

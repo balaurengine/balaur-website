@@ -22,22 +22,20 @@ Ported: Polyglot Pirates, a shipped Godot 4.7 game. 181 scenes, 769 scripts,
 a theme of 700 items. Its automation runner was ported first, so a passing
 scenario proves every script it walks through.
 
-## What landed
-
-- **One root per scene.** An instance is that root, so a converted node path
-  reads the same as in Godot.
-- **`stack` container.** Every child over the same box, as a Godot
-  MarginContainer lays them.
-- **Theme import.** Separations, icon colours and bold faces carry over.
-- **`fit` on a picture.** Godot's expand and stretch modes.
-- **`await` on a signal** and on another node's method.
-- **`meta` component**, `Array[Node]` exports, toggle buttons, and children
+- Each scene has one root, and an instance is that root, so a converted
+  node path reads the same as in Godot.
+- A `stack` container lays every child over the same box, as a Godot
+  MarginContainer does.
+- Theme import carries separations, icon colours and bold faces.
+- `fit` on a picture covers Godot's expand and stretch modes.
+- `await` works on a signal and on another node's method.
+- A `meta` component, `Array[Node]` exports, toggle buttons, and children
   running `init` before their parent.
-- **Tilemaps honour `z_index`** against sprites.
-- **A button takes the box the layout solved**, not its caption's size.
-- **macOS dark mode** is read from the window.
+- Tilemaps honour `z_index` against sprites.
+- A button takes the box the layout solved, not its caption's size.
+- macOS dark mode is read from the window.
 
-## Where it is
+## How far it is
 
 Five scenarios pass headless, and a run ends with a screenshot. The menu
 matches. The gameplay screens are next.

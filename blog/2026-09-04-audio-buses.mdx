@@ -7,9 +7,9 @@ image: /img/social/features.png
 keywords: [audio buses, positional audio, game audio mixing, audio events]
 ---
 
-Audio buses: a tree of gains a sound plays through, every chain ending at
-`master`. One volume moves everything on a bus. Positional audio from a
-listener.
+Audio buses are a tree of gains a sound plays through, every chain ending at
+`master`. One volume moves everything on a bus, and a listener gives
+positional audio.
 
 {/* truncate */}
 
@@ -22,20 +22,18 @@ flowchart LR
   M --> R
 ```
 
-## What landed
-
-- Buses. Declared in `project.toml`. A sound's gain is its own volume
-  times every bus's up to the root. `audio::set_bus_volume("music", 0.3)`
-  moves every piece of music at once and nothing else. `master`
-  exists whether or not the project declares it.
-- Routing per playback. A bus does not own a sound: one file is a
+- Buses are declared in `project.toml`. A sound's gain is its own volume
+  times every bus's up to the root, so `audio::set_bus_volume("music", 0.3)`
+  moves every piece of music at once and nothing else. `master` exists
+  whether or not the project declares it.
+- A bus does not own a sound. Routing is per playback: one file is a
   footstep on `sfx` and a menu click on `ui`.
-- Events. `audio::play_event(name, options)` plays a named sound: the
-  next of its variations in turn, at its own volume and pitch, through its
-  own bus. A `position` in the options places it.
-- Positional. A `listener` node is the ears, or `audio::set_listener`
-  puts them somewhere by hand. `set_emitter_position` moves what a handle
-  plays from, and `distance_gain` says what the distance is costing.
+- `audio::play_event(name, options)` plays a named sound: the next of its
+  variations in turn, at its own volume and pitch, through its own bus. A
+  `position` in the options places it.
+- A `listener` node is the ears, or `audio::set_listener` puts them
+  somewhere by hand. `set_emitter_position` moves what a handle plays from,
+  and `distance_gain` says what the distance is costing.
 
 ```toml
 [audio.buses]
@@ -44,5 +42,5 @@ music = { volume = 0.6 }
 ui = { volume = 1.0, parent = "sfx" }
 ```
 
-No effects and no sends. The `audio` module is in the
+There are no effects and no sends. The `audio` module is in the
 [script modules reference](/docs/reference/modules).

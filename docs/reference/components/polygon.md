@@ -25,14 +25,3 @@ In a scene, `polygon` is the node key that applies it. A script reaches each pro
 | `texture` | string | — | Image file, project-relative; empty draws the tint alone |
 
 Asset types this component references: [`mesh`](../assets/mesh.md).
-
-## Script functions
-
-Methods of `node.polygon`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
-
-From [`render`](../modules/render.md):
-
-| method | what it does |
-| --- | --- |
-| `color() -> float, float, float, float` | The node's tint as r, g, b, a channel floats; opaque white when the node draws nothing at all. |
-| `set_color(float, float, float, float?)` | Tint whatever the node draws, as r, g, b channel floats and an optional alpha, one meaning opaque. |

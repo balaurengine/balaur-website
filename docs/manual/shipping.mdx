@@ -128,9 +128,11 @@ codesign --entitlements my-game.entitlements --sign "Apple Distribution: …" my
 editor and its runtime template.
 
 - Verified against the release's checksums.
-- A tagged release updates to the newest release, a nightly follows the
-  rolling nightly, and a source build refuses and points at git.
-- `--check` only reports. `--tag` picks a release.
+- An update follows the channel its own version names: `0.2.0-alpha.3` tracks
+  the alpha line, a plain version tracks stable, and a nightly follows the
+  rolling nightly. A source build refuses and points at git.
+- `--check` only reports. `--channel alpha` crosses to another line, `--tag`
+  picks one exact release, and `--allow-downgrade` takes a step backwards.
 
 ## Save games
 

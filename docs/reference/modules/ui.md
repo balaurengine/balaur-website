@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI redrawn from a script's `draw_ui` every frame: panels, layout containers and widgets. HUD elements in the scene tree are the `widget` component.
 
-59 functions, 57 constants. Scripts reach it as `ui::`.
+61 functions, 65 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -39,6 +39,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `focus_previous()` | — | Move focus to the previous widget in scene order, wrapping past the first. |
 | `focused() -> any` | — | The widget node focus is on, or nil. |
 | `frame(any?, fn)` | — | Wrap the callback in a box with optional `fill`, `stroke`, `radius` and padding, in design pixels. `tooltip`, `menu` and `menu_click` make the whole box answer the pointer, the way a pill does, and `hover_fill` is the colour it takes while the pointer is over it. |
+| `height_class() -> string` | — | How much height this screen has, as `ui::SHORT` or `ui::TALL`. |
 | `horizontal(any?, fn)` | — | Lay the callback's widgets out in a row; `width`, `height` and `tight` size it, in design pixels. |
 | `image(string, any?)` | — | Draw a PNG from the project, sized by `width`/`height` in design pixels and cached by path. `region` (`[x, y, w, h]` in the image's own pixels) draws one part of it, which is how an atlas is shown a tile at a time. |
 | `image_button(string, any?) -> bool` | — | The same picture, answering a click: returns whether it was clicked this frame. Takes every `image` option plus `selected`, which draws the `stroke` border a chosen tile needs, and the `menu`/`menu_click` callbacks a pill takes. |
@@ -53,20 +54,20 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `request_repaint()` | — | Run the UI pass this frame even when lazy; call it every frame something on screen moves without input, such as while the scene plays. |
 | `right(fn)` | — | Lay the callback's widgets out against the right edge, still declared left to right. |
 | `right_panel(string, any?, fn) -> float` | — | Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
-| `scale() -> float` | — | The global UI scale: real pixels per design pixel. |
+| `scale() -> float` | — | The global UI scale: how many screen pixels a design pixel is drawn at, on top of the display's own. |
 | `screen_size() -> float, float` | — | The window's width and height, in design pixels. |
-| `scroll(string, any?, fn)` | — | Put the callback in a vertical scroll area; `max_height` caps it, `stick_to_bottom` follows new content, and `offset` scrolls it to that many design pixels down. |
+| `scroll(string, any?, fn)` | — | Put the callback in a scroll area. `axis` is `vertical` (the default), `horizontal` or `both`; `max_height` and `max_width` cap it, `stick_to_bottom` follows new content, and `offset` scrolls it to that many design pixels along. |
 | `separator(string?)` | — | Draw a one-pixel rule across the container, in the given `#rrggbb` colour when one is passed. |
 | `set_clipboard(string)` | — | Copy text to the system clipboard. |
 | `set_focus(node)` | — | Put focus on a widget node. A node focus cannot activate is refused at the next draw. |
 | `set_keyboard_focus(bool)` | — | Let the arrows, Tab, Enter and Space move and activate the focused widget. Off unless asked for, so a game that moves with the arrows does not click its own HUD; `standard_app` turns it on for a project declaring the `ui_*` actions. |
 | `set_lazy(bool)` | — | Run the UI pass only when something asks for it (input, `request_repaint`, a log line, an asset reload, an egui animation, or the idle tick every 250 ms, which waits out a drag the UI is no part of) and re-present the last pass in between. Off by default: a HUD that reads live state each frame should leave it off. Ignored offscreen. |
-| `set_scale(float)` | — | Set the global UI scale, clamped to between 0.25 and 3.0 real pixels per design pixel; a design resolution is `screen_size` divided by it. |
+| `set_scale(float)` | — | Set the global UI scale, clamped to between 0.25 and 3.0. It is egui's zoom factor, so it grows every control and every font; `screen_size` already answers in the design pixels it leaves. |
 | `set_text(string, string)` | — | Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone. |
 | `set_theme(any)` | — | Replace the theme: `name = "#rrggbb"` colour tokens, `dark = true\|false`, and a `roles` table of named looks a widget takes with `role:`. |
 | `set_widget_layer(bool, float?, float?, float?, float?)` | — | Turn drawing of the scene's `widget` nodes on or off, and confine it to an x/y/w/h rect in design pixels. |
 | `set_widget_surface(string, bool, float?, float?, float?, float?)` | — | The same for one named surface: roots whose `layer` is this name draw here instead. A name nothing has set takes the default surface. |
-| `shortcut(string, string) -> bool` | — | Whether this chord was pressed this frame, consuming it; `mods` is `"cmd+shift"`, from the `MOD_*` constants. |
+| `shortcut(string) -> bool` | — | Whether this chord was pressed this frame, consuming it: modifiers and a key joined by `+`, as in `"cmd+shift+s"` or `"f5"`. `cmd` is the platform's command key, Command on a Mac and Control everywhere else. |
 | `slider(float, float, float, any?) -> float, bool` | — | Draw a horizontal slider between `min` and `max`; returns the value after this frame and whether it moved. |
 | `spacing(float, float)` | — | Set the gap between the current container's widgets, in design pixels. |
 | `text_field(string, string?, any?) -> string, bool, bool` | — | Draw a single-line text box keyed by `id`; returns its text, whether it changed, and whether Enter was pressed. |
@@ -76,6 +77,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `wants_keyboard() -> bool` | — | Whether a UI widget holds keyboard focus, so the game should leave this frame's key presses alone. |
 | `wants_pointer() -> bool` | — | Whether a UI widget took this frame's pointer or finger, so the game should leave it alone: what stops a tap on a HUD button also firing the shot behind it. False without a window. |
 | `widget_rect(node) -> any` | — | Where a `widget` node was last drawn, as `#{ x, y, w, h }` in design pixels; empty until it has drawn once. |
+| `width_class() -> string` | — | How much width this screen has, as `ui::NARROW`, `ui::MEDIUM` or `ui::WIDE`. Read every frame: a rotation changes it. A run with no window answers `ui::WIDE`. |
 | `window(string, any?, fn) -> bool` | — | Draw the callback in a floating window the user drags and resizes; false once its close button is used. |
 
 ## Constants
@@ -106,10 +108,17 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `FONT_MONO` | `mono` |
 | `FONT_STYLE_ITALIC` | `italic` |
 | `FONT_STYLE_NORMAL` | `normal` |
+| `MEDIUM` | `medium` |
 | `MOD_ALT` | `alt` |
 | `MOD_CMD` | `cmd` |
 | `MOD_CTRL` | `ctrl` |
 | `MOD_SHIFT` | `shift` |
+| `NARROW` | `narrow` |
+| `POINTER` | `pointer` |
+| `SHORT` | `short` |
+| `TALL` | `tall` |
+| `TOUCH` | `touch` |
+| `WIDE` | `wide` |
 | `WIDGET_BUTTON` | `button` |
 | `WIDGET_CHECK` | `check` |
 | `WIDGET_CODE` | `code` |
@@ -137,5 +146,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `WIDGET_TAB` | `tab` |
 | `WIDGET_TABLE` | `table` |
 | `WIDGET_TEXT_AREA` | `text_area` |
+| `WIDGET_TOAST` | `toast` |
 | `WIDGET_TREE` | `tree` |
 | `WIDGET_WINDOW` | `window` |

@@ -69,7 +69,6 @@ From [`physics3d`](../modules/physics3d.md):
 | method | what it does |
 | --- | --- |
 | `aabb() -> float, float, float, float, float, float` | The world-space box the collider currently occupies, as its two opposite corners. |
-| `add_collider(any)` | Attach a 3D collider from a `collider3d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary. |
 | `collider_mass() -> float` | What this collider weighs, density and size together. |
 | `collider_mesh() -> any` | The collider's shape as points and triangles, including a voxel grid's, for drawing it or for spawning the pieces it broke into. |
 | `collider_volume() -> float` | How much space the shape encloses. |

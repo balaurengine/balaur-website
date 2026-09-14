@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Polygons on the plane as lists of `[x, y]` points in outline order: triangulation, booleans, hulls and containment. Every answer is identical on every platform.
 
-9 functions, 0 constants. Scripts reach it as `geometry2d::`.
+10 functions, 0 constants. Scripts reach it as `geometry2d::`.
 
 ## Functions
 
@@ -20,6 +20,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `area(any) -> float` | — | The polygon's area, always positive whatever its winding. |
 | `contains(any, any) -> bool` | — | Whether a point lies inside the polygon; a point on an edge counts as inside. |
+| `convex_decomposition(any, any?) -> any` | — | The polygon cut into convex pieces that overlap across their seams, so nothing wedges into one; `overlap` from 0 to 1 says how far each piece grows, 0.9 by default. |
 | `convex_hull(any) -> any` | — | The smallest convex polygon around the points, counter-clockwise. |
 | `difference(any, any) -> any` | — | Everything inside the first polygon and outside the second, shaped as `union` shapes it. |
 | `intersection(any, any) -> any` | — | Everything inside both polygons, shaped as `union` shapes it. |

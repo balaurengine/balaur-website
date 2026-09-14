@@ -9,30 +9,29 @@ keywords: [rollback netcode, deterministic lockstep, quic, websocket, multiplaye
 
 import Clip from '@site/src/components/Clip';
 
-Rollback between two engines that exchange only inputs. A digest per tick to
-catch a desync. One `Transport` trait over WebSockets and QUIC.
+Two engines can run the same game in rollback, exchanging only inputs. A
+digest per tick catches a desync, and one `Transport` trait covers
+WebSockets and QUIC.
 
 {/* truncate */}
 
 <Clip name="determinism_replay" alt="Play records; the bird flies; stop. The session opens from the Session dock and the bird flies again with nobody at the mouse" />
 
-## What landed
-
-- Rollback. A snapshot restores a tick and the deterministic simulation
-  re-runs the same inputs. Node ids are stable across spawns and re-runs.
-  Scripts see `rollback::input` and `rollback::is_resimulating`.
-- A digest per tick. A peer publishes a tick's hash once every player's
-  input for it has arrived. A desync names the tick.
-- One `Transport`. WebSockets, and QUIC datagrams through
-  `balaur_webtransport`: a lost input costs a misprediction. `balaur_http`,
-  `balaur_websocket` and `balaur_webtransport` are one crate each, behind
-  their own features.
-- Link faults. Delay, jitter and datagram loss on every session link, set
-  from the editor's settings.
+- A snapshot restores a tick and the deterministic simulation re-runs the
+  same inputs. Node ids are stable across spawns and re-runs, and scripts
+  see `rollback::input` and `rollback::is_resimulating`.
+- A peer publishes a tick's hash once every player's input for it has
+  arrived. A desync names the tick.
+- `Transport` runs over WebSockets, and over QUIC datagrams through
+  `balaur_webtransport`, where a lost input costs a misprediction.
+  `balaur_http`, `balaur_websocket` and `balaur_webtransport` are one crate
+  each, behind their own features.
+- Delay, jitter and datagram loss can be set on every session link, from
+  the editor's settings.
 
   ![The Netcode page of the settings screen: faults, delay, jitter and loss](/img/manual/networking_faults.webp)
 
-## Next steps
+## Next
 
 - A session a script can open, and replication:
   [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md).

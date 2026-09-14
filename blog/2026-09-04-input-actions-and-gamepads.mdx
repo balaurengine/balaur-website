@@ -9,29 +9,27 @@ keywords: [input actions, gamepad support, rumble, gyro, input rebinding]
 
 import Clip from '@site/src/components/Clip';
 
-Input actions declared in `project.toml` and rebound at run time. Gamepads
-with named buttons and axes, rumble and gyro. An input overlay.
+Input actions are declared in `project.toml` and can be rebound at run time.
+Gamepads have named buttons and axes, rumble and gyro, and the editor draws
+an input overlay.
 
 {/* truncate */}
 
 <Clip name="input_overlay" alt="The editor's input overlay while examples/hello plays: key chips, the actions they drive, the pointer and a click ripple" />
 
-## What landed
-
-- Actions. `action_value` is −1 to 1: a key answers 0 or 1, a stick or a
-  key pair the whole range. `action_pressed`, `action_just_pressed` and
-  `action_just_released` are the edges. `input::bind` rebinds an action
-  and saves it to the user data directory; `reset_bindings` restores the
+- `action_value` runs −1 to 1: a key answers 0 or 1, a stick or a key pair
+  the whole range. `action_pressed`, `action_just_pressed` and
+  `action_just_released` are the edges. `input::bind` rebinds an action and
+  saves it to the user data directory, and `reset_bindings` restores the
   project's bindings.
-- Gamepads. `input::gamepads()` lists the pads; every query takes a pad id
-  and a named constant, `PAD_SOUTH`, `AXIS_LEFT_STICK_X`.
-- Rumble, gyro, touchpad. `gamepad_rumble(pad, #{ strong, weak, duration })`
-  runs the two motors. A PlayStation pad also reports `gamepad_gyro`,
-  `gamepad_acceleration` and `gamepad_touches`, decoded from its HID
-  reports over USB or Bluetooth.
-- The overlay. A chip per key and button held, the actions they drive, and
-  a ring per press. It reads the game's input snapshot; in a replay the
-  cursor follows the recording.
+- `input::gamepads()` lists the pads. Every query takes a pad id and a
+  named constant, `PAD_SOUTH`, `AXIS_LEFT_STICK_X`.
+- `gamepad_rumble(pad, #{ strong, weak, duration })` runs the two motors. A
+  PlayStation pad also reports `gamepad_gyro`, `gamepad_acceleration` and
+  `gamepad_touches`, decoded from its HID reports over USB or Bluetooth.
+- The overlay draws a chip per key and button held, the actions they drive,
+  and a ring per press. It reads the game's input snapshot, so in a replay
+  the cursor follows the recording.
 
 ```toml
 [input.actions]

@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # <span class="ref-icon ref-icon--2d" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40V216H40V40Z" opacity="0.2"/><path d="M152,40a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,40Zm-8,168H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM208,32H184a8,8,0,0,0,0,16h24V72a8,8,0,0,0,16,0V48A16,16,0,0,0,208,32Zm8,72a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V112A8,8,0,0,0,216,104Zm0,72a8,8,0,0,0-8,8v24H184a8,8,0,0,0,0,16h24a16,16,0,0,0,16-16V184A8,8,0,0,0,216,176ZM40,152a8,8,0,0,0,8-8V112a8,8,0,0,0-16,0v32A8,8,0,0,0,40,152Zm32,56H48V184a8,8,0,0,0-16,0v24a16,16,0,0,0,16,16H72a8,8,0,0,0,0-16ZM72,32H48A16,16,0,0,0,32,48V72a8,8,0,0,0,16,0V48H72a8,8,0,0,0,0-16Z"/></svg></span>`collider2d`
 
-`2d` · `physics` · 36 properties · 2D
+`2d` · `physics` · 41 properties · 2D
 
 The node's 2D collision shape, chosen by `kind`. It belongs to the node's `body2d` or the nearest body above it; without one it is static geometry.
 
@@ -24,6 +24,7 @@ In a scene, `collider2d` is the node key that applies it. A script reaches each 
 | `border` | float | `0` | Rounds a rect or triangle by this radius, so it slides over seams instead of catching on them At least 0. |
 | `c` | vec2 | `[0,1]` | Third corner, when kind is triangle |
 | `clean` | bool | `false` | Merge duplicate vertices and drop degenerate triangles when building a trimesh |
+| `concavity` | float | `0.01` | How deep a dent a vhacd piece may keep before it is cut again At least 0. |
 | `contact_force_threshold` | float | `0` | How hard a contact must be before on_contact_force is called At least 0. |
 | `contact_skin` | float | `0` | A margin the solver treats as already touching; stops thin shapes tunnelling and jittering At least 0. |
 | `density` | float | `1` | Mass per volume, so the shape's size sets its mass At least 0.001. |
@@ -35,18 +36,22 @@ In a scene, `collider2d` is the node key that applies it. A script reaches each 
 | `half_extents` | vec2 | `[0.5,0.5]` | Half-sizes of the rect, when kind is rect |
 | `height` | float | `1` | Length along y of the straight part, when kind is capsule At least 0.01. |
 | `heightfield` | asset · [`heightfield`](../assets/heightfield.md) | — | A row of heights, when kind is heightfield: a side-scroller's ground |
-| `kind` | enum | `rect` | Collision shape One of `circle`, `rect`, `capsule`, `triangle`, `segment`, `halfspace`, `trimesh`, `convex_hull`, `polyline`, `heightfield`, `voxels`. |
+| `kind` | enum | `rect` | Collision shape One of `circle`, `rect`, `capsule`, `triangle`, `segment`, `halfspace`, `trimesh`, `convex_hull`, `convex_decomposition`, `polyline`, `heightfield`, `voxels`. |
 | `layers` | flags | `["0"]` | The layers this collider is on One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
 | `mask` | flags | `[]` | The layers it collides with; empty means every layer One of `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31`. |
 | `mass` | float | `0` | Mass in kilograms, overriding what density works out to; 0 keeps the density At least 0. |
-| `mesh` | asset · [`mesh`](../assets/mesh.md) | — | Points and triangles for a trimesh, convex_hull or polyline collider: the same asset a polygon draws |
+| `max_pieces` | float | `1024` | The most pieces a vhacd cut may leave At least 1. |
+| `mesh` | asset · [`mesh`](../assets/mesh.md) | — | Points and triangles for a trimesh, convex_hull, convex_decomposition or polyline collider: the same asset a polygon draws |
+| `method` | enum | `exact` | How a convex_decomposition is cut: exact, over the mesh's own triangles, or vhacd, which voxelises the outline One of `exact`, `vhacd`. |
 | `normal` | vec2 | `[0,1]` | Which way the infinite line faces, when kind is halfspace |
 | `offset` | vec2 | `[0,0]` | Where the shape sits relative to the node |
 | `offset_rotation` | float | `0` | How the shape is turned relative to the node, in radians |
 | `one_way` | bool | `false` | A platform bodies pass through from below and land on from above |
 | `one_way_axis` | vec2 | `[0,1]` | The direction a one-way platform lets bodies through from |
 | `oriented` | bool | `false` | Treat a trimesh or polyline as one-sided: the winding decides which side is solid, counter-clockwise enclosing the solid |
+| `overlap` | float | `0.9` | How far a convex_decomposition piece grows through each seam it shares, so nothing wedges into one: 0 leaves the plain pieces, 1 grows flush with the face that stops it Range 0–1. |
 | `radius` | float | `0.5` | Circle radius, when kind is circle or capsule At least 0.01. |
+| `resolution` | float | `64` | How fine the voxel grid is, when method is vhacd At least 1. |
 | `restitution` | float | `0` | Bounciness: 0 is a dead stop, 1 a full rebound Range 0–1. |
 | `restitution_combine` | enum | `average` | How this surface's bounciness combines with the other one's One of `average`, `min`, `multiply`, `max`, `clamped_sum`, `geometric_mean`. |
 | `scale` | vec2 | `[1,1]` | Width and height scale of a heightfield |
@@ -65,7 +70,6 @@ From [`physics2d`](../modules/physics2d.md):
 
 | method | what it does |
 | --- | --- |
-| `add_collider(any)` | Attach a 2D collider from a `collider2d` table: `kind`, `radius`, `half_extents`, `friction`, and the rest of the component's own vocabulary. |
 | `overlaps() -> [node]` | The nodes this one currently intersects; rapier reports a pair only when one of the two colliders is a sensor. |
 | `set_voxel(int, int, bool)` | Fill or empty one cell of a voxel collider: digging a hole, or building a wall, while the game runs. |
 | `voxel(int, int) -> bool` | Whether one cell of a voxel collider is filled. |

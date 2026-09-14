@@ -22,3 +22,16 @@ In a scene, `transform` is the node key that applies it. A script reaches each p
 | `rotation_euler` | vec3 | `[0,0,0]` | Local rotation as euler angles in radians, x then y then z |
 | `scale` | vec3 | `[1,1,1]` | Size relative to the parent's |
 | `skew` | float | `0` | A 2D shear in radians: how far the y axis leans past square with the x axis; children lean with it |
+
+## Script functions
+
+Methods of `node.transform`, the handle a node carrying this component exposes. Every handle also has `get()`, `set(table)`, `patch(table)`, `has()` and `remove()`.
+
+From [`node`](../modules/node.md):
+
+| method | what it does |
+| --- | --- |
+| `global_position()` | The node's position in world space, as of the last transform sync. |
+| `global_rotation_euler()` | The node's world rotation as euler angles in radians, as of the last transform sync. |
+| `global_scale()` | The node's scale in world space, as of the last transform sync. |
+| `translate(y: float, z: float)` | Move the node by an offset in its parent's space, given as three numbers or one vector. |

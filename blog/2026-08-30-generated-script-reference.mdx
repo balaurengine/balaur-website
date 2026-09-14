@@ -12,17 +12,12 @@ function, constant, component and asset type. CI fails when it drifts.
 
 {/* truncate */}
 
-
-## What landed
-
-- Read from a booted engine. Every module, function and constant comes out
-  of a running interpreter. `input.KEY_SPACE` exists only after
-  registration.
-- Checked in CI. The generated files are committed. A build whose output
-  differs fails.
-- On this site. The [script modules](/docs/reference/modules),
+- Every module, function and constant comes out of a running interpreter,
+  because `input.KEY_SPACE` exists only after registration.
+- The generated files are committed. A build whose output differs fails.
+- The [script modules](/docs/reference/modules),
   [components](/docs/reference/components) and
-  [assets](/docs/reference/assets) references are that output, one page
-  per module, with what each function acts on.
-- `rng`, `fs` and `toml`. Declared language-neutrally. The same seed gives
-  the same sequence.
+  [assets](/docs/reference/assets) pages on this site are that output, one
+  page per module, with what each function acts on.
+- `rng`, `fs` and `toml` are declared language-neutrally, and the same seed
+  gives the same sequence.

@@ -2,7 +2,7 @@
 title: "Benchmarks — Balaur beside Godot, case for case"
 sidebar_label: "Benchmarks"
 image: "/img/social/benchmarks.png"
-description: "Balaur measured on the physics and scene-tree scenes the Godot benchmark suites publish: what a tick costs, what rapier costs, and what the engine adds."
+description: "The Balaur game engine measured on the same physics and scene-tree scenes the Godot benchmark suites publish: what a tick costs, what rapier costs inside it, and what the engine adds."
 custom_edit_url: null
 ---
 

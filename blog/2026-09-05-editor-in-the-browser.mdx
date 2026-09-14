@@ -13,18 +13,15 @@ pack.
 
 {/* truncate */}
 
-
-## What landed
-
-- Play. The examples run in the tab on WebGPU.
-- The editor. [balaurengine.org/editor](/editor) opens on an example or on
-  a local folder, and returns the project as a zip.
-- Persistence. The project is kept in IndexedDB, textures and sounds
-  included, and survives a refresh.
-- Export. A `.bpak`, or a web bundle zipped beside the running module.
+- The examples play in the tab on WebGPU.
+- [balaurengine.org/editor](/editor) opens on an example or on a local
+  folder, and returns the project as a zip.
+- The project is kept in IndexedDB, textures and sounds included, and
+  survives a refresh.
+- Export writes a `.bpak`, or a web bundle zipped beside the running module.
   Native targets need a linker.
-- A lazy shell. `ui::set_lazy` runs the shell pass only on input, a log
-  line, a reload or an animation. An idle frame went from 7.2 ms to 4.8 ms.
+- `ui::set_lazy` runs the shell pass only on input, a log line, a reload or
+  an animation. An idle frame went from 7.2 ms to 4.8 ms.
 
 ## Not in the tab
 
