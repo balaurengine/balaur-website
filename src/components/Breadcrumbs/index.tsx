@@ -13,7 +13,7 @@ export type Crumb = {label: string; href?: string};
 // theme passes around carry none. <Link> normalises them as it renders;
 // structured data has to do it by hand, or every breadcrumb names a redirect
 // of the page it points at rather than the page itself.
-function useAbsoluteUrl(): (href: string) => string {
+export function useAbsoluteUrl(): (href: string) => string {
   const {siteConfig} = useDocusaurusContext();
   const {url, baseUrl, trailingSlash} = siteConfig;
   return (href) => {

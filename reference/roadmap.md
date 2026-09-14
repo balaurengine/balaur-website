@@ -70,7 +70,7 @@ being built, marked `done`, never back in the shipped one.
 | **A green `main`** — the same outputs on every machine, a bad file an error rather than a crash, and documents that match the code. | (0.2) | [PLAN-hardening.md](PLAN-hardening.md) |
 | **What the editor's frame costs** — the docks rebuild every row every frame, so the shell costs more than a 60 Hz budget; a list draws only what is visible. | (0.2) | [PLAN-editor-performance.md](PLAN-editor-performance.md) |
 | **Node conversions** — reparent, make scene root, save a branch as a scene, fit a collider to what is drawn, and bake a boolean. | (0.2) | [PLAN-node-conversions.md](PLAN-node-conversions.md) |
-| **The editor on a tablet and a phone** — the shell folds to one dock and a bottom bar on a narrow screen, and every control answers a finger. | 0.8 | [PLAN-responsive.md](PLAN-responsive.md) |
+| **The editor on a tablet and a phone** — the docks fold away on a small screen and open one at a time, and every control clears a finger. | 0.8 | [PLAN-responsive.md](PLAN-responsive.md) |
 | **More than one window** — a second OS window: a dock torn off the editor, or a game on a second display. | 1.0 | no plan |
 | **A shader graph** — the canvas the Rune graph brings, emitting WESL instead of Rune, with `[params]` still read off the linked shader. | 1.0 | [PLAN-shaders.md](PLAN-shaders.md) |
 | **Modelling in the viewport** — push and pull a face, bevel an edge, subdivide and unwrap with `xatlas`, editing the `mesh` asset every shape already is. | 1.0 | no plan |
@@ -105,6 +105,7 @@ being built, marked `done`, never back in the shipped one.
 | Item | Milestone | Plan |
 | --- | :-: | --- |
 | **Rapier in 2D and 3D** — bodies, joints, character controllers, the query pipeline, collision events, ray-cast vehicles, and every collider shape including editable voxels. | 0.1 done | no plan |
+| **Concave 2D colliders** — a concave polygon cut into overlapping convex pieces, so nothing wedges into a seam, and imported Godot collision polygons keep their shape. | 0.2 done | [PLAN-convex-decomposition.md](PLAN-convex-decomposition.md) |
 | **Rigs and animation** — 2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a `bone_map`, ragdolls and tweens. | 0.1 done | no plan |
 | **Soft bodies** — `softbody2d` and `softbody3d`: a deformable mesh with stiffness, damping and pressure, drawn down the skinning path, on the fixed step. | 0.7 | [PLAN-physics.md#soft-bodies](PLAN-physics.md#soft-bodies) |
 | **Cloth and rope** — a sheet that hangs and a rope of linked segments over the same solver, pinned to a node and cut by a script. | 0.7 | [PLAN-physics.md#cloth-and-rope](PLAN-physics.md#cloth-and-rope) |
@@ -149,7 +150,7 @@ being built, marked `done`, never back in the shipped one.
 | **Pickers, and drag and drop** — a colour wheel and a file chooser as widget kinds, with a payload one widget offers and another takes. | 0.5 | [PLAN-widgets.md#pickers-and-drag](PLAN-widgets.md#pickers-and-drag) |
 | **Accessibility** — a screen reader over the widget tree, text scaling, captions, and colour-blind-safe defaults. | 0.6 | no plan |
 | **A controller-only shell** — directional focus between widgets, an on-screen keyboard, safe-area insets applied to layout, and button glyphs that follow the pad. | 0.8 | no plan |
-| **A layout that fits the screen** — width, height and touch classes that widgets, themes and settings answer to, with a touch-target floor and a game's UI scale. | 0.6 | [PLAN-responsive.md](PLAN-responsive.md) |
+| **A layout that fits the screen** — width, height and touch classes that widgets, themes and settings answer to, over one scale that grows a control and its bar together. | 0.6 | [PLAN-responsive.md](PLAN-responsive.md) |
 
 The `widget` component is what a scene holds, and `ui::*` is what the editor
 draws itself with. `PLAN-widgets.md` is the list of what only the second one

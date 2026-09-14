@@ -2,7 +2,7 @@
 title: "path2d asset type"
 image: "/img/social/reference.png"
 sidebar_label: "path2d"
-description: "A bezier path: points runs anchor, two handles, next anchor, then three more per segment; closed joins the last segment back to the first anchor."
+description: "path2d: A bezier path: points runs anchor, two handles, next anchor, then three more per segment; closed joins the last segment back to the first anchor."
 custom_edit_url: null
 ---
 

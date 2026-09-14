@@ -9,6 +9,10 @@ const repoUrl = 'https://github.com/balaurengine/balaur';
 // The community server; the footer's social row (src/theme/Footer/Copyright)
 // reads it from customFields so there is one copy of the invite.
 const discordUrl = 'https://discord.gg/v649emcpAu';
+// The blog's route and title, read back by src/theme/BlogPostItems for the
+// heading on the list page: the theme's own hook is missing on the paginated
+// pages, so the wrapper cannot ask it.
+const blog = {path: '/blog', title: 'Blog'};
 
 // Site-wide structured data: who publishes the site and what it is. The
 // SoftwareApplication entry for the engine itself lives in
@@ -73,7 +77,7 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
-  customFields: {discordUrl, repoUrl},
+  customFields: {discordUrl, repoUrl, blog},
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -176,7 +180,7 @@ const config: Config = {
             'https://github.com/balaurengine/balaur-website/tree/main/',
         },
         blog: {
-          blogTitle: 'Blog',
+          blogTitle: blog.title,
           blogDescription:
             'The Balaur blog: what shipped in the engine and the thinking behind it.',
           // With a handful of posts the archive, tag and author pages are

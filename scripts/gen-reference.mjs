@@ -147,6 +147,8 @@ function snippet(text, fallback, max = 155) {
   const first = String(text ?? '').trim().split(/\n\s*\n/)[0] ?? '';
   let out = /^[|#<]/.test(first) ? '' : plain(first);
   if (!out) out = plain(fallback);
+  // One short sentence is a thin result; the fallback says what page this is.
+  else if (out.length < 70) out = `${out} ${plain(fallback)}`;
   if (out.length > max) {
     const cut = out.slice(0, max - 1);
     out = cut.slice(0, Math.max(cut.lastIndexOf(' '), 80)).replace(/[\s,;:—-]+$/, '') + '…';
@@ -289,8 +291,13 @@ for (const name of Object.keys(components).sort()) {
   write(`components/${name}.md`, lines);
 }
 
+// Two asset types can open with the same sentence (the 2D and 3D path do);
+// each such page names itself first, so their search snippets differ.
+const opening = (doc) => plain(String(doc ?? '').trim().split(/\n\s*\n/)[0] ?? '');
+const openings = Object.values(assetTypes).map((info) => opening(info.doc));
 for (const type of Object.keys(assetTypes).sort()) {
   const info = assetTypes[type];
+  const shared = openings.filter((o) => o && o === opening(info.doc)).length > 1;
   const used = (users[type] ?? []).map(([c, p]) => `[${code(c)}](../components/${c}.md) · ${code(p)}`);
   const files = info.directory
     ? `Files live in ${code(info.directory + '/')}.`
@@ -299,7 +306,7 @@ for (const type of Object.keys(assetTypes).sort()) {
     frontMatter(`${type} asset type`, {
       sidebar_label: type,
       description: snippet(
-        info.doc,
+        shared ? `${type}: ${info.doc}` : info.doc,
         `The ${type} asset type of the Balaur game engine: the content an asset-typed property names, in a file or inline.`,
       ),
     }),

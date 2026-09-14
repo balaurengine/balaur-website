@@ -2,7 +2,7 @@
 title: "hash module"
 image: "/img/social/reference.png"
 sidebar_label: "hash"
-description: "SHA-256 content hashes of files and strings."
+description: "SHA-256 content hashes of files and strings. The hash script module of the Balaur game engine: 2 functions and 0 constants a Rune script reaches as hash::."
 custom_edit_url: null
 ---
 

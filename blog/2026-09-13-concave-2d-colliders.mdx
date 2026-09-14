@@ -1,5 +1,5 @@
 ---
-description: "A concave 2D body is one collider now: convex_decomposition cuts the polygon into convex pieces and grows each one through the seams it shares, so nothing wedges into a seam."
+description: "A concave 2D body is one collider: convex pieces grown through their seams. Where the growth spilled, what it costs against a trimesh, and what it buys."
 slug: concave-2d-colliders
 title: Concave 2D colliders
 authors: [dragos]
@@ -7,42 +7,59 @@ image: /img/manual/concave_pieces.webp
 keywords: [convex decomposition, concave collider, 2d physics, rapier, godot import]
 ---
 
+import Clip from '@site/src/components/Clip';
+
 A table can be one dynamic body again. `collider2d` takes a
 `convex_decomposition` kind: it cuts the polygon into convex pieces, then
 grows each piece through the seams it shares.
 
 {/* truncate */}
 
-![The same table twice, with the convex pieces the collider holds drawn over it](/img/manual/concave_pieces.webp)
-
-Until now a concave 2D shape was a `trimesh`, which never collides with
-another trimesh, or a `convex_hull`, which fills the shape in. A table lost
-the gap under it.
-
-## Why the pieces overlap
+<Clip name="concave_beam" alt="Two tables with a beam spawned inside each, across a seam. In the plain one the beam stays wedged; in the grown one it is pushed up and clear of the top within a second" />
 
 Cut a table into a top and two legs and you leave seams. A beam pushed into
-one is three separate collision pairs. The top presses down, each leg presses
-up, and the solver fights itself until the beam just sits there. Erin Catto
-wrote this up in [Stuck Inside](https://box2d.org/posts/2020/04/stuck-inside/).
+one is three collision pairs that disagree, and it stays put. Erin Catto's
+[Stuck Inside](https://box2d.org/posts/2020/04/stuck-inside/) overlaps the
+pieces by hand. This does it for you: each piece carries its two edges at a
+seam on into the neighbour and keeps what they enclose.
 
-His answer is to overlap the pieces by hand. Balaur does it for you. Each
-piece carries its two edges at a seam on into the neighbour and takes what
-they enclose, so the legs reach up through the top and no channel is left.
+`overlap` is the dial, 0.9 by default. At 0 you get the plain cut; at 1 a
+piece grows flush with whatever stopped it.
 
-`overlap` is the dial, 0.9 by default. At 0 you get the plain pieces, which
-is the left half of the picture. At 1 a piece grows flush with whatever
-stopped it.
+![One shape at four overlap settings, and three stars showing how many pieces pile onto one point](/img/blog/concave_dial_stack.webp)
 
-## What it costs to use
+## What testing turned up
 
-Nothing to author. The collider reads the same `mesh` asset a `polygon`
-draws, so the outline a player sees and the one they hit are one thing. Mass
-comes from the ungrown pieces, so the table weighs what its area says rather
-than counting the overlaps twice.
+- **It spilled.** On spiky outlines a piece with several seams grew a few
+  percent of its area past the polygon. Fixed: a piece keeps a seam only while
+  it stays convex. A sampling test over 25 shapes now guards it.
+- **Pieces pile up.** `overlap` scales depth, not count. A drawn outline
+  stacks two or three pieces on a point. A 240-point star stacks 80.
+- **What it costs.** One box tested against that star, per placement:
 
-Imported Godot projects get it too. A solids-mode `CollisionPolygon2D` maps
-to this kind, which is what Godot does with it.
+| kind | ns |
+| --- | --- |
+| trimesh | 118 |
+| convex_decomposition, overlap 0 | 187 |
+| convex_decomposition, overlap 0.9 | 367 |
 
-Scripts can see the pieces. `geometry2d.convex_decomposition` returns them,
-so a tool can draw them, move the dial, or replace one by hand.
+- **What it buys.** A beam started inside the table, after four seconds:
+
+| kind | result |
+| --- | --- |
+| trimesh, polyline, overlap 0 | still inside |
+| convex_hull | out, with the gap under the table filled in |
+| overlap 0.9 | out |
+
+- **Which to use.** A trimesh is the cheaper static collider when bodies only
+  touch it from outside. This kind is for dynamic bodies, and for static ones
+  a body can end up inside.
+
+## Also
+
+- Mass comes from the ungrown pieces, so a table weighs what its area says.
+- A solids-mode Godot `CollisionPolygon2D` imports as this kind.
+- `geometry2d.convex_decomposition` hands the pieces to a script.
+- 3D keeps VHACD. Its hulls share no faces, so there is nothing to grow
+  across. Overlapping hulls are authored by hand there, as several colliders
+  on one body.

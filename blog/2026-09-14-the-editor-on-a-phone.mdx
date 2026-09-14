@@ -1,0 +1,49 @@
+---
+description: "The editor reads two things about the screen it gets, how much room and whether a finger drives it, and lays itself out from that. One shell, three sizes."
+slug: the-editor-on-a-phone
+title: The editor on a phone
+authors: [dragos]
+image: /img/blog/one_editor_three_screens.webp
+keywords: [mobile game editor, responsive ui, touch targets, tablet game engine, game editor on phone]
+---
+
+The editor reads two things about the screen it gets: how much room there is,
+and whether a finger drives it. Everything else follows.
+
+{/* truncate */}
+
+![The same editor on a desktop, a tablet and a phone](/img/blog/one_editor_three_screens.webp)
+
+The width is read every frame, because a rotation changes it. The input class
+is fixed for a run and recorded, so a session captured on a phone replays as
+one. A scene, a theme and the shell itself can all answer to either.
+
+## What each screen gets
+
+- **Desktop.** Unchanged. Three docks, the tool rail, the whole chrome.
+- **Tablet.** Both side docks start folded, and an unfolded one takes half the
+  screen. The bottom dock stays, because it runs along the stage.
+- **Phone.** All three start folded, and one opens at a time.
+
+![A phone with nothing open, then the outliner, the inspector and the output](/img/blog/phone_one_panel.webp)
+
+- **A folded dock leaves a handle** at the edge it folded to. An opened one
+  takes the whole screen, and its own fold is the way back.
+- **What does not fit goes.** The rail and the viewport's chips show where
+  their minimum fits in the room the docks leave. A sheet that fills the
+  screen takes them with it; an open bottom dock does not.
+
+## Bigger, not just taller
+
+The first attempt floored every control a finger reaches at 44 points. It made
+things worse, and the reason is worth keeping:
+
+- **A floor grows a box, not its contents.** A 26 pixel button became 44 and
+  kept its 14 pixel glyph, so the icon sat in a field of empty plate.
+- **It overflowed the bar holding it.** The head row is 26 tall. Its buttons
+  drew outside it.
+- **Nothing got easier to read.** Text and icons kept their sizes.
+
+A scale grows the glyph, the plate and the bar together. So the shell draws
+larger on a touch screen, and the theme states a bigger box under `touch`. The
+editor's selftest measures the rect each control drew and fails under 44.

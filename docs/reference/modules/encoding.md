@@ -2,7 +2,7 @@
 title: "encoding module"
 image: "/img/social/reference.png"
 sidebar_label: "encoding"
-description: "Bytes to base64 text and back."
+description: "Bytes to base64 text and back. The encoding script module of the Balaur game engine: 2 functions and 0 constants a Rune script reaches as encoding::."
 custom_edit_url: null
 ---
 

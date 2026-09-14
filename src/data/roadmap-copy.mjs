@@ -13,9 +13,9 @@
 
 export default {
   frontmatter: `---
-title: "Roadmap — what is built, and what each milestone adds"
+title: "Roadmap: what is built and what comes next"
 sidebar_label: "Roadmap"
-description: "What the Balaur game engine does today and what each milestone adds next: the editor, rendering, physics, networking, platforms and shipping, one tab per version."
+description: "What the Balaur game engine does today and what each milestone adds: editor, rendering, physics, networking, platforms and shipping, one tab per version."
 image: "/img/social/roadmap.png"
 hide_table_of_contents: true
 ---`,
@@ -29,6 +29,7 @@ hide_table_of_contents: true
   // them. Everything else under blog/ has to be named by a `shots` entry.
   essays: [
     'the-initial-engine',
+    'the-editor-on-a-phone',
     'godot-rapier-and-balaur',
     'benchmarks',
     'balaur-0-1-0',
