@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import {PageMetadata} from '@docusaurus/theme-common';
 import Heading from '@theme/Heading';
 import {
+  askedProject,
   hasWebGpu,
   keepsProjects,
   loadEngine,
@@ -161,8 +162,26 @@ export default function EditorPage(): ReactNode {
         setStatus({kind: 'error', text: e instanceof Error ? e.message : String(e)});
       }
     },
-    [],
+    [remember],
   );
+
+  /** Open the editor's own start screen, which lists what this browser keeps. */
+  const openManager = () =>
+    boot(async (engine) => {
+      if (!engine.start_manager) throw new Error('this build of the engine has no start screen');
+      await engine.start_manager('balaur-editor-canvas', playUrl('editor.bpak'));
+    });
+
+  // The editor's start screen opens a project by loading this page again and
+  // leaving the id behind it, so a load that finds one goes straight there.
+  useEffect(() => {
+    const asked = askedProject();
+    if (!asked) return;
+    const known = readIndex().find((row) => row.id === asked);
+    void openKept({id: asked, name: known?.name ?? asked, modified: Date.now()});
+    // Once, on the load that was asked for.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /** Open one of the bundled examples, as a project of the visitor's own. */
   const openExample = (id: string) =>
@@ -324,6 +343,9 @@ export default function EditorPage(): ReactNode {
                 </li>
               ))}
             </ul>
+            <button type="button" className={styles.keptOpen} onClick={() => void openManager()}>
+              Open the editor’s own start screen
+            </button>
           </section>
         )}
 

@@ -232,8 +232,14 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Editor",
         title: 'An import that does not stop the editor',
-        text: <>A job that reports each file it writes, a toast when it ends, and an Import button in the Assets dock.</>,
+        text: <>A job that writes a few files a frame, a list of what is importing, and an Import button.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-import-jobs.md',
+        done: true,
+        image: "/img/manual/editor_import.webp",
+        alt: "The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them",
+        posts: [
+          {slug: "an-import-you-can-watch", title: "An import you can watch"},
+        ],
       },
       {
         group: "Scripts and assets",

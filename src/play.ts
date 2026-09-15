@@ -22,7 +22,28 @@ export type Engine = {
   start: (canvas: string, pack: string) => Promise<void>;
   /** Open the editor on a project pack, with the editor's own pack beside it. */
   start_editor: (canvas: string, editorPack: string, projectPack: string) => Promise<void>;
+  /** Open the editor on no project: its start screen, listing what this browser keeps. */
+  start_manager?: (canvas: string, editorPack: string) => Promise<void>;
 } & Partial<Kept>;
+
+/**
+ * Where the editor's start screen leaves the project it was asked to open,
+ * before loading the page again. A browser runs one engine per page, so
+ * opening another project is a page load, not a second engine. The engine's
+ * half of this is `crates/balaur_cli/src/project_web.rs`.
+ */
+const ASKED = 'balaur-open-project';
+
+/** The project a start screen asked this page to open, taken once. */
+export function askedProject(): string | null {
+  try {
+    const asked = sessionStorage.getItem(ASKED);
+    if (asked) sessionStorage.removeItem(ASKED);
+    return asked;
+  } catch {
+    return null;
+  }
+}
 
 // Keeping a project, opening one of your own and exporting from the tab
 // arrived after the module under /play was last synced, so every one of these

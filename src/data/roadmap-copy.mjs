@@ -69,6 +69,11 @@ hide_table_of_contents: true
       alt: 'The Sponza atrium lit by its own sky: textured marble, the arcade, the drapes and the lion relief',
       posts: ['the-3d-look'],
     },
+    'An import that does not stop the editor': {
+      image: '/img/manual/editor_import.webp',
+      alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
+      posts: ['an-import-you-can-watch'],
+    },
     'Godot import': {
       image: '/img/blog/port_godot_balaur.webp',
       alt: 'Polyglot Pirates in Godot on the left and the converted project in Balaur on the right',

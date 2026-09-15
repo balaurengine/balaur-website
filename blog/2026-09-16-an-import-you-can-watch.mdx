@@ -1,0 +1,42 @@
+---
+description: "A drop or an Import press is now a job the editor steps a few files a frame, with a list of what is coming in and one bar for the batch."
+slug: an-import-you-can-watch
+title: An import you can watch
+authors: [dragos]
+image: /img/manual/editor_import.png
+keywords: [gltf import, aseprite import, godot project import, editor progress bar, asset pipeline]
+---
+
+Dropping a model on the editor used to stop it. The import read the file,
+wrote every part of it, and gave the frame back at the end. A whole Godot
+project stopped it for seconds.
+
+{/* truncate */}
+
+![The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them](/img/manual/editor_import.webp)
+
+An import is now a job the tick steps. It reads the file once, works out every
+path it will write, then writes a few of them a frame and says which. The list
+top right names each import of the batch, counts what has landed, and draws
+one bar for the lot of them.
+
+- One that finishes stays in the list for a few seconds with the number of
+  files it wrote. A batch of four is over in two frames, and a list emptied
+  that fast was never read.
+- A whole project has no plan to write from, because what it writes is found
+  by walking the folder. It is counted by the files it reads instead: ten
+  thousand of them are three hundred small pieces of work.
+- The Assets dock has an Import button. A desktop opens the file picker; a
+  browser tab opens the page's own chooser, which takes several files at once
+  so a `.gltf` arrives with the images it names.
+- While one runs, that button stops it. What it wrote stays: the files are the
+  output rather than a transaction to undo.
+
+## One file at a time
+
+- An import used to hold everything it was going to write before writing any
+  of it. Reading and writing one file at a time took the sprite in the picture
+  from 12.6 MB of held bytes to 550 KB.
+- Nothing here is a thread. The job is parked under the tick, because it writes
+  through the engine's file backend, which in a browser tab is the memory the
+  project already lives in.
