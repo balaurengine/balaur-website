@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What every node has: name, path, transform, children, components and script. Each function takes the node first; scripts call it as a method, `this.node.get_node("Arm")`.
 
-49 functions, 0 constants. Scripts reach it as `node::`.
+55 functions, 0 constants. Scripts reach it as `node::`.
 
 Acts on [`states`](../components/states.md), [`transform`](../components/transform.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -43,20 +43,25 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `has_component(component: string)` | — | Whether the node carries the named component. |
 | `has_method(method: string)` | — | Whether the node's script declares this method, so a caller can tell "no handler" from "a handler that answered nothing". |
 | `has_tag(node, tag: string)` | — | Whether the node is filed under a name. |
+| `interpolate(node)` | — | Whether the node is drawn between fixed steps. |
 | `is_valid()` | — | Whether the node is still in the world; false rather than an error when the value is not a node. |
 | `material(node)` | — | The `material` asset the node names itself, empty when it takes its parent's. |
 | `name()` | — | The node's own name, empty when it carries none. |
 | `parent()` | — | The node's parent, nil at the root. |
 | `patch_component(component: string, params: table)` | — | Change the properties the table names and leave the rest of the component where they were. On a node without the component this adds it, the schema defaults being what it currently holds. |
 | `path()` | — | The node's slash-separated path, built by climbing parents from the node up to the root. |
+| `process(node)` | — | When this node ticks: "inherit", "pausable", "when_paused", "always" or "disabled". "inherit" is the default and takes the nearest ancestor's answer. |
 | `queue_free()` | — | Destroy the node and its subtree at the end of the frame. |
 | `remove_component(component: string)` | — | Take the named component off the node. |
 | `remove_tag(node, tag: string)` | — | Take a name off the node; a name it never had is left alone. |
+| `reset_interpolation(node)` | — | Throw away the poses the node was blending and start again from where it is, so a teleport does not streak across the level. `physics3d.teleport` and `physics2d.teleport` call it for you. |
 | `script_path()` | — | The path of the script attached to the node, nil when it has none. |
 | `set_component(component: string, params: any?)` | — | Give the node the named component, built from the given table over the component's schema defaults. Every property the table leaves out goes back to its default; `patch_component` is the one that changes a property and leaves the rest. |
+| `set_interpolate(node, on: bool)` | — | Draw the node between fixed steps, or stop. Needs `[time] interpolate` on; a body and a script with `fixed_update` ask for it on their own. |
 | `set_material(node, material: string)` | — | Draw the node and every descendant naming none with a `material` asset; empty goes back to the parent's. |
 | `set_name(name: string)` | — | Rename the node, doing nothing when it carries no name. |
 | `set_parent(parent: node)` | — | Move the node under another, keeping where it is in the world; an error for a cycle or a dead parent. |
+| `set_process(node, mode: string)` | — | Set when the node and its subtree tick. "always" runs through a pause, which is what a pause menu is; "when_paused" runs only while paused; "disabled" never runs; "inherit" goes back to the parent's. Physics is one world and is held whole by a pause whatever this says. |
 | `set_sibling_index(index: int)` | — | Move the node to that place among its siblings, clamped to the end. Order is draw order in a `row` or a `column`, and tree order in the digest. |
 | `set_tint(node, r: float, g: float, b: float, a: float?)` | — | Multiply a colour into everything the node and its subtree draw, alpha included, one meaning untinted. A renderable's own `color` is the node's alone; this is the one that inherits. |
 | `set_visible(node, on: bool)` | — | Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides. |
@@ -65,6 +70,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `stable_id()` | — | The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not. |
 | `state()` | [`states`](../components/states.md) | The state the node is in, or "" for the pose the scene gave it. |
 | `tags(node)` | — | The names the node is filed under, sorted. |
+| `ticking(node)` | — | Whether the node ticks this frame, its process mode and the game's pause together. |
 | `tint(node)` | — | The node's own tint as r, g, b, a channel floats; an ancestor's multiplies into it on the way to the screen. |
 | `translate(x: float, y: float, z: float)` | [`transform`](../components/transform.md) | Move the node by an offset in its parent's space, given as three numbers or one vector. |
 | `visible(node)` | — | Whether the node itself is set to draw; an ancestor may still hide it. |

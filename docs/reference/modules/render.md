@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the window, backdrop and debug lines.
 
-58 functions, 30 constants. Scripts reach it as `render::`.
+58 functions, 33 constants. Scripts reach it as `render::`.
 
 Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -83,6 +83,9 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | name | value |
 | --- | --- |
+| `ALPHA_BLEND` | `blend` |
+| `ALPHA_MASK` | `mask` |
+| `ALPHA_OPAQUE` | `opaque` |
 | `CAMERA_2D` | `2d` |
 | `CAMERA_3D` | `3d` |
 | `FOG_EXPONENTIAL` | `exponential` |

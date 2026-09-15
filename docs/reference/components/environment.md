@@ -34,7 +34,7 @@ In a scene, `environment` is the node key that applies it. A script reaches each
 | `shadow_resolution` | int | `2048` | Side of the shadow map, in texels At least 256. |
 | `shadow_softness` | float | `1` | How far a shadow's edge is blurred At least 0. |
 | `shadows` | bool | `true` | Whether any light casts shadows at all |
-| `show_sky` | bool | `true` | False lights the scene from the sky without drawing it, leaving the background colour |
+| `show_sky` | bool | `true` | False turns the sky off entirely: it stops drawing and stops lighting. The renderer has one dial for both |
 | `sky` | string | — | Equirectangular image, project-relative: .hdr, .exr or .png. It draws behind the scene and lights it. Empty is no sky |
 | `sky_intensity` | float | `1` | Brightness of the sky, and of the light it casts At least 0. |
 | `sky_rotation` | float | `0` | Turn of the sky about y, in degrees |

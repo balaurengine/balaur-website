@@ -17,6 +17,7 @@ Geometry for `mesh` properties: a `source` file, a primitive `kind`, or its own 
 id = "blade"
 type = "mesh"
 source = "models/blade.obj"      # imported...
+part = "stone"                   # glTF only: just this material's triangles
 # ...or a primitive, one of ball, cuboid, capsule, cylinder, cone, plane,
 # torus, pyramid, prism, tube:
 kind = "torus"

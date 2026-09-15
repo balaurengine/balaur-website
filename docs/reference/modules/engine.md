@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The running app: its clock, command-line `args`, `user_data_dir`, loaded `plugins` and `quit`.
 
-20 functions, 0 constants. Scripts reach it as `engine::`.
+25 functions, 0 constants. Scripts reach it as `engine::`.
 
 ## Functions
 
@@ -25,6 +25,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `focused()` | — | Whether the window is in front of the player this tick; every script's `on_focus_changed(bool)` is called when it changes. True with no window. |
 | `has_plugin(name: string)` | — | Whether one plugin loaded, so a game shipped without `http` can say so rather than call into a module that is not there. |
 | `open_url(url: string)` | — | Open an http, https or mailto URL in whatever the player browses with: an opener on a desktop, a new tab on the web. Not on iOS or Android yet, where it reports that it has no opener. An effect on the world outside the game: never recorded, and it does nothing while a recording plays. |
+| `paused()` | — | Whether the game is paused. |
 | `platform()` | — | Where this runs: `{ os, web, mobile, touchscreen, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
 | `plugin_version(name: string)` | — | The version of one loaded plugin, or nil when it did not load. |
 | `plugins()` | — | Every plugin this build loaded, named, in load order. |
@@ -33,8 +34,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `reload_script(key: string)` | — | Recompile one script by its project-relative key, for a tool editing files outside the watched root. |
 | `reveal(path: string)` | — | Show a file or directory in the system file manager, selected where the platform can. Desktops only: neither a browser tab nor a phone has a file manager to ask. Never recorded, like `open_url`. |
 | `script_costs()` | — | What each script has cost since `profile_scripts(true)`, dearest first: a list of `{ path, calls, instructions }`. Instructions, not seconds, so the number is the same on every machine. |
+| `set_paused(on: bool)` | — | Pause or resume the game. Every node whose `process` mode is `pausable` stops ticking, physics holds both worlds, and the frame loop keeps drawing; an `always` subtree is what a pause menu runs in. Every script's `on_paused(bool)` follows, the ones the pause just stopped included. |
+| `set_time_scale(scale: float)` | — | Multiply wall-clock time before the simulation is owed it: 0.5 is slow motion, 2.0 fast forward, each still whole fixed steps. Zero stops time without stopping a single node. A replay and a networked session drive by tick and ignore it. |
 | `tick()` | — | Which frame this is, counted whole: what simulation code branches on instead of `time`. |
+| `tick_hz()` | — | How many fixed steps a second this run takes, from `[time] tick_hz`. 60 unless the project says otherwise. |
 | `time()` | — | Seconds of engine time since the app started, accumulated as a float. |
+| `time_scale()` | — | What time is being multiplied by; 1.0 is real time. |
 | `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only: branching a `fixed_update` on wall time desyncs, and nothing records it. |
 | `unix_time()` | — | The wall clock at the top of this tick, in seconds since 1970. Read once per frame and recorded, so a replay sees the time the recording saw. |
 | `user_data_dir()` | — | A writable per-user directory for saves and settings, created on first call and named after the project. |

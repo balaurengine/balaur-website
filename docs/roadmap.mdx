@@ -230,6 +230,12 @@ import Roadmap from '@site/src/components/Roadmap';
         ],
       },
       {
+        group: "Editor",
+        title: 'An import that does not stop the editor',
+        text: <>A job that reports each file it writes, a toast when it ends, and an Import button in the Assets dock.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-import-jobs.md',
+      },
+      {
         group: "Scripts and assets",
         title: 'A bad call caught before it runs',
         text: <><code>balaur check</code> reads the scene beside the script and resolves a component's method against the table the run time uses.</>,
@@ -244,7 +250,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Scripts and assets",
         title: 'Godot import',
-        text: <><code>balaur import</code> over <code>project.godot</code>, <code>.tscn</code>, <code>.tres</code> and <code>.gdshader</code>, writing scenes, assets and a report naming what did not convert.</>,
+        text: <><code>balaur import</code> over <code>project.godot</code>, <code>.tscn</code>, <code>.tres</code> and <code>.gdshader</code>, writing scenes, assets, script bodies and a report naming what did not convert.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md',
         done: true,
         image: "/img/blog/port_godot_balaur.webp",
@@ -252,20 +258,6 @@ import Roadmap from '@site/src/components/Roadmap';
         posts: [
           {slug: "porting-a-godot-game", title: "Godot to Balaur importer"},
         ],
-      },
-      {
-        group: "Scripts and assets",
-        title: 'One way to say each thing',
-        text: <>One spelling per scene key and one call per script action: handles over module functions, fields over setters, tables over shorthands.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-one-way.md',
-        done: true,
-      },
-      {
-        group: "Scripts and assets",
-        title: 'GDScript bodies',
-        text: <>Each <code>.gd</code> function's body translated to Rune, with a Variant shim, and a marked comment where a line did not carry.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gdscript.md',
-        done: true,
       },
       {
         group: "Physics and animation",
@@ -284,13 +276,6 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Animation blending',
         text: <>State machines that crossfade between clips, authored or converted from an <code>AnimationTree</code>, and blend trees so a rig can run two clips at once.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
-      },
-      {
-        group: "Physics and animation",
-        title: 'Visibility and tint on a track',
-        text: <><code>visible</code> and <code>tint</code> as clip properties on the appearance every node carries, and names and flags on any component property, held from key to key.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#22-visible-as-an-animation-track',
-        done: true,
       },
       {
         group: "Physics and animation",
@@ -330,13 +315,6 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "User interface",
-        title: 'A picture that clicks, and checks that are exclusive',
-        text: <>An <code>image</code> naming an <code>on_click</code> senses it, a <code>group</code> makes a radio row, a <code>button</code> takes a picture, and every Godot anchor preset maps.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#24-the-widget-kinds',
-        done: true,
-      },
-      {
-        group: "User interface",
         title: 'Text a game can edit',
         text: <>A <code>text_area</code>, a <code>code</code> kind with the editor's gutter, a <code>drag_value</code> with arrows and units, labels a drag selects, and <code>[url]</code> and <code>[hint]</code> marks.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-widgets.md#text',
@@ -346,13 +324,6 @@ import Roadmap from '@site/src/components/Roadmap';
         posts: [
           {slug: "links-hints-and-selectable-text", title: "Links, hints and selectable text"},
         ],
-      },
-      {
-        group: "Rendering",
-        title: 'An inherited tint',
-        text: <>A colour multiplied down a subtree, so one key fades a whole panel or rig rather than one per node.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-godot-import.md#21-an-inherited-tint',
-        done: true,
       },
       {
         group: "Rendering",
@@ -371,20 +342,6 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Sessions from a script',
         text: <>Host, join and leave from Rune, with a roster bound to links and <code>peer</code>, <code>host</code> and headless <code>server</code> roles.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md',
-      },
-      {
-        group: "Shipping",
-        title: 'Signed releases',
-        text: <>Signed binaries per platform, cut by the release workflow.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release.md#binary-releases',
-        done: true,
-      },
-      {
-        group: "Shipping",
-        title: 'Update channels',
-        text: <><code>balaur update --channel alpha</code> follows a rolling tag per line, and a build tracks the channel its own version names.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-release-channels.md',
-        done: true,
       },
     ],
   },

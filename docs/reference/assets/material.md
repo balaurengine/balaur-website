@@ -20,4 +20,19 @@ shader = "shaders/water.wesl"
 features = { lit = true }
 # a number is an f32, [x, y] a vec2, [x, y, z] a vec3, [x, y, z, w] or "#rrggbb"/"#rrggbbaa" a vec4
 params = { speed = 0.4, tint = "#3aa0ff" }
+
+# How a node drawing it rasterizes, rather than what colour it comes out.
+[surface]
+alpha = "blend"              # opaque, mask (a cutout), or blend
+alpha_cutoff = 0.5           # what a mask drops a fragment below
+double_sided = true
+transmission = 0.9           # above zero is glass: it refracts the scene behind it
+ior = 1.5                    # how sharply it bends light
+thickness = 0.2              # how far light travels inside it, in world units
+attenuation_color = "#dff0ea"
+attenuation_distance = 2.0
+mirror = true                # show the scene reflected in this surface's own plane
+mirror_intensity = 1.0
+mirror_falloff = 0.0         # above zero fades the reflection as the surface turns away
+mirror_normal = [0.0, 1.0, 0.0]   # which way the plane faces in the node's own space
 ```
