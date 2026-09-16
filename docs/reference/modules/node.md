@@ -67,7 +67,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_visible(node, on: bool)` | — | Show or hide the node and everything under it. Physics is untouched: a hidden collider still collides. |
 | `set_z_index(node, z: int, relative: bool)` | — | Put the node and its subtree on a draw layer: higher draws later. Relative by default, adding to the parent's layer; false makes it absolute. |
 | `sibling_index()` | — | Where the node sits among its parent's children, counting from zero; 0 at the root. |
-| `stable_id()` | — | The node's stable id, what a scene file declared or what `ids::mint` gave a spawned node, empty when it carries none. Survives rename and reparent, which a path does not. |
+| `stable_id()` | — | The node's stable id: what a scene file declared, or what it was given when it was spawned. Survives rename and reparent, which a path does not. |
 | `state()` | [`states`](../components/states.md) | The state the node is in, or "" for the pose the scene gave it. |
 | `tags(node)` | — | The names the node is filed under, sorted. |
 | `ticking(node)` | — | Whether the node ticks this frame, its process mode and the game's pause together. |
