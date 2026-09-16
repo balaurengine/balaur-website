@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Immediate-mode UI redrawn from a script's `draw_ui` every frame: panels, layout containers and widgets. HUD elements in the scene tree are the `widget` component.
 
-61 functions, 65 constants. Scripts reach it as `ui::`.
+64 functions, 65 constants. Scripts reach it as `ui::`.
 
 ## Functions
 
@@ -22,6 +22,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `add_space(float)` | — | Insert blank space along the current layout, in design pixels. |
 | `available_height() -> float` | — | The height left in the current container, in design pixels. |
 | `available_width() -> float` | — | The width left in the current container, in design pixels. |
+| `bar(float, any?)` | — | Draw how far along something is: a `track` with `part` of it filled in `fill`, `width` by `height` design pixels, cornered by `radius`. `part` is 0 to 1, and one outside that is held at the nearest end. |
 | `bottom_panel(string, any?, fn) -> float` | — | Dock a strip across the bottom of the window and draw the callback inside it; `height` is in design pixels. Answers the height it ended up with. |
 | `central_panel(any?, fn)` | — | Draw the callback into whatever room the docked panels left over. |
 | `central_rect() -> float, float, float, float` | — | The x, y, width and height of the surface being drawn into, in design pixels. |
@@ -46,6 +47,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `label(string, any?)` | — | Draw a line of text; `size`, `font`, `color`, `strong`, `wrap` and `truncate` style it. |
 | `left_panel(string, any?, fn) -> float` | — | Dock a column down the left of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
 | `list(string, any?, int, fn)` | — | A scroll area of `count` rows of one height, calling the callback only for the rows on screen. `row_height` is the row, in design pixels. |
+| `loaded()` | — | Say the load is through, which lets a held splash go once `splash_seconds` has also passed. The editor calls it once its shell has settled. |
 | `menu_item(string, any?) -> bool` | — | Draw a row inside a menu, `width` design pixels across and with `trailing` set against its right edge; true on the frame it was clicked, which also closes the menu unless `keep_open` says otherwise. |
 | `modal(string, any?, fn) -> bool` | — | Draw the callback in a centered dialog over a dimming scrim; true on the frame the scrim was clicked. `width`, `height` and `top` size and place it, `fill`, `stroke` and `scrim` colour it; height follows the content when it is not given. |
 | `overlay(string, any?, fn)` | — | Draw the callback in a foreground area at `x`/`y` design pixels, above the panels and the widget layer. `w`/`h` fix its size, and `fill`, `stroke`, `radius` and padding make it a sheet. `interactive = false` for one that is only read, which hands its clicks to what is behind it. |
@@ -62,6 +64,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_focus(node)` | — | Put focus on a widget node. A node focus cannot activate is refused at the next draw. |
 | `set_keyboard_focus(bool)` | — | Let the arrows, Tab, Enter and Space move and activate the focused widget. Off unless asked for, so a game that moves with the arrows does not click its own HUD; `standard_app` turns it on for a project declaring the `ui_*` actions. |
 | `set_lazy(bool)` | — | Run the UI pass only when something asks for it (input, `request_repaint`, a log line, an asset reload, an egui animation, or the idle tick every 250 ms, which waits out a drag the UI is no part of) and re-present the last pass in between. Off by default: a HUD that reads live state each frame should leave it off. Ignored offscreen. |
+| `set_loading(float, string?)` | — | Report how far a load is, zero to one. This is what holds `[application] splash` past its seconds, and what draws the bar under it. |
 | `set_scale(float)` | — | Set the global UI scale, clamped to between 0.25 and 3.0. It is egui's zoom factor, so it grows every control and every font; `screen_size` already answers in the design pixels it leaves. |
 | `set_text(string, string)` | — | Overwrite what the field with this `id` is editing, leaving the seed its `value` option last wrote alone. |
 | `set_theme(any)` | — | Replace the theme: `name = "#rrggbb"` colour tokens, `dark = true\|false`, and a `roles` table of named looks a widget takes with `role:`. |

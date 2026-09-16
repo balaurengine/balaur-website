@@ -34,6 +34,29 @@ balaur play my-game.bpak     # run from bytecode only
 - Packed execution interprets precompiled bytecode, with no JIT. CI
   cross-compiles to iOS, Android and WebAssembly on every push.
 
+## The splash
+
+A game's first frames have nothing to draw yet. `[application] splash` is the
+picture that goes over them, on every target, a browser tab included. It is
+project-relative, fits the screen and keeps its aspect.
+
+```toml
+[application]
+splash = "art/logo.png"
+splash_seconds = 1.5
+```
+
+A script that reports a load holds the splash past its seconds, and draws a bar
+under the picture. One that reports nothing leaves at its seconds.
+
+```rune
+ui::set_loading(0.4, "textures");
+ui::loaded();
+```
+
+The seconds are engine time, so a recorded session replays the splash for as
+long as the run showed it.
+
 ## Fused executables
 
 ```bash

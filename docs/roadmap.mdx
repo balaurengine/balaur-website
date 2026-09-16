@@ -246,11 +246,17 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'A bad call caught before it runs',
         text: <><code>balaur check</code> reads the scene beside the script and resolves a component's method against the table the run time uses.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-script-analysis.md',
+        done: true,
+        image: "/img/blog/script_problems.webp",
+        alt: "The Script persona with a misspelled component method underlined, and the Problems dock naming the line and the method",
+        posts: [
+          {slug: "checking-a-script-against-its-scene", title: "Checking a script against its scene"},
+        ],
       },
       {
         group: "Scripts and assets",
         title: 'Texture import settings',
-        text: <>Repeat, mipmaps, anisotropy and premultiplied alpha, which wait on a sampler the renderer does not expose, plus GPU compression at export.</>,
+        text: <>GPU compression and a <code>max_size</code> cap at export, and <code>balaur atlas</code>, over the sidecar and sampler settings already beside each file.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-textures.md',
       },
       {
@@ -348,6 +354,17 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Sessions from a script',
         text: <>Host, join and leave from Rune, with a roster bound to links and <code>peer</code>, <code>host</code> and headless <code>server</code> roles.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md',
+      },
+      {
+        group: "Shipping",
+        title: 'A splash while a game loads',
+        text: <>A picture over the first frames on every target, held past its seconds while a script reports what it is loading.</>,
+        done: true,
+        image: "/img/blog/editor_splash.webp",
+        alt: "The editor's own splash: the logo centred on black with a loading bar under it",
+        posts: [
+          {slug: "the-first-frame-a-game-shows", title: "The first frame a game shows"},
+        ],
       },
     ],
   },

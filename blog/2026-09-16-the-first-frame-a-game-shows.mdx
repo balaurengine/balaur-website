@@ -1,0 +1,48 @@
+---
+description: "Balaur devlog: a splash picture over the first frames on every target, held while a script reports what it is loading, with a bar under it."
+slug: the-first-frame-a-game-shows
+title: The first frame a game shows
+authors: [dragos]
+image: /img/blog/editor_splash.webp
+keywords: [splash screen, loading bar, game startup, first frame, application settings]
+---
+
+A game's first frames are the ones with nothing to draw: the scene is being
+built, the textures are being uploaded, and the window is already open.
+`[application] splash` is the picture that goes there.
+
+{/* truncate */}
+
+![The editor's own splash: the logo centred on black with a loading bar under it](/img/blog/editor_splash.webp)
+
+Two lines in `project.toml` are the whole of it. The picture is
+project-relative, fits itself to the screen and keeps its aspect, and shows on
+every target the engine builds for, a browser tab included.
+
+```toml
+[application]
+splash = "art/logo.png"
+splash_seconds = 1.5
+```
+
+A load that takes longer than its seconds holds the splash. There is no
+setting for that. A run that reports a load is held until it says it is
+through, and a run that reports nothing goes when its seconds are up.
+
+```rune
+ui::set_loading(0.4, "textures");
+// ...
+ui::loaded();
+```
+
+- `set_loading` takes a fraction and a label, and draws a bar under the
+  picture in the theme's accent colour.
+- `loaded` says the load is through. The splash goes once the seconds have
+  also passed, so a fast machine still shows the logo rather than flashing it.
+- The editor drives its own with these: the first pass places the docks, the
+  second fills the tree, and the third is the first frame with everything in
+  place.
+- The seconds are engine time, so a recorded session replays the splash for
+  exactly as long as the run showed it.
+
+The manual has it under [Shipping](/docs/manual/shipping#the-splash).

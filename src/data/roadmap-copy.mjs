@@ -74,6 +74,16 @@ hide_table_of_contents: true
       alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
       posts: ['an-import-you-can-watch'],
     },
+    'A bad call caught before it runs': {
+      image: '/img/blog/script_problems.webp',
+      alt: 'The Script persona with a misspelled component method underlined, and the Problems dock naming the line and the method',
+      posts: ['checking-a-script-against-its-scene'],
+    },
+    'A splash while a game loads': {
+      image: '/img/blog/editor_splash.webp',
+      alt: "The editor's own splash: the logo centred on black with a loading bar under it",
+      posts: ['the-first-frame-a-game-shows'],
+    },
     'Godot import': {
       image: '/img/blog/port_godot_balaur.webp',
       alt: 'Polyglot Pirates in Godot on the left and the converted project in Balaur on the right',

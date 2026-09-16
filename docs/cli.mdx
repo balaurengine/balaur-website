@@ -30,6 +30,12 @@ balaur play my-game.bpak    # run from bytecode only
 | `play <pack>` | Run a pack, with no compiler and no watcher |
 | `import <file> --project <path>` | Bring a file in: a `.glb` model, an `.aseprite` sprite, a `.tmx` or `.ldtk` level, or a `project.godot` |
 | `replay <session>` | Play back a session recorded with `run --record`; `--verify` re-checks every tick |
+| `check <path>` | Compile every script a scene attaches without running it, and print each finding with its file and line |
+| `test <path>` | Attach every `tests/**/*.rn` to a fresh node in a headless copy and tick it; a script error or a failed `assert!` fails the run |
+| `fmt <path>` | Format every script in a project with Rune's own formatter |
+| `lsp` | Serve the same checks over the Language Server Protocol, for an editor outside Balaur |
+| `shrink <path>` | Write smaller copies of a project's images for one target, which an export folds onto the names the scenes already use |
+| `update` | Update this install to the newest build on its channel: the binary, the bundled editor and its runtime template |
 | `api` | Dump every script module, function and constant as JSON |
 
 ## Run modes
