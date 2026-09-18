@@ -255,7 +255,10 @@ the theme. Call the history recorder before mutating the document.
 
 Each list is optional.
 
-- `docks` and `windows` take a `draw(S, k)`; `commands` a `run(S)`.
+- `docks` and `windows` take a `draw(S, k)`; `commands` a `run(S)`. A dock
+  with `tall: true` makes the bottom dock grow while it is open. One with
+  `scrolls: true` brings its own scroll, as `pages` does, instead of the
+  dock's.
 - `sections` are `draw(S, k, node)`, drawn under the built-in inspector.
 - `overlays` are `draw(S)` and draw viewport lines.
 - `editors` map a schema datatype to `draw(S, k, target, spec, value)`,
@@ -269,6 +272,7 @@ function: bind it to a local, then call it.
 | Part | Draws |
 | --- | --- |
 | `tabs(S, k, id, names)` | A row of tabs that wraps, and answers the open one |
+| `pages(S, k, id, groups, draw)` | A sidebar of pages beside the open one, or a dropdown when narrow |
 | `tree(S, k, id, value, opts)` | A map or list that opens and closes; `edit` makes leaves fields |
 | `field(S, k, label, value, opts)` | A labelled value; `mask` hides it, `copy` adds a copy button |
 | `section(k, title)`, `empty(k, text)` | A heading, and what an empty panel says |
@@ -281,6 +285,11 @@ pub fn draw(S, k) {
     field(S, k, "token", "abcd1234efgh5678", #{ mask: true, copy: true });
 }
 ```
+
+`pages` calls back into your plugin to draw a page. Give it a function
+wrapped once with `script::shared(page, 3)` and kept in `state()`. A closure
+passed straight in runs against the editor's code, not yours. A dock drawn
+with `pages` registers with `scrolls: true`.
 
 The editor's User data dock is `files` over the open game's user data
 folder. Saves and prefs open there as structures you can edit. A game played
