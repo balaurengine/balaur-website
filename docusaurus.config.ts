@@ -1,5 +1,7 @@
+import {mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync} from 'node:fs';
+import {join} from 'node:path';
 import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import type {Config, Plugin} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -23,6 +25,23 @@ const jsonLd = (data: object) => ({
   innerHTML: JSON.stringify(data),
 });
 
+// GitHub Pages' CDN caches by path and ignores the query, so a built site
+// serves the web build under /play/<stamp>/, and /play/version.json names the
+// stamp for a page built before the last deploy (src/play.ts).
+const playStamp = ({siteDir}: {siteDir: string}): Plugin => ({
+  name: 'play-stamp',
+  async postBuild({outDir}) {
+    const stamp = join(siteDir, 'src/play-version.json');
+    const {v} = JSON.parse(readFileSync(stamp, 'utf8')) as {v: string};
+    const play = join(outDir, 'play');
+    mkdirSync(join(play, v));
+    for (const name of readdirSync(play)) {
+      if (/\.(js|wasm|bpak)$/.test(name)) renameSync(join(play, name), join(play, v, name));
+    }
+    writeFileSync(join(play, 'version.json'), JSON.stringify({v}) + '\n');
+  },
+});
+
 const config: Config = {
   title: 'Balaur',
   tagline: 'A 2D & 3D node-based game engine, fully deterministic, with scripts that reload in milliseconds.',
@@ -34,6 +53,7 @@ const config: Config = {
     mermaid: true,
   },
   clientModules: ['./src/searchChord.ts'],
+  plugins: [playStamp],
 
   themes: [
     '@docusaurus/theme-mermaid',

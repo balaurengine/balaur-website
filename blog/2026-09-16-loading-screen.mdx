@@ -1,0 +1,43 @@
+---
+description: "Balaur devlog: added support for loading screen, with customizable time and progress bar."
+slug: loading-screen
+title: Loading screen
+authors: [dragos]
+image: /img/blog/editor_splash.webp
+keywords: [splash screen, loading bar, game startup, first frame, application settings]
+---
+
+Added support to Balaur for loading / splash screen.
+Now, while the game loads the assets and the engine itself gets ready,
+a nice progress bar and an image will show for a few seconds (configurable).
+
+{/* truncate */}
+
+![Splash screen](/img/blog/editor_splash.webp)
+
+It is also configurable in the `project.toml` file:
+
+```toml
+[application]
+splash = "art/logo.png"
+splash_seconds = 1.5
+```
+
+It can also be reused if needed for other parts of the game, from Rune:
+
+```rune
+ui::set_loading(0.4, "textures");
+// ...
+ui::loaded();
+```
+
+- `set_loading` takes a fraction and a label, and draws a bar under the
+  picture in the theme's accent colour.
+- `loaded` finished the loading early.
+
+
+## Docs
+
+Read more about it here:
+
+- [Shipping](/docs/manual/shipping#the-splash).

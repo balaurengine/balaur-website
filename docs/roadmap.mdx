@@ -101,7 +101,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Physics and animation",
         title: 'Rigs and animation',
-        text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls and tweens.</>,
+        text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls, tweens, crossfades and state machines.</>,
         done: true,
         image: "/img/manual/rigging_modifiers.webp",
         alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
@@ -285,12 +285,6 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Physics and animation",
-        title: 'Animation blending',
-        text: <>State machines that crossfade between clips, authored or converted from an <code>AnimationTree</code>, and blend trees so a rig can run two clips at once.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
-      },
-      {
-        group: "Physics and animation",
         title: 'Pause, time scale and smooth frames',
         text: <>A <code>process</code> mode per subtree, time scale, interpolation between fixed steps, <code>max_fps</code>, vsync, and a tick rate setting.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-time.md',
@@ -351,9 +345,9 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Networking",
-        title: 'Sessions from a script',
-        text: <>Host, join and leave from Rune, with a roster bound to links and <code>peer</code>, <code>host</code> and headless <code>server</code> roles.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md',
+        title: 'Multiplayer from a script',
+        text: <>A <code>multiplayer</code> module to host, join and leave a match from Rune, on a player's machine or a headless server.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-multiplayer.md',
       },
       {
         group: "Shipping",
@@ -447,9 +441,9 @@ import Roadmap from '@site/src/components/Roadmap';
     items: [
       {
         group: "Editor",
-        title: 'Network dock and Play as two',
-        text: <>Two peers started from the editor, with the link and its stats in a dock.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
+        title: 'Multiplayer dock and Play as two',
+        text: <>A second instance of the game started from the editor, with each link and its stats in a dock.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-multiplayer.md#3-steps',
       },
       {
         group: "Rendering",
@@ -467,7 +461,7 @@ import Roadmap from '@site/src/components/Roadmap';
         group: "Networking",
         title: 'Late join, reconnect and host migration',
         text: <>Under lockstep, out of the snapshot ring.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-sessions.md#3-steps',
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-multiplayer.md#3-steps',
       },
       {
         group: "Networking",
@@ -517,6 +511,12 @@ import Roadmap from '@site/src/components/Roadmap';
         text: <>In place of <code>rest</code> and <code>push</code>, over the nine calls the <code>gamend</code> module has today.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#engine-side-in-this-repository',
       },
+      {
+        group: "Gamend",
+        title: 'A Gamend dock',
+        text: <>The socket, the signed-in user, the lobby and its members, and each hook call with its reply, in the editor.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#engine-side-in-this-repository',
+      },
     ],
   },
   {
@@ -551,7 +551,7 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Gameplay and audio",
-        title: 'Voice in a session',
+        title: 'Voice in a match',
         text: <>Capture, Opus, a jitter buffer, push-to-talk, echo cancellation and positional voice, never entering the simulation or the digest.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-voice.md',
       },
@@ -700,7 +700,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Gamend",
         title: 'A WebRTC relay for browsers',
-        text: <>So a browser peer joins a session through Gamend.</>,
+        text: <>So a browser peer joins a match through Gamend.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2-the-surface',
       },
       {

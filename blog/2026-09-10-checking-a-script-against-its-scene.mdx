@@ -7,9 +7,10 @@ image: /img/blog/script_problems.webp
 keywords: [static analysis, rune, balaur check, component methods, editor problems panel]
 ---
 
-A misspelled component method used to be found the first time that line ran,
-which for a death animation or a shop screen could be weeks. `balaur check`
-now resolves it against the same table the run time reads from.
+`balaur check` resolves each component method a script calls against the same
+table the run time reads from. A misspelled one fails the check rather than
+waiting for its line to run, which for a death animation or a shop screen can
+be weeks.
 
 {/* truncate */}
 

@@ -8,8 +8,28 @@ import playVersion from '@site/src/play-version.json';
 
 const PLAY_VERSION: string = playVersion.v;
 
+// A built site serves the files under /play/<stamp>/ (the play-stamp plugin in
+// docusaurus.config.ts); the development server serves static/play/ as it is.
+const STAMPED_PATH = process.env.NODE_ENV === 'production';
+
+// Set by loadEngine to the build the server holds, so every pack comes from
+// the same build as the module.
+let playDir = `/play/${PLAY_VERSION}/`;
+
 /** The URL of one file of the web build, stamped. */
-export const playUrl = (file: string): string => `/play/${file}?v=${PLAY_VERSION}`;
+export const playUrl = (file: string): string =>
+  STAMPED_PATH ? playDir + file : `/play/${file}?v=${PLAY_VERSION}`;
+
+/** The stamp of the build the server holds now, which is newer than this page's after a deploy. */
+async function servedVersion(): Promise<string> {
+  try {
+    const response = await fetch('/play/version.json', {cache: 'no-cache'});
+    if (response.ok) return ((await response.json()) as {v: string}).v;
+  } catch {
+    // Offline or blocked: the build this page was made with.
+  }
+  return PLAY_VERSION;
+}
 
 /** One project kept in this browser, as the engine records it. */
 export type ProjectRow = {id: string; name: string; modified: number};
@@ -78,6 +98,7 @@ export const keepsProjects = (engine: Engine): engine is Engine & Kept =>
 
 /** Fetch the glue and the module and initialise them. */
 export async function loadEngine(): Promise<Engine> {
+  if (STAMPED_PATH) playDir = `/play/${await servedVersion()}/`;
   // A runtime URL, not a source module: through a variable so neither
   // TypeScript nor webpack tries to resolve it at build time.
   const url = playUrl('balaur.js');

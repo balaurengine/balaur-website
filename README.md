@@ -6,45 +6,50 @@ The source for [balaurengine.org](https://balaurengine.org), the site and docs f
 
 Made by [Dragos Daian (@Ughuuu)](https://github.com/Ughuuu) and [Sébastien Crozet (@sebcrozet)](https://github.com/sebcrozet).
 
-## Installation
+## Run it
+
+Node 22 (`.nvmrc`) and Yarn 4, which `package.json` pins through Corepack:
 
 ```bash
-npm install
+corepack enable
+yarn
+yarn start
 ```
 
-**Note**: feel free to use the package manager of your choice.
+`yarn start` runs the generators first, then serves the site with live reload.
+Two of them read GitHub, so the first start needs the network.
 
-## Local Development
+## Check and build
 
 ```bash
-npm run start
+yarn lint        # prose limits on blog/ and docs/
+yarn typecheck
+yarn build       # writes build/
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+## Content from the engine
 
-## Build
+The reference, roadmap, benchmarks and the web build come from the
+[engine repository](https://github.com/balaurengine/balaur):
 
 ```bash
-npm run build
+./scripts/sync-docs.sh
+./scripts/sync-play.sh
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+Both fetch from GitHub. `BALAUR_REPO=../balaur` copies from a local checkout
+instead.
 
 ## Deployment
 
-Using SSH:
+Every push to `main` builds and deploys the site through GitHub Actions
+(`.github/workflows/deploy.yml`), and so does each engine nightly. A pull
+request builds without deploying.
 
-```bash
-USE_SSH=true npm run deploy
-```
+## Contributing
 
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> npm run deploy
-```
-
-If you are using GitHub Pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+[`AGENTS.md`](AGENTS.md) holds the rules for this repository: generated files,
+the prose limits and the writing rules for site copy.
 
 ## License
 

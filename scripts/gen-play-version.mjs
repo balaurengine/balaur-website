@@ -1,7 +1,8 @@
 // Stamp the web build with a content hash so the page loads `balaur.js`, the
-// wasm module and the packs as one matching set. The CDN caches `.js` for
-// hours and `.wasm` for minutes; without the stamp a deploy could pair an old
-// glue with a new module and fail with a missing wasm-bindgen export.
+// wasm module and the packs as one matching set. A built site serves them
+// under /play/<stamp>/ (the play-stamp plugin in docusaurus.config.ts): the
+// CDN ignores a query, so only a new path keeps a deploy from pairing an old
+// glue with a new module, which fails with a missing wasm-bindgen export.
 import {createHash} from 'node:crypto';
 import {existsSync, readdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';

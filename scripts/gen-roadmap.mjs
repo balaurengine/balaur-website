@@ -16,17 +16,18 @@
 // listed in `essays` — so a feature ships with a picture and a post, and a post
 // is about something the roadmap has a row for.
 //
-// Two severities. A malformed source is fatal, because there is no page to
-// write without it. Everything else — a row over the sentence or word limit, a
-// missing shot, a post nothing names — is a warning: the page still renders, so
-// a deploy is never held up by prose in a file this repository does not own.
+// Two severities. A source it cannot read or parse keeps the committed page,
+// and is fatal only when there is none. Everything else — a row over the
+// sentence or word limit, a missing shot, a post nothing names — is a warning:
+// the page still renders, so a deploy is never held up by prose in a file this
+// repository does not own.
 // `--strict` turns the warnings back into failures, which is how the engine
 // repository holds its own docs/ROADMAP.md to the limits.
 //
 // Usage:
 //   node scripts/gen-roadmap.mjs            write docs/roadmap.mdx
 //   node scripts/gen-roadmap.mjs --check    fail if the file is not what this
-//                                           would write (CI, and `yarn build`)
+//                                           would write
 //   node scripts/gen-roadmap.mjs --strict   fail on a warning too
 //
 // The engine file comes from BALAUR_REPO if that is set, and otherwise from

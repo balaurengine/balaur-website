@@ -77,7 +77,8 @@ node as its body.
 | `Input.is_action_just_pressed("jump")` | `input::action_just_pressed("jump")` |
 | `Input.get_axis("left", "right")` | `input::action_value("move_x")`: one action, -1 to 1 |
 | `InputMap` in project settings | `[input.actions]` in `project.toml` ([input](/docs/manual/input)) |
-| `$AnimationPlayer.play("run")` | `animation::play(this.node, "run")` |
+| `$AnimationPlayer.play("run")` | `this.node.animation.play("run")` |
+| `$AnimationTree["parameters/playback"].travel("run")` | `this.node.state_machine.travel("run")` |
 | `create_tween().tween_property(...)` | `animation::tween(this.node, #{ steps: [...] })`: Godot's easing names |
 | `await get_tree().create_timer(1.0).timeout` | `task::wait(...)` in an `async fn`; results land at the start of a tick |
 | `HTTPRequest` | `http::request(url)` ([networking](/docs/manual/networking)) |

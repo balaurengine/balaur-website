@@ -1,7 +1,7 @@
 ---
 title: "Animation: clips, tweens, skeletons and IK"
 sidebar_label: "Animation"
-description: "Animation in Balaur: clips with tracks and easings, tweens from scripts, 2D bones with skinned polygons, 3D rigs from glTF, look-at and two-bone IK."
+description: "Animation in Balaur: clips and easings, crossfades and state machines, tweens, 2D bones with skinned polygons, 3D rigs from glTF, and IK."
 image: "/img/social/animation.png"
 sidebar_position: 5
 ---
@@ -66,9 +66,10 @@ autoplay = "patrol"
 ## The script module
 
 ```rune
-animation::play(this.node, "hop", #{ speed: 1.0 });
-animation::pause(this.node);   // resume continues; stop ends
-animation::queue(this.node, "wave");
+this.node.animation.play("hop", #{ speed: 1.0 });
+this.node.animation.pause();   // resume continues
+this.node.animation.queue("wave");
+animation::stop(this.node);    // takes a node or a tween handle
 
 pub fn on_reached_end(this) {   // called by the clip's method track
     // ...
@@ -79,6 +80,63 @@ Also `seek`, `time`, `current`, `is_playing`, `just_finished`, and `define`,
 which builds a clip from an object at run time. `is_tween_running(handle)`
 answers for a tween.
 
+Every word a clip or a machine spells has a constant, such as
+`animation::LOOP_PINGPONG`, `animation::INTERP_CUBIC` and
+`animation::EASE_OUT_BACK`, so a script never spells one as a string.
+
+## Crossfades and state machines
+
+`fade` on `play` blends out of the current clip over that many seconds. A
+track only the old clip keys follows it out, and a fade started mid-fade
+blends from where the last one had got to.
+
+```rune
+this.node.animation.play("run", #{ fade: 0.2, ease: animation::EASE_IN_OUT_SINE });
+```
+
+A `state_machine` asset names states, each a clip of the player's library,
+and the transitions between them. The `state_machine` component runs one.
+
+```toml
+# animations/hero_machine.toml
+type = "state_machine"
+start = "idle"
+
+[states]
+idle = ""                # "" plays the clip named like the state
+run = "run_cycle"
+
+[[transitions]]
+from = "idle"
+to = "run"
+advance = "auto"         # disabled | enabled (travel only) | auto
+condition = "moving"
+fade = 0.2
+```
+
+```toml
+# in the scene
+[nodes.state_machine]
+machine = "animations/hero_machine.toml"
+```
+
+```rune
+this.node.state_machine.set_condition("moving", true);
+this.node.state_machine.travel("jump");   // the cheapest chain of transitions
+let now = this.node.state_machine.state();
+
+pub fn on_state_started(this, state) {
+    // also `on_state_finished`, and the `state_started` event
+}
+```
+
+- A transition also takes `switch` (`immediate | sync | at_end`), `ease`,
+  `priority`, `reset` and `break_loop`, as Godot's transitions do.
+- `jump` cuts to a state with no fade.
+- `balaur import` converts an `AnimationTree` whose root is a state machine.
+  Blend trees are not supported.
+- `examples/rig` crossfades a wave and a bow with no script.
+
 ## Tweens
 
 A clip generated from the node's current values, run through the same sampler
@@ -87,7 +145,7 @@ and fixed step.
 ```rune
 animation::tween(this.node, #{
     steps: [
-        #{ property: "position", to: [0.0, 3.0, 0.0], duration: 0.5, ease: "out_back" },
+        #{ property: "position", to: [0.0, 3.0, 0.0], duration: 0.5, ease: animation::EASE_OUT_BACK },
         #{ property: "shape3d/color", to: [1.0, 0.0, 0.0, 1.0], duration: 0.5, parallel: true },
         #{ call: "on_landed" },
     ],
@@ -253,7 +311,7 @@ Spine = "Armature/Hips/Spine"
 ```
 
 ```rune
-animation::play(hero, "walk", #{ "retarget": "animations/hero.bonemap.toml" });
+hero.animation.play("walk", #{ "retarget": "animations/hero.bonemap.toml" });
 ```
 
 - Each track's target is renamed through the map before the pose is written.
@@ -333,7 +391,7 @@ rotations, two-bone IK reaching a moving target, a `jiggle` plume, and a
 - Playback advances on its own fixed 1/60 accumulator.
 - Every transcendental (easing, euler to quaternion, slerp) runs on `libm`,
   bit-identical on every platform.
-- The system runs after the script tick. `animation::play()` takes effect the
-  same frame.
+- The system runs after the script tick. A `play` takes effect the same
+  frame.
 - It runs before physics reads transforms. An animated kinematic platform
   pushes what stands on it (`examples/hello`).

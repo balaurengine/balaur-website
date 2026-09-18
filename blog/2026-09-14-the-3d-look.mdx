@@ -16,38 +16,38 @@ authored by hand except a camera, a sun, an environment and a player.
 
 <Clip name="sponza_walk" alt="Walking the length of the Sponza arcade in first person, the marble floor and the drapes lit by the sky" />
 
-- **A material arrives whole.** Every factor and map, the alpha mode and its
-  cutoff, the index of refraction and the volume. One mesh node per material:
-  Sponza is 25 over 103 primitives.
-- **The sampler comes too.** A floor whose coordinates run past one, clamped,
-  draws as one stretched texel. The import writes the file's own wrapping
-  beside each image, so the marble arrives tiled.
+- A glTF material arrives with every factor and map, the alpha mode and its
+  cutoff, the index of refraction and the volume. Each material is one mesh
+  node, so Sponza is 25 nodes over 103 primitives.
+- The import writes the file's own wrapping beside each image, so the marble
+  floor arrives tiled. Clamped, a floor whose coordinates run past one draws as
+  a single stretched texel.
 
-## What a surface now reads
+## What a surface reads
 
-`package::mesh` binds four things it did not: the sky as an environment map,
-the occlusion the prepass measured, the reflection probes, and the scene glass
-refracts. Each has a one-pixel stand-in, so nothing branches on absence.
+`package::mesh` binds the sky as an environment map, the occlusion the prepass
+measured, the reflection probes, and the scene that glass refracts. Each has a
+one-pixel stand-in, so nothing branches on absence.
 
 ![A chrome ball, a pane of glass and a mirrored floor under a sky](/img/blog/3d_look_surfaces.webp)
 
-- **Image-based lighting** replaces `environment.ambient` rather than adding to
-  it. Both stand for the same bounced light.
-- **Glass** is `[surface]` on the material: `transmission`, `ior`, `thickness`
-  and a volume colour. It draws after the opaque scene resolves and refracts
-  it, keeping its own highlights on top.
-- **A mirror** renders the scene from its own plane and replaces what the sky
-  would have shown.
-- **A `reflection_probe`** is a box a room was captured inside. A surface in it
+- Image-based lighting takes the place of `environment.ambient` rather than
+  adding to it, since both stand for the same bounced light.
+- Glass is `[surface]` on the material: `transmission`, `ior`, `thickness` and
+  a volume colour. It draws after the opaque scene resolves, refracts it, and
+  keeps its own highlights on top.
+- A mirror renders the scene from its own plane, in place of what the sky
+  would show.
+- A `reflection_probe` is a box a room was captured inside. A surface in it
   reflects the room, aimed at the box rather than at infinity.
 
 ## Occlusion, and the pass it needed
 
 ![Two boxes on a floor, without occlusion and with it](/img/blog/3d_look_occlusion.webp)
 
-Every 3D material now draws a geometry prepass. Without one a project's
-material fed nothing to the buffer occlusion reads, so its surfaces were the
-only ones a crease never darkened.
+Every 3D material draws a geometry prepass, a project's own included. That
+prepass feeds the buffer occlusion reads, so every surface darkens in its
+creases.
 
 ## Four passes to finish on
 

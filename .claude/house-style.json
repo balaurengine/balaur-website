@@ -8,7 +8,7 @@
     "Impersonal about the engine. No marketing \"we\", no superlatives, no claims the benchmark does not support.",
     "Name things exactly as they are named upstream: \"Godot\", never a nickname.",
     "Prefer a video clip or screenshot over a paragraph describing what something looks like.",
-    "Em dashes are P1 per the detector: at most about one per 1,000 words. Prefer a comma, colon, semicolon, parentheses, or two sentences.",
+    "No em dash in prose: scripts/lint-prose.mjs allows one only after a list item's lead (`- **Term** — text`). Use a comma, a colon, a period or a list.",
     "Do not open a bullet with a bolded noun phrase followed by a period. Lead with the sentence."
   ],
   "mechanics": {

@@ -15,15 +15,15 @@ the engine build itself.
 
 ![The Projects tab: a filter, the three ways to start, and the projects this machine has opened with their paths, times and engine versions](/img/manual/project_manager.webp)
 
-- **A screen, not a window.** The same widgets draw it, editing its script
-  hot reloads it, and it folds to one column on a phone. Godot opens a
-  separate window for this; there was nothing to gain from a second one.
-- **A row remembers more than a path.** When it was last opened and which
-  engine opened it. A folder that has gone stays in the list saying so,
-  because it is usually an unplugged disk.
-- **Opening one closes the one you came from.** One process is one project:
-  the export and import modules and the file root are built for the one the
-  editor booted with.
+- The screen is drawn by the editor's own widgets, hot reloads when its
+  script is edited, and folds to one column on a phone. Godot opens a separate
+  window for it; here it is the same window.
+- Each row keeps when the project was last opened and which engine opened it.
+  A folder that has gone stays in the list and says so, since it is usually an
+  unplugged disk.
+- Opening a project closes the one you came from. One process is one project:
+  the export and import modules and the file root are built for the project
+  the editor booted with.
 
 ## Examples, not an empty state
 
@@ -37,10 +37,10 @@ copy, so the shipped example stays as it was.
 
 ![The Engine tab: this build and whether it is current, the channel to follow, and the releases on it](/img/manual/engine_versions.webp)
 
-- **One line at a time.** Follow picks `alpha`, `beta`, `rc`, `stable` or
-  `nightly`, and the releases under it are that line's, newest first, with
-  the installed one marked.
-- **The feed is read once**, when the tab opens, rather than a press per
+- Follow picks one line: `alpha`, `beta`, `rc`, `stable` or `nightly`. The
+  releases under it are that line's, newest first, with the installed one
+  marked.
+- The release feed is read once, when the tab opens, rather than once per
   channel.
-- **None of it is new code.** `balaur update` has followed channels and tags
-  for a while, and the screen calls the same functions.
+- The tab calls the same functions as `balaur update`, which follows the same
+  channels and tags.

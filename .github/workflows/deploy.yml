@@ -33,12 +33,14 @@ jobs:
       - uses: actions/checkout@v7
       - name: Sync reference docs from the engine repo
         run: ./scripts/sync-docs.sh
-      # A manual run, or the engine's nightly event, pulls that nightly and
-      # lands it as a commit, so the history says which build the site ran and
-      # a bad one is reverted like any change. A push with the workflow's own token starts no run,
-      # so the deploy is this run's.
+      # Every deploy pulls the newest nightly: a push whose tree lacks the last
+      # engine commit (a force-pushed main, or a run queued behind the
+      # nightly's) would otherwise roll the site back to an older engine. Pin
+      # a build with ENGINE_TAG. A manual run, or the engine's nightly event,
+      # also lands it as a commit; a push with the workflow's own token starts
+      # no run, so the deploy is this run's.
       - name: Sync the web build from the engine release
-        if: github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch'
+        if: github.event_name != 'pull_request'
         run: ./scripts/sync-play.sh
       - name: Commit an engine update
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch'

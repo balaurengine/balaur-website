@@ -3,9 +3,8 @@
   "configurations": [
     {
       "name": "docs-preview",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "yarn",
       "runtimeArgs": [
-        "run",
         "serve"
       ],
       "port": 3000,
@@ -13,9 +12,8 @@
     },
     {
       "name": "docs-dev",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "yarn",
       "runtimeArgs": [
-        "run",
         "start",
         "--",
         "--no-open"

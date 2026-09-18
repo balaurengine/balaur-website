@@ -14,29 +14,31 @@ fonts — which `/editor` unpacks into a virtual filesystem beside the project
 it opens.
 
 `src/components/Player` runs a game — the Play button on an /examples card —
-and `src/pages/benchmark.tsx` the benchmark pack; `src/pages/editor.tsx` runs
-the editor over one. `src/play.ts` is the loader they share. `VERSION` names
+and `src/pages/editor.tsx` runs the editor over one. `src/play.ts` is the loader they share. `VERSION` names
 the engine build these came from.
 
 They follow the engine on their own: the engine's CI packs all of them into
 `balaur-play.tar.gz` on every release (`scripts/package_play.sh` there), and
 `scripts/sync-play.sh` here fetches that bundle from the `nightly` prerelease,
-verified against the release's `SHA256SUMS`. To pull a newer nightly, run the
-deploy workflow by hand (Actions → Deploy to GitHub Pages → Run workflow): it
-commits the change as `engine nightly-<sha>` and deploys in the same run. To
-pin the site to a release, set `ENGINE_TAG` in
+verified against the release's `SHA256SUMS`. Every deploy runs it, so the site
+ships the newest nightly even when this directory is behind; the engine's
+nightly event, or running the deploy workflow by hand, also commits the change
+as `engine nightly-<sha>`. To pin the site to a release, set `ENGINE_TAG` in
 `.github/workflows/deploy.yml` to its tag; to refresh by hand, run the script
 (`FORCE=1` re-downloads the same build), or point it at a local engine build:
 
     (cd ../balaur && ./scripts/package_template.sh web && ./scripts/package_play.sh)
     BALAUR_REPO=../balaur ./scripts/sync-play.sh
 
-`scripts/gen-play-version.mjs` (run by `npm start`/`npm run build`) hashes
-these files into `src/play-version.json`; the pages load the glue, the module
-and the packs with that stamp as a query so the CDN's different cache ages for
-`.js` and `.wasm` can never pair an old glue with a new module.
+`scripts/gen-play-version.mjs` (run by `yarn start`/`yarn build`) hashes
+these files into `src/play-version.json`. A built site serves them under
+`/play/<stamp>/` and names the stamp in `/play/version.json` (the play-stamp
+plugin in `docusaurus.config.ts`): GitHub Pages' CDN ignores a query string, so
+only a new path keeps it from pairing an old glue with a new module. The page
+reads `version.json` before it loads the engine, so a page cached before a
+deploy, or a tab left open, still gets the newest build.
 
 The module is about 19 MB raw and 5 MB over the wire once the host compresses
-it. It is committed rather than fetched at build time on purpose: the site
-builds from a checkout alone, so a pull request preview and a deploy never
-depend on the engine's releases being reachable.
+it. It is committed as well as fetched on purpose: a pull request preview
+builds from the checkout alone, and a deploy that cannot reach the engine's
+releases ships the committed copy.
