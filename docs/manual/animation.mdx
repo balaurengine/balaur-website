@@ -130,11 +130,17 @@ pub fn on_state_started(this, state) {
 }
 ```
 
-- A transition also takes `switch` (`immediate | sync | at_end`), `ease`,
-  `priority`, `reset` and `break_loop`, as Godot's transitions do.
+- A transition also takes `switch` (`immediate | sync | at_end`), `ease` or
+  `fade_curve`, `priority`, `reset` and `break_loop`, as Godot's transitions
+  do.
+- `check = "can_move"` holds an `auto` transition until that method on the
+  node's script answers true. It is Godot's `advance_expression`.
+- A state can be a machine of its own, a table under its name. Its states are
+  `move/walk` and so on, and a transition from `move` leaves from any of them.
+- A transition to `end` stops the machine until the next `travel` or `jump`.
 - `jump` cuts to a state with no fade.
-- `balaur import` converts an `AnimationTree` whose root is a state machine.
-  Blend trees are not supported.
+- `balaur import` converts an `AnimationTree` whose root is a state machine,
+  nested machines and expressions included. Blend trees are not supported.
 - `examples/rig` crossfades a wave and a bow with no script.
 
 ## Tweens
@@ -175,6 +181,10 @@ animation::tween(this.node, #{ "steps": [#{ "property": "position", "to": [0.0, 
 - *Save as file* and *Make inline* convert a clip between file and inline.
 - Keying a bone writes a rotation track on the character's clip. A skinned
   polygon deforms as the clip plays.
+- The State machine dock edits the selected node's `state_machine`: its
+  states, their clips, and each transition's fields. It writes back to the
+  scene or to the machine's own file, and shows the live state while the
+  game runs.
 
 ## Skeletons and skins
 

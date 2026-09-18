@@ -133,7 +133,7 @@ Pen edits a `path2d` asset in place: click adds an anchor, drag pulls its
 handles, alt breaks the pair, right-click removes one, and clicking the first
 anchor closes the path.
 
-## Dropping a file in
+## Asset imports
 
 A file dropped on the window becomes a node.
 
@@ -213,7 +213,9 @@ sections, property editors, viewport overlays and start-up states.
 
 - `editor/plugins/` ships with the editor. A project's `editor/` directory is
   that game's own.
-- Both load at start-up, in name order.
+- An addon brings its own: every `addons/<name>/editor/` loads while the
+  project carries that addon. The Gamend dock arrives this way.
+- All of them load at start-up, in name order.
 - A plugin declares `register()`, returning what it adds, and optionally
   `state()`, whose object lives at `S.plugins.<name>`.
 
@@ -259,6 +261,30 @@ Each list is optional.
 - `editors` map a schema datatype to `draw(S, k, target, spec, value)`,
   replacing the built-in editor for that type.
 - `states` map a name to `run(S)`: a plugin's own start-up state.
+
+A plugin draws with the `ui` verbs and with `S.kit`, the editor's own parts.
+A plugin cannot `use` the editor's modules, so each part is a stored
+function: bind it to a local, then call it.
+
+| Part | Draws |
+| --- | --- |
+| `tabs(S, k, id, names)` | A row of tabs that wraps, and answers the open one |
+| `tree(S, k, id, value, opts)` | A map or list that opens and closes; `edit` makes leaves fields |
+| `field(S, k, label, value, opts)` | A labelled value; `mask` hides it, `copy` adds a copy button |
+| `section(k, title)`, `empty(k, text)` | A heading, and what an empty panel says |
+| `files(S, k, id, opts)` | A folder's files; TOML and JSON open as editable trees |
+| `game_data(S)`, `save_prefs(S)` | The game's user data folder, and a write of the editor's settings |
+
+```rune
+pub fn draw(S, k) {
+    let field = S.kit.field;
+    field(S, k, "token", "abcd1234efgh5678", #{ mask: true, copy: true });
+}
+```
+
+The editor's User data dock is `files` over the open game's user data
+folder. Saves and prefs open there as structures you can edit. A game played
+in the editor writes to that same folder.
 
 A plugin runs unsandboxed in the editor's host, with the editor's
 capabilities.

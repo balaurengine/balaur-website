@@ -101,7 +101,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Physics and animation",
         title: 'Rigs and animation',
-        text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls, tweens, crossfades and state machines.</>,
+        text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls and tweens.</>,
         done: true,
         image: "/img/manual/rigging_modifiers.webp",
         alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
@@ -226,7 +226,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/project_manager.webp",
         alt: "The project manager: the recent list on the left, a new project from a template on the right, and the two ways in below it",
         posts: [
-          {slug: "the-screen-before-the-editor", title: "The screen before the editor"},
+          {slug: "project-manager", title: "Project manager"},
         ],
       },
       {
@@ -238,7 +238,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/editor_import.webp",
         alt: "The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them",
         posts: [
-          {slug: "an-import-you-can-watch", title: "An import you can watch"},
+          {slug: "async-import-of-assets", title: "Async import of assets"},
         ],
       },
       {
@@ -282,6 +282,12 @@ import Roadmap from '@site/src/components/Roadmap';
         posts: [
           {slug: "concave-2d-colliders", title: "Concave 2D colliders"},
         ],
+      },
+      {
+        group: "Physics and animation",
+        title: 'Animation blending',
+        text: <>State machines that crossfade between clips, authored or converted from an <code>AnimationTree</code>, and blend trees so a rig can run two clips at once.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
       },
       {
         group: "Physics and animation",
@@ -357,7 +363,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/blog/editor_splash.webp",
         alt: "The editor's own splash: the logo centred on black with a loading bar under it",
         posts: [
-          {slug: "the-first-frame-a-game-shows", title: "The first frame a game shows"},
+          {slug: "loading-screen", title: "Loading screen"},
         ],
       },
     ],
@@ -514,8 +520,14 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Gamend",
         title: 'A Gamend dock',
-        text: <>The socket, the signed-in user, the lobby and its members, and each hook call with its reply, in the editor.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#engine-side-in-this-repository',
+        text: <>The server target, the signed-in user and token, the lobby, saved and server data, and every call with its reply, in the editor.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs',
+      },
+      {
+        group: "Gamend",
+        title: 'Client logs',
+        text: <>A log file that survives a crash, and a run's lines shipped to Gamend in batches under one id.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs',
       },
     ],
   },

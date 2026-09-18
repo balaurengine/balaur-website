@@ -57,7 +57,7 @@ hide_table_of_contents: true
     'Project manager': {
       image: '/img/manual/project_manager.webp',
       alt: 'The project manager: the recent list on the left, a new project from a template on the right, and the two ways in below it',
-      posts: ['the-screen-before-the-editor'],
+      posts: ['project-manager'],
     },
     'Selection, alignment and a library': {
       image: '/img/manual/editor_selection.webp',
@@ -72,7 +72,7 @@ hide_table_of_contents: true
     'An import that does not stop the editor': {
       image: '/img/manual/editor_import.webp',
       alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
-      posts: ['an-import-you-can-watch'],
+      posts: ['async-import-of-assets'],
     },
     'A bad call caught before it runs': {
       image: '/img/blog/script_problems.webp',
@@ -82,7 +82,7 @@ hide_table_of_contents: true
     'A splash while a game loads': {
       image: '/img/blog/editor_splash.webp',
       alt: "The editor's own splash: the logo centred on black with a loading bar under it",
-      posts: ['the-first-frame-a-game-shows'],
+      posts: ['loading-screen'],
     },
     'Godot import': {
       image: '/img/blog/port_godot_balaur.webp',
