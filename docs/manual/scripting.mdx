@@ -95,7 +95,7 @@ engine.
 | Several returns are a tuple | `let (text, changed) = ui::text_field(...)` |
 | A vector is one value with fields | `this.node.transform.position.y` |
 | Tables, lists, nothing | `#{ kind: "ball" }`, `[1, 2]`, `()` |
-| Integers and floats never mix | a float argument is written `0.0` |
+| An integer meets a float as a float | `1 + 0.5` is `1.5`; a native float argument is still written `0.0` |
 
 Each component is a field on the node, and that field is a handle carrying
 every function that drives the component: `this.node.body2d.apply_impulse(x, y)`.

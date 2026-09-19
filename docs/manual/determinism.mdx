@@ -48,7 +48,7 @@ Replays, lockstep networking and content-change checks depend on it.
 
 ## Scripting and determinism
 
-- Rune numbers are IEEE-754 doubles and 64-bit integers that never mix.
+- Rune numbers are IEEE-754 doubles and 64-bit integers; an integer meeting a float becomes that float, exactly.
 - `+ - * /` and `sqrt` are exactly specified and reproducible everywhere.
 - The VM is a single-threaded interpreter with no native codegen. Evaluation
   order is fixed.
