@@ -42,7 +42,15 @@ pub async fn init(this) {
 }
 
 pub fn on_gamend_event(this, e) {
-    // socket events: open / message / closed / error
+    gamend::client::route(this.node, e);
+}
+
+pub fn on_lobby_member_joined(this, e) {
+    log::info(`${e["user_id"]} joined`);
+}
+
+pub fn on_socket_reopened(this, e) {
+    log::info("back online");
 }
 ```
 
@@ -51,28 +59,50 @@ pub fn on_gamend_event(this, e) {
   handler.
 - Socket events are a stream and only dispatch.
 - Every event map carries a `kind`: `login`, `rest`, `reply`, `error`, `open`,
-  `message`, `closed`. One handler takes them all.
+  `message`, `reconnecting`, `reopened`, `closed`. One handler takes them all.
+- `gamend::client::route` hands each to its own handler. A server message
+  goes to `on_<kind>` by its name in `gamend::events`, and the socket's own
+  go to `on_socket_<kind>`.
+
+## Staying connected
+
+A socket dropped without `gamend::close` comes back by itself.
+
+- It waits 1, 2, 4 seconds and on up to 30 between tries, eight tries in
+  all.
+- Each try renews an expired token and joins every topic the game had
+  joined again.
+- The handler hears `reconnecting` before each try, with `attempt`, `wait`
+  and `reason`. Then comes `reopened`, whose `lost` names any topic the
+  server refused, or `error` once the socket gives up.
+- A call made while it waits fails at once.
+- A channel the server crashes is joined again the same way. One it closes
+  on purpose, a kicked player's lobby, is let go, and a reconnect does not
+  ask for it again.
+- `gamend::interrupt(socket)` cuts the connection as a network failure
+  would, to try a game's handling of it.
+- A REST call that meets an expired token refreshes it and runs again.
 
 The full function list is in the
 [script modules reference](/docs/reference/modules).
 
 ## Accounts
 
-The addon's `client.rn` covers the ways a player gets an account.
+The addon's `client.rn` covers the ways a player gets an account. Every
+file of the addon is a module, so it is `gamend::client`.
 
 ```rune
-let client = script::require("addons/gamend/client.rn");
-task::wait((client.login_device)((), engine::device_id())).await;
-task::wait((client.register_email)((), "ana@example.com", "a long password", ())).await;
-task::wait((client.login_email)((), "ana@example.com", "a long password")).await;
+task::wait(gamend::client::login_device((), engine::device_id())).await;
+task::wait(gamend::client::register_email((), "ana@example.com", "a long password", ())).await;
+task::wait(gamend::client::login_email((), "ana@example.com", "a long password")).await;
 ```
 
 - A device id the server has not seen makes an anonymous account.
 - `register_email` makes an account with an email and a password and signs
   it in. The server mails the address a confirmation link, as its web
   sign-up does; `username` may be nil and gets generated.
-- `api.user_delete_current_user(node, params)` deletes the signed-in account.
-  An account with a password sends `#{ "current_password": ... }`.
+- `gamend::users::delete_current_user(node, params)` deletes the signed-in
+  account. An account with a password sends `#{ "current_password": ... }`.
 
 ## The server
 
@@ -116,9 +146,8 @@ A project that carries `addons/gamend` gets a Gamend tab in the editor.
 `gamend_prefs` save slot.
 
 ```rune
-let prefs = script::require("addons/gamend/prefs.rn");
-(prefs.set)("music_volume", 0.6);
-let volume = (prefs.get)("music_volume", 1.0);
+gamend::prefs::set("music_volume", 0.6);
+let volume = gamend::prefs::get("music_volume", 1.0);
 ```
 
 Prefs never leave the device. A value that should follow the player to
@@ -126,11 +155,9 @@ another device belongs in the server's key-value store.
 
 ## Client logs
 
-Each run writes its log to `logs/run.log` in the user data folder and keeps
-the last five as `run.1.log` and on. `[log] file` and `[log] keep` set that.
-
-Put `addons/gamend/log_sink.rn` on a node that lives as long as the game to
-ship the log to Gamend.
+Nothing is sent to Gamend unless the game asks. Put
+`addons/gamend/log_sink.rn` on a node that lives as long as the game, and it
+ships what [`log::since`](/docs/manual/scripting#logs) reads.
 
 - It asks the server's `/api/v1/client_logs/policy` what to collect, and
   collects nothing until it answers.

@@ -1,5 +1,5 @@
 ---
-description: "The Gamend dock: the server target, the signed-in player, the lobby, saved data and one tab per server feature, in the editor."
+description: "The Gamend dock: the server target, the signed-in player, the lobby, one tab per server feature, and a run's log shipped to the server."
 slug: gamend-dock
 title: The Gamend dock
 authors: [dragos]
@@ -34,15 +34,19 @@ A project that carries the Gamend addon now has a Gamend tab in the editor. It s
 - The Lobby tab follows the lobby the game joined, and reads it again when a message lands on its topic.
 - Activity lists every call and socket message, opens each to its arguments and reply, and filters to errors.
 
-## User data
+## Shipping the log
 
-![The User data dock with the prefs slot open](/img/manual/user_data_dock.webp)
+![The Logs tab while the game plays](/img/manual/gamend_logs.webp)
 
-- The editor's User data dock lists the open game's user data folder.
-- TOML and JSON files open as trees you can edit in place.
-- `addons/gamend/prefs.rn` keeps player prefs in one of those files.
+- Nothing is sent unless the game puts `addons/gamend/log_sink.rn` on a long-lived node.
+- The sink reads `log::since` and collects what the server's policy asks for.
+- A batch goes at 50 lines, every 10 seconds, and at once on an error.
+- Unsent lines wait in a save slot for the next launch.
+- Every call, the socket and each batch carry `gamend::run_id()`, so the server files a run's lines together.
+- The Logs tab shows the newest lines and flushes on demand.
 
 ## Docs
 
 - [The Gamend dock](/docs/manual/gamend#the-gamend-dock)
+- [Client logs](/docs/manual/gamend#client-logs)
 - [Extending the editor](/docs/manual/editor#extending-the-editor)

@@ -93,7 +93,7 @@ engine.
 | Named values, never spelled | `input::KEY_SPACE`, `physics3d::BODY_DYNAMIC`, `ui::ANCHOR_TOP_LEFT` |
 | Node operations are methods | `node.get_node("../Target")`, `node.queue_free()` |
 | Several returns are a tuple | `let (text, changed) = ui::text_field(...)` |
-| A vector is one value with fields | `this.node.transform.position.y` |
+| A vector is a value: `let b = a` is a copy | `pos.y = 2.0`, `pos += balaur::Vec2::X`, `this.pos.x = 1.0` |
 | Tables, lists, nothing | `#{ kind: "ball" }`, `[1, 2]`, `()` |
 | An integer meets a float as a float | `1 + 0.5` is `1.5`; a native float argument is still written `0.0` |
 
@@ -144,8 +144,13 @@ pub fn update(this, dt) {
   the pack when shipped. Its items are `name::item`.
 - `script::require("lib.rn")` loads a file at run time and returns its
   functions in an object.
-- Both hot reload. A module object held since `init` sees the new code after
-  a save.
+- A file directly under `addons/<name>/` is a module every script reaches
+  with no `mod` or `require`: `addons/kit/math.rn` is `kit::math`. Its
+  `pub fn`s are called by path, its `pub const`s read by path, and a
+  `pub mod` block's constants sit one segment deeper, as in
+  `kit::math::colors::RED`.
+- All three hot reload. A module object held since `init` sees the new code
+  after a save, and a saved addon reaches every caller.
 
 ## Errors
 
@@ -158,6 +163,30 @@ if !ok {
     log::warn(format!("no clip: {}", clip));
 }
 ```
+
+## Logs
+
+`log::info`, `log::warn` and `log::error` write a line. The engine keeps
+the last 500 in memory, and the Output dock shows them.
+
+Each run also writes its log to `logs/run.log` in the game's user data
+folder, and keeps the last five runs as `run.1.log` and on. `[log] file`
+turns it off and `[log] keep` sets how many runs stay. A panic is written
+there before the process dies. A browser keeps the file in the page's
+storage, so the next visit can read the run that crashed.
+
+`log::since(cursor)` answers each line once, for a script that sends the
+log somewhere:
+
+```rune
+let read = log::since(this.cursor);
+for entry in read.entries {
+    send(entry.level, entry.message);
+}
+this.cursor = read.cursor;
+```
+
+`read.missed` counts the lines dropped before they were read.
 
 ## Tooling
 

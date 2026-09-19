@@ -42,8 +42,8 @@ keep the shape — one row per item, `**Title** — one line`, a milestone from 
 table above, and a link to a plan or `no plan` — and keep a title stable once
 the site has it.
 
-A row is **one sentence and at most 25 words**, and the site's build fails over
-either. It says what the thing is, not how it is built: that is the plan it
+A row is **one sentence and at most 25 words**, and `scripts/prose_lints.py`
+fails over either. It says what the thing is, not how it is built: that is the plan it
 links to, and for a built row the posts the site pairs with it.
 
 The engine is at **0.2.0**, one version for the workspace; `v0.1.0` is tagged
@@ -64,6 +64,7 @@ being built, marked `done`, never back in the shipped one.
 | **Focused script editing** — the code pane takes the whole window beside its hooks list, with the docks folded away and put back as they were. | 0.2 done | [PLAN-editor-redesign.md#57-focus-for-a-script](PLAN-editor-redesign.md#57-focus-for-a-script) |
 | **Project manager** — the screen the editor starts on: recent projects, new from a template, open a folder, Godot import. | 0.2 done | [PLAN-project-manager.md](PLAN-project-manager.md) |
 | **An import that does not stop the editor** — a job that writes a few files a frame, a list of what is importing, and an Import button. | 0.2 done | [PLAN-import-jobs.md](PLAN-import-jobs.md) |
+| **The User data dock** — the files a game keeps for its player, saves and prefs among them, opened as trees and edited in place. | 0.2 done | [PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs](PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs) |
 | **Curve editor and onion skin** — tangent handles on keys, and ghosted neighbouring frames in the timeline. | 0.3 | [PLAN-editor.md#curve-editor-and-onion-skin](PLAN-editor.md#curve-editor-and-onion-skin) |
 | **Selection, alignment and a library** — multi-select, align and distribute, gizmos, a Pen tool, a material panel, an Events view, a Cost dock, and `editor/library`. | 0.1 done | no plan |
 | **Multiplayer dock and Play as two** — a second instance of the game started from the editor, with each link and its stats in a dock. | 0.4 | [PLAN-multiplayer.md#3-steps](PLAN-multiplayer.md#3-steps) |
@@ -85,7 +86,7 @@ being built, marked `done`, never back in the shipped one.
 | **A second scripting language** — Luau, C# or mimas beside Rune, over the same `balaur_script` seam, held to the same determinism bar. | 0.7 | [PLAN-second-language.md](PLAN-second-language.md) |
 | **Scenes, assets and packs** — prefabs with per-path overrides, `id://` references that survive a rename, import settings beside each file, and sha256-verified binary packs. | 0.1 done | no plan |
 | **A bad call caught before it runs** — `balaur check` reads the scene beside the script and resolves a component's method against the table the run time uses. | 0.2 done | [PLAN-script-analysis.md](PLAN-script-analysis.md) |
-| **Texture import settings** — GPU compression and a `max_size` cap at export, and `balaur atlas`, over the sidecar and sampler settings already beside each file. | 0.2 | [PLAN-textures.md](PLAN-textures.md) |
+| **Addons as modules** — a file directly under `addons/<name>/` is `<name>::<file>` in every script, its functions and constants reached by path, in `balaur_script_rune`. | 0.2 done | no plan |
 | **FBX import** — `balaur import` over the `ufbx` crate, for the meshes, rigs and clips that never ship as glTF. | 0.7 | no plan |
 | **Godot import** — `balaur import` over `project.godot`, `.tscn`, `.tres` and `.gdshader`, writing scenes, assets, script bodies and a report naming what did not convert. | 0.2 done | [PLAN-godot-import.md](PLAN-godot-import.md) |
 | **Asset streaming** — a load that runs off the tick, a scene added to one already running, and an asset dropped when nothing names it. | 0.6 | no plan |
@@ -105,7 +106,7 @@ being built, marked `done`, never back in the shipped one.
 | --- | :-: | --- |
 | **Rapier in 2D and 3D** — bodies, joints, character controllers, the query pipeline, collision events, ray-cast vehicles, and every collider shape including editable voxels. | 0.1 done | no plan |
 | **Concave 2D colliders** — a concave polygon cut into overlapping convex pieces, so nothing wedges into a seam, and imported Godot collision polygons keep their shape. | 0.2 done | [PLAN-convex-decomposition.md](PLAN-convex-decomposition.md) |
-| **Rigs and animation** — 2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a `bone_map`, ragdolls and tweens. | 0.1 done | no plan |
+| **Rigs and animation** — 2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a `bone_map`, ragdolls, tweens, crossfades and state machines. | 0.1 done | no plan |
 | **Soft bodies** — `softbody2d` and `softbody3d`: a deformable mesh with stiffness, damping and pressure, drawn down the skinning path, on the fixed step. | 0.7 | [PLAN-physics.md#soft-bodies](PLAN-physics.md#soft-bodies) |
 | **Cloth and rope** — a sheet that hangs and a rope of linked segments over the same solver, pinned to a node and cut by a script. | 0.7 | [PLAN-physics.md#cloth-and-rope](PLAN-physics.md#cloth-and-rope) |
 | **Tearing** — a threshold on a soft body: past it the body splits into two bodies and two meshes, mid-step and in the digest. | 0.9 | [PLAN-physics.md#tearing](PLAN-physics.md#tearing) |
@@ -113,7 +114,6 @@ being built, marked `done`, never back in the shipped one.
 | **Fluids** — `fluid2d` and `fluid3d`: particles with a rest density and a viscosity, with emitters and drains, drawn as points before a surface. | 0.9 | [PLAN-physics.md#fluids](PLAN-physics.md#fluids) |
 | **Gases and smoke** — a buoyant volume that rises, spreads and cools, read by the renderer as a density field rather than as particles. | 1.0 | [PLAN-physics.md#gases-and-smoke](PLAN-physics.md#gases-and-smoke) |
 | **Granular materials** — sand, mud and snow as a fluid with friction and a yield stress, in 2D and 3D, on the fixed step. | 1.0 | [PLAN-physics.md#granular-materials](PLAN-physics.md#granular-materials) |
-| **Animation blending** — state machines that crossfade between clips, authored or converted from an `AnimationTree`, and blend trees so a rig can run two clips at once. | 0.2 | [PLAN-animation-and-resources.md](PLAN-animation-and-resources.md) |
 | **A sequencer** — cutscenes and cameras on a timeline, with tracks that call something rather than only move it. | 0.3 | no plan |
 | **Root motion** — a clip that moves the character rather than sliding under it, its root delta handed to `character2d` and `character3d` per tick. | 0.7 | no plan |
 | **Pause, time scale and smooth frames** — a `process` mode per subtree, time scale, interpolation between fixed steps, `max_fps`, vsync, and a tick rate setting. | 0.2 done | [PLAN-time.md](PLAN-time.md) |
@@ -197,8 +197,7 @@ can do today, in the batches it would be built in.
 | **The match record** — the match recording uploaded as the lobby's record. | 0.4 | [PLAN-gamend.md#1-design](PLAN-gamend.md#1-design) |
 | **A WebRTC relay for browsers** — so a browser peer joins a match through Gamend. | 0.7 | [PLAN-gamend.md#2-the-surface](PLAN-gamend.md#2-the-surface) |
 | **Typed bindings for the whole API** — in place of `rest` and `push`, over the nine calls the `gamend` module has today. | 0.4 | [PLAN-gamend.md#engine-side-in-this-repository](PLAN-gamend.md#engine-side-in-this-repository) |
-| **A Gamend dock** — the server target, the signed-in user and token, the lobby, saved and server data, a tab per feature, and every call, in the editor. | 0.4 done | [PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs](PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs) |
-| **Client logs** — a log file that survives a crash, and a run's lines shipped to Gamend in batches under one id. | 0.4 done | [PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs](PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs) |
+| **A Gamend dock** — the server target, the signed-in user, the lobby, server data, a tab per feature, every call, and the log a game ships. | 0.4 done | [PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs](PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs) |
 | **Skill matchmaking** — queues and ratings, whose work is in the Gamend server. | 0.7 | [gamend ROADMAP.md](https://github.com/appsinacup/gamend/blob/main/ROADMAP.md) |
 
 Server steps run in the `gamend` repository; `PLAN-gamend.md` marks which
@@ -209,6 +208,7 @@ side each step belongs to.
 | Item | Milestone | Plan |
 | --- | :-: | --- |
 | **Apple and the `platform` module** — sign-in, achievements, leaderboards, cloud saves and purchases behind one module, over Game Center, iCloud and StoreKit, with an export that signs. | 0.1 done | no plan |
+| **Log files** — each run's log kept in a file that survives a crash, and read by scripts through `log::since`. | 0.2 done | no plan |
 | **An MCP server** — `balaur mcp` over stdio, with the project, `check`, a headless run and a screenshot as tools an agent drives. | 0.5 | [PLAN-mcp.md](PLAN-mcp.md) |
 | **Projects in the cloud** — files on a Gamend account with a version per save, share links with roles, presence in the viewport, and comments anchored to nodes. | 0.7 | [PLAN-collaboration.md](PLAN-collaboration.md) |
 | **A crash report that reproduces itself** — the recording, the log and the build id in one file. | 0.5 | no plan |

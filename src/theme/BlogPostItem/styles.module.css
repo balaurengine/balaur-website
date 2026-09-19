@@ -13,6 +13,10 @@
   margin-bottom: 1.25rem;
 }
 
+.coverTall {
+  aspect-ratio: 16 / 10;
+}
+
 .coverFull {
   aspect-ratio: auto;
   object-fit: contain;

@@ -28,9 +28,9 @@ hide_table_of_contents: true
   // Posts that are a record rather than one feature, so no roadmap row owns
   // them. Everything else under blog/ has to be named by a `shots` entry.
   essays: [
-    'the-initial-engine',
-    'the-editor-on-a-phone',
-    'godot-rapier-and-balaur',
+    'hello-balaur',
+    'mobile-support',
+    'why-balaur',
     'benchmarks',
     'balaur-0-1-0',
   ],
@@ -52,17 +52,27 @@ hide_table_of_contents: true
     'Script completion and hover': {
       image: '/img/manual/script_completion.webp',
       alt: 'The completion popup: a module path, and the functions and constants under it',
-      posts: ['what-completes-at-the-caret', 'language-server'],
+      posts: ['autocomplete', 'language-server'],
+    },
+    'Addons as modules': {
+      image: '/img/manual/addon_completion.webp',
+      alt: "Completion after gamend::lobbies:: in the script editor: that module's functions, their parameters and the first one's doc line",
+      posts: ['modules'],
     },
     'A Gamend dock': {
       image: '/img/manual/gamend_dock.webp',
       alt: "The Gamend dock reading gamend.org's leaderboards: the two servers in the header, the tabs down the side, and a leaderboard as a tree",
       posts: ['gamend-dock'],
     },
-    'Client logs': {
-      image: '/img/manual/gamend_logs.webp',
-      alt: "The Gamend dock's Logs tab while a game plays: the run's log file, the shipping state, and the newest lines",
+    'Log files': {
+      image: '/img/manual/log_settings.webp',
+      alt: "The log page of the project settings: the file switch, and how many earlier runs' logs stay",
       posts: ['client-logs'],
+    },
+    'The User data dock': {
+      image: '/img/manual/user_data_dock.webp',
+      alt: 'The User data dock over a game\'s user data folder: the device id, the run log, two save slots, and the prefs slot open as a tree',
+      posts: ['user-data'],
     },
     'Project manager': {
       image: '/img/manual/project_manager.webp',
@@ -72,22 +82,22 @@ hide_table_of_contents: true
     'Selection, alignment and a library': {
       image: '/img/manual/editor_selection.webp',
       alt: "The Library dock open under the viewport, with a torus selected and pointed at the library's metal material",
-      posts: ['select-two-things'],
+      posts: ['selections'],
     },
     'The 3D look': {
       image: '/img/blog/sponza_atrium.webp',
       alt: 'The Sponza atrium lit by its own sky: textured marble, the arcade, the drapes and the lion relief',
-      posts: ['the-3d-look'],
+      posts: ['running-sponza'],
     },
     'An import that does not stop the editor': {
       image: '/img/manual/editor_import.webp',
       alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
-      posts: ['async-import-of-assets'],
+      posts: ['async-import'],
     },
     'A bad call caught before it runs': {
       image: '/img/blog/script_problems.webp',
       alt: 'The Script persona with a misspelled component method underlined, and the Problems dock naming the line and the method',
-      posts: ['checking-a-script-against-its-scene'],
+      posts: ['validation'],
     },
     'A splash while a game loads': {
       image: '/img/blog/editor_splash.webp',
@@ -97,32 +107,32 @@ hide_table_of_contents: true
     'Godot import': {
       image: '/img/blog/port_godot_balaur.webp',
       alt: 'Polyglot Pirates in Godot on the left and the converted project in Balaur on the right',
-      posts: ['porting-a-godot-game'],
+      posts: ['godot-game-converter'],
     },
     'Focused script editing': {
       image: '/img/manual/editor_focus.webp',
       alt: 'The code pane with the window to itself, the file\'s hooks list beside it, and the Focus chip lit in the top bar',
-      posts: ['focused-script-editing'],
+      posts: ['focused-mode'],
     },
     'Rune scripting': {
       image: '/img/manual/scripting_editor.webp',
       alt: 'The Script persona: the file, the hooks it declares, and the events its node receives',
-      posts: ['rune-scripting', 'generated-script-reference'],
+      posts: ['rune-scripting', 'script-reference'],
     },
     'Scenes, assets and packs': {
       image: '/img/manual/editor_assets.webp',
       alt: 'The Assets dock on res://, with the project file, the scenes and the scripts beside the tree',
-      posts: ['asset-hot-reload', 'settings-beside-the-file'],
+      posts: ['asset-hot-reload', 'settings'],
     },
     'Rapier in 2D and 3D': {
       image: '/img/manual/physics_collapse.webp',
       alt: "The Physics persona's collider overlays over the towers of examples/angrynerds",
-      posts: ['2d-support'],
+      posts: ['2d-physics'],
     },
     'Rigs and animation': {
       image: '/img/manual/rigging_modifiers.webp',
       alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
-      posts: ['skeletons-and-a-debugger', 'gpu-skinning', 'rigging-panels'],
+      posts: ['bone-animations', 'gpu-skinning', 'rigging-editors'],
     },
     'Lists, trees and tables': {
       image: '/img/manual/ui_rows.webp',
@@ -137,12 +147,12 @@ hide_table_of_contents: true
     'Text a game can edit': {
       image: '/img/manual/ui_text.webp',
       alt: 'A label with a link and a hint, a selectable line, and two numbers with arrows and units',
-      posts: ['links-hints-and-selectable-text'],
+      posts: ['links-and-selectable-text'],
     },
     'Pause, time scale and smooth frames': {
       image: '/img/manual/pause_states.webp',
       alt: 'Twelve falling boxes frozen in mid-air by a pause, with the heading and the marker beside it still animating on the node set to process = always',
-      posts: ['pausing-a-game'],
+      posts: ['pause'],
     },
     'Concave 2D colliders': {
       image: '/img/manual/concave_pieces.webp',
@@ -152,17 +162,17 @@ hide_table_of_contents: true
     'Widgets, text and the batteries': {
       image: '/img/manual/ui_widgets.webp',
       alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",
-      posts: ['text-in-the-world', 'audio-buses', 'input-actions-and-gamepads', 'save-games', 'localization', 'a-screen-of-nodes'],
+      posts: ['text', 'audio-buses', 'inputs', 'save-games', 'localization', 'widgets-and-themes'],
     },
     'Interactivity without a script': {
       image: '/img/manual/editor_events.webp',
       alt: 'The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three',
-      posts: ['select-two-things'],
+      posts: ['selections'],
     },
     'What draws today': {
       image: '/img/manual/rendering_directional.webp',
       alt: "Three occluders under one directional light, each casting a parallel shadow strip at the light's angle",
-      posts: ['sprites', '2d-lights-and-shadows', 'every-shape-is-a-mesh'],
+      posts: ['2d-sprites', '2d-lights-and-shadows', 'shape-primitives'],
     },
     'Post-process materials': {
       image: '/img/manual/shader_preview.webp',
@@ -177,12 +187,12 @@ hide_table_of_contents: true
     'Apple and the platform module': {
       image: '/img/manual/export_sheet.webp',
       alt: 'The Export sheet: the ios, android, macos-universal, windows and web targets, each saying what it still needs',
-      posts: ['game-center-icloud-and-purchases', 'mobile-export'],
+      posts: ['apple-integration', 'mobile-export'],
     },
     'Export, the web and the CLI': {
       image: '/img/manual/export_size.webp',
       alt: "Where a pack's bytes are, and what lossless re-encoding takes off",
-      posts: ['what-an-export-weighs', 'editor-in-the-browser'],
+      posts: ['export-sizes', 'editor-in-the-browser'],
     },
   },
 };

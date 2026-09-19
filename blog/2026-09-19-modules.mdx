@@ -1,0 +1,39 @@
+---
+description: "Files under addons/<name>/ are modules any script calls by path, like the Gamend SDK."
+slug: modules
+title: Modules
+authors: [dragos]
+image: /img/manual/addon_completion.png
+keywords: [addons, modules, rune, scripting, gamend, completion]
+---
+
+A file directly under `addons/<name>/` is a module every script reaches by path, with no `require`. The Gamend SDK is laid out that way: one module per server feature.
+
+{/* truncate */}
+
+![Completion after gamend::lobbies:: listing that module's functions with their parameters](/img/manual/addon_completion.webp)
+
+## Modules
+
+- `addons/kit/math.rn` is `kit::math`. Its functions are called as `kit::math::double(2)` and its constants read as `kit::math::LIMIT`.
+- The constants in a `pub mod` block sit one segment deeper: `kit::math::colors::RED`.
+- Saving an addon file reaches every script that calls it.
+- Completion and hover walk the path, and show a function's parameters and its doc line.
+- An addon may share a name with an engine module: `gamend::lobbies` sits beside `gamend::login`.
+- An exported pack keeps the paths, and a project opened in the editor mounts its own addons.
+
+## The Gamend SDK
+
+- 259 operations in 47 modules, one per server feature: `gamend::lobbies::create_lobby`, `gamend::users::get_current_user`.
+- Realtime events are grouped by channel. `gamend::events::lobby::MEMBER_JOINED` is what `gamend::events::decode` answers for a lobby's `user_joined`.
+
+```rune
+let reply = task::wait(gamend::lobbies::quick_join(this.node, #{
+    "title": "duel", "max_users": 2,
+})).await;
+```
+
+## Docs
+
+- [Script files as modules](/docs/manual/scripting#script-files-as-modules)
+- [Gamend accounts](/docs/manual/gamend#accounts)

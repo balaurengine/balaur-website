@@ -1,41 +1,50 @@
 ---
-description: "Client logs: a log file per run that keeps a crash's last lines, and a game's log shipped to Gamend in batches under one run id."
+description: "Log files: each run's log written to disk."
 slug: client-logs
-title: Client logs
+title: Log files
 authors: [dragos]
-image: /img/manual/gamend_logs.png
-keywords: [game logs, crash logs, log file, gamend, client log upload, remote logging]
+image: /img/manual/log_settings.png
+keywords: [game logs, crash logs, log file, log rotation, script logging]
 ---
 
-Every run now writes its log to a file, and a game can ship its log to Gamend. A crash leaves its last lines on disk, and the next launch sends them.
+Every run now writes its log to a file in the game's user data folder.
 
 {/* truncate */}
 
-![The Logs tab while the game plays](/img/manual/gamend_logs.webp)
+![Log page](/img/manual/log_settings.webp)
 
-## The log file
+## Log file
 
-- Each run writes `logs/run.log` in the game's user data folder and keeps the last five as `run.1.log` and on.
-- `[log] file = false` turns it off, and `[log] keep` sets how many runs stay.
-- Lines logged before the file opens, `init` included, go in first.
+- Each run writes `logs/run.log` in the game's user data folder and keeps the last five runs as `run.1.log` and on.
+- `[log] file = false` turns it off, and `[log] keep` sets how many runs stay, up to 50.
 - A panic is written to the file before the process dies.
-- Scripts read the log with `log::since(cursor)`, which answers each line once and counts the lines the buffer dropped.
+- In a browser the file is kept in the page's storage, and the next visit can read the run that crashed.
+- `log::file()` answers where this run's file is.
 
-## Shipping to Gamend
+## Reading and writting logs
 
-- `addons/gamend/log_sink.rn`, on a node that lives as long as the game, ships its lines.
-- It asks the server's policy what to collect, and sends nothing until it answers.
-- A batch goes at 50 lines, every 10 seconds, and at once on an error.
-- A line repeated back to back goes once, with its count.
-- Unsent lines wait in a save slot. The next launch sends them, with the tail of the last log file when that run logged an error.
-- A game played in the editor sends its own lines only.
+- `log::info`, `log::warn` and `log::error` write a line tagged as a script's.
+- The engine keeps the last 500 lines in memory, and the Output dock shows them, filtered by level and text.
+- `log::since(cursor)` gives you all logs that happened since last cursor.
+- `log::recent(n)` answers the last `n` lines.
 
-## One id per run
+```rune
+pub fn init(this) {
+    this.cursor = 0;
+    this.errors = 0;
+}
 
-- `gamend::run_id()` names the run.
-- Every API call sends it as `x-gamend-session`, the socket as `client_session`, and each log batch as its session.
-- The server files a run's client lines and the server lines it caused under that id.
+pub fn update(this, dt) {
+    let read = log::since(this.cursor);
+    for entry in read.entries {
+        if entry.level == "error" {
+            this.errors += 1;
+        }
+    }
+    this.cursor = read.cursor;
+}
+```
 
 ## Docs
 
-- [Client logs](/docs/manual/gamend#client-logs)
+- [Logs](/docs/manual/scripting#logs)

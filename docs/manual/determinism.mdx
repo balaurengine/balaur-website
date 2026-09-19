@@ -57,7 +57,7 @@ Replays, lockstep networking and content-change checks depend on it.
 | --- | --- |
 | `sin`, `cos`, `exp`, `pow`, ... call the platform libm, which differs across OSes | The `math` module (`math::sin`, `math::pow`, `math::PI`, ...) is pure-Rust `libm`, bit-identical everywhere. Rune has no transcendentals of its own. Its float methods `sqrt`, `abs`, `floor`, `ceil`, `round`, `min` and `max` are IEEE-exact; `powf` and `powi` are on `libm` in Balaur's fork |
 | A random source seeded from entropy | Rune has none. The `rng` module (`rng::seed/random/range/int`) is an engine-owned seeded PCG32 stream with a fixed default seed |
-| Iteration order over an object (`for (k, v) in obj`) is the hash map's, not insertion order | Simulation-affecting iteration uses lists or sorted keys |
+| Iteration order over an object or a map | Objects, `HashMap` and `HashSet` iterate in the order their keys were written, on every machine |
 | Wall-clock time leaking into simulation | Simulation goes in `fixed_update(dt)`, on the 60 Hz step with a constant dt; `update(dt)` is for presentation. `engine::tick()` is the clock |
 | Hot reload mid-session | Off for a run to be verified |
 

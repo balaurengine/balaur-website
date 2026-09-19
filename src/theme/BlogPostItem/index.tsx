@@ -1,4 +1,4 @@
-import type {ReactNode} from 'react';
+import {useCallback, useState, type ReactNode, type SyntheticEvent} from 'react';
 import clsx from 'clsx';
 import BlogPostItem from '@theme-original/BlogPostItem';
 import type BlogPostItemType from '@theme/BlogPostItem';
@@ -27,11 +27,25 @@ function PostBreadcrumbs(): ReactNode {
   );
 }
 
-// A post's `image` front matter is its cover: cropped to 16:9 in the list,
-// shown whole on the post's own page.
+// The two ratios a list cover is cropped to, and the ratio halfway between
+// them: 16:9 for the editor's 1920x1080 shots, 16:10 for a game's 1600x1000.
+const WIDE = 16 / 9;
+const TALL = 16 / 10;
+const MIDPOINT = (WIDE + TALL) / 2;
+
+// A post's `image` front matter is its cover: cropped to whichever of 16:9 and
+// 16:10 is nearer its own ratio in the list, shown whole on the post's own page.
 export default function BlogPostItemWrapper(props: Props): ReactNode {
   const {metadata, isBlogPostPage} = useBlogPost();
   const image = metadata.frontMatter.image;
+  // 16:9 until the image reports its size: most covers are editor shots.
+  const [wide, setWide] = useState(true);
+  const measure = useCallback((img: HTMLImageElement | null) => {
+    // A cached image can finish loading before React attaches onLoad.
+    if (img?.complete && img.naturalHeight) {
+      setWide(img.naturalWidth / img.naturalHeight >= MIDPOINT);
+    }
+  }, []);
   // The front matter names the PNG, which stays the og:image for link
   // unfurlers; on the page itself the screenshot dirs have a lossless WebP
   // beside every PNG (scripts/optimize-images.mjs), a third of the bytes.
@@ -41,7 +55,16 @@ export default function BlogPostItemWrapper(props: Props): ReactNode {
       {isBlogPostPage && <PostBreadcrumbs />}
       {image && (
         <img
-          className={clsx(styles.cover, isBlogPostPage && styles.coverFull)}
+          ref={measure}
+          className={clsx(
+            styles.cover,
+            !wide && styles.coverTall,
+            isBlogPostPage && styles.coverFull,
+          )}
+          onLoad={(e: SyntheticEvent<HTMLImageElement>) => {
+            const {naturalWidth, naturalHeight} = e.currentTarget;
+            setWide(naturalWidth / naturalHeight >= MIDPOINT);
+          }}
           src={src}
           // The cover is a screenshot of the thing the post is about, not
           // decoration, so it carries the post's title: that is the text

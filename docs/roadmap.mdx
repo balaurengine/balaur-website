@@ -48,7 +48,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/script_completion.webp",
         alt: "The completion popup: a module path, and the functions and constants under it",
         posts: [
-          {slug: "what-completes-at-the-caret", title: "Completion, hover and go to definition"},
+          {slug: "autocomplete", title: "Autocomplete"},
           {slug: "language-server", title: "Linting and a language server"},
         ],
       },
@@ -60,7 +60,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/editor_selection.webp",
         alt: "The Library dock open under the viewport, with a torus selected and pointed at the library's metal material",
         posts: [
-          {slug: "select-two-things", title: "Multi-select, lights and PBR materials"},
+          {slug: "selections", title: "Selections"},
         ],
       },
       {
@@ -72,7 +72,7 @@ import Roadmap from '@site/src/components/Roadmap';
         alt: "The Script persona: the file, the hooks it declares, and the events its node receives",
         posts: [
           {slug: "rune-scripting", title: "Rune scripting"},
-          {slug: "generated-script-reference", title: "Generated script reference"},
+          {slug: "script-reference", title: "Script reference"},
         ],
       },
       {
@@ -84,7 +84,7 @@ import Roadmap from '@site/src/components/Roadmap';
         alt: "The Assets dock on res://, with the project file, the scenes and the scripts beside the tree",
         posts: [
           {slug: "asset-hot-reload", title: "Asset hot reload and renaming"},
-          {slug: "settings-beside-the-file", title: "Asset import settings"},
+          {slug: "settings", title: "Import settings"},
         ],
       },
       {
@@ -95,20 +95,20 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/physics_collapse.webp",
         alt: "The Physics persona's collider overlays over the towers of examples/angrynerds",
         posts: [
-          {slug: "2d-support", title: "2D support"},
+          {slug: "2d-physics", title: "2D physics"},
         ],
       },
       {
         group: "Physics and animation",
         title: 'Rigs and animation',
-        text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls and tweens.</>,
+        text: <>2D and 3D skeletons with five modifiers each, GPU skinning, deform and morph tracks, retargeting through a <code>bone_map</code>, ragdolls, tweens, crossfades and state machines.</>,
         done: true,
         image: "/img/manual/rigging_modifiers.webp",
         alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
         posts: [
-          {slug: "skeletons-and-a-debugger", title: "Skeletons, a debugger, and a fixed step"},
+          {slug: "bone-animations", title: "Bone animations"},
           {slug: "gpu-skinning", title: "GPU skinning"},
-          {slug: "rigging-panels", title: "IK, retargeting and ragdolls"},
+          {slug: "rigging-editors", title: "Rigging editors"},
         ],
       },
       {
@@ -119,7 +119,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/editor_events.webp",
         alt: "The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three",
         posts: [
-          {slug: "select-two-things", title: "Multi-select, lights and PBR materials"},
+          {slug: "selections", title: "Selections"},
         ],
       },
       {
@@ -130,12 +130,12 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/ui_widgets.webp",
         alt: "The Interface persona: a HUD's widgets in the tree, drawn over the safe area, and a button in the inspector",
         posts: [
-          {slug: "text-in-the-world", title: "Text2D and Text3D"},
+          {slug: "text", title: "Text in 2D and 3D"},
           {slug: "audio-buses", title: "Audio buses and positional audio"},
-          {slug: "input-actions-and-gamepads", title: "Input actions and gamepads"},
+          {slug: "inputs", title: "Inputs"},
           {slug: "save-games", title: "Save games"},
           {slug: "localization", title: "Localization"},
-          {slug: "a-screen-of-nodes", title: "Widget kinds and themes"},
+          {slug: "widgets-and-themes", title: "Widgets and themes"},
         ],
       },
       {
@@ -146,9 +146,9 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/rendering_directional.webp",
         alt: "Three occluders under one directional light, each casting a parallel shadow strip at the light's angle",
         posts: [
-          {slug: "sprites", title: "Sprites"},
+          {slug: "2d-sprites", title: "2D sprites"},
           {slug: "2d-lights-and-shadows", title: "2D lights and shadows"},
-          {slug: "every-shape-is-a-mesh", title: "Primitive shapes, paths and booleans"},
+          {slug: "shape-primitives", title: "Shape primitives"},
         ],
       },
       {
@@ -181,7 +181,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/export_sheet.webp",
         alt: "The Export sheet: the ios, android, macos-universal, windows and web targets, each saying what it still needs",
         posts: [
-          {slug: "game-center-icloud-and-purchases", title: "Game Center, iCloud and in-app purchases"},
+          {slug: "apple-integration", title: "Apple integration"},
           {slug: "mobile-export", title: "Mobile export and signing"},
         ],
       },
@@ -193,7 +193,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/export_size.webp",
         alt: "Where a pack's bytes are, and what lossless re-encoding takes off",
         posts: [
-          {slug: "what-an-export-weighs", title: "Smaller exports"},
+          {slug: "export-sizes", title: "Export sizes"},
           {slug: "editor-in-the-browser", title: "The editor in the browser"},
         ],
       },
@@ -214,7 +214,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/editor_focus.webp",
         alt: "The code pane with the window to itself, the file's hooks list beside it, and the Focus chip lit in the top bar",
         posts: [
-          {slug: "focused-script-editing", title: "Focus mode"},
+          {slug: "focused-mode", title: "Focus mode"},
         ],
       },
       {
@@ -238,7 +238,19 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/editor_import.webp",
         alt: "The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them",
         posts: [
-          {slug: "async-import-of-assets", title: "Async import of assets"},
+          {slug: "async-import", title: "Async import"},
+        ],
+      },
+      {
+        group: "Editor",
+        title: 'The User data dock',
+        text: <>The files a game keeps for its player, saves and prefs among them, opened as trees and edited in place.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs',
+        done: true,
+        image: "/img/manual/user_data_dock.webp",
+        alt: "The User data dock over a game's user data folder: the device id, the run log, two save slots, and the prefs slot open as a tree",
+        posts: [
+          {slug: "user-data", title: "User data"},
         ],
       },
       {
@@ -250,14 +262,19 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/blog/script_problems.webp",
         alt: "The Script persona with a misspelled component method underlined, and the Problems dock naming the line and the method",
         posts: [
-          {slug: "checking-a-script-against-its-scene", title: "Checking a script against its scene"},
+          {slug: "validation", title: "Script validation"},
         ],
       },
       {
         group: "Scripts and assets",
-        title: 'Texture import settings',
-        text: <>GPU compression and a <code>max_size</code> cap at export, and <code>balaur atlas</code>, over the sidecar and sampler settings already beside each file.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-textures.md',
+        title: 'Addons as modules',
+        text: <>A file directly under <code>addons/&lt;name&gt;/</code> is <code>&lt;name&gt;::&lt;file&gt;</code> in every script, its functions and constants reached by path, in <code>balaur_script_rune</code>.</>,
+        done: true,
+        image: "/img/manual/addon_completion.webp",
+        alt: "Completion after gamend::lobbies:: in the script editor: that module's functions, their parameters and the first one's doc line",
+        posts: [
+          {slug: "modules", title: "Modules"},
+        ],
       },
       {
         group: "Scripts and assets",
@@ -268,7 +285,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/blog/port_godot_balaur.webp",
         alt: "Polyglot Pirates in Godot on the left and the converted project in Balaur on the right",
         posts: [
-          {slug: "porting-a-godot-game", title: "Godot to Balaur importer"},
+          {slug: "godot-game-converter", title: "Godot game converter"},
         ],
       },
       {
@@ -285,12 +302,6 @@ import Roadmap from '@site/src/components/Roadmap';
       },
       {
         group: "Physics and animation",
-        title: 'Animation blending',
-        text: <>State machines that crossfade between clips, authored or converted from an <code>AnimationTree</code>, and blend trees so a rig can run two clips at once.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-animation-and-resources.md',
-      },
-      {
-        group: "Physics and animation",
         title: 'Pause, time scale and smooth frames',
         text: <>A <code>process</code> mode per subtree, time scale, interpolation between fixed steps, <code>max_fps</code>, vsync, and a tick rate setting.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-time.md',
@@ -298,7 +309,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/pause_states.webp",
         alt: "Twelve falling boxes frozen in mid-air by a pause, with the heading and the marker beside it still animating on the node set to process = always",
         posts: [
-          {slug: "pausing-a-game", title: "Pausing a game"},
+          {slug: "pause", title: "Pause"},
         ],
       },
       {
@@ -334,7 +345,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/manual/ui_text.webp",
         alt: "A label with a link and a hint, a selectable line, and two numbers with arrows and units",
         posts: [
-          {slug: "links-hints-and-selectable-text", title: "Links, hints and selectable text"},
+          {slug: "links-and-selectable-text", title: "Links and selectable text"},
         ],
       },
       {
@@ -346,7 +357,7 @@ import Roadmap from '@site/src/components/Roadmap';
         image: "/img/blog/sponza_atrium.webp",
         alt: "The Sponza atrium lit by its own sky: textured marble, the arcade, the drapes and the lion relief",
         posts: [
-          {slug: "the-3d-look", title: "The 3D look"},
+          {slug: "running-sponza", title: "Running Sponza"},
         ],
       },
       {
@@ -354,6 +365,17 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'Multiplayer from a script',
         text: <>A <code>multiplayer</code> module to host, join and leave a match from Rune, on a player's machine or a headless server.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-multiplayer.md',
+      },
+      {
+        group: "Tools and services",
+        title: 'Log files',
+        text: <>Each run's log kept in a file that survives a crash, and read by scripts through <code>log::since</code>.</>,
+        done: true,
+        image: "/img/manual/log_settings.webp",
+        alt: "The log page of the project settings: the file switch, and how many earlier runs' logs stay",
+        posts: [
+          {slug: "client-logs", title: "Log files"},
+        ],
       },
       {
         group: "Shipping",
@@ -520,25 +542,13 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Gamend",
         title: 'A Gamend dock',
-        text: <>The server target, the signed-in user and token, the lobby, saved and server data, a tab per feature, and every call, in the editor.</>,
+        text: <>The server target, the signed-in user, the lobby, server data, a tab per feature, every call, and the log a game ships.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs',
         done: true,
         image: "/img/manual/gamend_dock.webp",
         alt: "The Gamend dock reading gamend.org's leaderboards: the two servers in the header, the tabs down the side, and a leaderboard as a tree",
         posts: [
           {slug: "gamend-dock", title: "The Gamend dock"},
-        ],
-      },
-      {
-        group: "Gamend",
-        title: 'Client logs',
-        text: <>A log file that survives a crash, and a run's lines shipped to Gamend in batches under one id.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-gamend.md#2b-the-gamend-dock-the-server-target-and-logs',
-        done: true,
-        image: "/img/manual/gamend_logs.webp",
-        alt: "The Gamend dock's Logs tab while a game plays: the run's log file, the shipping state, and the newest lines",
-        posts: [
-          {slug: "client-logs", title: "Client logs"},
         ],
       },
     ],
