@@ -57,6 +57,7 @@ struct Params { speed: f32, rings: f32, tint: vec4<f32> }
 | `package::sprite` | The 2D contract: frame and object uniforms, vertex inputs, `vertex` and `place`, `sample_albedo`, `tint`, `time` |
 | `package::mesh` | The 3D contract, with `shade(in)` for the scene's lights and fog |
 | `package::post` | A pass over the whole frame: `fullscreen`, `frame(uv)` and `texel()` |
+| `constants` | The engine's limits, `MAX_LIGHTS`, `MAX_PROBES` and `MAX_JOINTS`: the numbers its own buffers are sized by |
 
 A shader file holds its two entry points; the rest is imported.
 
@@ -68,6 +69,8 @@ A shader file holds its two entry points; the rest is imported.
   omits is zero.
 - `[features]` are the `@if` flags that pick a variant at link time.
 - A plugin can register shader modules for a project's shader to import.
+- A contract's helpers marked `private` stay inside it. Importing one fails
+  when the shader links, naming the helper.
 
 ## A material for a whole subtree
 
