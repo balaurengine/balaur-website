@@ -93,7 +93,7 @@ engine.
 | Named values, never spelled | `input::KEY_SPACE`, `physics3d::BODY_DYNAMIC`, `ui::ANCHOR_TOP_LEFT` |
 | Node operations are methods | `node.get_node("../Target")`, `node.queue_free()` |
 | Several returns are a tuple | `let (text, changed) = ui::text_field(...)` |
-| A vector is a value: `let b = a` is a copy | `pos.y = 2.0`, `pos += balaur::Vec2::X`, `this.pos.x = 1.0` |
+| Vectors and strings are values; lists and tables are shared | `let b = a` copies `a`; `this.pos.x = 1.0` writes `this.pos` |
 | Tables, lists, nothing | `#{ kind: "ball" }`, `[1, 2]`, `()` |
 | An integer meets a float as a float | `1 + 0.5` is `1.5`; a native float argument is still written `0.0` |
 
