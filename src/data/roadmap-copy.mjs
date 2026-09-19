@@ -52,7 +52,7 @@ hide_table_of_contents: true
     'Script completion and hover': {
       image: '/img/manual/script_completion.webp',
       alt: 'The completion popup: a module path, and the functions and constants under it',
-      posts: ['autocomplete', 'language-server'],
+      posts: ['autocomplete'],
     },
     'Addons as modules': {
       image: '/img/manual/addon_completion.webp',
@@ -67,12 +67,12 @@ hide_table_of_contents: true
     'Log files': {
       image: '/img/manual/log_settings.webp',
       alt: "The log page of the project settings: the file switch, and how many earlier runs' logs stay",
-      posts: ['client-logs'],
+      posts: ['profiler'],
     },
     'The User data dock': {
       image: '/img/manual/user_data_dock.webp',
       alt: 'The User data dock over a game\'s user data folder: the device id, the run log, two save slots, and the prefs slot open as a tree',
-      posts: ['user-data'],
+      posts: ['save-games'],
     },
     'Project manager': {
       image: '/img/manual/project_manager.webp',
@@ -92,7 +92,7 @@ hide_table_of_contents: true
     'An import that does not stop the editor': {
       image: '/img/manual/editor_import.webp',
       alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
-      posts: ['asset-hot-reload'],
+      posts: ['async-import-of-assets'],
     },
     'A bad call caught before it runs': {
       image: '/img/blog/script_problems.webp',
@@ -122,7 +122,7 @@ hide_table_of_contents: true
     'Scenes, assets and packs': {
       image: '/img/manual/editor_assets.webp',
       alt: 'The Assets dock on res://, with the project file, the scenes and the scripts beside the tree',
-      posts: ['asset-hot-reload', 'settings'],
+      posts: ['async-import-of-assets'],
     },
     'Rapier in 2D and 3D': {
       image: '/img/manual/physics_collapse.webp',
@@ -132,7 +132,7 @@ hide_table_of_contents: true
     'Rigs and animation': {
       image: '/img/manual/rigging_modifiers.webp',
       alt: "The Rig tool drawing a modifier's chain, the dashed line to its target and the handle that drags it",
-      posts: ['bone-animations', 'gpu-skinning', 'rigging-editors'],
+      posts: ['bone-animations'],
     },
     'Lists, trees and tables': {
       image: '/img/manual/ui_rows.webp',
@@ -187,7 +187,7 @@ hide_table_of_contents: true
     'Apple and the platform module': {
       image: '/img/manual/export_sheet.webp',
       alt: 'The Export sheet: the ios, android, macos-universal, windows and web targets, each saying what it still needs',
-      posts: ['apple-integration', 'mobile-export'],
+      posts: ['mobile-export'],
     },
     'Export, the web and the CLI': {
       image: '/img/manual/export_size.webp',

@@ -1,0 +1,25 @@
+---
+description: "Assets import off the main thread, reload when saved, keep stable id:// references, and read import settings from a sidecar."
+slug: async-import-of-assets
+title: Async import of assets
+authors: [dragos]
+image: /img/manual/editor_import.png
+keywords: [asset import, gltf import, aseprite import, asset hot reload, import settings, pixel art]
+---
+
+Importing an asset runs on its own thread, so the editor keeps drawing.
+
+{/* truncate */}
+
+![The editor importing two files at once, one finished and one part way through](/img/manual/editor_import.webp)
+
+- A saved texture, model, font or sound reloads, and every node built from it is rebuilt.
+- An `id://` reference survives a move, and a rename in the Assets dock rewrites every reference to the file.
+- `art/hero.png.toml` holds one image's import settings, and `[import.texture]` in `project.toml` is the default.
+- `filter = "nearest"` draws pixel art crisp.
+
+![The same 32-pixel sprite at ten times its size, filtered linearly and with nearest](/img/manual/import_settings.webp)
+
+![The Import tab showing filter and srgb for a selected picture](/img/manual/import_dock.webp)
+
+[Asset imports](/docs/manual/editor#asset-imports) · [Import settings](/docs/manual/scenes#import-settings)

@@ -1,38 +1,27 @@
 ---
-description: "Save games written atomically per user, stamped with a version, and migrated one version step at a time by a script."
+description: "save::write and save::read, versioned and migrated, and a User data dock that opens saves and prefs."
 slug: save-games
 title: Save games
 authors: [dragos]
-image: /img/manual/save_settings.png
-keywords: [save games, save file migration, versioned saves, user data directory]
+image: /img/manual/user_data_dock.png
+keywords: [save games, save slots, save migration, user data, game prefs]
 ---
 
-`save::write(slot, data)` and `save::read(slot)` store a table per user. The
-file is written atomically, stamped with a version, and migrated one step at
-a time.
+`save::write(slot, data)` stores a table per player, and the User data dock opens it.
 
 {/* truncate */}
 
-- A slot name is letters, digits, `-` and `_`, and is validated.
-  `save::slots()` lists them and `save::remove(slot)` deletes one. Files
-  live under the platform's user-data directory.
-- A file is written beside its target and renamed over it, so a crash
-  mid-save leaves the previous file whole.
-- Every file carries the build's `[save] version`. Reading an older one
-  calls the migration script's `migrate_save(version, data)` once per
-  version step (1 to 2, then 2 to 3), and a file from a newer build is
-  refused.
+![The User data dock with the prefs slot open](/img/manual/user_data_dock.webp)
 
-```toml
-# project.toml
-[save]
-version = 3
-migrate = "scripts/saves.rn"
-```
+- A save is written beside its file and renamed over it, so a crash mid-save keeps the old one.
+- Each file carries `[save] version`. An older one runs `migrate_save` once per version step.
+- The dock lists the game's user data folder and edits TOML and JSON files as trees.
+
+![The save page in Settings: the migrate script and the save version this build writes](/img/manual/save_settings.webp)
 
 ```rune
 save::write("slot1", #{ level: 4, coins: 120 });
 let data = save::read("slot1");
 ```
 
-[Shipping a game](/docs/manual/shipping#save-games) has the details.
+[Shipping: save games](/docs/manual/shipping#save-games)

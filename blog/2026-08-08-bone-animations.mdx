@@ -1,47 +1,29 @@
 ---
-description: "Bones in 2D and 3D with skinned polygons and IK, a script debugger, and a fixed step."
+description: "Bones and skinned polygons in 2D, imported 3D rigs, GPU skinning, IK, jiggle, retargeting and ragdolls."
 slug: bone-animations
 title: Bone animations
 authors: [dragos]
 image: /img/editor/persona_animate.png
-keywords: [bone animation, 2d skeleton, inverse kinematics, script debugger, fixed timestep, replay]
+keywords: [bone animation, 2d skeleton, gpu skinning, inverse kinematics, retargeting, ragdoll]
 ---
 
-This one brings bone animation in 2D and 3D with skinned polygons and IK, a
-script debugger with breakpoints, and a fixed step with record and replay.
+Bones in 2D and 3D, skinned on the GPU, with IK, jiggle, retargeting and ragdolls.
 
 {/* truncate */}
 
-## Skeletons
+![A skinned leg bending under a clip](/img/editor/persona_animate.webp)
 
-- A bone is a node with a rest pose; a skin is a textured polygon with bone
-  weights. A clip keys the bones by path in the timeline.
+- A bone is a node, and a skin is a polygon with bone weights, painted in the Weights dock.
+- `balaur import model.glb` brings in a 3D rig. Both kinds skin on the GPU from a joint palette.
 
-  ![A skinned leg bending under a clip](/img/editor/persona_animate.webp)
+![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp)
 
-- The editor has a bone tool and a polygon tool with Points, Polygons, UV and
-  Weights modes. Two modifiers run after the clip: `look_at` and `two_bone_ik`.
+- `modifier2d` and `modifier3d` run `look_at`, `two_bone_ik`, `fabrik`, `ccdik` and `jiggle` after the clip.
 
-  ![Painting weights](/img/editor/tool_polygon_weights.webp)
+![A modifier's chain, the dashed line to its target, and the handle that drags it](/img/manual/rigging_modifiers.webp)
 
-- 3D rigs are imported: `balaur import model.glb` writes the joints, the mesh
-  and the animations.
+- A `bone_map` plays a clip made for one skeleton on another, and `physics2d.ragdoll(node)` turns a rig into bodies.
 
-  ![An imported column and its bones](/img/editor/view3d_bone_tool.webp)
+![The Bone map dock: canonical names on the left, the rig's own bones on the right](/img/manual/rigging_bonemap.webp)
 
-## A debugger
-
-- Set a breakpoint in the gutter, run the scene, step with `F5` / `F10` /
-  `F11` / `Shift+F11`.
-- Frames and locals show in the Debugger dock; the game freezes while the
-  editor stays live.
-- The editor, every example and the debugger all run on Rune.
-
-## A fixed step
-
-- Simulation runs in `fixed_update(dt)` at 60 Hz. Each tick hashes the world.
-- `run --record` stores a session; `replay --verify` re-runs it and stops at
-  the first tick that differs.
-
-Details: [Animation](/docs/manual/animation), [The editor](/docs/manual/editor),
-[Determinism](/docs/manual/determinism).
+[Animation](/docs/manual/animation)
