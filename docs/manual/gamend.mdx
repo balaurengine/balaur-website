@@ -56,6 +56,23 @@ pub fn on_gamend_event(this, e) {
 The full function list is in the
 [script modules reference](/docs/reference/modules).
 
+## Accounts
+
+The addon's `client.rn` covers the ways a player gets an account.
+
+```rune
+let client = script::require("addons/gamend/client.rn");
+task::wait((client.login_device)((), engine::device_id())).await;
+task::wait((client.register_email)((), "ana@example.com", "a long password", ())).await;
+task::wait((client.login_email)((), "ana@example.com", "a long password")).await;
+```
+
+- A device id the server has not seen makes an anonymous account.
+- `register_email` makes an account with an email and a password and signs
+  it in. The server sends no email; `username` may be nil and gets generated.
+- `api.user_delete_current_user(node, params)` deletes the signed-in account.
+  An account with a password sends `#{ "current_password": ... }`.
+
 ## The server
 
 `gamend::configure()` with no URL reads the project's `[gamend]` settings.
