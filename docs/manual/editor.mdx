@@ -38,7 +38,8 @@ one project, because the export and import modules and the file root are built
 for the project the editor booted with.
 
 `Open project…`, `New project…` and `Recent projects…` are in the command
-palette, so the manager is reachable without closing what is open.
+palette, so the manager is reachable without closing what is open. Opened that
+way, it has a Back button, and Escape returns to the project.
 
 ### Examples
 
@@ -59,9 +60,22 @@ is what `balaur update` does from a terminal.
 
 Follow picks the line: `alpha`, `beta`, `rc`, `stable` or `nightly`. The
 releases under it are that line's, newest first, with the installed one marked.
-A release can also be named exactly. A build from a checkout belongs to no
-channel and says so. A macOS bundle updates by downloading the new disk image
-rather than replacing itself in place.
+Each button says which way it goes, Install or Downgrade, and a release can
+also be named exactly. An install downloads in the background with a progress
+bar; restart to use it.
+
+A build from a checkout belongs to no channel and says so. An install that
+cannot replace itself says why before offering anything: a macOS bundle offers
+the release's disk image to download, and a cargo target directory offers
+nothing.
+
+### About Balaur
+
+![The About sheet: the version, build, channel, platform and licence, and where this build's channel stands](/img/manual/about_balaur.webp)
+
+About Balaur, in the menu under the logo, shows the version, build, channel,
+platform and licence. It checks the build's own channel once and offers the
+newest release on it, through the same code as the Engine tab.
 
 ## The document and the mirror
 
@@ -196,7 +210,8 @@ balaur edit examples/rig --offscreen --frames 100 \
 
 - `--state` is a comma list: a persona (`scene`, `script`, `anim`, `phys`,
   `ui`), `select:<node>`, `tool:<id>`, `mode:<id>`, `dock:<name>`,
-  `zoom:<percent>`, `palette`, `light`, `play`, `input`, `focus`.
+  `zoom:<percent>`, `palette`, `light`, `play`, `input`, `focus`, `manager`,
+  `examples`, `versions`, `about`.
 - `shot=<file>` captures one frame. `frames=<dir>` captures every other frame
   into a numbered directory.
 - `show:<name>` runs a scripted sequence (this manual's clips). It feeds input
@@ -278,6 +293,7 @@ function: bind it to a local, then call it.
 | `section(k, title)`, `empty(k, text)` | A heading, and what an empty panel says |
 | `files(S, k, id, opts)` | A folder's files; TOML and JSON open as editable trees |
 | `game_data(S)`, `save_prefs(S)` | The game's user data folder, and a write of the editor's settings |
+| `short_path(path)` | A path with the home folder written as `~` |
 
 ```rune
 pub fn draw(S, k) {

@@ -54,6 +54,16 @@ hide_table_of_contents: true
       alt: 'The completion popup: a module path, and the functions and constants under it',
       posts: ['what-completes-at-the-caret', 'language-server'],
     },
+    'A Gamend dock': {
+      image: '/img/manual/gamend_dock.webp',
+      alt: "The Gamend dock reading gamend.org's leaderboards: the two servers in the header, the tabs down the side, and a leaderboard as a tree",
+      posts: ['gamend-dock'],
+    },
+    'Client logs': {
+      image: '/img/manual/gamend_logs.webp',
+      alt: "The Gamend dock's Logs tab while a game plays: the run's log file, the shipping state, and the newest lines",
+      posts: ['client-logs'],
+    },
     'Project manager': {
       image: '/img/manual/project_manager.webp',
       alt: 'The project manager: the recent list on the left, a new project from a template on the right, and the two ways in below it',

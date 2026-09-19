@@ -1,0 +1,48 @@
+---
+description: "The Gamend dock: the server target, the signed-in player, the lobby, saved data and one tab per server feature, in the editor."
+slug: gamend-dock
+title: The Gamend dock
+authors: [dragos]
+image: /img/manual/gamend_dock.png
+keywords: [gamend, game backend, editor dock, leaderboards, player data, editor plugin]
+---
+
+A project that carries the Gamend addon now has a Gamend tab in the editor. It shows what the played game holds on the server, and reads each server feature without a line of script.
+
+{/* truncate */}
+
+![The Gamend dock reading gamend.org's leaderboards](/img/manual/gamend_dock.webp)
+
+## The server
+
+- The header switches between the project's two servers, `[gamend] url` and `local_url`.
+- The choice is kept in the editor's own settings, so an exported game always talks to `url`.
+- A new project starts on `https://gamend.org`.
+- Open and Admin go to the server and to its admin site.
+
+## The player
+
+![The User tab signed in to a local Gamend](/img/manual/gamend_user.webp)
+
+- The User tab shows the session, both tokens masked behind show and copy, and when the access token expires.
+- A session kept by an earlier run can be read while signed out, restored or forgotten.
+- The editor uses the game's own user data folder and device id, so a device sign-in from the dock is the game's account.
+
+## One tab per feature
+
+- Leaderboards, Quests, Economy, Friends, Chat, Parties, Groups, Tournaments, Matchmaking, Notifications, Payments, Hooks and Users list their `GET` endpoints as trees.
+- The Lobby tab follows the lobby the game joined, and reads it again when a message lands on its topic.
+- Activity lists every call and socket message, opens each to its arguments and reply, and filters to errors.
+
+## User data
+
+![The User data dock with the prefs slot open](/img/manual/user_data_dock.webp)
+
+- The editor's User data dock lists the open game's user data folder.
+- TOML and JSON files open as trees you can edit in place.
+- `addons/gamend/prefs.rn` keeps player prefs in one of those files.
+
+## Docs
+
+- [The Gamend dock](/docs/manual/gamend#the-gamend-dock)
+- [Extending the editor](/docs/manual/editor#extending-the-editor)

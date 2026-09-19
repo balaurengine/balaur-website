@@ -4,7 +4,7 @@ slug: project-manager
 title: Project manager
 authors: [dragos]
 image: /img/manual/project_manager.png
-keywords: [game engine project manager, editor start screen, engine versions, release channels, godot import]
+keywords: [game engine project manager, editor start screen, engine versions, release channels, about dialog, godot import]
 ---
 
 When double clicking Balaur Engine, the Project manager will now show up. You can view here your projects, the examples and manage the engine versions.
@@ -30,7 +30,17 @@ Opening it downloads it into your projects and opens the copy.
 
 - Pick a channel: `alpha`, `beta`, `rc`, `stable` or `nightly`.
 - The latest version is checked whenever you open the tab.
+- Each release says whether it is newer or older than yours, and its button says Install or Downgrade.
+- An install downloads in the background with a progress bar. Restart to use it.
+- The macOS app downloads the release's `.dmg` instead, since it cannot replace itself.
 - The tab calls the same functions as `balaur update` (the cli).
+
+## About Balaur
+
+![The About sheet](/img/manual/about_balaur.webp)
+
+- The menu under the logo has an About Balaur entry.
+- It shows the version, build, channel and platform, and whether your channel has a newer build.
 
 ## Docs
 
