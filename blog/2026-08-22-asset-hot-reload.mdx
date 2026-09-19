@@ -1,10 +1,10 @@
 ---
-description: "Textures, models, fonts and sounds reload when saved, assets get stable id:// references, and renaming a file rewrites every reference."
+description: "Assets reload when saved, keep stable id:// references, rewrite every reference on a rename, and import off the main thread."
 slug: asset-hot-reload
 title: Asset hot reload and renaming
 authors: [dragos]
 image: /img/manual/editor_assets.png
-keywords: [asset hot reload, stable asset ids, asset renaming, asset pipeline]
+keywords: [asset hot reload, stable asset ids, asset renaming, asset pipeline, async asset import]
 ---
 
 Textures, models, fonts and sounds reload when saved. Assets carry stable
@@ -20,6 +20,10 @@ Textures, models, fonts and sounds reload when saved. Assets carry stable
   every reference to the moved file across scenes and assets.
 - The dock browses, filters, makes folders, renames and deletes. A card
   selects on the first click and opens on the second.
+- An import runs on its own thread, so the editor keeps drawing. Several run
+  at once, listed in the top right with one bar under them.
+
+  ![The editor importing two files at once, one finished and one part way through](/img/manual/editor_import.webp)
 
 ```toml
 [nodes.sprite]

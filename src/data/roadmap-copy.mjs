@@ -92,7 +92,7 @@ hide_table_of_contents: true
     'An import that does not stop the editor': {
       image: '/img/manual/editor_import.webp',
       alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
-      posts: ['async-import-of-assets'],
+      posts: ['asset-hot-reload'],
     },
     'A bad call caught before it runs': {
       image: '/img/blog/script_problems.webp',
@@ -117,7 +117,7 @@ hide_table_of_contents: true
     'Rune scripting': {
       image: '/img/manual/scripting_editor.webp',
       alt: 'The Script persona: the file, the hooks it declares, and the events its node receives',
-      posts: ['rune-scripting', 'script-reference'],
+      posts: ['rune-scripting'],
     },
     'Scenes, assets and packs': {
       image: '/img/manual/editor_assets.webp',

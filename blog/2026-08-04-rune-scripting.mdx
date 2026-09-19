@@ -1,10 +1,10 @@
 ---
-description: "Rune as a scripting language, bindings each subsystem declares once against a language-neutral seam, and a handle per component on a node."
+description: "Rune scripting: bindings declared once against a language-neutral seam, a handle per component, and a script reference read out of a running engine."
 slug: rune-scripting
 title: Rune scripting
 authors: [dragos]
 image: /img/manual/scripting_editor.png
-keywords: [rune scripting, game scripting language, script bindings, exported properties, balaur]
+keywords: [rune scripting, game scripting language, script bindings, exported properties, script api reference, balaur]
 ---
 
 Rune is the scripting language. Each subsystem declares its bindings once,
@@ -37,5 +37,12 @@ pub fn fixed_update(this, dt) {
     this.node.body2d.apply_impulse(this.speed * dt, 0.0);
 }
 ```
+
+## Script reference
+
+The [modules](/docs/reference/modules), [components](/docs/reference/components)
+and [assets](/docs/reference/assets) references are read out of a booted
+engine, because `input.KEY_SPACE` exists only after registration. The files
+are committed, and CI fails a build whose output differs.
 
 [Scripting](/docs/manual/scripting) has the model.
