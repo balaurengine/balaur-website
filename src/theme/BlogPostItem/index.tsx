@@ -27,7 +27,7 @@ function PostBreadcrumbs(): ReactNode {
   );
 }
 
-// A post's `image` front matter is its cover: cropped to a banner in the list,
+// A post's `image` front matter is its cover: cropped to 16:9 in the list,
 // shown whole on the post's own page.
 export default function BlogPostItemWrapper(props: Props): ReactNode {
   const {metadata, isBlogPostPage} = useBlogPost();

@@ -5,7 +5,7 @@
      cover reserves before it loads, not a size: without height:auto they land
      as a literal 1000px box and the crop turns portrait. */
   height: auto;
-  aspect-ratio: 2.4 / 1;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: top;
   border: 1px solid var(--balaur-card-border);
