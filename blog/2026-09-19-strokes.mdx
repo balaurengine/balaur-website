@@ -1,0 +1,36 @@
+---
+description: "Polylines draw miter, bevel and round joins, three caps and a taper."
+slug: strokes
+title: Strokes
+authors: [dragos]
+image: /img/blog/strokes.png
+keywords: [polyline, line2d, stroke, line join, line cap, taper, gradient]
+---
+
+A `shape2d` polyline is one outline, with the corners and ends you pick.
+
+{/* truncate */}
+
+![Seven polylines: round, miter and bevel joins, butt, square and round caps, a tapered line with a gradient, and two closed squares](/img/blog/strokes.webp)
+
+## Joins and caps
+
+- `join` is `round`, `miter` or `bevel`, and `cap` is `round`, `butt` or `square`.
+- `miter_limit` is how far a miter may reach, in half-widths, before the corner is cut to a bevel. The default is 4, as in SVG.
+- `taper = [1.0, 0.05]` narrows a line from its full `width` at the start to 5% of it at the end.
+
+## One outline
+
+- `i_overlay` strokes the whole chain in integer math, and the triangulator fills it in fixed point.
+- No two triangles of a stroke overlap, so a translucent line blends once, joints included.
+- A `gradient` steps through 32 bands along the line's length.
+
+```toml
+[nodes.shape2d]
+kind = "polyline"
+mesh = "#zig"
+width = 0.6
+taper = [1.0, 0.05]
+color = [1.0, 0.5, 0.2, 1.0]
+gradient = [1.0, 1.0, 0.3, 1.0]
+```

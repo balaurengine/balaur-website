@@ -181,7 +181,9 @@ bevel = 0.08
 | `lathe` | A profile revolved around y |
 | `sweep` | A cross-section carried along a rail |
 
-A `shape2d` polyline whose `mesh` names a `path2d` strokes it.
+A `shape2d` polyline whose `mesh` names a `path2d` strokes it. Its `join`,
+`cap`, `miter_limit` and `taper` set how the stroke turns a corner, how it ends
+and how it narrows along its length.
 
 ![An arch extruded, a goblet revolved, a rail swept](/img/manual/objects_paths.webp)
 
