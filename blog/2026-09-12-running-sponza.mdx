@@ -9,53 +9,32 @@ keywords: [image based lighting, ssao, glass, reflection probe, gltf import, spo
 
 import Clip from '@site/src/components/Clip';
 
-Sponza, read by one `balaur import` and lit by its own sky. Nothing in it was
-authored by hand except a camera, a sun, an environment and a player.
+Sponza, imported by running `balaur import`. Nothing in it was
+created by hand except a camera, a sun, an environment and a player.
 
 {/* truncate */}
 
-<Clip name="sponza_walk" alt="Walking the length of the Sponza arcade in first person, the marble floor and the drapes lit by the sky" />
+<Clip name="sponza_walk" alt="Sponza walking forward" />
 
-- A glTF material arrives with every factor and map, the alpha mode and its
-  cutoff, the index of refraction and the volume. Each material is one mesh
-  node, so Sponza is 25 nodes over 103 primitives.
-- The import writes the file's own wrapping beside each image, so the marble
-  floor arrives tiled. Clamped, a floor whose coordinates run past one draws as
-  a single stretched texel.
+## Surfaces
 
-## What a surface reads
-
-`package::mesh` binds the sky as an environment map, the occlusion the prepass
-measured, the reflection probes, and the scene that glass refracts. Each has a
-one-pixel stand-in, so nothing branches on absence.
+`package::mesh` binds the sky as an environment map, the occlusion, the reflection probes,
+and the scene that glass refracts.
 
 ![A chrome ball, a pane of glass and a mirrored floor under a sky](/img/blog/3d_look_surfaces.webp)
 
-- Image-based lighting takes the place of `environment.ambient` rather than
-  adding to it, since both stand for the same bounced light.
-- Glass is `[surface]` on the material: `transmission`, `ior`, `thickness` and
-  a volume colour. It draws after the opaque scene resolves, refracts it, and
-  keeps its own highlights on top.
-- A mirror renders the scene from its own plane, in place of what the sky
-  would show.
-- A `reflection_probe` is a box a room was captured inside. A surface in it
-  reflects the room, aimed at the box rather than at infinity.
+- Image-based lighting takes the place of `environment.ambient`.
+- A mirror renders the scene from its own plane.
+- A `reflection_probe` is a box with a room captured inside.
 
-## Occlusion, and the pass it needed
+## Occlusion
 
 ![Two boxes on a floor, without occlusion and with it](/img/blog/3d_look_occlusion.webp)
 
-Every 3D material draws a geometry prepass, a project's own included. That
-prepass feeds the buffer occlusion reads, so every surface darkens in its
-creases.
+Every 3D material draws a geometry prepass. It then feeds the occlusion buffer.
 
-## Four passes to finish on
+## Running it
 
-- `vignette`, `aberration`, `grain` and `pixelate` are names on `camera.post`,
-  drawn where the list puts them. `fxaa` and `sharpen` join them from the
-  renderer.
-- The layer stack ships in the editor's library: colour, image, gradient,
-  noise, matcap, fresnel, toon and outline, each a flag with its own knobs.
+Follow the instructions in [balaur-sponza](https://github.com/balaurengine/balaur-sponza). Its scripts download the model and set up the scene after `balaur import`.
 
-The Sponza project is [its own
-repository](https://github.com/balaurengine/balaur-sponza).
+- The model is [Sponza](https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Sponza) from the Khronos glTF sample assets, CC BY 4.0, after the original by Frank Meinl for Crytek.

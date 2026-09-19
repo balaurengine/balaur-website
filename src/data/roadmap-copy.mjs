@@ -92,7 +92,7 @@ hide_table_of_contents: true
     'An import that does not stop the editor': {
       image: '/img/manual/editor_import.webp',
       alt: 'The editor importing two files at once: both listed in the top right, one finished and one part way through, with one bar under them',
-      posts: ['async-import'],
+      posts: ['async-import-of-assets'],
     },
     'A bad call caught before it runs': {
       image: '/img/blog/script_problems.webp',
