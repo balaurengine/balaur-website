@@ -69,7 +69,8 @@ task::wait((client.login_email)((), "ana@example.com", "a long password")).await
 
 - A device id the server has not seen makes an anonymous account.
 - `register_email` makes an account with an email and a password and signs
-  it in. The server sends no email; `username` may be nil and gets generated.
+  it in. The server mails the address a confirmation link, as its web
+  sign-up does; `username` may be nil and gets generated.
 - `api.user_delete_current_user(node, params)` deletes the signed-in account.
   An account with a password sends `#{ "current_password": ... }`.
 
