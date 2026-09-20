@@ -52,7 +52,7 @@ hide_table_of_contents: true
     'Script completion and hover': {
       image: '/img/manual/script_completion.webp',
       alt: 'The completion popup: a module path, and the functions and constants under it',
-      posts: ['autocomplete'],
+      posts: ['rune-scripting'],
     },
     'Addons as modules': {
       image: '/img/manual/addon_completion.webp',

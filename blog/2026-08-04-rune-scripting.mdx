@@ -1,31 +1,28 @@
 ---
-description: "Rune scripting: bindings declared once against a language-neutral seam, a handle per component, and a script reference read out of a running engine."
+description: "Rune scripts on nodes, components as fields, a reference read out of a running engine, and completion, hover and linting in the editor."
 slug: rune-scripting
 title: Rune scripting
 authors: [dragos]
 image: /img/manual/scripting_editor.png
-keywords: [rune scripting, game scripting language, script bindings, exported properties, script api reference, balaur]
+keywords: [rune scripting, game scripting language, script api reference, code completion, language server, balaur]
 ---
 
-Rune is the scripting language. Each subsystem declares its bindings once,
-against a language-neutral seam, and every component on a node is a handle
-the script can call.
+Rune is the scripting language. A script is one object per node, and every
+component on the node is a field it calls.
 
 {/* truncate */}
 
-- `balaur_script` is the neutral contract: a binding is a name, typed values
-  and a function. A backend implements `ScriptHost`. Physics, input, render,
-  audio and UI declare their bindings there.
-- `balaur_script_rune` is the host, picked by `language` in `project.toml`.
-  Each node gets one object, and `pub fn update(this, dt)` runs on it. What
-  a script writes to `this` the host reads next frame.
-- The twenty-seven node operations are one list of neutral functions taking
-  the node first, and a backend adds its own call sugar.
-- `pub fn exports()` returns a script's defaults. The scene overrides only
-  what it changes, and the inspector lists them per node.
-- Each component on a node is a field on the node. The field's methods are
-  the owning module's functions with the node filled in, plus `get()`,
-  `set(table)`, `has()` and `remove()` on all of them.
+![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.webp)
+
+- `update(this, dt)` runs every frame, and `fixed_update` on the fixed step,
+  before physics.
+- `exports()` returns the defaults. A scene overrides only what it changes,
+  and the inspector lists them per node.
+- Each component is a field on the node with every function that drives it,
+  plus `get()`, `set()`, `has()` and `remove()`.
+- The [modules](/docs/reference/modules), [components](/docs/reference/components)
+  and [assets](/docs/reference/assets) references are read out of a running
+  engine, and CI fails when they drift.
 
 ```rune
 pub fn exports() {
@@ -33,16 +30,22 @@ pub fn exports() {
 }
 
 pub fn fixed_update(this, dt) {
-    // every function that drives body2d, spelled from the node
     this.node.body2d.apply_impulse(this.speed * dt, 0.0);
 }
 ```
 
-## Script reference
+## Tooling
 
-The [modules](/docs/reference/modules), [components](/docs/reference/components)
-and [assets](/docs/reference/assets) references are read out of a booted
-engine, because `input.KEY_SPACE` exists only after registration. The files
-are committed, and CI fails a build whose output differs.
+![The completion popup under the caret, on a module path](/img/manual/script_completion.webp)
 
-[Scripting](/docs/manual/scripting) has the model.
+- After `physics2d::` completion lists that module, and after `node.body2d.`
+  what acts on that component.
+- `⌘B` goes to a definition, `⌘⇧R` renames across files, and `⌥⇧F` formats.
+- The Problems dock checks on save for a missing script, prefab or asset, and
+  for a shader that will not link.
+- A VS Code extension spawns `balaur lsp`, which runs the same checks.
+
+## Docs
+
+- [Scripting](/docs/manual/scripting)
+- [Tooling](/docs/manual/scripting#tooling)
