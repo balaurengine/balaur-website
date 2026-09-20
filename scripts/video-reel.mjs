@@ -24,9 +24,12 @@
 //   node scripts/video-reel.mjs --no-audio      # a silent share cut
 //
 // Outputs:
-//   static/video/balaur-0-1-0.mp4/.webm        1920x1080, what the post embeds
-//   static/img/manual/balaur-0-1-0.png         the poster's source, committed
-//   video-out/balaur-0-1-0-share.mp4           the same, with music and a credit
+//   static/video/balaur-0-2-0.mp4/.webm        1920x1080, what the post embeds
+//   static/img/manual/balaur-0-2-0.png         the poster's source, committed
+//   video-out/balaur-0-2-0-share.mp4           the same, with music and a credit
+//
+// NAME, VERSION and SECTIONS are the release being cut. A shipped reel keeps
+// its files; what made it is in this file's history.
 //
 // The share cut is the only one outside `static/`. It is committed, but not
 // served: it is what YouTube and Reddit are fed, and a second copy of the same
@@ -54,8 +57,12 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const videoDir = join(root, 'static', 'video');
-const NAME = 'balaur-0-1-0';
-const VERSION = '0.1.0';
+const NAME = 'balaur-0-2-0';
+const VERSION = '0.2.0';
+// A clip the site serves is in static/video; one too big to serve twice lives
+// here instead, full size, for the reel alone. assets/ is not copied into the
+// build, so nothing here is fetched by a page.
+const reelDir = join(root, 'assets', 'reel');
 // The bed and its attribution ship with the repository, so `yarn video-reel`
 // on a clean checkout produces the finished share cut with nothing to fetch
 // and no account anywhere. assets/audio/README.md says where it came from and
@@ -65,27 +72,25 @@ const AUDIO_DEFAULT = join(root, 'assets/audio/arabesque-no-1.mp3');
 const CREDIT_DEFAULT =
   'Music: Debussy, Arabesque No. 1. Galaxy Bösendorfer 290 via IMSLP, CC BY 3.0';
 
-// Determinism leads, then the order a game is made in: arrange it, script it,
-// make it collide, make it playable, make it move, make it look right. Each
-// line is the card that introduces its clip.
-//
-// It leads because it is the one thing here another engine does not do, and a
-// viewer decides whether to keep watching in the first twenty seconds. The
-// cost is that the reel no longer ends on its strongest claim, which the
-// download card has to carry instead.
+// The order somebody meets the engine in: start a project, write a script,
+// build a screen, bring the assets in, and the three things a game does with
+// what it is given. The Godot converter closes it, which is where a viewer
+// already running a project in another engine is left with something to do.
+// Each line is the card that introduces its clip.
 //
 // A clip plays at the speed it was taken. The showcase sequences are paced for
 // a manual page, one control at a time, which is slower than a reel wants; the
 // fix belongs in showcase.rn's own pacing, not in a speed-up here, which reads
 // as a fast-forward.
 const SECTIONS = [
-  ['determinism_replay', 'Determinism', 'Record, replay, roll back.'],
-  ['scenes_inspect', 'The editor', 'Nodes in a tree, properties in the inspector.'],
-  ['scripting_live', 'Rune scripting', 'Scripts reload in milliseconds.'],
-  ['physics_collapse', 'Physics', 'Rapier in 2D and 3D.'],
-  ['input_overlay', 'Input', 'Actions over keyboard, mouse and gamepads.'],
-  ['animation_key', 'Animation', 'Bones, weights and a timeline.'],
-  ['shader_preview', 'Shaders', 'Materials written in WESL.'],
+  ['project_start', 'The project manager', 'Examples to start from, and a template to make one.'],
+  ['script_focus', 'Focused editing', 'The code pane takes the whole window.'],
+  ['ui_tour', 'Lists, trees and tables', 'The same rows as cards, an outline and a table.'],
+  ['import_async', 'Import without a freeze', 'A few files a frame, so the editor keeps drawing.'],
+  ['concave_beam', 'Concave 2D colliders', 'A polygon cut into overlapping convex pieces.'],
+  ['pause_states', 'Pause and time scale', 'A process mode per subtree, and smooth frames.'],
+  ['sponza_walk', 'The 3D look', 'Sky lighting, occlusion, glass and mirrors.'],
+  ['godot_import', 'Godot import', 'A Godot project read, and written out as a Balaur one.'],
 ];
 
 // The cards are drawn at the size the engine captures a clip at, so a card
@@ -308,7 +313,9 @@ const still = (slug, seconds) => {
   segments.push(out);
 };
 const clipSeg = (name) => {
-  const src = join(videoDir, `${name}.mp4`);
+  // The full-size source first, for a clip the page carries at half size.
+  const reel = join(reelDir, `${name}.mp4`);
+  const src = existsSync(reel) ? reel : join(videoDir, `${name}.mp4`);
   if (!existsSync(src)) throw new Error(`no clip at ${src}`);
   // The segments are concatenated by stream copy, which needs every one of
   // them the same size: a clip taken before OFFSCREEN_SIZE changed would

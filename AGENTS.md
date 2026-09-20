@@ -62,7 +62,9 @@ is lost on the next run. Change the generator instead.
   from the per-feature clips already in `static/video/`. It runs by hand, not
   on build: a pass over two minutes of video is a quarter of an hour, and the
   reel only changes when a clip is retaken. `--share-only` re-cuts just the
-  upload copy in about a minute.
+  upload copy in about a minute. `NAME`, `VERSION` and `SECTIONS` in that file
+  are the release being cut; a shipped reel keeps its files and what made it is
+  in the file's history.
 
 An editor clip or screenshot is **1920x1080**, set by `OFFSCREEN_SIZE` in the
 engine's `crates/balaur_cli/src/main.rs`. A game renders at its own
@@ -72,6 +74,13 @@ pinned to 1920x1080 and move together: `src/components/Clip.tsx`'s default
 `video-reel.mjs`, which size the cards and are asserted against every clip
 before the concat. A clip of a game at another size passes `width` and
 `height` to `<Clip>`.
+
+`assets/reel/` holds a clip at the full 1920x1080 for a subject the page
+carries at half size, and `video-reel.mjs` reads it before `static/video/`.
+Sponza is the one: a camera walking through that much detail costs an order of
+magnitude more than a UI clip, so the served copy is 1280 wide and the reel's
+source is not served at all. `balaur-sponza`'s `scripts/media.sh --reel <path>`
+writes it.
 
 `assets/audio/` is the reel's music bed, committed with its attribution in the
 README beside it so `yarn video-reel` needs no download and no account. It is
