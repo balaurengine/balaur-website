@@ -15,17 +15,11 @@ Bones in 2D and 3D, skinned on the GPU, with IK, jiggle, retargeting and ragdoll
 
 <Clip name="animation_key" alt="The Animate persona: scrubbing the clip, posing the thigh bone, keying it, and playing" />
 
-- A bone is a node, and a skin is a polygon with bone weights, painted in the Weights dock.
-- `balaur import model.glb` brings in a 3D rig. Both kinds skin on the GPU from a joint palette.
-
 ![The column of examples/rig3d bent by its sway clip, its three bones deforming the imported mesh](/img/manual/animation_gpu_skinning.webp)
 
+- A bone is a node, and a skin is a polygon with bone weights, painted in the Weights dock.
+- `balaur import model.glb` brings in a 3D rig. Both kinds skin on the GPU from a joint palette.
 - `modifier2d` and `modifier3d` run `look_at`, `two_bone_ik`, `fabrik`, `ccdik` and `jiggle` after the clip.
-
-![A modifier's chain, the dashed line to its target, and the handle that drags it](/img/manual/rigging_modifiers.webp)
-
 - A `bone_map` plays a clip made for one skeleton on another, and `physics2d.ragdoll(node)` turns a rig into bodies.
-
-![The Bone map dock: canonical names on the left, the rig's own bones on the right](/img/manual/rigging_bonemap.webp)
 
 [Animation](/docs/manual/animation)
