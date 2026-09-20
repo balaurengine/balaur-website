@@ -7,21 +7,18 @@ image: /img/manual/hello_open.png
 keywords: [rust game engine, open source game engine, hot reload, ecs, balaur]
 ---
 
-The first commit: eight crates and one example. A game is a tree of nodes
-with scripts attached, scenes are TOML files, scripts hot reload with their
-state kept, and every subsystem is a plugin.
+The first commit. A game is a tree of nodes
+with scripts attached, scenes are TOML files, scripts hot reload,
+and every subsystem is a plugin.
 
 {/* truncate */}
 
 - A game is a tree of nodes with scripts attached. Under the tree every node
-  is an entity, and physics, rendering, audio, input and UI are plugins over
-  the same data.
+  is an entity, and physics, rendering, audio, input and UI are plugin systems.
 - A scene file declares its nodes in TOML. Plugins add their own keys:
   `body` and `collider` come from the physics crate.
-- Saving a script swaps its code into the running game in milliseconds and
-  keeps the live state. Hot reload is always on in dev mode.
-- `balaur edit` runs an editor written in the engine's own scripts, so the
-  editor is a project too. Editing an editor script hot reloads the editor.
+- Saving a script swaps its code into the running game in milliseconds.
+- `balaur edit` runs an editor written in the engine's own scripts.
 - `balaur export` precompiles scripts into a `.bpak`, and `balaur play` runs
   from the bytecode.
 - Without the `window` feature everything runs headless: tests, servers, CI.
@@ -34,6 +31,3 @@ script = { source = "scripts/ball" }
 body = "dynamic"                                # from balaur_physics
 collider = { shape = "ball", radius = 0.5 }     # from balaur_physics
 ```
-
-Cross-platform determinism has been a rule since this commit.
-[Principles](/docs/principles) has the list.
