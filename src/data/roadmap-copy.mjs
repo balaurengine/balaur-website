@@ -82,7 +82,7 @@ hide_table_of_contents: true
     'Selection, alignment and a library': {
       image: '/img/manual/editor_selection.webp',
       alt: "The Library dock open under the viewport, with a torus selected and pointed at the library's metal material",
-      posts: ['selections'],
+      posts: ['hello-balaur'],
     },
     'The 3D look': {
       image: '/img/blog/sponza_atrium.webp',
@@ -97,7 +97,7 @@ hide_table_of_contents: true
     'A bad call caught before it runs': {
       image: '/img/blog/script_problems.webp',
       alt: 'The Script persona with a misspelled component method underlined, and the Problems dock naming the line and the method',
-      posts: ['validation'],
+      posts: ['rune-scripting'],
     },
     'A splash while a game loads': {
       image: '/img/blog/editor_splash.webp',
@@ -167,7 +167,7 @@ hide_table_of_contents: true
     'Interactivity without a script': {
       image: '/img/manual/editor_events.webp',
       alt: 'The Events view: two binding rows on the ball, one counting the click and one opening the door when the score reaches three',
-      posts: ['selections'],
+      posts: ['hello-balaur'],
     },
     'What draws today': {
       image: '/img/manual/rendering_directional.webp',
@@ -182,7 +182,7 @@ hide_table_of_contents: true
     'The deterministic core': {
       image: '/img/manual/determinism_replay.webp',
       alt: 'The Session dock playing a recorded run back, with nobody at the mouse',
-      posts: ['rollback-networking'],
+      posts: ['physics-playback'],
     },
     'Apple and the platform module': {
       image: '/img/manual/export_sheet.webp',

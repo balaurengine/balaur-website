@@ -1,17 +1,16 @@
 ---
-description: "Rollback between two engines that exchange only inputs, a digest per tick to catch a desync, and one Transport trait over WebSockets and QUIC."
-slug: rollback-networking
-title: Rollback networking
+description: "Record a run and play it back, rollback between two engines that exchange only inputs, and a digest per tick to catch a desync."
+slug: physics-playback
+title: Physics playback
 authors: [dragos]
 image: /img/manual/networking_faults.png
-keywords: [rollback netcode, deterministic lockstep, quic, websocket, multiplayer game engine]
+keywords: [session recording, replay, rollback netcode, deterministic lockstep, multiplayer game engine]
 ---
 
 import Clip from '@site/src/components/Clip';
 
-Two engines can run the same game in rollback, exchanging only inputs. A
-digest per tick catches a desync, and one `Transport` trait covers
-WebSockets and QUIC.
+A run records and plays back, two engines run the same game in rollback
+exchanging only inputs, and a digest per tick catches a desync.
 
 {/* truncate */}
 
@@ -30,12 +29,5 @@ WebSockets and QUIC.
   the editor's settings.
 
   ![The Netcode page of the settings screen: faults, delay, jitter and loss](/img/manual/networking_faults.webp)
-
-## Next
-
-- A session a script can open, and replication:
-  [PLAN-networking.md](https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md).
-  Rollback runs between two engines in a test and over a socket.
-- No raw UDP. QUIC datagrams cover it, with encryption and in the browser.
 
 [Networking](/docs/manual/networking) · [Determinism](/docs/manual/determinism) · [Balaur for multiplayer](/multiplayer)

@@ -47,7 +47,14 @@ pub fn fixed_update(this, dt) {
   for a shader that will not link.
 - A VS Code extension spawns `balaur lsp`, which runs the same checks.
 
+![The Script persona with platform.rn open on the bad call, and the Problems dock under it naming the line and the method](/img/blog/script_problems.webp)
+
+- `balaur check` resolves every component method a script calls against the
+  scene it runs on, and a misspelled one names its file and line.
+- Findings are warnings, and `--strict` makes them errors for CI.
+
 ## Docs
 
 - [Scripting](/docs/manual/scripting)
 - [Tooling](/docs/manual/scripting#tooling)
+- [balaur check](/docs/cli#commands)
