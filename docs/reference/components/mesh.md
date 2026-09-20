@@ -23,6 +23,6 @@ In a scene, `mesh` is the node key that applies it. A script reaches each proper
 | `shadows` | bool | `true` | Whether this casts a shadow from the lights that cast |
 | `skeleton` | string | — | Node path to the rig a skinned mesh deforms with, relative to this node; empty means this node |
 | `source` | asset · [`mesh`](../assets/mesh.md) | — | The mesh asset this node draws |
-| `texture` | string | — | Image file, project-relative; empty draws the colour alone |
+| `texture` | asset · [`texture`](../assets/texture.md) | — | Image file, project-relative, or a `texture` asset; empty draws the colour alone |
 
-Asset types this component references: [`material`](../assets/material.md), [`mesh`](../assets/mesh.md).
+Asset types this component references: [`material`](../assets/material.md), [`mesh`](../assets/mesh.md), [`texture`](../assets/texture.md).

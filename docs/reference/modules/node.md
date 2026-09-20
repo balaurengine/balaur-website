@@ -10,7 +10,7 @@ custom_edit_url: null
 
 What every node has: name, path, transform, children, components and script. Each function takes the node first; scripts call it as a method, `this.node.get_node("Arm")`.
 
-55 functions, 0 constants. Scripts reach it as `node::`.
+56 functions, 0 constants. Scripts reach it as `node::`.
 
 Acts on [`states`](../components/states.md), [`transform`](../components/transform.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -55,6 +55,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `remove_component(component: string)` | — | Take the named component off the node. |
 | `remove_tag(node, tag: string)` | — | Take a name off the node; a name it never had is left alone. |
 | `reset_interpolation(node)` | — | Throw away the poses the node was blending and start again from where it is, so a teleport does not streak across the level. `physics3d.teleport` and `physics2d.teleport` call it for you. |
+| `script_field(name: string)` | — | A member the node's script instance holds, read by another script: GDScript's `node.speed`. Nil for no script or no such member. |
 | `script_path()` | — | The path of the script attached to the node, nil when it has none. |
 | `set_component(component: string, params: any?)` | — | Give the node the named component, built from the given table over the component's schema defaults. Every property the table leaves out goes back to its default; `patch_component` is the one that changes a property and leaves the rest. |
 | `set_interpolate(node, on: bool)` | — | Draw the node between fixed steps, or stop. Needs `[time] interpolate` on; a body and a script with `fixed_update` ask for it on their own. |

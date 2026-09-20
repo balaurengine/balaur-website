@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Imports a `.glb` or `.gltf` model, an `.aseprite` sprite, or a `.tmx` or `.ldtk` level into the project being edited, with the importers `balaur import` runs.
 
-8 functions, 0 constants. Scripts reach it as `import::`.
+7 functions, 0 constants. Scripts reach it as `import::`.
 
 ## Functions
 
@@ -22,7 +22,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `choose() -> any` | — | Ask the reader for a file and import what they pick, reporting as `start` does. On a desktop that is the OS dialog; in a tab it is the page's own chooser, which takes several files at once so a `.gltf` can be picked with the images it names. Answers whether the asking began. |
 | `file(string) -> any` | — | Import one file into the edited project, in one call. Answers `{ files, scene, note }`: the project-relative paths written, the scene to instantiate when there is one, and a line for the log. Answers `{ error }` when the import failed. A whole project is the work of seconds, so an editor keeping its frame wants `start`. |
 | `handles(string) -> any` | — | Whether an importer claims this file, by extension. |
-| `into(string, string) -> any` | — | Import one file into a project that is not the one being edited, in one call. What the start screen converts a Godot project with, before it opens the project it wrote. Answers what `file` answers. |
 | `listen(node, any?)` | — | Have the node's `on_import(event)`, or the `on_event` method the options name, called as an import starts, writes each file, finishes or fails. |
 | `running() -> any` | — | How many imports are in flight. |
-| `start(string) -> any` | — | Import one file, a few files per frame, reporting each to whatever `listen` named. Answers false while a recording plays. A model and a sprite are read first and then written a slice at a time, and a Godot project is walked a few files at a time; a level walks its own folder and takes one long slice, which says so in `files`. |
+| `start(string, string?) -> any` | — | Import one file into the edited project, or into `project` when one is named, a few files per frame, reporting each to whatever `listen` named. Answers false while a recording plays. A model and a sprite are read first and then written a slice at a time, and a Godot project is walked a few files at a time; a level walks its own folder and takes one long slice, which says so in `files`. |

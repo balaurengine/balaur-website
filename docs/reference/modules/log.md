@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The `info`, `warn` and `error` levels a script writes at, and the buffer behind them. Lines go through the engine's own `tracing` stream.
 
-5 functions, 0 constants. Scripts reach it as `log::`.
+7 functions, 0 constants. Scripts reach it as `log::`.
 
 ## Functions
 
@@ -20,6 +20,8 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `clear()` | — | Empty the buffer, so a console reading it starts again from nothing. |
 | `error(message: string)` | — | Write a line at error level, tagged as coming from a script. |
+| `file()` | — | The file this run's log is written to, or nil when it keeps none. `[log] file` turns it off and `[log] keep` says how many past runs stay beside it. |
 | `info(message: string)` | — | Write a line at info level, tagged as coming from a script. |
-| `recent(n: int?)` | — | The last n buffered entries, 100 by default, each `{ time, level, tag, message, fields }`. |
+| `recent(n: int?)` | — | The last n buffered entries, 100 by default, each `{ seq, time, level, tag, message, fields }`. |
+| `since(cursor: int?)` | — | What was logged after `cursor` (a `seq`, 0 for all the buffer holds), as `{ entries, cursor, missed }`: pass `cursor` back next time, and `missed` counts lines the buffer dropped before they were read. |
 | `warn(message: string)` | — | Write a line at warning level, tagged as coming from a script. |

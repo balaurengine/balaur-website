@@ -57,7 +57,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `right(fn)` | — | Lay the callback's widgets out against the right edge, still declared left to right. |
 | `right_panel(string, any?, fn) -> float` | — | Dock a column down the right of the window and draw the callback inside it; `width` is in design pixels. Answers the width it ended up with. |
 | `scale() -> float` | — | The global UI scale: how many screen pixels a design pixel is drawn at, on top of the display's own. |
-| `screen_size() -> float, float` | — | The window's width and height, in design pixels. |
+| `screen_size() -> float, float` | — | The window's width and height, in design pixels; a headless run answers the `[window]` size the project states. |
 | `scroll(string, any?, fn)` | — | Put the callback in a scroll area. `axis` is `vertical` (the default), `horizontal` or `both`; `max_height` and `max_width` cap it, `stick_to_bottom` follows new content, and `offset` scrolls it to that many design pixels along. |
 | `separator(string?)` | — | Draw a one-pixel rule across the container, in the given `#rrggbb` colour when one is passed. |
 | `set_clipboard(string)` | — | Copy text to the system clipboard. |

@@ -26,10 +26,10 @@ In a scene, `sprite` is the node key that applies it. A script reaches each prop
 | `half_extents` | vec2 | `[0,0]` | Size override in world units; [0, 0] sizes from the texture |
 | `material` | asset · [`material`](../assets/material.md) | — | The material this draws with; empty draws with the built-in one |
 | `offset` | vec2 | `[0,0]` | Where the image sits against the node, in texture pixels with y down; turns and scales with the node |
-| `pixels_per_unit` | float | `100` | Texture pixels per world unit At least 0.01. |
+| `pixels_per_unit` | float | `0` | Texture pixels per world unit; 0 takes the texture's own `pixels_per_unit` import setting, which is 100 unless it says At least 0. |
 | `region_origin` | vec2 | `[0,0]` | Top-left corner of the atlas cell to draw, in texture pixels; used with `region_size` |
 | `region_size` | vec2 | `[0,0]` | Size of the atlas cell to draw, in texture pixels; [0, 0] draws the whole image and sizes the quad from the cell |
 | `sheet` | asset · [`sprite_sheet`](../assets/sprite_sheet.md) | — | A sprite_sheet whose frames `frame` indexes; its texture is drawn unless `texture` names another, and it wins over `columns`, `rows` and the region |
-| `texture` | string | — | Image file, project-relative; required |
+| `texture` | asset · [`texture`](../assets/texture.md) | — | Image file, project-relative, or a `texture` asset that reads it with settings of its own; required |
 
-Asset types this component references: [`material`](../assets/material.md), [`sprite_sheet`](../assets/sprite_sheet.md).
+Asset types this component references: [`material`](../assets/material.md), [`sprite_sheet`](../assets/sprite_sheet.md), [`texture`](../assets/texture.md).

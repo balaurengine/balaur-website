@@ -22,6 +22,6 @@ In a scene, `polygon` is the node key that applies it. A script reaches each pro
 | `mesh` | asset · [`mesh`](../assets/mesh.md) | — | Vertices, triangulation, UVs and skin weights; positions are [x, y] in the node's space |
 | `pixels_per_unit` | float | `100` | Texture pixels per world unit, for the default UV mapping At least 0.01. |
 | `skeleton` | string | — | Node path to the rig root, relative to this node; empty means this node |
-| `texture` | string | — | Image file, project-relative; empty draws the tint alone |
+| `texture` | asset · [`texture`](../assets/texture.md) | — | Image file, project-relative, or a `texture` asset; empty draws the tint alone |
 
-Asset types this component references: [`mesh`](../assets/mesh.md).
+Asset types this component references: [`mesh`](../assets/mesh.md), [`texture`](../assets/texture.md).

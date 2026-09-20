@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Save games: a table in, a table out, stored per user. `[save] version` stamps each file; `[save] migrate` names the script whose `migrate_save(version, data)` upgrades older ones.
 
-5 functions, 0 constants. Scripts reach it as `save::`.
+6 functions, 0 constants. Scripts reach it as `save::`.
 
 ## Functions
 
@@ -18,6 +18,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 
 | function | acts on | what it does |
 | --- | --- | --- |
+| `folder()` | — | The directory slots are kept in, not created until something is written. |
 | `read(slot: string)` | — | The table in a slot, brought forward to this build's version; nil when the slot was never written. An error when the file was written by a newer build, or when it needs a migration the project declares no script for. |
 | `remove(slot: string)` | — | Delete a slot. Not an error when it was not there. |
 | `slots()` | — | Every slot that has been written, in name order. |

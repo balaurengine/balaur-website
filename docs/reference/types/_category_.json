@@ -1,0 +1,11 @@
+{
+  "label": "Value types",
+  "position": 4,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Value types",
+    "slug": "/reference/types",
+    "description": "The maths types a script holds: vectors, a rotation, a transform and a colour. A name bound to one holds its own copy."
+  }
+}

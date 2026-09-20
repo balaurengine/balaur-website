@@ -7,12 +7,14 @@ image: /img/manual/scripting_editor.png
 keywords: [rune scripting, game scripting language, script api reference, code completion, language server, balaur]
 ---
 
+import Clip from '@site/src/components/Clip';
+
 Rune is the scripting language. A script is one object per node, and every
 component on the node is a field it calls.
 
 {/* truncate */}
 
-![The Script persona: the file, the hooks it declares, and the events its node receives](/img/manual/scripting_editor.webp)
+<Clip name="scripting_live" alt="A script changed and saved while the scene runs, the new code live with the state kept" />
 
 - `update(this, dt)` runs every frame, and `fixed_update` on the fixed step,
   before physics.

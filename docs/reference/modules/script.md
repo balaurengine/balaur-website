@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Loads other scripts, inspects what they declare and calls into them; a failure stays contained.
 
-17 functions, 0 constants. Scripts reach it as `script::`.
+19 functions, 0 constants. Scripts reach it as `script::`.
 
 ## Functions
 
@@ -34,4 +34,6 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `require(path: string)` | — | Load another script file as a module, compiled once and shared by every caller afterwards. |
 | `shared(f: fn, arity: int)` | — | Wrap a script function so it can be called from several places with a fixed argument count. |
 | `signature(path: string, source: string, line: int, column: int)` | — | The call the caret is inside, as `#{ title, detail, doc, active }`, where `active` is the argument being typed. |
+| `store(key: string, value: any)` | — | Keep any value under a key for as long as the app runs, held by reference: state no node owns, like a class's static variable. |
+| `stored(key: string)` | — | What `store` kept under a key, the same value rather than a copy; nil when nothing was. |
 | `symbols(path: string, source: string)` | — | What that file declares, as `[#{ name, kind, detail, line, column }]`: its public functions and its `exports()` properties. |

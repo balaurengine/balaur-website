@@ -7,11 +7,15 @@ image: /img/manual/hello_open.png
 keywords: [rust game engine, open source game engine, hot reload, ecs, balaur]
 ---
 
+import Clip from '@site/src/components/Clip';
+
 The first commit. A game is a tree of nodes
 with scripts attached, scenes are TOML files, scripts hot reload,
 and every subsystem is a plugin.
 
 {/* truncate */}
+
+<Clip name="scenes_inspect" alt="Selecting nodes in the tree; the inspector follows, a scale is dragged, and undone" />
 
 - A game is a tree of nodes with scripts attached. Under the tree every node
   is an entity, and physics, rendering, audio, input and UI are plugin systems.

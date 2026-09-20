@@ -7,11 +7,13 @@ image: /img/editor/persona_animate.png
 keywords: [bone animation, 2d skeleton, gpu skinning, inverse kinematics, retargeting, ragdoll]
 ---
 
+import Clip from '@site/src/components/Clip';
+
 Bones in 2D and 3D, skinned on the GPU, with IK, jiggle, retargeting and ragdolls.
 
 {/* truncate */}
 
-![A skinned leg bending under a clip](/img/editor/persona_animate.webp)
+<Clip name="animation_key" alt="The Animate persona: scrubbing the clip, posing the thigh bone, keying it, and playing" />
 
 - A bone is a node, and a skin is a polygon with bone weights, painted in the Weights dock.
 - `balaur import model.glb` brings in a 3D rig. Both kinds skin on the GPU from a joint palette.

@@ -2,15 +2,15 @@
 title: "render module"
 image: "/img/social/reference.png"
 sidebar_label: "render"
-description: "What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the window, backdrop and debug lines."
+description: "What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the backdrop, debug lines and screenshots. window holds…"
 custom_edit_url: null
 ---
 
 # <span class="ref-icon ref-icon--render" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M224,56V178.06l-39.72-39.72a8,8,0,0,0-11.31,0L147.31,164,97.66,114.34a8,8,0,0,0-11.32,0L32,168.69V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z"/></svg></span>`render`
 
-What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the window, backdrop and debug lines.
+What a frame is made of: the shape, sprite, mesh or emitter a node draws, the 2D and 3D cameras, the backdrop, debug lines and screenshots. `window` holds the window itself.
 
-58 functions, 31 constants. Scripts reach it as `render::`.
+50 functions, 31 constants. Scripts reach it as `render::`.
 
 Acts on [`boolean3d`](../components/boolean3d.md), [`cloner`](../components/cloner.md), [`occluder2d`](../components/occluder2d.md), [`shape2d`](../components/shape2d.md), [`shape3d`](../components/shape3d.md), [`tilemap`](../components/tilemap.md): those functions are also methods on the component's handle, without the node argument.
 
@@ -48,10 +48,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `mouse_world_2d() -> float, float` | — | The mouse position in 2D world coordinates, for picking. |
 | `outline(node) -> [float]` | [`occluder2d`](../components/occluder2d.md) | The outline this node blocks 2D light with, in world space: x then y for each point in turn, with the first repeated at the end when the outline is closed. Empty on a node with no `occluder2d`. |
 | `pick_ray(float, float, float, float, float, float) -> node?` | — | The nearest node with a 3D shape that a world-space ray meets, from its origin xyz and direction xyz. |
-| `refresh_rate() -> float` | — | Frames per second the display refreshes at, as measured over the last frames; 60 with no window. |
-| `safe_area() -> any` | — | The display's insets in pixels, `{ left, top, right, bottom }`: what a notch or a home bar covers, read once per frame and recorded. Zero on a desktop. |
 | `screenshot(string)` | — | Save the next rendered frame as a PNG at a project-relative path; a run with no renderer says so. |
-| `set_app_icon(string)` | — | Set the application icon (the dock or taskbar one) from a PNG in the project, named by its path. |
 | `set_background(float, float, float)` | — | Set the colour the viewport is cleared to behind everything drawn, as r, g, b channel floats. |
 | `set_ball(node, float)` | [`shape3d`](../components/shape3d.md) | Draw the node as a sphere of the given radius in world units, replacing any other 3D shape. |
 | `set_camera(float, float, float, float, float, float)` | — | Point the 3D camera: the eye position xyz, then the world point it looks at, in world units. |
@@ -60,17 +57,12 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `set_cell(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Put one tile at a column and row; a tile below zero clears the cell, and a cell outside the map grows it in that direction. The mesh rebuilds on the next frame. |
 | `set_channel(string)` | — | Draw one channel of the scene (normals, uv, depth or albedo) instead of its colour; an empty name puts the picture back. |
 | `set_cuboid(node, float, float, float)` | [`shape3d`](../components/shape3d.md) | Draw the node as a box from its three half-extents, in world units, replacing any other 3D shape. |
-| `set_cursor_grab(bool)` | — | Confine the cursor to the window, for FPS-style mouse look. |
-| `set_cursor_hidden(bool)` | — | Hide or show the mouse cursor over the window. |
-| `set_fullscreen(bool)` | — | Put the window into borderless fullscreen on the current monitor, or back into a window. |
 | `set_grid(bool, float?, int?, int?)` | — | Turn the ground grid on or off, and optionally set its step in world units, major-line interval and extent. |
 | `set_grid_colors(float, float, float, float, float, float)` | — | Set the ground grid's minor line colour then its major line colour, as r, g, b channel floats. |
-| `set_keep_awake(bool)` | — | Keep the screen from dimming while the game runs: a page takes a wake lock, a phone its equivalent, a desktop needs nothing. |
 | `set_rect(node, float, float)` | [`shape2d`](../components/shape2d.md) | Draw the node as a rectangle from its two half-extents, in world units, replacing any other 2D shape. |
 | `set_shader_preview(string, int)` | — | Draw the value a shader's line computes for every pixel that reaches it; line 0 puts the picture back. |
 | `set_shader_probe(float, float)` | — | Ask what the previewed line computed at one framebuffer pixel; the answer arrives through `shader_probe` a frame later. |
 | `set_terrain(node, int, int, int)` | [`tilemap`](../components/tilemap.md) | Paint a terrain value at a column and row and let the tileset's rules pick the tiles, for that cell and the ring around it; below zero clears it. |
-| `set_window_mode(string)` | — | `windowed`, `maximized`, `fullscreen` (borderless) or `exclusive` (the monitor's largest video mode): the same choice as `[window] mode`. |
 | `shader_probe() -> any` | — | The four channels the previewed line wrote at the probed pixel, or `()` when nothing has been read yet. |
 | `stats() -> any` | — | What this frame draws: `{ draws, triangles, texture_bytes, textures, nodes }`, where `nodes` is a row per node that drew, each `{ node, draws, triangles, texture_bytes, copies }`. Presentation, never simulation: nothing in the digest reads it. |
 | `terrain(node, int, int) -> int` | [`tilemap`](../components/tilemap.md) | The terrain value painted at a column and row, or -1 where nothing was painted. |

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The running app: its clock, command-line `args`, `user_data_dir`, loaded `plugins` and `quit`.
 
-25 functions, 0 constants. Scripts reach it as `engine::`.
+26 functions, 0 constants. Scripts reach it as `engine::`.
 
 ## Functions
 
@@ -26,7 +26,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `has_plugin(name: string)` | — | Whether one plugin loaded, so a game shipped without `http` can say so rather than call into a module that is not there. |
 | `open_url(url: string)` | — | Open an http, https or mailto URL in whatever the player browses with: an opener on a desktop, a new tab on the web. Not on iOS or Android yet, where it reports that it has no opener. An effect on the world outside the game: never recorded, and it does nothing while a recording plays. |
 | `paused()` | — | Whether the game is paused. |
-| `platform()` | — | Where this runs: `{ os, web, mobile, touchscreen, editor }`. Recorded in a session's header, so a replay on another machine answers as the original did. |
+| `platform()` | — | Where this runs: `{ os, web, mobile, touchscreen, editor, dev }`, `dev` being a run from the sources rather than an exported pack. Recorded in a session's header, so a replay on another machine answers as the original did. |
 | `plugin_version(name: string)` | — | The version of one loaded plugin, or nil when it did not load. |
 | `plugins()` | — | Every plugin this build loaded, named, in load order. |
 | `profile_scripts(on)` | — | Start or stop counting what each script costs. Turning it on clears the tally. |
@@ -43,3 +43,4 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `timings()` | — | What the last frame cost, in seconds: `{ frame, fixed_steps, stages, spans }`. Presentation only: branching a `fixed_update` on wall time desyncs, and nothing records it. |
 | `unix_time()` | — | The wall clock at the top of this tick, in seconds since 1970. Read once per frame and recorded, so a replay sees the time the recording saw. |
 | `user_data_dir()` | — | A writable per-user directory for saves and settings, created on first call and named after the project. |
+| `user_data_dir_of(project: string)` | — | The user data directory a project of that name has, not created: where a tool finds another game's saves and logs. |

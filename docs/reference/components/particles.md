@@ -31,4 +31,6 @@ In a scene, `particles` is the node key that applies it. A script reaches each p
 | `size_end` | float | `-1` | The size a particle grows or shrinks to by the end of its life, in logical pixels; below zero keeps `size` |
 | `speed` | float | `2` | Initial speed in world units per second At least 0. |
 | `spread` | float | `30` | Half-angle of the emission cone in degrees At least 0. |
-| `texture` | string | — | An image each particle draws with, project-relative; empty draws a flat square |
+| `texture` | asset · [`texture`](../assets/texture.md) | — | An image, or a `texture` asset, each particle draws with; empty draws a flat square |
+
+Asset types this component references: [`texture`](../assets/texture.md).

@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Exports the project being edited. `targets` lists what this install can build; `start` runs one off the frame and reports to `on_export`.
 
-5 functions, 0 constants. Scripts reach it as `export::`.
+6 functions, 0 constants. Scripts reach it as `export::`.
 
 ## Functions
 
@@ -20,6 +20,7 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | --- | --- | --- |
 | `listen(node, any?)` | — | Have the node's `on_export(event)`, or the `on_event` method the options name, called as each export starts, finishes or fails. |
 | `output(string) -> any` | — | Where an export for this target will be written, as the project's `[export] output` decides. |
+| `preview(string, string) -> any` | — | What one file becomes in a target's pack, as the Import tab shows it: `{ source, before, after, width, height, drawn_width, drawn_height, gpu_bytes }`, where `source` is the file or the variant that ships and `drawn_*` is zero unless a smaller copy does. Nil when the file does not ship there. An empty target is this machine's own. |
 | `running() -> int` | — | How many exports are in flight. |
 | `start(string, any?) -> bool` | — | Export the edited project for one target, on a thread. `download` allows fetching a missing template, `sign` names an identity, `output` overrides where it lands. Answers false while a recording plays. |
 | `targets() -> any` | — | Every target, each `{ name, bundle, installed, fetchable, note }`: whether its runtime template is already here, whether a missing one could be fetched, and what a signed build of it would also need. |

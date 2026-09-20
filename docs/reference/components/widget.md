@@ -8,7 +8,7 @@ custom_edit_url: null
 
 # <span class="ref-icon ref-icon--ui" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M104,104V208H40a8,8,0,0,1-8-8V104Z" opacity="0.2"/><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V96H40V56ZM40,112H96v88H40Zm176,88H112V112H216v88Z"/></svg></span>`widget`
 
-`ui` · 98 properties · UI
+`ui` · 99 properties · UI
 
 A HUD element drawn every frame: `kind` picks `label`, `button`, `panel` and more, `anchor` places it in design pixels. A button sets `clicked` and calls `on_click`.
 
@@ -75,9 +75,10 @@ In a scene, `widget` is the node key that applies it. A script reaches each prop
 | `on_move` | string | — | Script method called when a dragged row is dropped, with the row moved, the row it landed on, and `before`, `after` or `into`, on this node or the nearest ancestor whose script declares it |
 | `on_submit` | string | — | Script method called with a `field`'s text on Enter, or when focus leaves it, on this node or the nearest ancestor whose script declares it |
 | `open` | bool | `true` | Whether a `fold` shows its children; its header flips it and calls `on_change` with the new state |
-| `options` | strings | `[]` | The items a `dropdown`, `menu`, `list`, `tree` or `table` holds; `text` is the one picked, except on a `menu` where it is the button caption. A `tree` row starts with one tab per level, a `list` or `tree` row splits on U+001F into icon, label, a trailing note and an `#rrggbb` for that row, and a `table` row splits on the same into one cell a column. `on_change` hears every pick |
+| `options` | strings | `[]` | The items a `dropdown`, `menu`, `list`, `tree` or `table` holds; `text` is the one picked, except on a `menu` where it is the button caption. A `tree` row starts with one tab per level, a `list` or `tree` row splits on U+001F into icon, label, a trailing note, an `#rrggbb` for that row and a key that is never drawn, which two rows with the same label need to stay two rows, and a `table` row splits on the same into one cell a column. `on_change` hears every pick |
 | `padding` | vec4 | `[-1,-1,-1,-1]` | Space inside a container's edge, in design pixels: one number for every side, or left, top, right and bottom. Below zero takes the theme's own, and a stated zero is no space at all |
 | `padding_x` | float | `-1` | The air either side of a caption, in design pixels; below zero takes the theme's own |
+| `pass_node` | bool | `false` | Hand every handler this widget calls its own node as the last argument, so one method can serve many widgets |
 | `placeholder` | string | — | What a `field` shows while it is empty, and the letter a `drag_value` puts before its number |
 | `placement` | enum | `below` | Where a `menu` opens: under its button, above it, at the pointer, or centred on the screen One of `below`, `above`, `pointer`, `center`. |
 | `problems` | strings | `[]` | The lines a `code` widget underlines as errors, counting from 1, each also marked on the inner edge of its gutter |

@@ -2,7 +2,7 @@
 title: "state_machine asset type"
 image: "/img/social/reference.png"
 sidebar_label: "state_machine"
-description: "Switches an animation player between clips. start is the first state, [states] maps states to clips, each [[transitions]] entry names from, to, fade…"
+description: "Switches an animation player between clips. start is the first state, [states] maps states to clips or to nested machines, each [[transitions]] entry…"
 custom_edit_url: null
 ---
 
@@ -10,7 +10,7 @@ custom_edit_url: null
 
 Files live in `animations/`. Used by [`state_machine`](../components/state_machine.md) · `machine`.
 
-Switches an animation player between clips. `start` is the first state, `[states]` maps states to clips, each `[[transitions]]` entry names `from`, `to`, `fade`, `advance`, `switch` and `condition`.
+Switches an animation player between clips. `start` is the first state, `[states]` maps states to clips or to nested machines, each `[[transitions]]` entry names `from`, `to`, `fade`, `ease` or `fade_curve`, `advance`, `switch`, `condition`, `check`, `priority`, `reset` and `break_loop`. A transition to `end` stops the machine until a travel or a jump.
 
 ```toml
 type = "state_machine"
@@ -18,13 +18,26 @@ start = "idle"
 
 [states]                         # state = clip in the player's library; "" is the state's own name
 idle = "idle"
-walk = "walk_cycle"
+
+[states.move]                    # a nested machine: its states are move/walk and move/run
+start = "walk"
+states = { walk = "", run = "run_cycle" }
 
 [[transitions]]
 from = "idle"
-to = "walk"
+to = "move"                      # entering a nested machine enters its start
 fade = 0.2                       # seconds
+ease = "in_out_sine"             # the curve the fade follows; linear by default
 advance = "auto"                 # disabled, enabled (fires on animation.travel) or auto
 switch = "immediate"             # immediate, sync (keeps the playhead) or at_end
 condition = "moving"             # turned on by animation.set_condition
+check = "can_move"               # a script method that has to answer true, asked each frame
+priority = 1                     # lower wins among auto transitions and on travel
+reset = true                     # false resumes where the state was last left
+break_loop = false               # true holds a looping clip's end while it fades out
+
+[[transitions]]
+from = "move"                    # leaves from any state inside the nested machine
+to = "end"
+fade_curve = [[0.0, 0.0], [0.3, 0.8], [1.0, 1.0]]   # [u, weight] points, in place of ease
 ```

@@ -16,6 +16,7 @@ const tags = api.component_tags ?? {};
 const componentDocs = api.component_docs ?? {};
 const assetTypes = api.asset_types ?? {};
 const modules = [...(api.modules ?? [])].sort((a, b) => a.name.localeCompare(b.name));
+const valueTypes = [...(api.types ?? [])].sort((a, b) => a.name.localeCompare(b.name));
 
 // Section order on the index; a component lands in the first group whose
 // tag it carries.
@@ -211,7 +212,7 @@ function propertyRow(name, spec) {
 }
 
 rmSync(out, {recursive: true, force: true});
-for (const dir of ['components', 'assets', 'modules']) mkdirSync(join(out, dir), {recursive: true});
+for (const dir of ['components', 'assets', 'modules', 'types']) mkdirSync(join(out, dir), {recursive: true});
 const write = (rel, lines) => writeFileSync(join(out, rel), lines.join('\n'));
 const category = (label, position, slug, description) =>
   JSON.stringify(
@@ -231,6 +232,10 @@ writeFileSync(
 writeFileSync(
   join(out, 'modules', '_category_.json'),
   category('Script modules', 3, '/reference/modules', 'What a script can call: every module, function and constant, read from a booted engine.'),
+);
+writeFileSync(
+  join(out, 'types', '_category_.json'),
+  category('Value types', 4, '/reference/types', "The maths types a script holds: vectors, a rotation, a transform and a colour. A name bound to one holds its own copy."),
 );
 
 for (const name of Object.keys(components).sort()) {
@@ -364,8 +369,28 @@ for (const m of modules) {
   write(`modules/${m.name}.md`, lines);
 }
 
+for (const t of valueTypes) {
+  const lines = [
+    frontMatter(`balaur::${t.name}`, {
+      sidebar_label: t.name,
+      description: `The ${t.name} value type of the Balaur game engine: ${plural(t.functions.length, 'function')} and ${plural(t.constants.length, 'constant')} a Rune script reaches as balaur::${t.name}.`,
+    }),
+    `# ${code('balaur::' + t.name)}`,
+    '',
+    `${plural(t.functions.length, 'function')}, ${plural(t.constants.length, 'constant')}. A name bound to one holds its own copy, and a method answers a new value.`,
+    '',
+  ];
+  if (t.functions.length) {
+    lines.push('## Functions', '', t.functions.map((f) => code(f)).join(', '), '');
+  }
+  if (t.constants.length) {
+    lines.push('## Constants', '', t.constants.map((c) => code(c)).join(', '), '');
+  }
+  write(`types/${t.name}.md`, lines);
+}
+
 const index = [
-  frontMatter('Reference: components, assets and script modules', {
+  frontMatter('Reference: components, assets, script modules and value types', {
     sidebar_label: 'Reference',
     sidebar_position: 0,
     slug: '/reference',
@@ -379,6 +404,7 @@ const index = [
   '- A **component** gives a node a capability: `sprite`, `body3d`, `bone2d`.',
   '- An **asset type** is a resource a component names: `mesh`, `tileset`.',
   '- A **script module** is a set of functions a script calls: `http`, `physics3d`.',
+  '- A **value type** is a value a script does maths with: `balaur::Vec2`, `balaur::Quat`.',
   '',
   '## Components',
   '',
@@ -401,6 +427,9 @@ for (const type of Object.keys(assetTypes).sort()) {
 index.push('', '## Script modules', '', '| module | functions | what it is for |', '| --- | ---: | --- |');
 for (const m of modules) index.push(`| <span class="ref-cell">${icon(m.name, MODULE_GROUPS[m.name] ?? 'other', MODULE_ICONS)}[${code(m.name)}](./modules/${m.name}.md)</span> | ${m.functions.length} | ${cell(brief(m.doc))} |`);
 index.push('');
+index.push('## Value types', '', '| type | functions | constants |', '| --- | ---: | ---: |');
+for (const t of valueTypes) index.push(`| [${code('balaur::' + t.name)}](./types/${t.name}.md) | ${t.functions.length} | ${t.constants.length} |`);
+index.push('');
 write('index.md', index);
 
 const described = modules.reduce((n, m) => n + Object.keys(m.docs ?? {}).length, 0);
@@ -408,5 +437,5 @@ const total = modules.reduce((n, m) => n + m.functions.length, 0);
 if (missingIcons.length) console.warn(`reference: no icon for ${[...new Set(missingIcons)].join(', ')} — using the group's glyph`);
 console.log(
   `reference: ${Object.keys(components).length} components, ${Object.keys(assetTypes).length} asset types, ` +
-    `${modules.length} modules, ${described}/${total} functions described → docs/reference/`,
+    `${modules.length} modules, ${valueTypes.length} value types, ${described}/${total} functions described → docs/reference/`,
 );

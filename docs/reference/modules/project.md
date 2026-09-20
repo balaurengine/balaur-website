@@ -10,7 +10,7 @@ custom_edit_url: null
 
 The projects this machine has opened, the templates a new one starts from, and the folder picker the OS provides. What the editor's start screen is made of.
 
-11 functions, 0 constants. Scripts reach it as `project::`.
+12 functions, 0 constants. Scripts reach it as `project::`.
 
 ## Functions
 
@@ -28,4 +28,5 @@ Argument kinds are the script values a call passes: `node` is a node handle, `an
 | `pick_folder() -> any` | — | Open the OS folder picker and answer what was chosen, or `()` when it was dismissed. Blocks while the dialog is up, and answers `()` on a platform with no picker. |
 | `recent() -> any` | — | The projects opened on this machine, newest first: `{ path, name, opened, exists }` each, where `opened` is a Unix time in seconds and `exists` says whether the folder is still there. |
 | `templates() -> any` | — | What a new project may start from: `{ id, note }` each, read from the editor's own library. |
+| `use_data(string?) -> any` | — | Keep `save::` slots and the device id in the user data directory of the game named `name`, and let `fs` reach it, so a game played here and run alone share saves and a device login. Nil goes back to the editor's own. Answers the directory, or nil. |
 | `version() -> any` | — | The version of the binary the editor is running in. |
