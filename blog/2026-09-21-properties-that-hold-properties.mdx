@@ -1,0 +1,43 @@
+---
+description: "A list, a map and a record a component or a script exports, drawn a row an entry in the inspector."
+slug: properties-that-hold-properties
+title: Properties that hold properties
+authors: [dragos]
+image: /img/blog/composite_properties.png
+keywords: [properties, inspector, exports, schema, scripting]
+---
+
+A property can now hold other properties. A `list` is ordered and holds one type, a `map` is keyed, and a `record` is a fixed set of named fields. The inspector draws a row per entry, each with the editor its type already had.
+
+{/* truncate */}
+
+![The inspector drawing a list of enums, a record of two fields and a list of three numbers, each entry on its own row](/img/blog/composite_properties.webp)
+
+## Declaring one
+
+- `of` is the spec a `list`'s entries and a `map`'s values take, and `fields` is one spec per `record` field. Each is a whole property spec, so `min`, `options`, `asset` and `component` work at any depth.
+- A nested spec may leave its `default` out; the type's zero is written in when the component registers, and a new entry starts there.
+- A `map`'s `key` is `"string"` or `"int"`. TOML keys are text, so a number key is written `"7"` in the file.
+- `strings` and `nodes` are gone. They were `list of string` and `list of node`, and fifteen schema lines were rewritten.
+
+```toml
+waves  = { type = "list", of = { type = "int", min = 0 }, default = [] }
+spawns = { type = "map", key = "int", of = { type = "node" }, default = {} }
+```
+
+## Exporting one from a script
+
+- A bare export says what it is: `waves: [2, 4, 8]` is a list of whole numbers, and an object is a record whose fields keep their own types.
+- A list holds one type, and an entry of another names itself in the error.
+- A node path is resolved wherever the spec puts one, so a list of nodes arrives as the nodes, and a record's node field does too.
+
+```rune
+pub fn exports() {
+    #{ waves: [2, 4, 8], wave: #{ hp: 3, name: "grunt" } }
+}
+```
+
+## Docs
+
+- [Component properties](/docs/reference/components)
+- [Exported script properties](/docs/manual/scripting#exported-properties)

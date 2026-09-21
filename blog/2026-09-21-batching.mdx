@@ -1,0 +1,45 @@
+---
+description: "Sprites, shapes and meshes that draw alike go to the GPU as one call with an instance each."
+slug: batching
+title: Batching
+authors: [dragos]
+image: /img/manual/batching_sprite.png
+keywords: [batching, instancing, rendering, sprites, meshes, performance]
+---
+
+Nodes that draw alike now go to the GPU as one call, with a position, a size and a tint per instance. Nothing turns it on.
+
+{/* truncate */}
+
+![Sixteen sprites cut from one sheet, turned, scaled, tinted and flipped apart, drawn in a single call](/img/manual/batching_sprite.webp)
+
+## What it costs, offscreen at 1600x1000
+
+| case | render CPU before | after | GPU before | after |
+| --- | ---: | ---: | ---: | ---: |
+| 5000 circles | 22.7 ms | 0.41 ms | 1.56 ms | 1.02 ms |
+| 2000 cuboids | 30.7 ms | 0.77 ms | 3.67 ms | 4.03 ms |
+| 2000 balls | 31.9 ms | 1.49 ms | 13.5 ms | 5.50 ms |
+
+## What joins a call
+
+| kind | grouped by |
+| --- | --- |
+| sprites | image, material |
+| shapes | primitive and its size, material |
+| meshes | geometry or `mesh` asset, texture, material, shadows, light layers |
+
+- A sheet frame joins the run. The frame is a rectangle on the instance, where it used to be a private copy of the built-in quad with rewritten coordinates.
+- In two dimensions a run is cut along the draw order, so what covers what does not change. In three it is not, because geometry is depth-tested.
+
+![Eighteen cubes turned, scaled and tinted apart, lit and casting shadows, drawn in a single call](/img/manual/batching_mesh.webp)
+
+## What keeps a draw of its own
+
+| kind | why |
+| --- | --- |
+| polygon, polyline | geometry of its own |
+| own material | its own pipeline |
+| skinned, morphed | deformed on its node |
+| `cloner`, levels of detail | already instanced, or swaps geometry |
+| uneven scale | the instance's matrix goes through its normals |
