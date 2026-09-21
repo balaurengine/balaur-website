@@ -39,6 +39,11 @@ hide_table_of_contents: true
   // up in. Every image is a screenshot the engine's showcase pipeline wrote,
   // read as the `.webp` scripts/optimize-images.mjs makes beside the PNG.
   shots: {
+    'Properties that hold properties': {
+      image: '/img/blog/composite_properties.webp',
+      alt: 'The inspector drawing a map keyed by numbers, a Wave class of two fields and a list of three numbers, each entry on its own row',
+      posts: ['custom-types-for-the-inspector'],
+    },
     'The editor': {
       image: '/img/manual/editor_overview.webp',
       alt: "The editor on examples/angrynerds: the node tree, the viewport with its 2D grid and gizmo, the inspector, and the dock tabs",

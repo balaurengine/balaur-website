@@ -195,7 +195,7 @@ import Roadmap from '@site/src/components/Roadmap';
   },
   {
     id: '0.2',
-    state: 'building',
+    state: 'built',
     estimate: "December 2026",
     title: "Balaur v2",
     items: [
@@ -283,6 +283,18 @@ import Roadmap from '@site/src/components/Roadmap';
         ],
       },
       {
+        group: "Scripts and assets",
+        title: 'Properties that hold properties',
+        text: <>A <code>list</code>, a <code>map</code> and a <code>record</code> a component or a script exports, drawn a row an entry in the inspector.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-property-types.md',
+        done: true,
+        image: "/img/blog/composite_properties.webp",
+        alt: "The inspector drawing a map keyed by numbers, a Wave class of two fields and a list of three numbers, each entry on its own row",
+        posts: [
+          {slug: "custom-types-for-the-inspector", title: "Custom types for the inspector"},
+        ],
+      },
+      {
         group: "Physics and animation",
         title: 'Concave 2D colliders',
         text: <>A concave polygon cut into overlapping convex pieces, so nothing wedges into a seam, and imported Godot collision polygons keep their shape.</>,
@@ -355,10 +367,18 @@ import Roadmap from '@site/src/components/Roadmap';
         ],
       },
       {
-        group: "Networking",
-        title: 'Multiplayer from a script',
-        text: <>A <code>multiplayer</code> module to host, join and leave a match from Rune, on a player's machine or a headless server.</>,
-        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-multiplayer.md',
+        group: "Rendering",
+        title: '2D batching',
+        text: <><code>balaur_render</code> draws the sprites and shapes that share a texture and a material in one call rather than one each.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
+        done: true,
+      },
+      {
+        group: "Rendering",
+        title: 'Automatic instancing',
+        text: <>Meshes sharing geometry, a texture and a material draw as one call with an instance each.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
+        done: true,
       },
       {
         group: "Tools and services",
@@ -386,7 +406,7 @@ import Roadmap from '@site/src/components/Roadmap';
   },
   {
     id: '0.3',
-    state: 'planned',
+    state: 'building',
     estimate: "March 2027",
     title: "Balaur Again",
     items: [
@@ -433,7 +453,7 @@ import Roadmap from '@site/src/components/Roadmap';
       {
         group: "Rendering",
         title: 'Culling and level of detail',
-        text: <>Frustum culling and <code>render.in_view</code>, cull masks, automatic instancing, MSAA, level of detail in the mesh asset, 2D batching and <code>multimesh</code>.</>,
+        text: <>Frustum culling and <code>render.in_view</code>, cull masks, MSAA, level of detail in the mesh asset, and <code>multimesh</code>.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-views-and-culling.md',
       },
       {
@@ -478,6 +498,12 @@ import Roadmap from '@site/src/components/Roadmap';
         title: 'WebTransport in the browser',
         text: <>Native QUIC datagrams, binary frames, stable ids and rollback are built, and the browser side is not.</>,
         plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-networking.md#2-transports',
+      },
+      {
+        group: "Networking",
+        title: 'Multiplayer from a script',
+        text: <>A <code>multiplayer</code> module to host, join and leave a match from Rune, on a player's machine or a headless server.</>,
+        plan: 'https://github.com/balaurengine/balaur/blob/main/docs/PLAN-multiplayer.md',
       },
       {
         group: "Networking",

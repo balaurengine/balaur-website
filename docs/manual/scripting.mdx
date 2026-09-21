@@ -70,6 +70,42 @@ speed = 3.5
   default.
 - `node.attach_script(path, props)` does the same at run time.
 
+A property can hold other properties. A bare list or object says what it is:
+`waves: [2, 4, 8]` is a list of whole numbers, and `wave: #{ hp: 3 }` is a
+record whose fields keep their own types. A list holds one type.
+
+```rune
+pub fn exports() {
+    #{
+        waves: [2, 4, 8],
+        wave: #{ hp: 3, name: "grunt" },
+        crew: #{ "type": "list", "of": #{ "type": "node" }, "default": [] },
+    }
+}
+```
+
+- Written out, `of` is the spec a `list`'s entries and a `map`'s values take,
+  and `fields` is one spec per `record` field. Each is a whole spec, so
+  `min`, `options` and `asset` work at any depth.
+- A node path is resolved wherever the spec puts one, so `crew` arrives as
+  the nodes it names.
+- A `map`'s `key` is `"string"` or `"int"`. The file spells a number key
+  `"7"`; the script is handed a map keyed by numbers.
+- A `struct` the script declares is exported as itself. The scene writes its
+  fields as a table, and `init` is handed that class back, methods and all.
+
+```rune
+struct Wave { hp, name }
+
+impl Wave {
+    fn power(self) { self.hp * 2 }
+}
+
+pub fn exports() {
+    #{ wave: Wave { hp: 3, name: "grunt" } }
+}
+```
+
 ## Modules
 
 Subsystems declare their bindings against `balaur_script`. Scripts reach them
