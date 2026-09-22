@@ -257,10 +257,10 @@ pub fn count(S) {
     S.plugins.counter.shown = n;
 }
 
-pub fn draw(S, k) {
-    ui::label(format!("{} scripted nodes", S.plugins.counter.shown), #{
-        size: 11.5, font: "mono", color: k.dim,
-    });
+pub fn draw(S, k, host) {
+    let empty = S.kit.empty;
+    let rows = S.kit.rows;
+    rows(S, host, "body", [empty(format!("{} scripted nodes", S.plugins.counter.shown))]);
 }
 ```
 
@@ -270,42 +270,51 @@ the theme. Call the history recorder before mutating the document.
 
 Each list is optional.
 
-- `docks` and `windows` take a `draw(S, k)`; `commands` a `run(S)`. A dock
-  with `tall: true` makes the bottom dock grow while it is open. One with
-  `scrolls: true` brings its own scroll, as `pages` does, instead of the
-  dock's.
+- `docks` take a `draw(S, k, host)`, `windows` a `draw(S, k)` and `commands` a
+  `run(S)`. A dock with `tall: true` makes the bottom dock grow while it is
+  open.
 - `sections` are `draw(S, k, node)`, drawn under the built-in inspector.
 - `overlays` are `draw(S)` and draw viewport lines.
 - `editors` map a schema datatype to `draw(S, k, target, spec, value)`,
   replacing the built-in editor for that type.
 - `states` map a name to `run(S)`: a plugin's own start-up state.
 
-A plugin draws with the `ui` verbs and with `S.kit`, the editor's own parts.
-A plugin cannot `use` the editor's modules, so each part is a stored
-function: bind it to a local, then call it.
+A dock is a node. The editor makes each registered dock a subtree and hands
+`draw` its path: a `head` for verbs, a `side` for pages, a `body` of rows and
+a `foot`. A plugin fills it with `S.kit`, the editor's own parts. A plugin
+cannot `use` the editor's modules, so each part is a stored function: bind it
+to a local, then call it.
 
-| Part | Draws |
+| Part | What it does |
 | --- | --- |
-| `tabs(S, k, id, names)` | A row of tabs that wraps, and answers the open one |
-| `pages(S, k, id, groups, draw)` | A sidebar of pages beside the open one, or a dropdown when narrow |
-| `tree(S, k, id, value, opts)` | A map or list that opens and closes; `edit` makes leaves fields |
-| `field(S, k, label, value, opts)` | A labelled value; `mask` hides it, `copy` adds a copy button |
-| `section(k, title)`, `empty(k, text)` | A heading, and what an empty panel says |
-| `files(S, k, id, opts)` | A folder's files; TOML and JSON open as editable trees |
+| `strip(S, host, name, controls)` | Puts a row of controls on `head`, `side` or `foot` |
+| `rows(S, host, name, specs)` | Puts rows on the `body`; a spec is `#{ label, controls }` |
+| `node(host, name)` | The node itself, to add children to or read a rect from |
+| `tabs(S, host, id, names)` | A row of tabs across the head, and answers the open one |
+| `pages(S, host, id, groups)` | A sidebar of pages, and answers the open one |
+| `tree(S, id, value, opts)` | A map or list as rows; `edit` makes leaves fields |
+| `field(S, label, value, opts)` | A labelled value; `mask` hides it, `copy` adds a copy button |
+| `section(title)`, `empty(text)` | A heading, and what an empty panel says |
+| `files(S, id, opts)` | A folder's files; TOML and JSON open as editable trees |
 | `game_data(S)`, `save_prefs(S)` | The game's user data folder, and a write of the editor's settings |
 | `short_path(path)` | A path with the home folder written as `~` |
 
 ```rune
-pub fn draw(S, k) {
+pub fn draw(S, k, host) {
     let field = S.kit.field;
-    field(S, k, "token", "abcd1234efgh5678", #{ mask: true, copy: true });
+    let rows = S.kit.rows;
+    rows(S, host, "body", [
+        field(S, "token", "abcd1234efgh5678", #{ mask: true, copy: true }),
+    ]);
 }
 ```
 
-`pages` calls back into your plugin to draw a page. Give it a function
-wrapped once with `script::shared(page, 3)` and kept in `state()`. A closure
-passed straight in runs against the editor's code, not yours. A dock drawn
-with `pages` registers with `scrolls: true`.
+A control is the `widget` table the editor's own rows are built from, plus an
+`on` the editor calls with what the reader changed. The controls are nodes:
+they take theme roles, and the same layout places them.
+
+A floating window still draws. `windows` takes a `draw(S, k)` and the `ui`
+verbs, because a window has no node of its own yet.
 
 The editor's User data dock is `files` over the open game's user data
 folder. Saves and prefs open there as structures you can edit. A game played

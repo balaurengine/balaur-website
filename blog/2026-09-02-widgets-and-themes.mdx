@@ -36,6 +36,11 @@ drawn.
   widget nodes in `editor/scenes/main.toml`. The timeline, the weight table
   and two painting tools are `draw` nodes.
 
+- Four more since. `switch` is the track and knob a click flips. `truncate`
+  cuts a caption too long for its box and ends it with an ellipsis.
+  `submitted` is true for the frame after Enter, and `ui::set_focus` on a
+  `field` puts the caret there.
+
 ```toml
 [nodes.widget]
 kind = "list"

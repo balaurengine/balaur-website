@@ -1,0 +1,59 @@
+---
+description: "A plugin's dock is a node subtree the editor makes and hands over, and every kit verb answers a row rather than drawing one."
+slug: plugin-docks-are-nodes
+title: Plugin docks are nodes
+authors: [dragos]
+image: /img/manual/plugin_dock.png
+keywords: [editor plugin, dock, widget nodes, editor extension, rune]
+---
+
+A plugin's dock is a subtree the editor makes for it. `draw(S, k, host)` is
+handed its path, and `S.kit` fills it with rows instead of drawing them.
+
+{/* truncate */}
+
+![The User data dock, its files and their times as widget nodes](/img/manual/plugin_dock.webp)
+
+## What a plugin is handed
+
+- `host` names four places: `head` for verbs, `side` for pages, `body` for
+  rows and `foot`. Each is a node, from one scene fragment per dock.
+- `strip(S, host, name, controls)` puts a row of controls on one of them, and
+  `rows(S, host, name, specs)` puts rows on the body.
+- `node(host, name)` answers the node itself, for a plugin adding a shape the
+  kit has no verb for.
+- A control is the `widget` table the editor's own rows are built from, plus
+  an `on` the editor calls with what the reader changed.
+
+```rune
+pub fn draw(S, k, host) {
+    let field = S.kit.field;
+    let rows = S.kit.rows;
+    rows(S, host, "body", [
+        field(S, "token", "abcd1234efgh5678", #{ mask: true, copy: true }),
+    ]);
+}
+```
+
+## What that buys
+
+- A plugin's controls are widget nodes, so a theme role dresses them and the
+  same layout places them.
+- A plugin cannot draw outside its dock. The host is its subtree, and no `ui`
+  handle reaches past it.
+- `kit.rn` went from 49 `ui::*` calls to 1. `counter.rn`, `userdata.rn` and
+  the Gamend dock are all on it.
+
+## The verbs
+
+- `section(title)` and `empty(text)` answer a row. `field(S, label, value,
+  opts)` masks with `mask` and copies with `copy`.
+- `tree(S, id, value, opts)` answers rows for a map or a list, and `edit`
+  makes its leaves fields.
+- `files(S, id, opts)` answers a row per file under a folder; TOML and JSON
+  open as editable trees.
+- `tabs(S, host, id, names)` and `pages(S, host, id, groups)` fill the head or
+  the sidebar, and answer which one is open.
+
+A floating window still draws. `windows` takes `draw(S, k)` and the `ui`
+verbs, because a window has no node of its own yet.
