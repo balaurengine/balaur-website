@@ -57,7 +57,9 @@ jobs:
       - name: yarn install
         run: corepack enable && yarn --immutable
       # A post over 300 words of prose, a 35-word sentence, or an em dash in
-      # prose is a red build: scripts/lint-prose.mjs holds the numbers.
+      # prose is a red build: scripts/lint-prose.mjs holds the numbers. So is
+      # a picture nothing shows, or one a page shows and the repository has
+      # not got: scripts/lint-media.mjs.
       - name: yarn lint
         run: yarn lint
       # GITHUB_TOKEN is for scripts/gen-releases.mjs: a runner shares its IP
