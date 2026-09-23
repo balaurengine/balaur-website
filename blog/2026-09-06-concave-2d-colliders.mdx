@@ -27,23 +27,14 @@ overlaps the pieces by hand. This does it automatically.
 
 What the times look like (at build time):
 
-| kind | ns |
-| --- | --- |
-| trimesh | 118 |
-| convex_decomposition, overlap 0 | 187 |
-| convex_decomposition, overlap 0.9 | 367 |
-
-What each fixes or what problems it has:
-
-| kind | result |
-| --- | --- |
-| trimesh, polyline, overlap 0 | still inside |
-| convex_hull | out, with the gap under the table filled in |
-| overlap 0.9 | out |
+| kind | ns | result |
+| --- | --- | --- |
+| trimesh | 118 | still inside |
+| convex_decomposition, overlap 0 | 187 | still inside |
+| convex_decomposition, overlap 0.9 | 367 | out |
 
 - A trimesh is the cheaper static collider when bodies only touch it from
-  outside. This kind is for dynamic bodies, and for static ones a body can
-  end up inside.
+  outside. This kind is for dynamic bodies.
 
 ## Also
 
