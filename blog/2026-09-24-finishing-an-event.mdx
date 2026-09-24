@@ -1,0 +1,35 @@
+---
+description: "A hook that answers true finishes the event, and a press reaches the node under the pointer and then every other node."
+slug: finishing-an-event
+title: Finishing an event
+authors: [dragos]
+image: /img/blog/finish_click.png
+keywords: [input hooks, pointer events, handled event, click outside, popup, game engine scripting]
+---
+
+A hook that answers `true` finishes the event, and no other node hears it. A press goes to the node under the pointer first, then to every other node unless that one answered `true`.
+
+{/* truncate */}
+
+![Two takes of one scene. On the left a click inside the panel, whose hook answers true, and the panel stays. On the right a click outside it reaches the stage's own hook, which hides the panel](/img/blog/finish_click.webp)
+
+- `on_pointer_down`, `on_pointer_up`, `on_key_down`, `on_key_up`, `on_action` and `on_scroll` read the answer. Anything but `true` is ignored, so a hook that returns nothing changes nothing.
+- A press over nothing, or over a node with no hook for it, reaches whoever listens. A panel closes on a click outside itself with one hook on the scene root.
+- Nodes hear a broadcast last child first, so the node added most recently, a popup over everything, answers before the rest.
+- A node's bindings run before its script, and only the script's answer counts.
+- A press a script feeds with `input.feed_mouse_button` is the next frame's, so these hooks see it like one from the window.
+- A widget with `pointer_through = true` is drawn and never hovered or clicked, and `ui.wants_pointer()` stays false over it: a full-screen container over the world wants this. A `cursor` word on a widget, `hand` say, shapes the pointer over it.
+
+```rune
+// On the panel: every press on it stays on it.
+pub fn on_pointer_down(this, button) {
+    true
+}
+```
+
+```rune
+// On the scene root: a press the panel did not take was outside it.
+pub fn on_pointer_down(this, button) {
+    this.node.get_node("Panel").set_visible(false);
+}
+```

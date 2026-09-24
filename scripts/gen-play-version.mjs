@@ -4,13 +4,24 @@
 // CDN ignores a query, so only a new path keeps a deploy from pairing an old
 // glue with a new module, which fails with a missing wasm-bindgen export.
 import {createHash} from 'node:crypto';
-import {existsSync, readdirSync, readFileSync, writeFileSync} from 'node:fs';
-import {join} from 'node:path';
+import {existsSync, readdirSync, readFileSync, statSync, writeFileSync} from 'node:fs';
+import {join, relative} from 'node:path';
 
 const dir = 'static/play';
+// Every file the bundle carries, `snippets/` included, so a change the glue
+// imports moves the stamp. README.md is the directory's own.
+const files = (at) =>
+  readdirSync(at)
+    .sort()
+    .flatMap((name) => {
+      const p = join(at, name);
+      return statSync(p).isDirectory() ? files(p) : [p];
+    });
 const hash = createHash('sha256');
-for (const name of readdirSync(dir).sort()) {
-  if (/\.(js|wasm|bpak)$/.test(name)) hash.update(name).update(readFileSync(join(dir, name)));
+for (const p of files(dir)) {
+  const rel = relative(dir, p);
+  if (rel === 'README.md') continue;
+  hash.update(rel).update(readFileSync(p));
 }
 const v = hash.digest('hex').slice(0, 12);
 const out = 'src/play-version.json';

@@ -1,4 +1,4 @@
-import {mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config, Plugin} from '@docusaurus/types';
@@ -35,8 +35,18 @@ const playStamp = ({siteDir}: {siteDir: string}): Plugin => ({
     const {v} = JSON.parse(readFileSync(stamp, 'utf8')) as {v: string};
     const play = join(outDir, 'play');
     mkdirSync(join(play, v));
+    // Everything the engine bundle carries, directories included: balaur.js
+    // imports wasm-bindgen's `snippets/` by a path relative to itself, and a
+    // file left behind is a 404 that stops the module evaluating. README.md
+    // is the directory's own.
     for (const name of readdirSync(play)) {
-      if (/\.(js|wasm|bpak)$/.test(name)) renameSync(join(play, name), join(play, v, name));
+      if (name === 'README.md' || name === v) continue;
+      renameSync(join(play, name), join(play, v, name));
+    }
+    const glue = readFileSync(join(play, v, 'balaur.js'), 'utf8');
+    for (const [, rel] of glue.matchAll(/from\s+'\.\/([^']+)'/g)) {
+      if (existsSync(join(play, v, rel))) continue;
+      throw new Error(`play-stamp: balaur.js imports ./${rel}, which is not under /play/${v}/`);
     }
     writeFileSync(join(play, 'version.json'), JSON.stringify({v}) + '\n');
   },

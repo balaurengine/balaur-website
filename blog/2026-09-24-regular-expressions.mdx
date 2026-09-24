@@ -1,0 +1,27 @@
+---
+description: "A regex module: search, search_all, replace, split and escape over regex-lite, with a match as a table."
+slug: regular-expressions
+title: Regular expressions
+authors: [dragos]
+image: /img/blog/regex_marks.png
+keywords: [regular expressions, regex, rune, scripting, text, game engine]
+---
+
+Scripts have a `regex` module. A pattern is a string, a match is a table, and every call compiles the pattern it is given.
+
+{/* truncate */}
+
+![Three lines of a pinyin word list, the bracketed syllable on each boxed and read out as the two groups the pattern captured](/img/blog/regex_marks.webp)
+
+- `regex::search(pattern, text)` is the first match or nil; `regex::search_all` is every match in order. A match is `#{ start, end, text, groups }`, offsets in bytes and one string per group, nil for a group that took no part.
+- `regex::matches(pattern, text)` says whether it matches anywhere.
+- `regex::replace(pattern, text, with)` replaces the first match, and with `true` as a fourth argument every match; `$1` and `${name}` in `with` stand for groups.
+- `regex::split(pattern, text)` is the pieces between matches, and `regex::escape(text)` makes a literal match itself.
+- The dialect is `regex-lite`'s: no look-around and no back-references, so a match takes time linear in the text.
+
+```rune
+for found in regex::search_all("\\[([a-z]+)([0-9])\\]", line) {
+    let syllable = found["groups"][0];
+    let tone = found["groups"][1];
+}
+```

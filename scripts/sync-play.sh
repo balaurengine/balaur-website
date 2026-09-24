@@ -20,15 +20,19 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PLAY="$ROOT/static/play"
 TAG="${ENGINE_TAG:-nightly}"
 BASE="https://github.com/balaurengine/balaur/releases/download/$TAG"
-# The two the page cannot run without; the packs are whatever the bundle
-# carries, so an example added to the engine reaches /examples without a
-# name being added here.
+# The two the page cannot run without; everything else is whatever the bundle
+# carries, so a pack or a module the engine adds arrives without a name being
+# added here.
 REQUIRED=(balaur.js balaur_bg.wasm)
+# The page's own, which the bundle does not carry and a sync keeps.
+KEPT=(README.md VERSION)
 
 warn() { echo "warning: $*; keeping the committed copy" >&2; }
 
-# Copy the web build and every pack from `src` into static/play, dropping a
-# pack that is no longer shipped so the page cannot offer a stale game.
+# Replace static/play with what the bundle holds: a pack no longer shipped
+# goes, and so does a module. Copied whole rather than by a list kept here,
+# because `balaur.js` imports wasm-bindgen's `snippets/` by relative path and
+# a file this script did not know to copy is a 404 that nothing else catches.
 install_play() { # install_play <dir>
   local src=$1 f
   for f in "${REQUIRED[@]}"; do
@@ -38,9 +42,24 @@ install_play() { # install_play <dir>
   local packs=("$src"/*.bpak)
   shopt -u nullglob
   [[ ${#packs[@]} -ge 2 ]] || { warn "$src holds ${#packs[@]} pack(s); the editor and the examples are expected"; return 1; }
-  rm -f "$PLAY"/*.bpak
-  cp "${REQUIRED[@]/#/$src/}" "${packs[@]}" "$PLAY/"
+  local keep=()
+  for f in "${KEPT[@]}"; do keep+=(! -name "$f"); done
+  find "$PLAY" -mindepth 1 -maxdepth 1 "${keep[@]}" -exec rm -rf {} +
+  cp -R "$src"/. "$PLAY/"
+  imports_resolve || return 1
   echo "packs: $(cd "$src" && ls *.bpak | tr '\n' ' ')"
+}
+
+# Every module `balaur.js` imports is beside it. A static import that 404s
+# stops the module evaluating, so the page draws nothing and the build that
+# shipped it is green.
+imports_resolve() {
+  local missing=() rel
+  while read -r rel; do
+    [[ -n "$rel" ]] || continue
+    [[ -s "$PLAY/$rel" ]] || missing+=("$rel")
+  done < <(grep -oE "from '\./[^']+'" "$PLAY/balaur.js" | sed "s|from '\./||;s|'\$||")
+  [[ ${#missing[@]} -eq 0 ]] || { warn "balaur.js imports ${missing[*]}, which the bundle did not carry"; return 1; }
 }
 
 mkdir -p "$PLAY"
@@ -67,9 +86,14 @@ fi
 for f in balaur-play.tar.gz SHA256SUMS; do
   curl -fsSL "$BASE/$f" -o "$tmp/$f" || { warn "could not fetch $BASE/$f"; exit 0; }
 done
-# The sums cover every asset of the release; check the one downloaded.
+# The sums cover every asset of the release; check the one downloaded. The
+# hash is computed and compared here rather than through `-c`: macOS ships an
+# /sbin/sha256sum that hashes a file and has no check mode, so the name alone
+# picked a tool that could not do it and every local sync kept the old copy.
 if command -v sha256sum >/dev/null 2>&1; then sum=(sha256sum); else sum=(shasum -a 256); fi
-(cd "$tmp" && grep ' balaur-play.tar.gz$' SHA256SUMS | "${sum[@]}" -c --quiet) ||
+want_sum=$(grep ' balaur-play.tar.gz$' "$tmp/SHA256SUMS" | cut -d' ' -f1)
+got_sum=$("${sum[@]}" "$tmp/balaur-play.tar.gz" | cut -d' ' -f1)
+[[ -n "$want_sum" && "$want_sum" == "$got_sum" ]] ||
   { warn "balaur-play.tar.gz does not match SHA256SUMS"; exit 0; }
 
 mkdir -p "$tmp/play"

@@ -3,6 +3,8 @@
 `balaur.js` and `balaur_bg.wasm` are the engine's web template — the output of
 `scripts/package_template.sh web` in the engine repository (wasm-bindgen over
 a `wasm32-unknown-unknown` build with the `window` feature, then `wasm-opt`).
+`snippets/` is wasm-bindgen's own output for the engine's `inline_js`, which
+`balaur.js` imports by relative path, so it travels with the pair.
 The `.bpak` files are projects exported with `balaur export --keep-sources`:
 packs carrying script sources. Compiled bytecode also runs in the browser
 (the rune fork serialises instruction addresses as `u32`, so packs are
@@ -30,8 +32,8 @@ as `engine nightly-<sha>`. To pin the site to a release, set `ENGINE_TAG` in
     (cd ../balaur && ./scripts/package_template.sh web && ./scripts/package_play.sh)
     BALAUR_REPO=../balaur ./scripts/sync-play.sh
 
-`scripts/gen-play-version.mjs` (run by `yarn start`/`yarn build`) hashes
-these files into `src/play-version.json`. A built site serves them under
+`scripts/gen-play-version.mjs` (run by `yarn start`/`yarn build`) hashes this
+whole directory into `src/play-version.json`. A built site serves it under
 `/play/<stamp>/` and names the stamp in `/play/version.json` (the play-stamp
 plugin in `docusaurus.config.ts`): GitHub Pages' CDN ignores a query string, so
 only a new path keeps it from pairing an old glue with a new module. The page
